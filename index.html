@@ -1,45 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
+<header>
+    <h1>MangaMood 📖</h1>
+    <div class="search-container">
+        <input type="text" id="main-search" placeholder="Search for your next adventure...">
+    </div>
+</header>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manga Mood Ring</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <nav>
-        <h1>MangaMood 📖</h1>
-        <div class="search-container">
-            <input type="text" id="main-search" placeholder="What's your vibe today?">
+<main class="container">
+    <section class="vibe-panel">
+        <button class="vibe-btn" onclick="filterByMood('sad')">😭 I need a cry</button>
+        <button class="vibe-btn" onclick="filterByMood('hype')">🔥 Give me Hype</button>
+        <button class="vibe-btn" id="more-btn" onclick="toggleTags()">+ More</button>
+        
+        <!-- These stay hidden until clicked -->
+        <div id="extra-tags" class="hidden-tags">
+            <button class="vibe-btn" onclick="filterByMood('chill')">🍵 Just chill</button>
+            <button class="vibe-btn" onclick="filterByMood('mystery')">🕵️ Mystery</button>
+            <button class="vibe-btn" onclick="filterByMood('romance')">💕 Romance</button>
         </div>
-    </nav>
+    </section>
+</main>
 
-    <main class="container">
-        <!-- Vibe Buttons -->
-        <section class="vibe-panel">
-            <button class="vibe-btn" onclick="filterByMood('sad')">😭 I need a cry</button>
-            <button class="vibe-btn" onclick="filterByMood('hype')">🔥 Give me Hype</button>
-            <button class="vibe-btn" onclick="filterByMood('chill')">🍵 Just something chill</button>
-            <button class="vibe-btn" onclick="roulette()">🎲 Surprise Me!</button>
-        </section>
-
-        <!-- Community Picks -->
-        <section id="community-picks">
-            <h2>⭐ Community Favorites</h2>
-            <div class="grid" id="community-grid"></div>
-        </section>
-
-        <!-- Main Search Results (Google CSE will live here) -->
-        <section id="search-results">
-            <h2>Manga Results</h2>
-            <div class="gcse-searchresults-only"></div>
-        </section>
-    </main>
-
-    <script src="script.js"></script>
-</body>
-</html>
-
+<script>
+    function toggleTags() {
+        const extra = document.getElementById('extra-tags');
+        const btn = document.getElementById('more-btn');
+        if (extra.style.display === "flex") {
+            extra.style.display = "none";
+            btn.innerText = "+ More";
+        } else {
+            extra.style.display = "flex";
+            extra.style.gap = "12px";
+            btn.innerText = "- Less";
+        }
+    }
+</script>
