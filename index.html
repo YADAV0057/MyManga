@@ -1,36 +1,78 @@
-<header>
-    <h1>MangaMood 📖</h1>
-    <div class="search-container">
-        <input type="text" id="main-search" placeholder="Search for your next adventure...">
-    </div>
-</header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaMood 📖</title>
+    <!-- Linking the external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<main class="container">
-    <section class="vibe-panel">
-        <button class="vibe-btn" onclick="filterByMood('sad')">😭 I need a cry</button>
-        <button class="vibe-btn" onclick="filterByMood('hype')">🔥 Give me Hype</button>
-        <button class="vibe-btn" id="more-btn" onclick="toggleTags()">+ More</button>
-        
-        <!-- These stay hidden until clicked -->
-        <div id="extra-tags" class="hidden-tags">
-            <button class="vibe-btn" onclick="filterByMood('chill')">🍵 Just chill</button>
-            <button class="vibe-btn" onclick="filterByMood('mystery')">🕵️ Mystery</button>
-            <button class="vibe-btn" onclick="filterByMood('romance')">💕 Romance</button>
+    <!-- Header Section -->
+    <header>
+        <h1>MangaMood 📖</h1>
+        <div class="search-container">
+            <!-- This is where your Google Search will eventually plug in -->
+            <input type="text" id="main-search" placeholder="Search for your next adventure...">
         </div>
-    </section>
-</main>
+    </header>
 
-<script>
-    function toggleTags() {
-        const extra = document.getElementById('extra-tags');
-        const btn = document.getElementById('more-btn');
-        if (extra.style.display === "flex") {
-            extra.style.display = "none";
-            btn.innerText = "+ More";
-        } else {
-            extra.style.display = "flex";
-            extra.style.gap = "12px";
-            btn.innerText = "- Less";
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- Mood Selector Panel -->
+        <section class="vibe-panel">
+            <button class="vibe-btn" onclick="filterByMood('sad')">😭 I need a cry</button>
+            <button class="vibe-btn" onclick="filterByMood('hype')">🔥 Give me Hype</button>
+            <button class="vibe-btn" id="more-btn" onclick="toggleTags()">+ More</button>
+            
+            <!-- Hidden Tags to toggle -->
+            <div id="extra-tags" class="hidden-tags">
+                <button class="vibe-btn" onclick="filterByMood('chill')">🍵 Just chill</button>
+                <button class="vibe-btn" onclick="filterByMood('mystery')">🕵️ Mystery</button>
+                <button class="vibe-btn" onclick="filterByMood('romance')">💕 Romance</button>
+            </div>
+        </section>
+
+        <!-- Placeholder for Results -->
+        <section id="results-area">
+            <div id="community-picks">
+                <h2>⭐ Community Favorites</h2>
+                <div class="grid" id="community-grid">
+                    <!-- Community cards will be injected here by JavaScript -->
+                </div>
+            </div>
+
+            <div id="search-results">
+                <h2>Manga Results</h2>
+                <!-- The Google Search Results will appear here -->
+                <div class="gcse-searchresults-only"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Function to toggle the "More" button
+        function toggleTags() {
+            const extra = document.getElementById('extra-tags');
+            const btn = document.getElementById('more-btn');
+            if (extra.style.display === "flex") {
+                extra.style.display = "none";
+                btn.innerText = "+ More";
+            } else {
+                extra.style.display = "flex";
+                extra.style.gap = "12px";
+                btn.innerText = "- Less";
+            }
         }
-    }
-</script>
+
+        // Placeholder for mood filtering
+        function filterByMood(mood) {
+            console.log("Filtering by: " + mood);
+            // We will add the logic to link this to your Firebase/Google search next
+        }
+    </script>
+</body>
+</html>
