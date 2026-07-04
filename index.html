@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manga Mood Ring</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <h1>MangaMood 📖</h1>
+        <div class="search-container">
+            <input type="text" id="main-search" placeholder="What's your vibe today?">
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Vibe Buttons -->
+        <section class="vibe-panel">
+            <button class="vibe-btn" onclick="filterByMood('sad')">😭 I need a cry</button>
+            <button class="vibe-btn" onclick="filterByMood('hype')">🔥 Give me Hype</button>
+            <button class="vibe-btn" onclick="filterByMood('chill')">🍵 Just something chill</button>
+            <button class="vibe-btn" onclick="roulette()">🎲 Surprise Me!</button>
+        </section>
+
+        <!-- Community Picks -->
+        <section id="community-picks">
+            <h2>⭐ Community Favorites</h2>
+            <div class="grid" id="community-grid"></div>
+        </section>
+
+        <!-- Main Search Results (Google CSE will live here) -->
+        <section id="search-results">
+            <h2>Manga Results</h2>
+            <div class="gcse-searchresults-only"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
