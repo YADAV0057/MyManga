@@ -608,17 +608,14 @@ function renderQ() {
     const progress = document.getElementById('progress-fill');
     if (progress) progress.style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
 }
-
 function finalizeQuiz() {
     let finalScores = {};
     Object.values(userScores).forEach(s => {
         for(let key in s) finalScores[key] = (finalScores[key] || 0) + s[key];
     });
     
-    // Sort and get the top 1 genre (AniList performs much better with a single tag)
     const sorted = Object.keys(finalScores).sort((a,b) => finalScores[b] - finalScores[a]);
     
-    // Map your keys to AniList official genre names
     const genreMap = {
         'SliceOfLife': 'Slice of Life',
         'Psychological': 'Psychological',
@@ -633,16 +630,13 @@ function finalizeQuiz() {
         'Thriller': 'Thriller'
     };
 
-    // Use only the top genre to ensure we get results
     const topGenre = genreMap[sorted[0]] || sorted[0] || "Fantasy";
-    
-    console.log("Quiz Resulting Genre Sent to API:", topGenre);
     
     window.closeQuiz();
     
-    // Call your search engine with the single top genre
+    // IMPORTANT: Adding a comma at the end ensures your parseSmartQuery 
+    // function detects this as a "Vibe or Tag" search instead of a "Title" search.
     if (typeof window.triggerSearch === 'function') {
-        window.triggerSearch(topGenre, 1);
+        window.triggerSearch(topGenre + ",", 1); 
     }
 }
-
