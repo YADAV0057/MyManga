@@ -1,13 +1,17 @@
+// ==========================================
+// SEARCH / AGGREGATION ENGINE (js/search.js)
+// ==========================================
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
 import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js';
 import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';
 
-let isSearching = false;  
+let isSearching = false;
 
 export async function triggerSearch(rawQuery, page = 1) {
-    if (!rawQuery) return; 
-    if (isSearching) return; 
+    // Allow an empty string through (used for the default "browse popular" load)
+    if (rawQuery === undefined || rawQuery === null) return;
+    if (isSearching) return;
     isSearching = true;
 
     window.currentActiveQuery = rawQuery;
@@ -68,10 +72,12 @@ export async function triggerSearch(rawQuery, page = 1) {
         if (!finalResults || finalResults.length === 0) {
             // Try to recover with "Did you mean" suggestions from MangaDex before giving up.
             let suggestions = [];
-            try {
-                suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery || rawQuery, 5);
-            } catch (e) {
-                console.warn("Did-you-mean suggestion lookup failed:", e);
+            if (parsedQuery.cleanQuery && parsedQuery.cleanQuery.length > 0) {
+                try {
+                    suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery, 5);
+                } catch (e) {
+                    console.warn("Did-you-mean suggestion lookup failed:", e);
+                }
             }
 
             grid.innerHTML = '';
