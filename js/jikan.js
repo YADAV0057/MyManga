@@ -1,6 +1,6 @@
 
 // ==========================================
-// JIKAN (MyAnimeList) FALLBACK ENGINE (js/jikan.js)
+// JIKAN (MyAnimeList) FALLBACK ENGINE (js/jikan.js) 
 // ==========================================
 // Used only when AniList returns nothing (blocked, rate-limited, or down).
 // Normalizes results into the same shape as AniList media objects so
