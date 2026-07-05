@@ -105,14 +105,24 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 2. SMART DUAL-API AGGREGATOR STACK
+// 2. UNLIMITED API AGGREGATOR STACK
 // ==========================================
+
+// Typo Fallback: Uses Jikan (MyAnimeList) because its search algorithm naturally handles typos well
+async function fetchTypoFallbackFromJikan(searchQuery) {
+    try {
+        const response = await fetch(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(searchQuery)}&limit=1`);
+        const data = await response.json();
+        return data.data && data.data.length > 0 ? data.data[0].title : null;
+    } catch (e) {
+        return null;
+    }
+}
 
 async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVibe = false) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let query, variables;
 
-    // Added externalLinks { site url } to dynamically fetch reading platforms
     if (isVibe) {
         const genres = searchQuery.split(',').map(g => g.trim());
         query = `
@@ -120,19 +130,18 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
                 Page(page: 1, perPage: ${limit}) {
                     media(genre_in: $genres, type: MANGA, sort: POPULARITY_DESC${countryFilter}) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
-                        externalLinks { site url }
                     }
                 }
             }
         `;
         variables = { genres: genres };
     } else {
+        // Optimized sorting parameters ensure exact match priorities
         query = `
             query ($search: String) {
                 Page(page: 1, perPage: ${limit}) {
                     media(search: $search, type: MANGA, sort: [SEARCH_MATCH, POPULARITY_DESC]) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
-                        externalLinks { site url }
                     }
                 }
             }
@@ -154,27 +163,6 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
     }
 }
 
-async function fetchMangaDexData(title) {
-    try {
-        const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(title)}&includes[]=cover_art&limit=1`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.data && data.data.length > 0) {
-            const manga = data.data[0];
-            const mangaId = manga.id;
-            const coverArt = manga.relationships.find(rel => rel.type === 'cover_art');
-            const coverFileName = coverArt?.attributes?.fileName;
-            
-            const coverUrl = coverFileName ? `https://uploads.mangadex.org/covers/${mangaId}/${coverFileName}` : null;
-            return { coverUrl };
-        }
-        return null;
-    } catch (error) {
-        return null;
-    }
-}
-
 // ==========================================
 // 3. UI INTERACTION LOGIC
 // ==========================================
@@ -189,9 +177,7 @@ function formatStatus(status) {
 
 window.toggleOptions = function(id) {
     const overlay = document.getElementById(`overlay-${id}`);
-    if(overlay) {
-        overlay.classList.toggle('active');
-    }
+    if(overlay) overlay.classList.toggle('active');
 }
 
 window.toggleSynopsis = function(element) {
@@ -221,6 +207,14 @@ async function triggerSearch(query) {
             uniqueResults = Array.from(new Map(combinedResults.map(item => [item.id, item])).values()).slice(0, 10);
         } else {
             uniqueResults = await fetchFromAniList(query, false, 10, false);
+            
+            // If AniList returns nothing (likely due to a typo like "Solo Levelling"), use Jikan to autocorrect
+            if (!uniqueResults || uniqueResults.length === 0) {
+                const correctedTitle = await fetchTypoFallbackFromJikan(query);
+                if (correctedTitle) {
+                    uniqueResults = await fetchFromAniList(correctedTitle, false, 10, false);
+                }
+            }
         }
         
         if (!uniqueResults || uniqueResults.length === 0) {
@@ -229,32 +223,21 @@ async function triggerSearch(query) {
             return;
         }
 
-        const mdPromises = uniqueResults.map(aniManga => {
-            const title = aniManga.title.english || aniManga.title.romaji;
-            return fetchMangaDexData(title);
-        });
-        const mdResults = await Promise.all(mdPromises);
-
         grid.innerHTML = ''; 
 
-        uniqueResults.forEach((aniManga, index) => {
+        uniqueResults.forEach((aniManga) => {
             const title = aniManga.title.english || aniManga.title.romaji;
-            const mdData = mdResults[index];
-            
-            const cleanSynopsis = aniManga.description 
-                ? aniManga.description.replace(/<[^>]*>?/gm, '') 
-                : "No synopsis available.";
+            const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
 
             const factSheet = {
                 id: aniManga.id,
                 title: title,
                 globalScore: aniManga.averageScore || "N/A",
                 rawGenres: aniManga.genres || [],
-                coverUrl: mdData?.coverUrl || aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
+                coverUrl: aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
                 synopsis: cleanSynopsis,
                 status: formatStatus(aniManga.status),
-                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A",
-                externalLinks: aniManga.externalLinks || [] // Pass the links down to the card renderer
+                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A"
             };
 
             renderMangaCard(factSheet);
@@ -275,47 +258,33 @@ function renderMangaCard(factSheet) {
 
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
+    
+    // Instant, unmetered multi-host string builders
     const encodedTitle = encodeURIComponent(factSheet.title);
-
-    // Filter out social media/wiki links to prioritize actual reading platforms
-    const nonReadingSites = ['Twitter', 'Wikipedia', 'MyAnimeList', 'Anime-Planet', 'Official Site', 'Instagram'];
-    const validLinks = factSheet.externalLinks.filter(link => !nonReadingSites.includes(link.site));
-
-    // Dynamically build the HTML for the buttons
-    let linksHtml = '';
-    if (validLinks.length > 0) {
-        // Show up to 4 official reading platforms (e.g. Webtoon, Tapas, Viz)
-        validLinks.slice(0, 4).forEach(link => {
-            linksHtml += `<a href="${link.url}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">${link.site}</a>`;
-        });
-    } else {
-        // Smart Fallbacks if the API doesn't have official sources on file
-        linksHtml += `<a href="https://comick.io/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Search Comick</a>`;
-        linksHtml += `<a href="https://www.google.com/search?q=Read+${encodedTitle}+manga+online" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Web Search</a>`;
-    }
+    const kakalotTitle = factSheet.title.toLowerCase().replace(/[^a-z0-9]+/g, '_');
 
     card.innerHTML = `
         <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
             <div class="score-badge">⭐ ${formattedScore}</div>
             
-            <!-- Dynamic Read Options Menu -->
+            <!-- Completely Infinite, Dynamic Read Options Menu -->
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Read on:</span>
-                ${linksHtml}
+                <a href="https://comick.io/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Comick</a>
+                <a href="https://bato.to/search?word=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Bato.to</a>
+                <a href="https://mangadex.org/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">MangaDex</a>
+                <a href="https://mangakakalot.com/search/story/${kakalotTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Mangakakalot</a>
             </div>
         </div>
         
         <div class="manga-info">
             <h3 class="manga-title" title="${factSheet.title}">${factSheet.title}</h3>
             <p class="manga-meta">${genresText}</p>
-            
             <div class="manga-facts">
                 <span>📚 ${factSheet.chapters}</span>
                 <span>📌 ${factSheet.status}</span>
             </div>
-
-            <!-- Clickable Synopsis to Expand -->
             <p class="manga-synopsis" onclick="toggleSynopsis(this)" title="Click to read full description">
                 ${factSheet.synopsis}
             </p>
