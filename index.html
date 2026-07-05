@@ -37,14 +37,7 @@
         <section id="results-area">
             <div class="results-header">
                 <h2>⭐ Mood Discoveries</h2>
-                <div style="display: flex; gap: 10px;">
-                    <!-- New Mood Quiz Button -->
-                    <button id="mood-quiz-btn" class="vibe-btn" onclick="openQuiz()" style="background: linear-gradient(135deg, #6e8efb, #a777e3); color: white; border: none; font-weight: 700;">
-                        🎭 Mood Quiz
-                    </button>
-                    <!-- Refresh Button -->
-                    <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh</button>
-                </div>
+                <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh</button>
             </div>
             <div class="grid" id="community-grid">
                 <!-- Dynamic Manga Cards Inject Here -->
@@ -52,23 +45,11 @@
         </section>
     </main>
 
-    <!-- Quiz Modal -->
-    <div id="quiz-modal" class="quiz-modal">
-        <div class="quiz-box glass">
-            <button class="close-quiz" onclick="closeQuiz()">×</button>
-            <div id="quiz-progress-bar"><div id="progress-fill"></div></div>
-            <div id="quiz-content">
-                <!-- Questions injected dynamically by js/quiz.js -->
-            </div>
-        </div>
-    </div>
-
     <footer>
-        <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
+        <p>Data powered by MangaDex and AniList.</p>
     </footer>
 
     <!-- Firebase and main app logic -->
-    <!-- CHANGED: Now points to your new modular entry file -->
     <script type="module" src="./js/main.js"></script>
 </body>
 </html>
