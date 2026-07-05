@@ -552,4 +552,18 @@ function renderMangaCard(factSheet) {
         </div>
     `;
     grid.appendChild(card);
+  
 }
+
+const quizBtn = document.getElementById("mood-quiz-btn");
+const quizModal = document.getElementById("quiz-modal");
+
+quizBtn.addEventListener("click", () => {
+    quizModal.style.display = "flex";
+});
+
+quizModal.addEventListener("click", (e) => {
+    if (e.target === quizModal) {
+        quizModal.style.display = "none";
+    }
+});
