@@ -4,7 +4,7 @@
     --card-bg: #151f2e;
     --accent: #3db4f2;
     --accent-hover: #1184be;
-    --text-main: #9fadbd; 
+    --text-main: #9fadbd;
     --text-title: #e5e9f4;
     --text-bright: #f8fafc;
     --score-green: #4cca51; 
@@ -63,32 +63,33 @@ header h1 { font-size: 2.5rem; color: var(--text-title); letter-spacing: -1px; }
 .results-header { display: flex; justify-content: space-between; align-items: center; margin: 40px 0 20px 0; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px 20px; }
 
-/* --- Manga Cards --- */
-.manga-cover-container { position: relative; width: 100%; padding-top: 110%; border-radius: 4px; overflow: hidden; background: var(--card-bg); }
+/* --- Manga Card Styles --- */
+.manga-cover-container { position: relative; width: 100%; padding-top: 110%; border-radius: 4px; overflow: hidden; background: var(--card-bg); cursor: pointer; transition: transform 0.2s; }
+.manga-cover-container:hover { transform: scale(1.03); }
 .manga-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+.manga-title { font-size: 0.95rem; color: var(--text-title); font-weight: 600; margin-top: 10px; }
 
-/* --- Mood Quiz Modal (New) --- */
+/* --- Mood Quiz Modal (Glassmorphism) --- */
 .quiz-modal {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
     display: none; justify-content: center; align-items: center; z-index: 10000;
 }
 .quiz-box { 
-    width: 90%; max-width: 500px; background: #1e293b; border: 1px solid #334155; 
-    padding: 30px; border-radius: 20px; color: white; position: relative; 
+    width: 90%; max-width: 450px; background: rgba(30, 41, 59, 0.95); 
+    border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; 
+    color: white; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 .close-quiz { position: absolute; top: 15px; right: 15px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
 
-#quiz-progress-bar { height: 6px; background: #334155; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
-#progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.4s ease; }
+#quiz-progress-bar { height: 6px; background: #334155; border-radius: 3px; margin-bottom: 25px; overflow: hidden; }
+#progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s ease; }
 
 .quiz-option { 
-    display: block; width: 100%; margin: 10px 0; padding: 15px; border-radius: 12px; 
-    background: #2d3748; border: 1px solid #4a5568; color: white; cursor: pointer; transition: 0.2s; 
+    display: block; width: 100%; margin: 12px 0; padding: 16px; border-radius: 12px; 
+    background: #2d3748; border: 1px solid #4a5568; color: white; cursor: pointer; 
+    text-align: left; font-size: 1rem; transition: 0.2s; 
 }
-.quiz-option:hover, .quiz-option.selected { border-color: var(--accent); background: #3d4b60; }
+.quiz-option:hover { border-color: var(--accent); background: #3d4b60; transform: translateY(-2px); }
 
-.quiz-nav { display: flex; justify-content: space-between; margin-top: 20px; }
-.nav-btn { background: #334155; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
-.nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
+/* --- Footer --- */
 footer { text-align: center; padding: 30px; color: var(--text-main); font-size: 0.9rem; margin-top: 40px; }
