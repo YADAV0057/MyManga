@@ -555,15 +555,47 @@ function renderMangaCard(factSheet) {
   
 }
 
-const quizBtn = document.getElementById("mood-quiz-btn");
-const quizModal = document.getElementById("quiz-modal");
+// --- Mood Quiz Engine ---
+const quizData = [
+    { q: "How are you feeling today?", o: [{t: "😊 Happy", s: {Comedy: 2, SliceOfLife: 2}}, {t: "😢 Sad", s: {Drama: 3, Psychological: 2}}, {t: "😌 Relaxed", s: {SliceOfLife: 3, Fantasy: 1}}, {t: "🔥 Excited", s: {Action: 3, Adventure: 2}}, {t: "🤔 Thoughtful", s: {Mystery: 3, Psychological: 2}}, {t: "😴 Tired", s: {SliceOfLife: 2, Fantasy: 1}}] },
+    { q: "What kind of story do you want?", o: [{t: "⚔️ Action", s: {Action: 3}}, {t: "💕 Romance", s: {Romance: 3}}, {t: "😂 Comedy", s: {Comedy: 3}}, {t: "👻 Horror", s: {Horror: 3}}, {t: "✨ Fantasy", s: {Fantasy: 3}}, {t: "🕵 Mystery", s: {Mystery: 3}}] },
+    { q: "How much time do you have?", o: [{t: "📖 Short", s: {SliceOfLife: 2}}, {t: "📚 Medium", s: {Adventure: 2}}, {t: "📚📚 Long", s: {Fantasy: 3, Action: 1}}, {t: "🎲 Doesn't matter", s: {}}] },
+    { q: "How intense should it be?", o: [{t: "🌿 Relaxing", s: {SliceOfLife: 3}}, {t: "⚡ Balanced", s: {Adventure: 2, Action: 1}}, {t: "🔥 Very Intense", s: {Psychological: 3, Thriller: 3}}] },
+    { q: "Pick your ending.", o: [{t: "😊 Happy", s: {Comedy: 2}}, {t: "😭 Emotional", s: {Drama: 3}}, {t: "🤯 Mind-blowing", s: {Psychological: 3}}, {t: "🎲 Surprise", s: {}}] }
+];
 
-quizBtn.addEventListener("click", () => {
-    quizModal.style.display = "flex";
-});
+let currentQ = 0; let userScores = {};
 
-quizModal.addEventListener("click", (e) => {
-    if (e.target === quizModal) {
-        quizModal.style.display = "none";
-    }
-});
+window.openQuiz = () => { document.getElementById('quiz-modal').style.display = 'flex'; renderQ(); };
+window.closeQuiz = () => { document.getElementById('quiz-modal').style.display = 'none'; };
+
+function renderQ() {
+    const data = quizData[currentQ];
+    const container = document.getElementById('quiz-content');
+    container.innerHTML = `<h3>${data.q}</h3>` + data.o.map(opt => `<button class="quiz-option" onclick="selectOpt(this, ${JSON.stringify(opt.s)})">${opt.t}</button>`).join('');
+    document.getElementById('progress-fill').style.width = `${(currentQ / quizData.length) * 100}%`;
+}
+
+window.selectOpt = (btn, score) => {
+    document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    userScores[currentQ] = score;
+};
+
+window.nextQuestion = () => {
+    if (currentQ < quizData.length - 1) { currentQ++; renderQ(); }
+    else { finalizeQuiz(); }
+};
+
+function finalizeQuiz() {
+    let finalScores = {};
+    Object.values(userScores).forEach(s => {
+        for(let key in s) finalScores[key] = (finalScores[key] || 0) + s[key];
+    });
+    const topGenres = Object.keys(finalScores).sort((a,b) => finalScores[b] - finalScores[a]).slice(0, 2).join(', ');
+    closeQuiz();
+    triggerSearch(topGenres, 1);
+}
+
+// Hook up the button in DOMContentLoaded
+document.getElementById('mood-quiz-btn').addEventListener('click', openQuiz);
