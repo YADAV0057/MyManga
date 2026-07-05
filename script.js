@@ -287,12 +287,23 @@ async function resolveReadLinks(title) {
     }
 
     // Search-routing fallbacks (no live validation, but always resolve to something)
-    validLinks.push({ name: "🔍 Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
-    validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
-    validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
+    // Original Links
+validLinks.push({ name: "🔍 Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
 
-    return validLinks;
-}
+// Popular Manga Reading Platforms
+validLinks.push({ name: "🔍 MangaDex", url: `https://mangadex.org/search?q=${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 ComicK", url: `https://comick.io/search?q=${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 Mangakakalot", url: `https://mangakakalot.com/search/story/${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 Webtoons", url: `https://www.webtoons.com/en/search?keyword=${encodedTitle}`, isValidated: false });
+
+// Manga Tracking & Database Platforms (Great for info, reviews, and alternative titles)
+validLinks.push({ name: "🔍 MyAnimeList", url: `https://myanimelist.net/manga.php?q=${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 AniList", url: `https://anilist.co/search/manga?search=${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 MangaUpdates", url: `https://www.mangaupdates.com/series.html?search=${encodedTitle}`, isValidated: false });
+validLinks.push({ name: "🔍 Anime-Planet", url: `https://www.anime-planet.com/manga/all?name=${encodedTitle}`, isValidated: false });
+  
 
 // ==========================================
 // 3b. TYPO-TOLERANCE (MangaDex title suggestions)
