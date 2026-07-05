@@ -4,9 +4,9 @@
 
 export const CONFIG = {
 
-    APP_NAME: "MangaMood", 
+    APP_NAME: "MangaMood",
 
-    VERSION: "2.0", 
+    VERSION: "2.0",
 
     SEARCH_LIMIT: 10,
 
@@ -23,6 +23,9 @@ export const CONFIG = {
 
     ANILIST_URL:
         "https://graphql.anilist.co",
+
+    JIKAN_URL:
+        "https://api.jikan.moe/v4",
 
     MANGADEX_API:
         "https://api.mangadex.org",
