@@ -8,7 +8,7 @@ export const CONFIG = {
 
     VERSION: "2.0",
 
-    SEARCH_LIMIT: 10,
+    SEARCH_LIMIT: 10, 
 
     CACHE_EXPIRY: 24 * 60 * 60 * 1000,
 
