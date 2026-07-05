@@ -1,26 +1,12 @@
-import { allMoods } from './moods.js';
+import { parseSmartQuery } from './parser.js';
 
-export function parseSmartQuery(rawQuery) {
-    let statusFilter = null;
-    let cleanQuery = rawQuery; 
-
-    const statusMatch = cleanQuery.match(/status:(completed|releasing|hiatus|cancelled)/i);
-    if (statusMatch) {
-        const s = statusMatch[1].toUpperCase();
-        if (s === 'COMPLETED') statusFilter = 'FINISHED';
-        else statusFilter = s;
-        cleanQuery = cleanQuery.replace(statusMatch[0], '').trim();
-    }
-
-    const isVibeOrTag = cleanQuery.includes(',') || allMoods.some(mood => mood.query === cleanQuery);
-    return { cleanQuery, statusFilter, isVibeOrTag };
-}
+export { parseSmartQuery };
 
 export async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     // FIX 1: Removed quotation marks around KR. It must be a raw Enum, not a string!
     const countryFilter = isKorean ? ', countryOfOrigin: KR' : '';
     let queryArgs = `$page: Int, $perPage: Int`;
-    
+
     // FIX 2: Removed 'sort: POPULARITY_DESC' from the base string to prevent duplicate sort errors
     let mediaArgs = `type: MANGA, isAdult: false${countryFilter}`;
     let variables = { page: page, perPage: limit };
@@ -69,7 +55,7 @@ export async function fetchFromAniListUnified(parsedData, page = 1, isKorean = f
         }
 
         const data = await response.json();
-        
+
         // FIX 3: Added a safety check to log any future silent GraphQL syntax errors directly to your console
         if (data.errors) {
             console.error("AniList GraphQL Error:", data.errors);
