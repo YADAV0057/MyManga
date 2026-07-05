@@ -27,7 +27,7 @@ const allMoods = [
     { label: "⏳ Intense", query: "Thriller, Psychological" },
     { label: "🌿 Peaceful", query: "Slice of Life" },
     { label: "🐶 Wholesome", query: "Comedy, Slice of Life" },
-    { label: "🥋 Sweaty", query: "Sports, Action" }, 
+    { label: "🥋 Sweaty", query: "Sports, Action" },
     { label: "📖 Philosophical", query: "Psychological, Drama" },
     { label: "🤪 Chaotic", query: "Comedy, Sci-Fi" },
     { label: "🦇 Gloomy", query: "Supernatural, Horror" },
@@ -54,12 +54,14 @@ const allMoods = [
     { label: "🦉 Sleepless", query: "Psychological, Thriller" }
 ];
 
+// Global State for the Refresh Button
 let currentIndex = 0;
 let rotationInterval;
-const seenMangaSession = new Set(); 
+let currentActiveQuery = "";
+let currentActivePage = 1;
 
 function createVibeButton(moodObj) {
-    return `<button class="vibe-btn" onclick="triggerSearch('${moodObj.query}')">${moodObj.label}</button>`;
+    return `<button class="vibe-btn" onclick="triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
 }
 
 function updateRotatingVibes() {
@@ -103,50 +105,77 @@ window.addEventListener('DOMContentLoaded', () => {
     populateAllVibes();
     updateRotatingVibes();
     rotationInterval = setInterval(updateRotatingVibes, 30000);
+    
+    // Attach Refresh Button Event
+    const refreshBtn = document.getElementById('refresh-btn');
+    if(refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            currentActivePage++; // Increment the page to get new results
+            triggerSearch(currentActiveQuery, currentActivePage);
+        });
+    }
 });
 
 // ==========================================
-// 2. UNLIMITED API AGGREGATOR STACK
+// 2. SMART PARSER & API STACK
 // ==========================================
 
-async function fetchTypoFallbackFromJikan(searchQuery) {
-    try {
-        const response = await fetch(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(searchQuery)}&limit=1`);
-        const data = await response.json();
-        return data.data && data.data.length > 0 ? data.data[0].title : null;
-    } catch (e) {
-        return null;
+// Parses search input for custom filters (e.g., "status:completed Action, Fantasy")
+function parseSmartQuery(rawQuery) {
+    let statusFilter = null;
+    let cleanQuery = rawQuery;
+
+    // Detect Status Filter
+    const statusMatch = cleanQuery.match(/status:(completed|releasing|hiatus|cancelled)/i);
+    if (statusMatch) {
+        const s = statusMatch[1].toUpperCase();
+        if (s === 'COMPLETED') statusFilter = 'FINISHED';
+        else statusFilter = s;
+        // Remove the filter text from the main query
+        cleanQuery = cleanQuery.replace(statusMatch[0], '').trim(); 
     }
+
+    // Determine if Tag/Genre Search or Title Search
+    // If it has commas (Action, Fantasy) or matches a vibe button, it's a Tag Search
+    const isVibeOrTag = cleanQuery.includes(',') || allMoods.some(mood => mood.query === cleanQuery);
+
+    return { cleanQuery, statusFilter, isVibeOrTag };
 }
 
-async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVibe = false) {
+// Unified GraphQL Query handling Titles, Tags, Status, and Pagination simultaneously
+async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
-    let query, variables;
+    
+    // Build query arguments dynamically based on what the user typed
+    let queryArgs = `$page: Int, $perPage: Int`;
+    let mediaArgs = `type: MANGA, sort: POPULARITY_DESC, isAdult: false${countryFilter}`;
+    let variables = { page: page, perPage: limit };
 
-    if (isVibe) {
-        const genres = searchQuery.split(',').map(g => g.trim());
-        query = `
-            query ($genres: [String]) {
-                Page(page: 1, perPage: ${limit}) {
-                    media(genre_in: $genres, type: MANGA, sort: POPULARITY_DESC, isAdult: false${countryFilter}) {
-                        id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
-                    }
-                }
-            }
-        `;
-        variables = { genres: genres };
-    } else {
-        query = `
-            query ($search: String) {
-                Page(page: 1, perPage: ${limit}) {
-                    media(search: $search, type: MANGA, sort: [SEARCH_MATCH, POPULARITY_DESC], isAdult: false${countryFilter}) {
-                        id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
-                    }
-                }
-            }
-        `;
-        variables = { search: searchQuery };
+    if (parsedData.isVibeOrTag) {
+        queryArgs += `, $genres: [String]`;
+        mediaArgs += `, genre_in: $genres`;
+        variables.genres = parsedData.cleanQuery.split(',').map(g => g.trim()).filter(g => g.length > 0);
+    } else if (parsedData.cleanQuery.length > 0) {
+        queryArgs += `, $search: String`;
+        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`; // Override sort for exact title matches
+        variables.search = parsedData.cleanQuery;
     }
+
+    if (parsedData.statusFilter) {
+        queryArgs += `, $status: MediaStatus`;
+        mediaArgs += `, status: $status`;
+        variables.status = parsedData.statusFilter;
+    }
+
+    const query = `
+        query (${queryArgs}) {
+            Page(page: $page, perPage: $perPage) {
+                media(${mediaArgs}) {
+                    id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
+                }
+            }
+        }
+    `;
 
     try {
         const response = await fetch('https://graphql.anilist.co', {
@@ -163,7 +192,7 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
 }
 
 // ==========================================
-// 3. UI INTERACTION LOGIC
+// 3. UI INTERACTION LOGIC & WATERFALL LINKS
 // ==========================================
 
 function formatStatus(status) {
@@ -183,71 +212,68 @@ window.toggleSynopsis = function(element) {
     element.classList.toggle('expanded');
 }
 
-async function triggerSearch(query) {
-    if (!query) return;
+function resolveReadLinks(title) {
+    const encodedTitle = encodeURIComponent(title);
+    let activeLinks = [
+        { name: "AsuraScans", url: `https://asuracomic.net/?s=${encodedTitle}` },
+        { name: "Toonily", url: `https://toonily.com/?s=${encodedTitle}&post_type=wp-manga` },
+        { name: "MangaTx", url: `https://mangatx.com/?s=${encodedTitle}&post_type=wp-manga` },
+        { name: "Mgeko", url: `https://www.mgeko.cc/search/?search=${encodedTitle}` }
+    ];
+    activeLinks.push({ 
+        name: "Deep Web Search", 
+        url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free+chapter+1` 
+    });
+    return activeLinks;
+}
+
+// Updated to accept Page Numbers for the Refresh Feature
+async function triggerSearch(rawQuery, page = 1) {
+    if (!rawQuery) return;
+
+    // Save global state so the Refresh Button knows what to refresh
+    currentActiveQuery = rawQuery;
+    currentActivePage = page;
 
     const grid = document.getElementById('community-grid');
     const loadingBar = document.getElementById('loading-bar');
+    const refreshBtn = document.getElementById('refresh-btn');
     
     loadingBar.classList.add('is-loading');
+    refreshBtn.style.display = 'none'; // Hide refresh while loading
     grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating metadata...</p>';
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const isVibe = allMoods.some(mood => mood.query === query);
+        const parsedQuery = parseSmartQuery(rawQuery);
         let finalResults = [];
 
-        if (isVibe) {
+        // Dual Fetching for Tags/Vibes to balance Korean/Global priorities
+        if (parsedQuery.isVibeOrTag) {
             const [koreanResults, globalResults] = await Promise.all([
-                fetchFromAniList(query, true, 25, true),
-                fetchFromAniList(query, false, 25, true)
+                fetchFromAniListUnified(parsedQuery, page, true, 5),
+                fetchFromAniListUnified(parsedQuery, page, false, 5)
             ]);
-            
-            let combinedPool = [...koreanResults, ...globalResults]
-                .filter(item => !seenMangaSession.has(item.id));
-            
-            combinedPool = Array.from(new Map(combinedPool.map(item => [item.id, item])).values());
-
-            if (combinedPool.length < 10) {
-                seenMangaSession.clear();
-                combinedPool = Array.from(new Map([...koreanResults, ...globalResults].map(item => [item.id, item])).values());
-            }
-
-            const top7 = combinedPool.slice(0, 7);
-            const remainingPool = combinedPool.slice(7);
-            
-            for (let i = remainingPool.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [remainingPool[i], remainingPool[j]] = [remainingPool[j], remainingPool[i]];
-            }
-            
-            const random3 = remainingPool.slice(0, 3);
-            finalResults = [...top7, ...random3];
-            
-            finalResults.forEach(item => seenMangaSession.add(item.id));
-
+            finalResults = [...koreanResults, ...globalResults];
+            finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
         } else {
-            finalResults = await fetchFromAniList(query, false, 10, false);
-            
-            if (!finalResults || finalResults.length === 0) {
-                const correctedTitle = await fetchTypoFallbackFromJikan(query);
-                if (correctedTitle) {
-                    finalResults = await fetchFromAniList(correctedTitle, false, 10, false);
-                }
-            }
+            // Standard Title Search
+            finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
         }
         
         if (!finalResults || finalResults.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search.</p>';
+            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
             loadingBar.classList.remove('is-loading');
             return;
         }
 
         grid.innerHTML = ''; 
+        refreshBtn.style.display = 'block'; // Show refresh button once loaded
 
         finalResults.forEach((aniManga) => {
             const title = aniManga.title.english || aniManga.title.romaji;
             const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
+            const generatedLinks = resolveReadLinks(title);
 
             const factSheet = {
                 id: aniManga.id,
@@ -257,7 +283,8 @@ async function triggerSearch(query) {
                 coverUrl: aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
                 synopsis: cleanSynopsis,
                 status: formatStatus(aniManga.status),
-                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A"
+                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A",
+                readLinks: generatedLinks
             };
 
             renderMangaCard(factSheet);
@@ -279,31 +306,25 @@ function renderMangaCard(factSheet) {
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
     
-    // Encoded title for standard queries
-    const encodedTitle = encodeURIComponent(factSheet.title);
-
-    // New specific link generators for the requested sites
-    const toonilyUrl = `https://toonily.com/?s=${encodedTitle}&post_type=wp-manga`;
-    const mangatxUrl = `https://mangatx.com/?s=${encodedTitle}&post_type=wp-manga`;
-    const asuraUrl = `https://asuracomic.net/?s=${encodedTitle}`;
-    const mgekoUrl = `https://www.mgeko.cc/search/?search=${encodedTitle}`;
-    const googleFallback = `https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free`;
+    let linksHtml = '';
+    factSheet.readLinks.forEach((link, index) => {
+        const isFallback = index === factSheet.readLinks.length - 1;
+        const styleModifier = isFallback ? 'style="background: var(--score-green);"' : '';
+        linksHtml += `
+            <a href="${link.url}" target="_blank" class="read-link-btn" ${styleModifier} onclick="event.stopPropagation()">
+               ${link.name}
+            </a>`;
+    });
 
     card.innerHTML = `
         <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
             <div class="score-badge">⭐ ${formattedScore}</div>
-            
             <div class="read-options" id="overlay-${factSheet.id}">
-                <span style="color: white; margin-bottom: 5px; font-weight: 600;">Read on:</span>
-                <a href="${asuraUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">AsuraScans</a>
-                <a href="${toonilyUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Toonily</a>
-                <a href="${mangatxUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">MangaTx</a>
-                <a href="${mgekoUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Mgeko</a>
-                <a href="${googleFallback}" target="_blank" class="read-link-btn" style="background: #4cca51;" onclick="event.stopPropagation()">Web Search</a>
+                <span style="color: white; margin-bottom: 5px; font-weight: 600;">Search Sources:</span>
+                ${linksHtml}
             </div>
         </div>
-        
         <div class="manga-info">
             <h3 class="manga-title" title="${factSheet.title}">${factSheet.title}</h3>
             <p class="manga-meta">${genresText}</p>
@@ -319,11 +340,12 @@ function renderMangaCard(factSheet) {
     grid.appendChild(card);
 }
 
-// Event Listeners
+// Event Listeners for Search
 const searchBtn = document.getElementById('search-submit-btn');
 if(searchBtn) {
     searchBtn.addEventListener('click', () => {
-        triggerSearch(document.getElementById('manga-search-input').value);
+        // Reset to page 1 on new manual search
+        triggerSearch(document.getElementById('manga-search-input').value, 1);
     });
 }
 
@@ -331,7 +353,8 @@ const searchInput = document.getElementById('manga-search-input');
 if(searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            triggerSearch(e.target.value);
+            // Reset to page 1 on new manual search
+            triggerSearch(e.target.value, 1);
         }
     });
 }
