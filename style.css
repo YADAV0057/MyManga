@@ -9,6 +9,36 @@
     --text-bright: #f8fafc;
     --score-green: #4cca51;
 }
+/* Add this to your existing style.css */
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0 20px 0;
+}
+
+.results-header h2 {
+    margin: 0; /* Reset margin since flexbox handles spacing now */
+}
+
+.refresh-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 15px;
+    font-size: 0.9rem;
+}
+
+.refresh-btn:hover {
+    background: var(--accent);
+    color: white;
+}
+
+/* Also add this text variable to the :root if it isn't there already */
+:root {
+    --text-muted: #647380;
+}
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
