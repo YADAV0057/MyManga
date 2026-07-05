@@ -6,7 +6,7 @@ export const CONFIG = {
 
     APP_NAME: "MangaMood", 
 
-    VERSION: "2.0",
+    VERSION: "2.0", 
 
     SEARCH_LIMIT: 10,
 
