@@ -44,10 +44,12 @@ window.renderQ = function() {
     const container = document.getElementById('quiz-content');
     if (!container) return;
 
+    // FIXED: Using single quotes for the HTML attribute prevents JSON double-quote conflicts!
     container.innerHTML = `<h3 style="margin-bottom:20px; color:var(--text-title);">${data.q}</h3>` + 
-        data.o.map(opt => 
-            `<button class="quiz-option" onclick="window.selectOpt(${JSON.stringify(opt.s).replace(/"/g, '&quot;')})">${opt.t}</button>`
-        ).join('');
+        data.o.map(opt => {
+            const scoreStr = JSON.stringify(opt.s);
+            return `<button class="quiz-option" onclick='window.selectOpt(${scoreStr})'>${opt.t}</button>`;
+        }).join('');
     
     const progress = document.getElementById('progress-fill');
     if (progress) progress.style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
@@ -82,6 +84,7 @@ window.finalizeQuiz = function() {
     // The comma ensures the smart parser treats this as a tag search
     if (typeof window.triggerSearch === 'function') {
         window.triggerSearch(topGenre + ",", 1); 
+    } else {
+        console.error("Critical Error: triggerSearch is not available on the window object!");
     }
 };
-
