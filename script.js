@@ -566,21 +566,27 @@ const quizData = [
     { q: "Pick your ending.", o: [{t: "😊 Happy", s: {Comedy: 2}}, {t: "😭 Emotional", s: {Drama: 3}}, {t: "🤯 Mind-blowing", s: {Psychological: 3}}, {t: "🎲 Surprise", s: {}}] }
 ];
 
-let currentQ = 0; 
+let currentQ = 0;
 let userScores = {};
 
-window.openQuiz = () => {
+// We attach these to 'window' so your HTML buttons can find them
+window.openQuiz = function() {
     currentQ = 0;
     userScores = {};
-    document.getElementById('quiz-modal').style.display = 'flex';
-    renderQ();
+    const modal = document.getElementById('quiz-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        renderQ();
+    }
 };
 
-window.closeQuiz = () => {
-    document.getElementById('quiz-modal').style.display = 'none';
+window.closeQuiz = function() {
+    const modal = document.getElementById('quiz-modal');
+    if (modal) modal.style.display = 'none';
 };
 
-window.nextQuestion = () => {
+window.selectOpt = function(score) {
+    userScores[currentQ] = score;
     if (currentQ < quizData.length - 1) {
         currentQ++;
         renderQ();
@@ -589,46 +595,34 @@ window.nextQuestion = () => {
     }
 };
 
-window.prevQuestion = () => {
-    if (currentQ > 0) {
-        currentQ--;
-        renderQ();
-    }
-};
-
 function renderQ() {
     const data = quizData[currentQ];
     const container = document.getElementById('quiz-content');
-    const prevBtn = document.getElementById('prev-btn');
-    prevBtn.disabled = (currentQ === 0);
-    
-    container.innerHTML = `<h3>${data.q}</h3>` + data.o.map(opt => 
-        `<button class="quiz-option" onclick="selectOpt(this, ${JSON.stringify(opt.s)})">${opt.t}</button>`
-    ).join('');
-    
-    document.getElementById('progress-fill').style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
-}
+    if (!container) return;
 
-window.selectOpt = (btn, score) => {
-    document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    userScores[currentQ] = score;
-};
+    container.innerHTML = `<h3 style="margin-bottom:20px; color:var(--text-title);">${data.q}</h3>` + 
+        data.o.map(opt => 
+            `<button class="quiz-option" onclick="selectOpt(${JSON.stringify(opt.s).replace(/"/g, '&quot;')})">${opt.t}</button>`
+        ).join('');
+    
+    const progress = document.getElementById('progress-fill');
+    if (progress) progress.style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
+}
 
 function finalizeQuiz() {
     let finalScores = {};
     Object.values(userScores).forEach(s => {
         for(let key in s) finalScores[key] = (finalScores[key] || 0) + s[key];
     });
+    
+    // Sort by highest score
     const sorted = Object.keys(finalScores).sort((a,b) => finalScores[b] - finalScores[a]);
     const topGenres = sorted.slice(0, 2).join(', ');
     
-    closeQuiz();
-    window.triggerSearch(topGenres || "Fantasy", 1);
+    window.closeQuiz();
+    // This calls your existing search function
+    if (typeof window.triggerSearch === 'function') {
+        window.triggerSearch(topGenres || "Fantasy", 1);
+    }
 }
 
-// Ensure the quiz button listener is attached
-document.addEventListener('DOMContentLoaded', () => {
-    const quizBtn = document.getElementById('mood-quiz-btn');
-    if (quizBtn) quizBtn.addEventListener('click', window.openQuiz);
-});
