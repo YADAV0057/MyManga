@@ -1,57 +1,58 @@
 // ==========================================
-// 1. MOOD ROTATION ENGINE (50 Moods)
+// 1. MOOD ROTATION ENGINE (Strict AniList Genres)
 // ==========================================
+// Note: AniList strictly requires these exact genres. 
 const allMoods = [
     { label: "😊 Happy", query: "Slice of Life, Comedy" },
-    { label: "😭 Sad", query: "Drama, Tragedy" },
-    { label: "🔥 Hype", query: "Action, Shounen" },
-    { label: "🍵 Chill", query: "Iyashikei, Slice of Life" },
-    { label: "👻 Spooky", query: "Horror, Psychological" },
-    { label: "💕 Romantic", query: "Romance, Shoujo" },
+    { label: "😭 Sad", query: "Drama, Psychological" },
+    { label: "🔥 Hype", query: "Action, Fantasy" },
+    { label: "🍵 Chill", query: "Slice of Life, Adventure" },
+    { label: "👻 Spooky", query: "Horror, Mystery" },
+    { label: "💕 Romantic", query: "Romance, Comedy" },
     { label: "🧠 Big Brain", query: "Mystery, Psychological" },
-    { label: "✨ Escapism", query: "Isekai, Fantasy" },
-    { label: "☕ Cozy", query: "Food, Slice of Life" },
-    { label: "📼 Nostalgic", query: "Classic, Retro" },
-    { label: "⚡ Adrenaline", query: "Sports, Thriller" },
-    { label: "😂 Laugh Out Loud", query: "Gag Comedy, Parody" },
-    { label: "🧸 Heartwarming", query: "Childcare, Family" },
-    { label: "🌀 Mind-Bending", query: "Sci-Fi, Thriller" },
-    { label: "⚔️ Epic", query: "High Fantasy, Adventure" },
-    { label: "🎀 Cute", query: "CGDCT" },
-    { label: "🖤 Edgy", query: "Dark Fantasy, Anti-hero" },
-    { label: "🌟 Inspiring", query: "Coming of Age, Music" },
-    { label: "🕵️ Mysterious", query: "Detective, Supernatural" },
-    { label: "🏚️ Lonely", query: "Post-Apocalyptic, Survival" },
-    { label: "🎸 Rebellious", query: "Delinquent, Action" },
-    { label: "🪄 Dreamy", query: "Magical Girl, Fantasy" },
-    { label: "⏳ Intense", query: "Survival Game, Death" },
-    { label: "🌿 Peaceful", query: "Historical, Nature" },
-    { label: "🐶 Wholesome", query: "Animal, Pets" },
-    { label: "🥋 Sweaty", query: "Martial Arts, Tournament" },
-    { label: "📖 Philosophical", query: "Seinen, Mature" },
-    { label: "🤪 Chaotic", query: "Absurdist Comedy, Sci-Fi" },
-    { label: "🦇 Gloomy", query: "Vampire, Gothic" },
-    { label: "🗡️ Revenge", query: "Villainess, Reincarnation" },
-    { label: "🔮 Magical", query: "Witch, Fantasy" },
-    { label: "💪 Overpowered", query: "OP Protagonist, Action" },
-    { label: "♟️ Strategic", query: "Board Game, Mecha" },
-    { label: "🌧️ Melancholic", query: "Music, Drama" },
-    { label: "🩹 Hopeful", query: "Medical, Slice of Life" },
-    { label: "🕴️ Fearless", query: "Yakuza, Mafia" },
-    { label: "🦾 Tech-Savvy", query: "Cyberpunk, Sci-Fi" },
-    { label: "🎒 Academic", query: "School Life, Club" },
-    { label: "🗺️ Wanderlust", query: "Travel, Adventure" },
-    { label: "🚬 Gritty", query: "Crime, Noir" },
-    { label: "⛩️ Mythological", query: "Yokai, Gods" },
-    { label: "📈 Ambitious", query: "Business, Career" },
-    { label: "💔 Heartbroken", query: "Romance Drama, Angst" },
-    { label: "🦸 Heroic", query: "Superhero, Action" },
-    { label: "👑 Royal", query: "Aristocracy, Historical" },
-    { label: "🃏 Mischievous", query: "Prankster, Comedy" },
-    { label: "🎖️ Tactical", query: "Military, War" },
-    { label: "🕯️ Paranormal", query: "Ghost, Exorcist" },
-    { label: "🍳 Gourmet", query: "Cooking, Baking" },
-    { label: "🦉 Sleepless", query: "Late Night, Thriller" }
+    { label: "✨ Escapism", query: "Fantasy, Adventure" },
+    { label: "☕ Cozy", query: "Slice of Life, Romance" },
+    { label: "📼 Nostalgic", query: "Mecha, Sci-Fi" },
+    { label: "⚡ Adrenaline", query: "Sports, Drama" },
+    { label: "😂 Laugh Out Loud", query: "Comedy, Action" },
+    { label: "🧸 Heartwarming", query: "Slice of Life, Fantasy" },
+    { label: "🌀 Mind-Bending", query: "Sci-Fi, Psychological" },
+    { label: "⚔️ Epic", query: "Action, Adventure" },
+    { label: "🎀 Cute", query: "Mahou Shoujo, Comedy" },
+    { label: "🖤 Edgy", query: "Action, Horror" },
+    { label: "🌟 Inspiring", query: "Music, Drama" },
+    { label: "🕵️ Mysterious", query: "Mystery, Supernatural" },
+    { label: "🏚️ Lonely", query: "Sci-Fi, Drama" },
+    { label: "🎸 Rebellious", query: "Action, Music" },
+    { label: "🪄 Dreamy", query: "Mahou Shoujo, Fantasy" },
+    { label: "⏳ Intense", query: "Thriller, Psychological" },
+    { label: "🌿 Peaceful", query: "Slice of Life" },
+    { label: "🐶 Wholesome", query: "Comedy, Slice of Life" },
+    { label: "🥋 Sweaty", query: "Sports, Action" },
+    { label: "📖 Philosophical", query: "Psychological, Drama" },
+    { label: "🤪 Chaotic", query: "Comedy, Sci-Fi" },
+    { label: "🦇 Gloomy", query: "Supernatural, Horror" },
+    { label: "🗡️ Revenge", query: "Drama, Fantasy" },
+    { label: "🔮 Magical", query: "Fantasy, Supernatural" },
+    { label: "💪 Overpowered", query: "Action, Sci-Fi" },
+    { label: "♟️ Strategic", query: "Mecha, Psychological" },
+    { label: "🌧️ Melancholic", query: "Music, Romance" },
+    { label: "🩹 Hopeful", query: "Drama, Slice of Life" },
+    { label: "🕴️ Fearless", query: "Action, Thriller" },
+    { label: "🦾 Tech-Savvy", query: "Sci-Fi, Mecha" },
+    { label: "🎒 Academic", query: "Comedy, Romance" },
+    { label: "🗺️ Wanderlust", query: "Adventure, Fantasy" },
+    { label: "🚬 Gritty", query: "Mystery, Thriller" },
+    { label: "⛩️ Mythological", query: "Supernatural, Adventure" },
+    { label: "📈 Ambitious", query: "Drama, Sports" },
+    { label: "💔 Heartbroken", query: "Romance, Drama" },
+    { label: "🦸 Heroic", query: "Action, Supernatural" },
+    { label: "👑 Royal", query: "Fantasy, Drama" },
+    { label: "🃏 Mischievous", query: "Comedy, Adventure" },
+    { label: "🎖️ Tactical", query: "Mecha, Action" },
+    { label: "🕯️ Paranormal", query: "Horror, Supernatural" },
+    { label: "🍳 Gourmet", query: "Slice of Life, Drama" },
+    { label: "🦉 Sleepless", query: "Psychological, Thriller" }
 ];
 
 let currentIndex = 0;
@@ -76,11 +77,8 @@ function updateRotatingVibes() {
 function populateAllVibes() {
     const hiddenContainer = document.getElementById('extra-tags');
     if (!hiddenContainer) return;
-
     let html = '';
-    allMoods.forEach(mood => {
-        html += createVibeButton(mood);
-    });
+    allMoods.forEach(mood => { html += createVibeButton(mood); });
     hiddenContainer.innerHTML = html;
 }
 
@@ -109,26 +107,51 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 2. UPGRADED API AGGREGATOR STACK
+// 2. THE SMART API AGGREGATOR STACK
 // ==========================================
 
-// Fetches an array of 10 results instead of 1
 async function fetchFromAniList(searchQuery) {
-    const query = `
-        query ($search: String) {
-            Page(page: 1, perPage: 10) {
-                media(search: $search, type: MANGA, sort: POPULARITY_DESC) {
-                    id
-                    title { romaji english }
-                    averageScore
-                    genres
-                    description(asHtml: false)
-                    coverImage { large }
+    // Detect if the user clicked a vibe button (matches our list) or typed a title manually
+    const isVibe = allMoods.some(mood => mood.query === searchQuery);
+    
+    let query, variables;
+
+    if (isVibe) {
+        // VIBE SEARCH: Filter by Genres
+        const genres = searchQuery.split(',').map(g => g.trim());
+        query = `
+            query ($genres: [String]) {
+                Page(page: 1, perPage: 10) {
+                    media(genre_in: $genres, type: MANGA, sort: POPULARITY_DESC) {
+                        id
+                        title { romaji english }
+                        averageScore
+                        genres
+                        description(asHtml: false)
+                        coverImage { large }
+                    }
                 }
             }
-        }
-    `;
-    const variables = { search: searchQuery };
+        `;
+        variables = { genres: genres };
+    } else {
+        // TITLE SEARCH: Search by text
+        query = `
+            query ($search: String) {
+                Page(page: 1, perPage: 10) {
+                    media(search: $search, type: MANGA, sort: POPULARITY_DESC) {
+                        id
+                        title { romaji english }
+                        averageScore
+                        genres
+                        description(asHtml: false)
+                        coverImage { large }
+                    }
+                }
+            }
+        `;
+        variables = { search: searchQuery };
+    }
 
     try {
         const response = await fetch('https://graphql.anilist.co', {
@@ -144,11 +167,10 @@ async function fetchFromAniList(searchQuery) {
     }
 }
 
-// Searches MangaDex by title to get the Read Link (Token removed to fix 401 error)
 async function fetchMangaDexData(title) {
     try {
         const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(title)}&includes[]=cover_art&limit=1`;
-        const response = await fetch(url); // No authorization header needed for public search
+        const response = await fetch(url);
         const data = await response.json();
         
         if (data.data && data.data.length > 0) {
@@ -159,12 +181,10 @@ async function fetchMangaDexData(title) {
             
             const coverUrl = coverFileName ? `https://uploads.mangadex.org/covers/${mangaId}/${coverFileName}` : null;
             const readLink = `https://mangadex.org/title/${mangaId}`;
-            
             return { coverUrl, readLink };
         }
         return null;
     } catch (error) {
-        console.error("MangaDex API Error:", error);
         return null;
     }
 }
@@ -172,6 +192,7 @@ async function fetchMangaDexData(title) {
 // ==========================================
 // 3. UI INTERACTION LOGIC
 // ==========================================
+
 async function triggerSearch(query) {
     if (!query) return;
 
@@ -180,24 +201,27 @@ async function triggerSearch(query) {
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
-        // Fetch up to 10 mangas based on the vibe/query
         const aniListResults = await fetchFromAniList(query);
         
         if (!aniListResults || aniListResults.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this vibe.</p>';
+            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search.</p>';
             return;
         }
 
+        // SPEED OPTIMIZATION: Fetch all 10 MangaDex links concurrently rather than waiting in a loop
+        const mdPromises = aniListResults.map(aniManga => {
+            const title = aniManga.title.english || aniManga.title.romaji;
+            return fetchMangaDexData(title);
+        });
+        const mdResults = await Promise.all(mdPromises);
+
         grid.innerHTML = ''; // Clear loading text
 
-        // Loop through all 10 results and render them
-        for (const aniManga of aniListResults) {
+        // Build the cards
+        aniListResults.forEach((aniManga, index) => {
             const title = aniManga.title.english || aniManga.title.romaji;
+            const mdData = mdResults[index];
             
-            // Try to find MangaDex link for this specific title
-            const mdData = await fetchMangaDexData(title);
-            
-            // Strip HTML tags from AniList's description for a clean synopsis
             const cleanSynopsis = aniManga.description 
                 ? aniManga.description.replace(/<[^>]*>?/gm, '') 
                 : "No synopsis available.";
@@ -206,15 +230,13 @@ async function triggerSearch(query) {
                 title: title,
                 globalScore: aniManga.averageScore || "N/A",
                 rawGenres: aniManga.genres || [],
-                // Fallback to AniList cover if MangaDex fails
                 coverUrl: mdData?.coverUrl || aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
-                // Fallback to AniList page if MangaDex link is missing (fixes the '#' loop bug)
                 officialLink: mdData?.readLink || `https://anilist.co/manga/${aniManga.id}`,
                 synopsis: cleanSynopsis
             };
 
             renderMangaCard(factSheet);
-        }
+        });
 
     } catch (error) {
         console.error("Aggregation Error:", error);
@@ -224,20 +246,14 @@ async function triggerSearch(query) {
 
 function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
-
     const card = document.createElement('a');
     card.className = 'manga-card';
     card.href = factSheet.officialLink;
     card.target = '_blank';
 
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
-    
-    let formattedScore = "N/A";
-    if (factSheet.globalScore !== "N/A") {
-        formattedScore = factSheet.globalScore + "%";
-    }
+    const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
 
-    // Added the synopsis field back in with text truncation logic
     card.innerHTML = `
         <div class="manga-cover-container">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
@@ -251,7 +267,6 @@ function renderMangaCard(factSheet) {
             </p>
         </div>
     `;
-
     grid.appendChild(card);
 }
 
@@ -259,8 +274,7 @@ function renderMangaCard(factSheet) {
 const searchBtn = document.getElementById('search-submit-btn');
 if(searchBtn) {
     searchBtn.addEventListener('click', () => {
-        const query = document.getElementById('manga-search-input').value;
-        triggerSearch(query);
+        triggerSearch(document.getElementById('manga-search-input').value);
     });
 }
 
