@@ -1,7 +1,7 @@
 // ==========================================
 // ANILIST API ENGINE (js/anilist.js)
 // ==========================================
-import { parseSmartQuery } from './parser.js';
+import { parseSmartQuery } from './parser.js'; 
  
 export { parseSmartQuery };
 
