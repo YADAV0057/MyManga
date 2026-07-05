@@ -1,6 +1,3 @@
-// ==========================================
-// ANILIST API STACK (js/anilist.js)
-// ==========================================
 import { allMoods } from './moods.js';
 
 export function parseSmartQuery(rawQuery) {
@@ -15,55 +12,30 @@ export function parseSmartQuery(rawQuery) {
         cleanQuery = cleanQuery.replace(statusMatch[0], '').trim();
     }
 
-    const validGenres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Psychological", "Romance", "Slice of Life", "Thriller", "Supernatural", "Sci-Fi", "Mecha", "Sports", "Music"];
-    const normalizedQuery = cleanQuery.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    
-    const isVibeOrTag = 
-        cleanQuery.includes(',') || 
-        allMoods.some(mood => mood.query.trim().toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedQuery) ||
-        validGenres.some(g => g.trim().toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedQuery);
-
+    const isVibeOrTag = cleanQuery.includes(',') || allMoods.some(mood => mood.query === cleanQuery);
     return { cleanQuery, statusFilter, isVibeOrTag };
 }
 
 export async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
-    
-    // We dynamically build the query so we never send empty variables that crash AniList
     let queryArgs = `$page: Int, $perPage: Int`;
-    let mediaArgs = `type: MANGA, isAdult: false${countryFilter}`;
+    let mediaArgs = `type: MANGA, sort: POPULARITY_DESC, isAdult: false${countryFilter}`;
     let variables = { page: page, perPage: limit };
+
+    if (parsedData.isVibeOrTag) {
+        queryArgs += `, $genres: [String]`;
+        mediaArgs += `, genre_in: $genres`;
+        variables.genres = parsedData.cleanQuery.split(',').map(g => g.trim()).filter(g => g.length > 0);
+    } else if (parsedData.cleanQuery.length > 0) {
+        queryArgs += `, $search: String`;
+        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`;
+        variables.search = parsedData.cleanQuery;
+    }
 
     if (parsedData.statusFilter) {
         queryArgs += `, $status: MediaStatus`;
         mediaArgs += `, status: $status`;
         variables.status = parsedData.statusFilter;
-    }
-
-    if (parsedData.isVibeOrTag) {
-        queryArgs += `, $genres: [String]`;
-        mediaArgs += `, genre_in: $genres, sort: [POPULARITY_DESC]`;
-        
-        // The master list of acceptable AniList genres
-        const validAniListGenres = ["Action", "Adventure", "Comedy", "Drama", "Ecchi", "Fantasy", "Horror", "Mahou Shoujo", "Mecha", "Music", "Mystery", "Psychological", "Romance", "Sci-Fi", "Slice of Life", "Sports", "Supernatural", "Thriller"];
-        
-        // This takes the query, strips formatting, and forces it to perfectly match the AniList master list
-        variables.genres = parsedData.cleanQuery.split(',')
-            .map(g => g.trim().toLowerCase().replace(/[^a-z]/g, ''))
-            .map(cleaned => validAniListGenres.find(vg => vg.toLowerCase().replace(/[^a-z]/g, '') === cleaned))
-            .filter(Boolean); // Removes any null/undefined results
-
-        // Absolute fallback: If the quiz sends complete garbage, default to Action so the app doesn't crash
-        if (variables.genres.length === 0) {
-            variables.genres = ["Action"];
-        }
-
-    } else if (parsedData.cleanQuery.trim().length > 0) {
-        queryArgs += `, $search: String`;
-        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`;
-        variables.search = parsedData.cleanQuery.trim();
-    } else {
-        mediaArgs += `, sort: [POPULARITY_DESC]`;
     }
 
     const query = `
@@ -83,17 +55,15 @@ export async function fetchFromAniListUnified(parsedData, page = 1, isKorean = f
             body: JSON.stringify({ query, variables })
         });
 
-        const data = await response.json();
-        
-        // If AniList rejects the query, log it so we can see why, rather than crashing
-        if (data.errors) {
-            console.error("AniList GraphQL Error:", data.errors);
+        if (!response.ok) {
+            console.error(`AniList API returned HTTP ${response.status}`);
             return [];
         }
 
-        return data.data && data.data.Page ? data.data.Page.media : [];
+        const data = await response.json();
+        return data.data ? data.data.Page.media : [];
     } catch (error) {
-        console.error("AniList Fetch Error:", error);
+        console.error("AniList API Error:", error);
         return [];
     }
 }
