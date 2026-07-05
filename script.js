@@ -35,7 +35,7 @@ const allMoods = [
     { label: "🔮 Magical", query: "Fantasy, Supernatural" },
     { label: "💪 Overpowered", query: "Action, Sci-Fi" },
     { label: "♟️ Strategic", query: "Mecha, Psychological" },
-    { label: "🌧️ Melancholic", query: "Music, Romance" }, 
+    { label: "🌧️ Melancholic", query: "Music, Romance" },
     { label: "🩹 Hopeful", query: "Drama, Slice of Life" },
     { label: "🕴️ Fearless", query: "Action, Thriller" },
     { label: "🦾 Tech-Savvy", query: "Sci-Fi, Mecha" },
@@ -56,7 +56,6 @@ const allMoods = [
 
 let currentIndex = 0;
 let rotationInterval;
-// Track seen manga during the current session to prevent mood overlap
 const seenMangaSession = new Set(); 
 
 function createVibeButton(moodObj) {
@@ -124,7 +123,6 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let query, variables;
 
-    // isAdult: false added to strictly remove hentai/explicit content
     if (isVibe) {
         const genres = searchQuery.split(',').map(g => g.trim());
         query = `
@@ -200,30 +198,24 @@ async function triggerSearch(query) {
         let finalResults = [];
 
         if (isVibe) {
-            // Fetch a larger pool (25 results each) so we can randomize and filter
             const [koreanResults, globalResults] = await Promise.all([
                 fetchFromAniList(query, true, 25, true),
                 fetchFromAniList(query, false, 25, true)
             ]);
             
-            // Combine and filter out manga we've already seen in this session
             let combinedPool = [...koreanResults, ...globalResults]
                 .filter(item => !seenMangaSession.has(item.id));
             
-            // Deduplicate the combined pool
             combinedPool = Array.from(new Map(combinedPool.map(item => [item.id, item])).values());
 
-            // If we ran out of unseen manga, reset the cache for this session
             if (combinedPool.length < 10) {
                 seenMangaSession.clear();
                 combinedPool = Array.from(new Map([...koreanResults, ...globalResults].map(item => [item.id, item])).values());
             }
 
-            // The 7/3 Split Logic: Keep top 7 absolute most famous, randomize the remaining 3 slots
             const top7 = combinedPool.slice(0, 7);
             const remainingPool = combinedPool.slice(7);
             
-            // Shuffle the remaining pool
             for (let i = remainingPool.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [remainingPool[i], remainingPool[j]] = [remainingPool[j], remainingPool[i]];
@@ -232,11 +224,9 @@ async function triggerSearch(query) {
             const random3 = remainingPool.slice(0, 3);
             finalResults = [...top7, ...random3];
             
-            // Log these as seen
             finalResults.forEach(item => seenMangaSession.add(item.id));
 
         } else {
-            // Title searches just fetch the exact 10 best matches
             finalResults = await fetchFromAniList(query, false, 10, false);
             
             if (!finalResults || finalResults.length === 0) {
@@ -289,10 +279,15 @@ function renderMangaCard(factSheet) {
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
     
+    // Encoded title for standard queries
     const encodedTitle = encodeURIComponent(factSheet.title);
-    
-    // Stripping special characters for Manganato's specific search routing
-    const cleanTitleForNato = factSheet.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '_');
+
+    // New specific link generators for the requested sites
+    const toonilyUrl = `https://toonily.com/?s=${encodedTitle}&post_type=wp-manga`;
+    const mangatxUrl = `https://mangatx.com/?s=${encodedTitle}&post_type=wp-manga`;
+    const asuraUrl = `https://asuracomic.net/?s=${encodedTitle}`;
+    const mgekoUrl = `https://www.mgeko.cc/search/?search=${encodedTitle}`;
+    const googleFallback = `https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free`;
 
     card.innerHTML = `
         <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
@@ -301,11 +296,11 @@ function renderMangaCard(factSheet) {
             
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Read on:</span>
-                <a href="https://comick.io/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Comick</a>
-                <a href="https://bato.to/search?word=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Bato.to</a>
-                <a href="https://mangadex.org/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">MangaDex</a>
-                <a href="https://manganato.com/search/story/${cleanTitleForNato}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Manganato</a>
-                <a href="https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free" target="_blank" class="read-link-btn" style="background: #4cca51;" onclick="event.stopPropagation()">Web Search</a>
+                <a href="${asuraUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">AsuraScans</a>
+                <a href="${toonilyUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Toonily</a>
+                <a href="${mangatxUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">MangaTx</a>
+                <a href="${mgekoUrl}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Mgeko</a>
+                <a href="${googleFallback}" target="_blank" class="read-link-btn" style="background: #4cca51;" onclick="event.stopPropagation()">Web Search</a>
             </div>
         </div>
         
