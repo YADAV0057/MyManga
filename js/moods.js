@@ -1,3 +1,4 @@
+
 // ==========================================
 // MOOD ROTATION ENGINE (js/moods.js)
 // ==========================================
@@ -73,6 +74,14 @@ export function updateRotatingVibes() {
     currentIndex = (currentIndex + 3) % allMoods.length;
 }
 
+// Owns the single rotation timer for the whole app, so nothing else needs
+// to create a competing setInterval for the same container.
+export function startVibeRotation(intervalMs) {
+    clearInterval(rotationInterval);
+    updateRotatingVibes();
+    rotationInterval = setInterval(updateRotatingVibes, intervalMs);
+}
+
 export function populateAllVibes() {
     const hiddenContainer = document.getElementById('extra-tags');
     if (!hiddenContainer) return;
@@ -82,7 +91,7 @@ export function populateAllVibes() {
 }
 
 // Attach these to the window so HTML buttons can trigger them
-window.toggleTags = function() {
+window.toggleTags = function () {
     const extra = document.getElementById('extra-tags');
     const btn = document.getElementById('more-btn');
     const rotatingContainer = document.getElementById('rotating-vibes');
@@ -91,7 +100,7 @@ window.toggleTags = function() {
         extra.style.display = "none";
         rotatingContainer.style.display = "flex";
         btn.innerText = "+ Show All 50 Moods";
-        rotationInterval = setInterval(updateRotatingVibes, 30000);
+        startVibeRotation(30000);
     } else {
         extra.style.display = "flex";
         rotatingContainer.style.display = "none";
@@ -100,12 +109,12 @@ window.toggleTags = function() {
     }
 };
 
-window.toggleOptions = function(id) {
+window.toggleOptions = function (id) {
     const overlay = document.getElementById(`overlay-${id}`);
     if (overlay) overlay.classList.toggle('active');
 };
 
-window.toggleSynopsis = function(el) {
+window.toggleSynopsis = function (el) {
     el.classList.toggle('expanded');
 };
 
