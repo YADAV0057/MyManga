@@ -17,7 +17,7 @@ export function formatStatus(status) {
 export function renderDidYouMean(originalQuery, suggestions) {
     const grid = document.getElementById('community-grid');
     if (!grid) return;
-    
+
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 20px;';
 
@@ -75,7 +75,7 @@ export function renderMangaCard(factSheet) {
             : (link.name === "🌐 Google Search" ? '#ef4444' : '#64748b');
 
         linksHtml += `
-            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn" 
+            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn"
                style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
                ${link.name}
             </a>`;
@@ -104,4 +104,3 @@ export function renderMangaCard(factSheet) {
     `;
     grid.appendChild(card);
 }
-
