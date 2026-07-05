@@ -14,9 +14,12 @@
     <header>
         <h1>MangaMood 📖</h1>
         <div class="search-container">
-            <!-- Native Input Bridge -->
-            <input type="text" id="manga-search-input" placeholder="Search for a title or vibe...">
+            <!-- Smart Input Bridge -->
+            <input type="text" id="manga-search-input" placeholder="Search titles, or tags (e.g. Action, Fantasy, status:completed)">
             <button id="search-submit-btn" class="vibe-btn" style="background: var(--accent); color: white; margin-top: 10px; width: 100%;">Discover</button>
+            <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 5px;">
+                💡 Try adding <b>status:completed</b> or <b>status:releasing</b> to filter results!
+            </p>
         </div>
     </header>
 
@@ -31,11 +34,13 @@
 
         <!-- Results Area -->
         <section id="results-area">
-            <div id="community-picks">
+            <div class="results-header">
                 <h2>⭐ Mood Discoveries</h2>
-                <div class="grid" id="community-grid">
-                    <!-- Dynamic Manga Cards Inject Here -->
-                </div>
+                <!-- New Refresh Button -->
+                <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh Results</button>
+            </div>
+            <div class="grid" id="community-grid">
+                <!-- Dynamic Manga Cards Inject Here -->
             </div>
         </section>
     </main>
