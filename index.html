@@ -6,8 +6,6 @@
     <title>MangaMood 📖 - Discovery Portal</title>
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Google Programmable Search Engine Script -->
-    <script async src="https://cse.google.com/cse.js?cx=22bfe619cd33a4c74"></script>
 </head>
 <body> 
 
@@ -15,40 +13,33 @@
     <header>
         <h1>MangaMood 📖</h1>
         <div class="search-container">
-            <!-- Google Search Box handled dynamically -->
-            <div class="gcse-searchbox-only"></div>
+            <!-- Native Input Bridge -->
+            <input type="text" id="manga-search-input" placeholder="Search for a title or vibe...">
+            <button id="search-submit-btn" class="vibe-btn" style="background: var(--accent); color: white; margin-top: 10px; width: 100%;">Discover</button>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="container">
         
-        <!-- Mood Selector Panel -->
-        <section class="vibe-panel">
-            <button class="vibe-btn" onclick="triggerSearch('sad manga family dynamics')">😭 I need a cry</button>
-            <button class="vibe-btn" onclick="triggerSearch('hype action manga')">🔥 Give me Hype</button>
-            <button class="vibe-btn" id="more-btn" onclick="toggleTags()">+ More</button>
+        <!-- Mood Selector Panel with Rotating UI -->
+        <section class="vibe-panel-container">
+            <!-- The Top 3 Rotating Buttons -->
+            <div id="rotating-vibes" class="vibe-panel"></div>
             
-            <div id="extra-tags" class="hidden-tags">
-                <button class="vibe-btn" onclick="triggerSearch('slice of life chill manga')">🍵 Just chill</button>
-                <button class="vibe-btn" onclick="triggerSearch('mystery thriller manga')">🕵️ Mystery</button>
-                <button class="vibe-btn" onclick="triggerSearch('sweet romance manga')">💕 Romance</button>
-            </div>
+            <button class="vibe-btn" id="more-btn" onclick="toggleTags()" style="margin-top: 15px; border: 1px solid var(--accent); background: transparent; color: var(--accent);">+ Show All 50 Moods</button>
+            
+            <!-- The remaining hidden buttons -->
+            <div id="extra-tags" class="hidden-tags" style="margin-top: 20px;"></div>
         </section>
 
         <!-- Results Area -->
         <section id="results-area">
             <div id="community-picks">
-                <h2>⭐ API Discovery Engine</h2>
+                <h2>⭐ Mood Discoveries</h2>
                 <div class="grid" id="community-grid">
-                    <!-- The API generated Manga Cards will inject here -->
+                    <!-- Dynamic Manga Cards Inject Here -->
                 </div>
-            </div>
-
-            <div id="search-results">
-                <h2>Web Refinement Search</h2>
-                <!-- Google Search Results injected here -->
-                <div class="gcse-searchresults-only"></div>
             </div>
         </section>
     </main>
