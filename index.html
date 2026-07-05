@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangaMood 📖 - Discovery Portal</title>
-    <!-- Link to external CSS -->
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 <body> 
+    <!-- Loading Bar Indicator -->
+    <div id="loading-bar"></div>
 
     <!-- Header Section -->
     <header>
@@ -21,15 +22,10 @@
 
     <!-- Main Content -->
     <main class="container">
-        
         <!-- Mood Selector Panel with Rotating UI -->
         <section class="vibe-panel-container">
-            <!-- The Top 3 Rotating Buttons -->
             <div id="rotating-vibes" class="vibe-panel"></div>
-            
             <button class="vibe-btn" id="more-btn" onclick="toggleTags()" style="margin-top: 15px; border: 1px solid var(--accent); background: transparent; color: var(--accent);">+ Show All 50 Moods</button>
-            
-            <!-- The remaining hidden buttons -->
             <div id="extra-tags" class="hidden-tags" style="margin-top: 20px;"></div>
         </section>
 
@@ -44,12 +40,10 @@
         </section>
     </main>
 
-    <!-- Mandatory Footer Credits -->
     <footer>
         <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
     </footer>
 
-    <!-- Link to external JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
