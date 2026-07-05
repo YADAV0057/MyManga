@@ -2,7 +2,7 @@ import { allMoods } from './moods.js';
 
 export function parseSmartQuery(rawQuery) {
     let statusFilter = null;
-    let cleanQuery = rawQuery;
+    let cleanQuery = rawQuery; 
 
     const statusMatch = cleanQuery.match(/status:(completed|releasing|hiatus|cancelled)/i);
     if (statusMatch) {
