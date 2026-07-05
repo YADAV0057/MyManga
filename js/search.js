@@ -1,7 +1,7 @@
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
-import { resolveReadLinks } from './mangadex.js';
-import { renderMangaCard, formatStatus } from './renderer.js';
+import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js';
+import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';
 
 let isSearching = false;  
 
@@ -66,7 +66,20 @@ export async function triggerSearch(rawQuery, page = 1) {
         }
 
         if (!finalResults || finalResults.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
+            // Try to recover with "Did you mean" suggestions from MangaDex before giving up.
+            let suggestions = [];
+            try {
+                suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery || rawQuery, 5);
+            } catch (e) {
+                console.warn("Did-you-mean suggestion lookup failed:", e);
+            }
+
+            grid.innerHTML = '';
+            if (suggestions.length > 0) {
+                renderDidYouMean(rawQuery, suggestions);
+            } else {
+                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
+            }
             return;
         }
 
