@@ -2,7 +2,7 @@
 // ANILIST API ENGINE (js/anilist.js)
 // ==========================================
 import { parseSmartQuery } from './parser.js';
-
+ 
 export { parseSmartQuery };
 
 export async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
