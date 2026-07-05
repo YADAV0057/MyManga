@@ -615,14 +615,34 @@ function finalizeQuiz() {
         for(let key in s) finalScores[key] = (finalScores[key] || 0) + s[key];
     });
     
-    // Sort by highest score
+    // Sort and get the top 1 genre (AniList performs much better with a single tag)
     const sorted = Object.keys(finalScores).sort((a,b) => finalScores[b] - finalScores[a]);
-    const topGenres = sorted.slice(0, 2).join(', ');
+    
+    // Map your keys to AniList official genre names
+    const genreMap = {
+        'SliceOfLife': 'Slice of Life',
+        'Psychological': 'Psychological',
+        'Action': 'Action',
+        'Adventure': 'Adventure',
+        'Comedy': 'Comedy',
+        'Drama': 'Drama',
+        'Fantasy': 'Fantasy',
+        'Horror': 'Horror',
+        'Mystery': 'Mystery',
+        'Romance': 'Romance',
+        'Thriller': 'Thriller'
+    };
+
+    // Use only the top genre to ensure we get results
+    const topGenre = genreMap[sorted[0]] || sorted[0] || "Fantasy";
+    
+    console.log("Quiz Resulting Genre Sent to API:", topGenre);
     
     window.closeQuiz();
-    // This calls your existing search function
+    
+    // Call your search engine with the single top genre
     if (typeof window.triggerSearch === 'function') {
-        window.triggerSearch(topGenres || "Fantasy", 1);
+        window.triggerSearch(topGenre, 1);
     }
 }
 
