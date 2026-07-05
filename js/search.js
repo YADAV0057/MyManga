@@ -1,6 +1,6 @@
 // ==========================================
 // SEARCH / AGGREGATION ENGINE (js/search.js)
-// ==========================================
+// ========================================== 
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
 import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js';
