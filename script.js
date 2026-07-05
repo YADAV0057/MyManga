@@ -56,6 +56,8 @@ const allMoods = [
 
 let currentIndex = 0;
 let rotationInterval;
+// Track seen manga during the current session to prevent mood overlap
+const seenMangaSession = new Set(); 
 
 function createVibeButton(moodObj) {
     return `<button class="vibe-btn" onclick="triggerSearch('${moodObj.query}')">${moodObj.label}</button>`;
@@ -108,7 +110,6 @@ window.addEventListener('DOMContentLoaded', () => {
 // 2. UNLIMITED API AGGREGATOR STACK
 // ==========================================
 
-// Typo Fallback: Uses Jikan (MyAnimeList) because its search algorithm naturally handles typos well
 async function fetchTypoFallbackFromJikan(searchQuery) {
     try {
         const response = await fetch(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(searchQuery)}&limit=1`);
@@ -123,12 +124,13 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let query, variables;
 
+    // isAdult: false added to strictly remove hentai/explicit content
     if (isVibe) {
         const genres = searchQuery.split(',').map(g => g.trim());
         query = `
             query ($genres: [String]) {
                 Page(page: 1, perPage: ${limit}) {
-                    media(genre_in: $genres, type: MANGA, sort: POPULARITY_DESC${countryFilter}) {
+                    media(genre_in: $genres, type: MANGA, sort: POPULARITY_DESC, isAdult: false${countryFilter}) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
                     }
                 }
@@ -136,11 +138,10 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
         `;
         variables = { genres: genres };
     } else {
-        // Optimized sorting parameters ensure exact match priorities
         query = `
             query ($search: String) {
                 Page(page: 1, perPage: ${limit}) {
-                    media(search: $search, type: MANGA, sort: [SEARCH_MATCH, POPULARITY_DESC]) {
+                    media(search: $search, type: MANGA, sort: [SEARCH_MATCH, POPULARITY_DESC], isAdult: false${countryFilter}) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
                     }
                 }
@@ -196,28 +197,57 @@ async function triggerSearch(query) {
 
     try {
         const isVibe = allMoods.some(mood => mood.query === query);
-        let uniqueResults = [];
+        let finalResults = [];
 
         if (isVibe) {
+            // Fetch a larger pool (25 results each) so we can randomize and filter
             const [koreanResults, globalResults] = await Promise.all([
-                fetchFromAniList(query, true, 5, true),
-                fetchFromAniList(query, false, 5, true)
+                fetchFromAniList(query, true, 25, true),
+                fetchFromAniList(query, false, 25, true)
             ]);
-            const combinedResults = [...koreanResults, ...globalResults];
-            uniqueResults = Array.from(new Map(combinedResults.map(item => [item.id, item])).values()).slice(0, 10);
-        } else {
-            uniqueResults = await fetchFromAniList(query, false, 10, false);
             
-            // If AniList returns nothing (likely due to a typo like "Solo Levelling"), use Jikan to autocorrect
-            if (!uniqueResults || uniqueResults.length === 0) {
+            // Combine and filter out manga we've already seen in this session
+            let combinedPool = [...koreanResults, ...globalResults]
+                .filter(item => !seenMangaSession.has(item.id));
+            
+            // Deduplicate the combined pool
+            combinedPool = Array.from(new Map(combinedPool.map(item => [item.id, item])).values());
+
+            // If we ran out of unseen manga, reset the cache for this session
+            if (combinedPool.length < 10) {
+                seenMangaSession.clear();
+                combinedPool = Array.from(new Map([...koreanResults, ...globalResults].map(item => [item.id, item])).values());
+            }
+
+            // The 7/3 Split Logic: Keep top 7 absolute most famous, randomize the remaining 3 slots
+            const top7 = combinedPool.slice(0, 7);
+            const remainingPool = combinedPool.slice(7);
+            
+            // Shuffle the remaining pool
+            for (let i = remainingPool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [remainingPool[i], remainingPool[j]] = [remainingPool[j], remainingPool[i]];
+            }
+            
+            const random3 = remainingPool.slice(0, 3);
+            finalResults = [...top7, ...random3];
+            
+            // Log these as seen
+            finalResults.forEach(item => seenMangaSession.add(item.id));
+
+        } else {
+            // Title searches just fetch the exact 10 best matches
+            finalResults = await fetchFromAniList(query, false, 10, false);
+            
+            if (!finalResults || finalResults.length === 0) {
                 const correctedTitle = await fetchTypoFallbackFromJikan(query);
                 if (correctedTitle) {
-                    uniqueResults = await fetchFromAniList(correctedTitle, false, 10, false);
+                    finalResults = await fetchFromAniList(correctedTitle, false, 10, false);
                 }
             }
         }
         
-        if (!uniqueResults || uniqueResults.length === 0) {
+        if (!finalResults || finalResults.length === 0) {
             grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search.</p>';
             loadingBar.classList.remove('is-loading');
             return;
@@ -225,7 +255,7 @@ async function triggerSearch(query) {
 
         grid.innerHTML = ''; 
 
-        uniqueResults.forEach((aniManga) => {
+        finalResults.forEach((aniManga) => {
             const title = aniManga.title.english || aniManga.title.romaji;
             const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
 
@@ -259,22 +289,23 @@ function renderMangaCard(factSheet) {
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
     
-    // Instant, unmetered multi-host string builders
     const encodedTitle = encodeURIComponent(factSheet.title);
-    const kakalotTitle = factSheet.title.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+    
+    // Stripping special characters for Manganato's specific search routing
+    const cleanTitleForNato = factSheet.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '_');
 
     card.innerHTML = `
         <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
             <div class="score-badge">⭐ ${formattedScore}</div>
             
-            <!-- Completely Infinite, Dynamic Read Options Menu -->
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Read on:</span>
                 <a href="https://comick.io/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Comick</a>
                 <a href="https://bato.to/search?word=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Bato.to</a>
                 <a href="https://mangadex.org/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">MangaDex</a>
-                <a href="https://mangakakalot.com/search/story/${kakalotTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Mangakakalot</a>
+                <a href="https://manganato.com/search/story/${cleanTitleForNato}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Manganato</a>
+                <a href="https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free" target="_blank" class="read-link-btn" style="background: #4cca51;" onclick="event.stopPropagation()">Web Search</a>
             </div>
         </div>
         
