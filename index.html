@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaMood 📖</title>
-    <!-- Link to your CSS file -->
+    <title>MangaMood 📖 - Discovery Portal</title>
+    <!-- Link to external CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Google Programmable Search Engine Script -->
     <script async src="https://cse.google.com/cse.js?cx=22bfe619cd33a4c74"></script>
@@ -15,7 +15,7 @@
     <header>
         <h1>MangaMood 📖</h1>
         <div class="search-container">
-            <!-- Google Search Box -->
+            <!-- Google Search Box handled dynamically -->
             <div class="gcse-searchbox-only"></div>
         </div>
     </header>
@@ -39,48 +39,26 @@
         <!-- Results Area -->
         <section id="results-area">
             <div id="community-picks">
-                <h2>⭐ Community Favorites</h2>
+                <h2>⭐ API Discovery Engine</h2>
                 <div class="grid" id="community-grid">
-                    <!-- Placeholder: Firebase picks will load here later -->
-                    <div class="card"><h3>Example Pick</h3><p>Community favorite will appear here.</p></div>
+                    <!-- The API generated Manga Cards will inject here -->
                 </div>
             </div>
 
             <div id="search-results">
-                <h2>Search Results</h2>
+                <h2>Web Refinement Search</h2>
                 <!-- Google Search Results injected here -->
                 <div class="gcse-searchresults-only"></div>
             </div>
         </section>
     </main>
 
-    <!-- Scripts -->
-    <script>
-        // Toggle More/Less buttons
-        function toggleTags() {
-            const extra = document.getElementById('extra-tags');
-            const btn = document.getElementById('more-btn');
-            if (extra.style.display === "flex") {
-                extra.style.display = "none";
-                btn.innerText = "+ More";
-            } else {
-                extra.style.display = "flex";
-                extra.style.gap = "12px";
-                btn.innerText = "- Less";
-            }
-        }
+    <!-- Mandatory Footer Credits -->
+    <footer>
+        <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
+    </footer>
 
-        // Logic to trigger the Google Search box programmatically
-        function triggerSearch(query) {
-            const searchInput = document.querySelector('input.gsc-input');
-            if (searchInput) {
-                searchInput.value = query;
-                const searchBtn = document.querySelector('button.gsc-search-button');
-                if (searchBtn) searchBtn.click();
-            }
-            // Scroll to results
-            document.getElementById('search-results').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+    <!-- Link to external JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
