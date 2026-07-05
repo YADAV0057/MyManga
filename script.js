@@ -108,15 +108,13 @@ window.addEventListener('DOMContentLoaded', () => {
 // 2. SMART DUAL-API AGGREGATOR STACK
 // ==========================================
 
-// Supports limit and country override for the Korean preference
-async function fetchFromAniList(searchQuery, isKorean = false, limit = 5) {
-    const isVibe = allMoods.some(mood => mood.query === searchQuery);
-    let query, variables;
-    
-    // Inject the Korean country of origin filter dynamically if requested
+// Added isVibe flag to change how the API searches
+async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVibe = false) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
+    let query, variables;
 
     if (isVibe) {
+        // VIBE SEARCH: Search by genre, sort by popularity
         const genres = searchQuery.split(',').map(g => g.trim());
         query = `
             query ($genres: [String]) {
@@ -129,10 +127,11 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 5) {
         `;
         variables = { genres: genres };
     } else {
+        // TITLE SEARCH: Search exact text, sort by best match (removes country barriers)
         query = `
             query ($search: String) {
                 Page(page: 1, perPage: ${limit}) {
-                    media(search: $search, type: MANGA, sort: POPULARITY_DESC${countryFilter}) {
+                    media(search: $search, type: MANGA, sort: SEARCH_MATCH) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
                     }
                 }
@@ -157,8 +156,8 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 5) {
 
 async function fetchMangaDexData(title) {
     try {
-        // Enforce English translation availability natively via API request
-        const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(title)}&includes[]=cover_art&availableTranslatedLanguage[]=en&limit=1`;
+        // Removed the strict English filter to ensure we still get cover art even for raw/untranslated works
+        const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(title)}&includes[]=cover_art&limit=1`;
         const response = await fetch(url);
         const data = await response.json();
         
@@ -169,8 +168,7 @@ async function fetchMangaDexData(title) {
             const coverFileName = coverArt?.attributes?.fileName;
             
             const coverUrl = coverFileName ? `https://uploads.mangadex.org/covers/${mangaId}/${coverFileName}` : null;
-            const readLink = `https://mangadex.org/title/${mangaId}`;
-            return { coverUrl, readLink };
+            return { coverUrl };
         }
         return null;
     } catch (error) {
@@ -182,7 +180,6 @@ async function fetchMangaDexData(title) {
 // 3. UI INTERACTION LOGIC
 // ==========================================
 
-// Helper to format AniList API status tags clearly
 function formatStatus(status) {
     if (status === "FINISHED") return "Completed";
     if (status === "RELEASING") return "Ongoing";
@@ -197,29 +194,34 @@ async function triggerSearch(query) {
     const grid = document.getElementById('community-grid');
     const loadingBar = document.getElementById('loading-bar');
     
-    // Trigger Loading State
     loadingBar.classList.add('is-loading');
-    grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating English metadata...</p>';
+    grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating metadata...</p>';
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
-        // Fetch 5 Korean productions and 5 Global productions concurrently to guarantee prioritization
-        const [koreanResults, globalResults] = await Promise.all([
-            fetchFromAniList(query, true, 5),   // Top 5 Korean
-            fetchFromAniList(query, false, 5)   // Next 5 Anything
-        ]);
-        
-        // Combine them (Korean goes first) and deduplicate using ID (in case Global grabbed a Korean one too)
-        const combinedResults = [...koreanResults, ...globalResults];
-        const uniqueResults = Array.from(new Map(combinedResults.map(item => [item.id, item])).values()).slice(0, 10);
+        // Detect if the query matches our predefined vibes
+        const isVibe = allMoods.some(mood => mood.query === query);
+        let uniqueResults = [];
+
+        if (isVibe) {
+            // Vibe Search: Combine 5 Korean and 5 Global
+            const [koreanResults, globalResults] = await Promise.all([
+                fetchFromAniList(query, true, 5, true),
+                fetchFromAniList(query, false, 5, true)
+            ]);
+            const combinedResults = [...koreanResults, ...globalResults];
+            uniqueResults = Array.from(new Map(combinedResults.map(item => [item.id, item])).values()).slice(0, 10);
+        } else {
+            // Title Search: Search for the exact phrase without country restrictions
+            uniqueResults = await fetchFromAniList(query, false, 10, false);
+        }
         
         if (!uniqueResults || uniqueResults.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official English API data found for this search.</p>';
+            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search.</p>';
             loadingBar.classList.remove('is-loading');
             return;
         }
 
-        // Fetch MangaDex metadata concurrently
         const mdPromises = uniqueResults.map(aniManga => {
             const title = aniManga.title.english || aniManga.title.romaji;
             return fetchMangaDexData(title);
@@ -228,7 +230,6 @@ async function triggerSearch(query) {
 
         grid.innerHTML = ''; 
 
-        // Generate Cards
         uniqueResults.forEach((aniManga, index) => {
             const title = aniManga.title.english || aniManga.title.romaji;
             const mdData = mdResults[index];
@@ -237,12 +238,15 @@ async function triggerSearch(query) {
                 ? aniManga.description.replace(/<[^>]*>?/gm, '') 
                 : "No synopsis available.";
 
+            // Dynamic Reading Link: Pointing to a high-volume reading aggregator
+            const readUrl = `https://comick.io/search?q=${encodeURIComponent(title)}`;
+
             const factSheet = {
                 title: title,
                 globalScore: aniManga.averageScore || "N/A",
                 rawGenres: aniManga.genres || [],
                 coverUrl: mdData?.coverUrl || aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
-                officialLink: mdData?.readLink || `https://anilist.co/manga/${aniManga.id}`,
+                officialLink: readUrl,
                 synopsis: cleanSynopsis,
                 status: formatStatus(aniManga.status),
                 chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A"
@@ -255,7 +259,6 @@ async function triggerSearch(query) {
         console.error("Aggregation Error:", error);
         grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred fetching API data.</p>';
     } finally {
-        // Kill Loading State
         loadingBar.classList.remove('is-loading');
     }
 }
@@ -270,7 +273,6 @@ function renderMangaCard(factSheet) {
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
 
-    // Rebuilt HTML structure containing the new `manga-facts` block
     card.innerHTML = `
         <div class="manga-cover-container">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
