@@ -58,7 +58,7 @@
             <button class="close-quiz" onclick="closeQuiz()">×</button>
             <div id="quiz-progress-bar"><div id="progress-fill"></div></div>
             <div id="quiz-content">
-                <!-- Questions injected dynamically by script.js -->
+                <!-- Questions injected dynamically by js/quiz.js -->
             </div>
         </div>
     </div>
@@ -68,6 +68,7 @@
     </footer>
 
     <!-- Firebase and main app logic -->
-    <script type="module" src="script.js"></script>
+    <!-- CHANGED: Now points to your new modular entry file -->
+    <script type="module" src="./js/main.js"></script>
 </body>
 </html>
