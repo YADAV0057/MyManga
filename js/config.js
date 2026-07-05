@@ -4,7 +4,7 @@
 
 export const CONFIG = {
 
-    APP_NAME: "MangaMood",
+    APP_NAME: "MangaMood", 
 
     VERSION: "2.0",
 
