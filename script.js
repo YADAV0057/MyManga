@@ -7,7 +7,7 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase
 
 const firebaseConfig = {
   apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
-  authDomain: "moodmanga-80a58.firebaseapp.com",
+  authDomain: "moodmanga-80a58.firebaseapp.com", 
   projectId: "moodmanga-80a58",
   storageBucket: "moodmanga-80a58.firebasestorage.app", 
   messagingSenderId: "970051387669",
