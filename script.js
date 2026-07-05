@@ -6,7 +6,7 @@ import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/fireb
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
+  apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM", 
   authDomain: "moodmanga-80a58.firebaseapp.com",
   projectId: "moodmanga-80a58",
   storageBucket: "moodmanga-80a58.firebasestorage.app", 
