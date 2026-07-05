@@ -304,7 +304,8 @@ validLinks.push({ name: "🔍 AniList", url: `https://anilist.co/search/manga?se
 validLinks.push({ name: "🔍 MangaUpdates", url: `https://www.mangaupdates.com/series.html?search=${encodedTitle}`, isValidated: false });
 validLinks.push({ name: "🔍 Anime-Planet", url: `https://www.anime-planet.com/manga/all?name=${encodedTitle}`, isValidated: false });
   
-
+return validLinks;
+}
 // ==========================================
 // 3b. TYPO-TOLERANCE (MangaDex title suggestions)
 // ==========================================
