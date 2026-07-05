@@ -6,7 +6,7 @@ import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';
 let isSearching = false;  
 
 export async function triggerSearch(rawQuery, page = 1) {
-    if (!rawQuery) return;
+    if (!rawQuery) return; 
     if (isSearching) return; 
     isSearching = true;
 
