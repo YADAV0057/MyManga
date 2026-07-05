@@ -8,7 +8,7 @@
 
 // Verified directly against https://api.jikan.moe/v4/genres/manga
 // Keys are pre-normalized (lowercase, spaces/hyphens stripped) to match how
-// fetchFromJikanFallback() normalizes incoming genre names below.
+// fetchFromJikanFallback() normalizes incoming genre names below. 
 const GENRE_ID_MAP = {
     action: 1,
     adventure: 2,
