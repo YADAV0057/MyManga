@@ -11,7 +11,7 @@ const firebaseConfig = {
     projectId: "moodmanga-80a58",
     storageBucket: "moodmanga-80a58.firebasestorage.app",
     messagingSenderId: "970051387669",
-    appId: "1:970051387669:web:f9789bb0b568eb803ca91c", 
+    appId: "1:970051387669:web:f9789bb0b568eb803ca91c",  
     measurementId: "G-JZSZ0TYYEL"
 };
 
