@@ -2,7 +2,7 @@
 // CORE SEARCH ENGINE (js/search.js)
 // ==========================================
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
-import { parseSmartQuery } from './parser.js'; // Assumes you made parser.js earlier
+import { parseSmartQuery } from './parser.js';
 import { fetchFromAniListUnified } from './anilist.js';
 import { suggestTitlesFromMangaDex, resolveReadLinks } from './mangadex.js';
 import { renderMangaCard, renderDidYouMean, renderFallbackBanner, formatStatus } from './renderer.js';
@@ -44,10 +44,10 @@ export async function triggerSearch(rawQuery, page = 1) {
         // 2. API FETCH IF NO CACHE
         if (finalResults.length === 0) {
             if (parsedQuery.isVibeOrTag) {
-                const [korean, global] = await Promise.all([
-                    fetchFromAniListUnified(parsedQuery, page, true, 5),
-                    fetchFromAniListUnified(parsedQuery, page, false, 5)
-                ]);
+                // FIXED: Sequential fetching prevents AniList burst-rate limiting
+                const korean = await fetchFromAniListUnified(parsedQuery, page, true, 5);
+                const global = await fetchFromAniListUnified(parsedQuery, page, false, 5);
+                
                 finalResults = [...new Map([...korean, ...global].map(i => [i.id, i])).values()];
             } else {
                 finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
@@ -107,12 +107,7 @@ export async function triggerSearch(rawQuery, page = 1) {
 
     } catch (err) {
         console.error("Search failed:", err);
-        if (err.message === "RATELIMIT") {
-            // NEW: Shows a warning if AniList temporarily blocks you for clicking too fast
-            if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444; font-weight: bold;">API Rate limit exceeded! You clicked a bit too fast. Please wait 1 minute before searching again.</p>';
-        } else {
-            if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
-        }
+        if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
     } finally {
         isSearching = false;
         if (loadingBar) loadingBar.classList.remove('is-loading');
