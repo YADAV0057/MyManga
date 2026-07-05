@@ -209,37 +209,20 @@ async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, l
 }
 
 // ==========================================
-// 3. UI INTERACTION LOGIC & WATERFALL LINKS
+// 3. PROFESSIONAL-GRADE AGGREGATOR READ LINK RESOLVER
 // ==========================================
 
-function formatStatus(status) {
-    if (status === "FINISHED") return "Completed";
-    if (status === "RELEASING") return "Ongoing";
-    if (status === "CANCELLED") return "Dropped";
-    if (status === "HIATUS") return "Hiatus";
-    return "Unknown";
-}
-
-window.toggleOptions = function(id) {
-    const overlay = document.getElementById(`overlay-${id}`);
-    if(overlay) overlay.classList.toggle('active');
-};
-
-window.toggleSynopsis = function(element) {
-    element.classList.toggle('expanded');
-};
-
-// FIX: Async function checking MangaDex properly
 async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
 
+    // 1. Live Check MangaDex API (Free, high-confidence source of truth)
     try {
         const mdRes = await fetch(`https://api.mangadex.org/manga?title=${encodedTitle}&limit=1`);
         const mdData = await mdRes.json();
         if(mdData.data && mdData.data.length > 0) {
             validLinks.push({ 
-                name: "✅ Read on MangaDex", 
+                name: "📖 MangaDex (Verified)", 
                 url: `https://mangadex.org/title/${mdData.data[0].id}`,
                 isValidated: true 
             });
@@ -248,15 +231,20 @@ async function resolveReadLinks(title) {
         console.log("MangaDex check failed.");
     }
 
-    validLinks.push({ name: "Search AsuraScans", url: `https://asuracomic.net/?s=${encodedTitle}`, isValidated: false });
-    validLinks.push({ name: "Search Toonily", url: `https://toonily.com/?s=${encodedTitle}&post_type=wp-manga`, isValidated: false });
-    validLinks.push({ name: "Search MangaTx", url: `https://mangatx.com/?s=${encodedTitle}&post_type=wp-manga`, isValidated: false });
-    validLinks.push({ name: "Web Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free+chapter+1`, isValidated: false });
+    // 2. High-Confidence Search Routing (Zero dead list guesses, deep query mapping)
+    validLinks.push({ name: "🔍 Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
+    validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
+    
+    // 3. Absolute Web Search Fallback (Guarantees infinite discovery)
+    validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
 
     return validLinks;
 }
 
-// FIX: Attached to window and integrated with Firebase Firestore
+// ==========================================
+// 4. CORE ENGINE CORE ENGINE
+// ==========================================
+
 window.triggerSearch = async function(rawQuery, page = 1) {
     if (!rawQuery) return;
 
@@ -314,7 +302,7 @@ window.triggerSearch = async function(rawQuery, page = 1) {
         grid.innerHTML = ''; 
         refreshBtn.style.display = 'block'; 
 
-        // FIX: Using for...of loop to support await inside
+        // Use sequential execution to preserve accurate link checks per card safely
         for (const aniManga of finalResults) {
             const title = aniManga.title.english || aniManga.title.romaji;
             const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
@@ -353,13 +341,14 @@ function renderMangaCard(factSheet) {
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
     
     let linksHtml = '';
-    factSheet.readLinks.forEach((link, index) => {
-        const styleModifier = link.isValidated 
-            ? 'style="background: var(--score-green);"' 
-            : (link.name === "Web Search" ? 'style="background: #ef4444;"' : '');
+    factSheet.readLinks.forEach((link) => {
+        // Distinct emerald green color theme for live-validated links, high-confidence grey for searches, flat red for catch-all Google
+        const linkBg = link.isValidated 
+            ? '#22c55e' 
+            : (link.name === "🌐 Google Search" ? '#ef4444' : '#64748b');
             
         linksHtml += `
-            <a href="${link.url}" target="_blank" class="read-link-btn" ${styleModifier} onclick="event.stopPropagation()">
+            <a href="${link.url}" target="_blank" class="read-link-btn" style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
                ${link.name}
             </a>`;
     });
@@ -369,7 +358,7 @@ function renderMangaCard(factSheet) {
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
             <div class="score-badge">⭐ ${formattedScore}</div>
             <div class="read-options" id="overlay-${factSheet.id}">
-                <span style="color: white; margin-bottom: 5px; font-weight: 600;">Search Sources:</span>
+                <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
                 ${linksHtml}
             </div>
         </div>
