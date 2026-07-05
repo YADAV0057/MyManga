@@ -31,7 +31,7 @@ const allMoods = [
     { label: "📖 Philosophical", query: "Psychological, Drama" },
     { label: "🤪 Chaotic", query: "Comedy, Sci-Fi" },
     { label: "🦇 Gloomy", query: "Supernatural, Horror" },
-    { label: "🗡️ Revenge", query: "Drama, Fantasy" },
+    { label: "🗡️ Revenge", query: "Drama, Fantasy" }, 
     { label: "🔮 Magical", query: "Fantasy, Supernatural" },
     { label: "💪 Overpowered", query: "Action, Sci-Fi" },
     { label: "♟️ Strategic", query: "Mecha, Psychological" },
