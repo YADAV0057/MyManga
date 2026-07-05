@@ -1,6 +1,6 @@
 // ==========================================
 // SMART PARSER (js/parser.js)
-// ==========================================
+// ========================================== 
 import { allMoods } from './moods.js';
 
 export function parseSmartQuery(rawQuery) {
