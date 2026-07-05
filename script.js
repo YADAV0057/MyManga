@@ -6,19 +6,31 @@ import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/fireb
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM", 
+  apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
   authDomain: "moodmanga-80a58.firebaseapp.com",
   projectId: "moodmanga-80a58",
-  storageBucket: "moodmanga-80a58.firebasestorage.app", 
+  storageBucket: "moodmanga-80a58.firebasestorage.app",
   messagingSenderId: "970051387669",
   appId: "1:970051387669:web:f9789bb0b568eb803ca91c",
   measurementId: "G-JZSZ0TYYEL"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig); 
-const db = getFirestore(app); 
-const analytics = getAnalytics(app);
+// Keep Firebase init isolated: a blocked Analytics call (ad blockers, privacy
+// extensions) should never be able to take the entire app down with it.
+let app, db, analytics;
+
+try {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+} catch (e) {
+    console.error("CRITICAL: Firebase core init failed. Caching will be disabled.", e);
+}
+
+try {
+    if (app) analytics = getAnalytics(app);
+} catch (e) {
+    console.warn("Analytics blocked or failed (likely an ad blocker) — continuing without it.", e);
+}
 
 function generateCacheKey(query, page) {
     const cleanQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '_');
@@ -93,7 +105,7 @@ function createVibeButton(moodObj) {
 function updateRotatingVibes() {
     const rotatingContainer = document.getElementById('rotating-vibes');
     if (!rotatingContainer) return;
-    rotatingContainer.innerHTML = ''; 
+    rotatingContainer.innerHTML = '';
     for (let i = 0; i < 3; i++) {
         const indexToGrab = (currentIndex + i) % allMoods.length;
         rotatingContainer.innerHTML += createVibeButton(allMoods[indexToGrab]);
@@ -109,7 +121,7 @@ function populateAllVibes() {
     hiddenContainer.innerHTML = html;
 }
 
-// FIX: Attached to window so HTML onClick works with Modules
+// Attached to window so inline HTML onclick="" attributes work with ES modules
 window.toggleTags = function() {
     const extra = document.getElementById('extra-tags');
     const btn = document.getElementById('more-btn');
@@ -119,7 +131,7 @@ window.toggleTags = function() {
         extra.style.display = "none";
         rotatingContainer.style.display = "flex";
         btn.innerText = "+ Show All 50 Moods";
-        rotationInterval = setInterval(updateRotatingVibes, 30000); 
+        rotationInterval = setInterval(updateRotatingVibes, 30000);
     } else {
         extra.style.display = "flex";
         rotatingContainer.style.display = "none";
@@ -128,16 +140,45 @@ window.toggleTags = function() {
     }
 };
 
+// FIX: These were called from renderMangaCard's inline HTML but never defined,
+// so clicking a cover or a synopsis silently did nothing.
+window.toggleOptions = function(id) {
+    const overlay = document.getElementById(`overlay-${id}`);
+    if (overlay) overlay.classList.toggle('active');
+};
+
+window.toggleSynopsis = function(el) {
+    el.classList.toggle('expanded');
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     populateAllVibes();
     updateRotatingVibes();
     rotationInterval = setInterval(updateRotatingVibes, 30000);
-    
+
     const refreshBtn = document.getElementById('refresh-btn');
-    if(refreshBtn) {
+    if (refreshBtn) {
         refreshBtn.addEventListener('click', () => {
             currentActivePage++;
             window.triggerSearch(currentActiveQuery, currentActivePage);
+        });
+    }
+
+    // Event Listeners for Search (moved inside DOMContentLoaded so they don't
+    // silently fail to attach if this script ever runs before the DOM is ready)
+    const searchBtn = document.getElementById('search-submit-btn');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            window.triggerSearch(document.getElementById('manga-search-input').value, 1);
+        });
+    }
+
+    const searchInput = document.getElementById('manga-search-input');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                window.triggerSearch(e.target.value, 1);
+            }
         });
     }
 });
@@ -155,7 +196,7 @@ function parseSmartQuery(rawQuery) {
         const s = statusMatch[1].toUpperCase();
         if (s === 'COMPLETED') statusFilter = 'FINISHED';
         else statusFilter = s;
-        cleanQuery = cleanQuery.replace(statusMatch[0], '').trim(); 
+        cleanQuery = cleanQuery.replace(statusMatch[0], '').trim();
     }
 
     const isVibeOrTag = cleanQuery.includes(',') || allMoods.some(mood => mood.query === cleanQuery);
@@ -174,7 +215,7 @@ async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, l
         variables.genres = parsedData.cleanQuery.split(',').map(g => g.trim()).filter(g => g.length > 0);
     } else if (parsedData.cleanQuery.length > 0) {
         queryArgs += `, $search: String`;
-        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`; 
+        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`;
         variables.search = parsedData.cleanQuery;
     }
 
@@ -200,6 +241,12 @@ async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, l
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ query, variables })
         });
+
+        if (!response.ok) {
+            console.error(`AniList API returned HTTP ${response.status}`);
+            return [];
+        }
+
         const data = await response.json();
         return data.data ? data.data.Page.media : [];
     } catch (error) {
@@ -209,44 +256,60 @@ async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, l
 }
 
 // ==========================================
-// 3. PROFESSIONAL-GRADE AGGREGATOR READ LINK RESOLVER
+// 3. READ LINK RESOLVER
 // ==========================================
 
 async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
 
-    // 1. Live Check MangaDex API (Free, high-confidence source of truth)
+    // Live-check MangaDex API (free, high-confidence source of truth)
     try {
         const mdRes = await fetch(`https://api.mangadex.org/manga?title=${encodedTitle}&limit=1`);
-        const mdData = await mdRes.json();
-        if(mdData.data && mdData.data.length > 0) {
-            validLinks.push({ 
-                name: "📖 MangaDex (Verified)", 
-                url: `https://mangadex.org/title/${mdData.data[0].id}`,
-                isValidated: true 
-            });
+        if (mdRes.ok) {
+            const mdData = await mdRes.json();
+            if (mdData.data && mdData.data.length > 0) {
+                validLinks.push({
+                    name: "📖 MangaDex (Verified)",
+                    url: `https://mangadex.org/title/${mdData.data[0].id}`,
+                    isValidated: true
+                });
+            }
         }
-    } catch(e) {
-        console.log("MangaDex check failed.");
+    } catch (e) {
+        console.log("MangaDex check failed for:", title, e);
     }
 
-    // 2. High-Confidence Search Routing (Zero dead list guesses, deep query mapping)
+    // Search-routing fallbacks (no live validation, but always resolve to something)
     validLinks.push({ name: "🔍 Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
     validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
-    
-    // 3. Absolute Web Search Fallback (Guarantees infinite discovery)
     validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
 
     return validLinks;
 }
 
 // ==========================================
-// 4. CORE ENGINE CORE ENGINE
+// 4. CORE ENGINE
 // ==========================================
+
+let isSearching = false; // Prevents overlapping searches from racing each other
+
+function formatStatus(status) {
+    if (!status) return "Unknown";
+    const map = {
+        FINISHED: "Completed",
+        RELEASING: "Releasing",
+        NOT_YET_RELEASED: "Upcoming",
+        CANCELLED: "Cancelled",
+        HIATUS: "Hiatus"
+    };
+    return map[status] || status;
+}
 
 window.triggerSearch = async function(rawQuery, page = 1) {
     if (!rawQuery) return;
+    if (isSearching) return; // Ignore rapid double-clicks / double Enter presses
+    isSearching = true;
 
     currentActiveQuery = rawQuery;
     currentActivePage = page;
@@ -254,7 +317,7 @@ window.triggerSearch = async function(rawQuery, page = 1) {
     const grid = document.getElementById('community-grid');
     const loadingBar = document.getElementById('loading-bar');
     const refreshBtn = document.getElementById('refresh-btn');
-    
+
     loadingBar.classList.add('is-loading');
     refreshBtn.style.display = 'none';
     grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Checking database...</p>';
@@ -265,15 +328,22 @@ window.triggerSearch = async function(rawQuery, page = 1) {
         const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
 
-        // FIREBASE LOGIC: Check Cache First
-        const docRef = doc(db, "searches", cacheKey);
-        const docSnap = await getDoc(docRef);
+        // FIREBASE LOGIC: Check cache first (skipped gracefully if db failed to init)
+        let docSnap = null;
+        if (db) {
+            try {
+                const docRef = doc(db, "searches", cacheKey);
+                docSnap = await getDoc(docRef);
+            } catch (e) {
+                console.warn("Firestore read failed, falling back to live API:", e);
+            }
+        }
 
-        if (docSnap.exists()) {
-            console.log("Loaded from Firebase Cache!");
+        if (docSnap && docSnap.exists()) {
+            console.log("Loaded from Firebase cache.");
             finalResults = docSnap.data().results;
         } else {
-            console.log("Not in Cache. Fetching from APIs...");
+            console.log("Not in cache (or cache unavailable). Fetching from APIs...");
             grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating fresh metadata...</p>';
 
             if (parsedQuery.isVibeOrTag) {
@@ -287,29 +357,30 @@ window.triggerSearch = async function(rawQuery, page = 1) {
                 finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
             }
 
-            // FIREBASE LOGIC: Save to Cache
-            if (finalResults && finalResults.length > 0) {
-                await setDoc(docRef, { results: finalResults });
+            // FIREBASE LOGIC: Save to cache (best-effort, non-blocking failure)
+            if (db && finalResults && finalResults.length > 0) {
+                try {
+                    const docRef = doc(db, "searches", cacheKey);
+                    await setDoc(docRef, { results: finalResults });
+                } catch (e) {
+                    console.warn("Firestore write failed (results still shown to user):", e);
+                }
             }
         }
-        
+
         if (!finalResults || finalResults.length === 0) {
             grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
-            loadingBar.classList.remove('is-loading');
             return;
         }
 
-        grid.innerHTML = ''; 
-        refreshBtn.style.display = 'block'; 
-
-        // Use sequential execution to preserve accurate link checks per card safely
-        for (const aniManga of finalResults) {
+        // Resolve read links for every result in parallel instead of one-by-one,
+        // so a slow/hanging MangaDex lookup for one title doesn't stall the rest.
+        const factSheets = await Promise.all(finalResults.map(async (aniManga) => {
             const title = aniManga.title.english || aniManga.title.romaji;
             const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
-            
             const generatedLinks = await resolveReadLinks(title);
 
-            const factSheet = {
+            return {
                 id: aniManga.id,
                 title: title,
                 globalScore: aniManga.averageScore || "N/A",
@@ -320,15 +391,18 @@ window.triggerSearch = async function(rawQuery, page = 1) {
                 chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A",
                 readLinks: generatedLinks
             };
+        }));
 
-            renderMangaCard(factSheet);
-        }
+        grid.innerHTML = '';
+        refreshBtn.style.display = 'block';
+        factSheets.forEach(renderMangaCard);
 
     } catch (error) {
         console.error("Aggregation Error:", error);
         grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
     } finally {
         loadingBar.classList.remove('is-loading');
+        isSearching = false;
     }
 };
 
@@ -339,16 +413,15 @@ function renderMangaCard(factSheet) {
 
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
-    
+
     let linksHtml = '';
     factSheet.readLinks.forEach((link) => {
-        // Distinct emerald green color theme for live-validated links, high-confidence grey for searches, flat red for catch-all Google
-        const linkBg = link.isValidated 
-            ? '#22c55e' 
+        const linkBg = link.isValidated
+            ? '#22c55e'
             : (link.name === "🌐 Google Search" ? '#ef4444' : '#64748b');
-            
+
         linksHtml += `
-            <a href="${link.url}" target="_blank" class="read-link-btn" style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
+            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn" style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
                ${link.name}
             </a>`;
     });
@@ -375,21 +448,4 @@ function renderMangaCard(factSheet) {
         </div>
     `;
     grid.appendChild(card);
-}
-
-// Event Listeners for Search
-const searchBtn = document.getElementById('search-submit-btn');
-if(searchBtn) {
-    searchBtn.addEventListener('click', () => {
-        window.triggerSearch(document.getElementById('manga-search-input').value, 1);
-    });
-}
-
-const searchInput = document.getElementById('manga-search-input');
-if(searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            window.triggerSearch(e.target.value, 1);
-        }
-    });
 }
