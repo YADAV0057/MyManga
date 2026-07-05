@@ -288,16 +288,9 @@ async function resolveReadLinks(title) {
 
     // Search-routing fallbacks (no live validation, but always resolve to something)
     // Original Links
-validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
 validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
 
-// Popular Manga Reading Platforms
-validLinks.push({ name: "🔍 MangaDex", url: `https://mangadex.org/search?q=${encodedTitle}`, isValidated: false });
-
-validLinks.push({ name: "🔍 Webtoons", url: `https://www.webtoons.com/en/search?keyword=${encodedTitle}`, isValidated: false });
-
-  
-return validLinks;
+  return validLinks;
 }
 // ==========================================
 // 3b. TYPO-TOLERANCE (MangaDex title suggestions)
