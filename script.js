@@ -13,7 +13,7 @@ const firebaseConfig = {
   messagingSenderId: "970051387669",
   appId: "1:970051387669:web:f9789bb0b568eb803ca91c",
   measurementId: "G-JZSZ0TYYEL"
-};
+}; 
 
 // Keep Firebase init isolated: a blocked Analytics call (ad blockers, privacy
 // extensions) should never be able to take the entire app down with it.
