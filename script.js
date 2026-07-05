@@ -31,7 +31,7 @@ const allMoods = [
     { label: "📖 Philosophical", query: "Psychological, Drama" },
     { label: "🤪 Chaotic", query: "Comedy, Sci-Fi" },
     { label: "🦇 Gloomy", query: "Supernatural, Horror" },
-    { label: "🗡️ Revenge", query: "Drama, Fantasy" }, 
+    { label: "🗡️ Revenge", query: "Drama, Fantasy" },
     { label: "🔮 Magical", query: "Fantasy, Supernatural" },
     { label: "💪 Overpowered", query: "Action, Sci-Fi" },
     { label: "♟️ Strategic", query: "Mecha, Psychological" },
@@ -108,31 +108,31 @@ window.addEventListener('DOMContentLoaded', () => {
 // 2. SMART DUAL-API AGGREGATOR STACK
 // ==========================================
 
-// Added isVibe flag to change how the API searches
 async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVibe = false) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let query, variables;
 
+    // Added externalLinks { site url } to dynamically fetch reading platforms
     if (isVibe) {
-        // VIBE SEARCH: Search by genre, sort by popularity
         const genres = searchQuery.split(',').map(g => g.trim());
         query = `
             query ($genres: [String]) {
                 Page(page: 1, perPage: ${limit}) {
                     media(genre_in: $genres, type: MANGA, sort: POPULARITY_DESC${countryFilter}) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
+                        externalLinks { site url }
                     }
                 }
             }
         `;
         variables = { genres: genres };
     } else {
-        // TITLE SEARCH: Search exact text, sort by best match (removes country barriers)
         query = `
             query ($search: String) {
                 Page(page: 1, perPage: ${limit}) {
-                    media(search: $search, type: MANGA, sort: SEARCH_MATCH) {
+                    media(search: $search, type: MANGA, sort: [SEARCH_MATCH, POPULARITY_DESC]) {
                         id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
+                        externalLinks { site url }
                     }
                 }
             }
@@ -156,7 +156,6 @@ async function fetchFromAniList(searchQuery, isKorean = false, limit = 10, isVib
 
 async function fetchMangaDexData(title) {
     try {
-        // Removed the strict English filter to ensure we still get cover art even for raw/untranslated works
         const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(title)}&includes[]=cover_art&limit=1`;
         const response = await fetch(url);
         const data = await response.json();
@@ -188,6 +187,17 @@ function formatStatus(status) {
     return "Unknown";
 }
 
+window.toggleOptions = function(id) {
+    const overlay = document.getElementById(`overlay-${id}`);
+    if(overlay) {
+        overlay.classList.toggle('active');
+    }
+}
+
+window.toggleSynopsis = function(element) {
+    element.classList.toggle('expanded');
+}
+
 async function triggerSearch(query) {
     if (!query) return;
 
@@ -199,12 +209,10 @@ async function triggerSearch(query) {
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
-        // Detect if the query matches our predefined vibes
         const isVibe = allMoods.some(mood => mood.query === query);
         let uniqueResults = [];
 
         if (isVibe) {
-            // Vibe Search: Combine 5 Korean and 5 Global
             const [koreanResults, globalResults] = await Promise.all([
                 fetchFromAniList(query, true, 5, true),
                 fetchFromAniList(query, false, 5, true)
@@ -212,7 +220,6 @@ async function triggerSearch(query) {
             const combinedResults = [...koreanResults, ...globalResults];
             uniqueResults = Array.from(new Map(combinedResults.map(item => [item.id, item])).values()).slice(0, 10);
         } else {
-            // Title Search: Search for the exact phrase without country restrictions
             uniqueResults = await fetchFromAniList(query, false, 10, false);
         }
         
@@ -238,18 +245,16 @@ async function triggerSearch(query) {
                 ? aniManga.description.replace(/<[^>]*>?/gm, '') 
                 : "No synopsis available.";
 
-            // Dynamic Reading Link: Pointing to a high-volume reading aggregator
-            const readUrl = `https://comick.io/search?q=${encodeURIComponent(title)}`;
-
             const factSheet = {
+                id: aniManga.id,
                 title: title,
                 globalScore: aniManga.averageScore || "N/A",
                 rawGenres: aniManga.genres || [],
                 coverUrl: mdData?.coverUrl || aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
-                officialLink: readUrl,
                 synopsis: cleanSynopsis,
                 status: formatStatus(aniManga.status),
-                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A"
+                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A",
+                externalLinks: aniManga.externalLinks || [] // Pass the links down to the card renderer
             };
 
             renderMangaCard(factSheet);
@@ -265,19 +270,42 @@ async function triggerSearch(query) {
 
 function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
-    const card = document.createElement('a');
+    const card = document.createElement('div');
     card.className = 'manga-card';
-    card.href = factSheet.officialLink;
-    card.target = '_blank';
 
     const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
+    const encodedTitle = encodeURIComponent(factSheet.title);
+
+    // Filter out social media/wiki links to prioritize actual reading platforms
+    const nonReadingSites = ['Twitter', 'Wikipedia', 'MyAnimeList', 'Anime-Planet', 'Official Site', 'Instagram'];
+    const validLinks = factSheet.externalLinks.filter(link => !nonReadingSites.includes(link.site));
+
+    // Dynamically build the HTML for the buttons
+    let linksHtml = '';
+    if (validLinks.length > 0) {
+        // Show up to 4 official reading platforms (e.g. Webtoon, Tapas, Viz)
+        validLinks.slice(0, 4).forEach(link => {
+            linksHtml += `<a href="${link.url}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">${link.site}</a>`;
+        });
+    } else {
+        // Smart Fallbacks if the API doesn't have official sources on file
+        linksHtml += `<a href="https://comick.io/search?q=${encodedTitle}" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Search Comick</a>`;
+        linksHtml += `<a href="https://www.google.com/search?q=Read+${encodedTitle}+manga+online" target="_blank" class="read-link-btn" onclick="event.stopPropagation()">Web Search</a>`;
+    }
 
     card.innerHTML = `
-        <div class="manga-cover-container">
+        <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
             <div class="score-badge">⭐ ${formattedScore}</div>
+            
+            <!-- Dynamic Read Options Menu -->
+            <div class="read-options" id="overlay-${factSheet.id}">
+                <span style="color: white; margin-bottom: 5px; font-weight: 600;">Read on:</span>
+                ${linksHtml}
+            </div>
         </div>
+        
         <div class="manga-info">
             <h3 class="manga-title" title="${factSheet.title}">${factSheet.title}</h3>
             <p class="manga-meta">${genresText}</p>
@@ -287,7 +315,8 @@ function renderMangaCard(factSheet) {
                 <span>📌 ${factSheet.status}</span>
             </div>
 
-            <p class="manga-synopsis" title="${factSheet.synopsis}">
+            <!-- Clickable Synopsis to Expand -->
+            <p class="manga-synopsis" onclick="toggleSynopsis(this)" title="Click to read full description">
                 ${factSheet.synopsis}
             </p>
         </div>
