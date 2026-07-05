@@ -109,30 +109,22 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 2. API AGGREGATOR STACK
+// 2. UPGRADED API AGGREGATOR STACK
 // ==========================================
-const MANGADEX_TOKEN = "SHgr5UbFSF6HbuRrw4upK3GJeBntQIe0";
 
-async function fetchFromJikan(searchQuery) {
-    try {
-        const response = await fetch(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(searchQuery)}&limit=1`);
-        const data = await response.json();
-        return data.data && data.data.length > 0 ? data.data[0] : null; 
-    } catch (error) {
-        console.error("Jikan API Error:", error);
-        return null;
-    }
-}
-
+// Fetches an array of 10 results instead of 1
 async function fetchFromAniList(searchQuery) {
     const query = `
         query ($search: String) {
-            Media (search: $search, type: MANGA) {
-                id
-                title { romaji english }
-                averageScore
-                popularity
-                genres
+            Page(page: 1, perPage: 10) {
+                media(search: $search, type: MANGA, sort: POPULARITY_DESC) {
+                    id
+                    title { romaji english }
+                    averageScore
+                    genres
+                    description(asHtml: false)
+                    coverImage { large }
+                }
             }
         }
     `;
@@ -145,23 +137,18 @@ async function fetchFromAniList(searchQuery) {
             body: JSON.stringify({ query, variables })
         });
         const data = await response.json();
-        return data.data ? data.data.Media : null;
+        return data.data ? data.data.Page.media : [];
     } catch (error) {
         console.error("AniList API Error:", error);
-        return null;
+        return [];
     }
 }
 
-async function fetchFromMangaDex(searchQuery) {
+// Searches MangaDex by title to get the Read Link (Token removed to fix 401 error)
+async function fetchMangaDexData(title) {
     try {
-        const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(searchQuery)}&includes[]=cover_art&limit=1`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${MANGADEX_TOKEN}`,
-                'Content-Type': 'application/json'
-            }
-        });
+        const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(title)}&includes[]=cover_art&limit=1`;
+        const response = await fetch(url); // No authorization header needed for public search
         const data = await response.json();
         
         if (data.data && data.data.length > 0) {
@@ -170,7 +157,7 @@ async function fetchFromMangaDex(searchQuery) {
             const coverArt = manga.relationships.find(rel => rel.type === 'cover_art');
             const coverFileName = coverArt?.attributes?.fileName;
             
-            const coverUrl = coverFileName ? `https://uploads.mangadex.org/covers/${mangaId}/${coverFileName}` : "";
+            const coverUrl = coverFileName ? `https://uploads.mangadex.org/covers/${mangaId}/${coverFileName}` : null;
             const readLink = `https://mangadex.org/title/${mangaId}`;
             
             return { coverUrl, readLink };
@@ -183,43 +170,52 @@ async function fetchFromMangaDex(searchQuery) {
 }
 
 // ==========================================
-// 3. DATA NORMALIZATION PIPELINE
-// ==========================================
-async function normalizeMangaData(searchQuery) {
-    const [jikanData, aniListData, mangadexData] = await Promise.all([
-        fetchFromJikan(searchQuery),
-        fetchFromAniList(searchQuery),
-        fetchFromMangaDex(searchQuery)
-    ]);
-
-    return {
-        title: jikanData?.title || aniListData?.title?.english || searchQuery,
-        globalScore: aniListData?.averageScore || "N/A",
-        rawGenres: aniListData?.genres || jikanData?.genres?.map(g => g.name) || [],
-        coverUrl: mangadexData?.coverUrl || "https://via.placeholder.com/220x300?text=No+Cover",
-        officialLink: mangadexData?.readLink || "#"
-    };
-}
-
-// ==========================================
-// 4. UI INTERACTION LOGIC
+// 3. UI INTERACTION LOGIC
 // ==========================================
 async function triggerSearch(query) {
     if (!query) return;
 
     const grid = document.getElementById('community-grid');
     grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Summoning official metadata...</p>';
-
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const factSheet = await normalizeMangaData(query);
+        // Fetch up to 10 mangas based on the vibe/query
+        const aniListResults = await fetchFromAniList(query);
         
-        if (factSheet && factSheet.title !== query) {
-            renderMangaCard(factSheet);
-        } else {
+        if (!aniListResults || aniListResults.length === 0) {
             grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this vibe.</p>';
+            return;
         }
+
+        grid.innerHTML = ''; // Clear loading text
+
+        // Loop through all 10 results and render them
+        for (const aniManga of aniListResults) {
+            const title = aniManga.title.english || aniManga.title.romaji;
+            
+            // Try to find MangaDex link for this specific title
+            const mdData = await fetchMangaDexData(title);
+            
+            // Strip HTML tags from AniList's description for a clean synopsis
+            const cleanSynopsis = aniManga.description 
+                ? aniManga.description.replace(/<[^>]*>?/gm, '') 
+                : "No synopsis available.";
+
+            const factSheet = {
+                title: title,
+                globalScore: aniManga.averageScore || "N/A",
+                rawGenres: aniManga.genres || [],
+                // Fallback to AniList cover if MangaDex fails
+                coverUrl: mdData?.coverUrl || aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
+                // Fallback to AniList page if MangaDex link is missing (fixes the '#' loop bug)
+                officialLink: mdData?.readLink || `https://anilist.co/manga/${aniManga.id}`,
+                synopsis: cleanSynopsis
+            };
+
+            renderMangaCard(factSheet);
+        }
+
     } catch (error) {
         console.error("Aggregation Error:", error);
         grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred fetching API data.</p>';
@@ -228,7 +224,6 @@ async function triggerSearch(query) {
 
 function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
-    grid.innerHTML = ''; 
 
     const card = document.createElement('a');
     card.className = 'manga-card';
@@ -242,6 +237,7 @@ function renderMangaCard(factSheet) {
         formattedScore = factSheet.globalScore + "%";
     }
 
+    // Added the synopsis field back in with text truncation logic
     card.innerHTML = `
         <div class="manga-cover-container">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
@@ -249,7 +245,10 @@ function renderMangaCard(factSheet) {
         </div>
         <div class="manga-info">
             <h3 class="manga-title" title="${factSheet.title}">${factSheet.title}</h3>
-            <p class="manga-meta">${genresText}</p>
+            <p class="manga-meta" style="margin-bottom: 6px;">${genresText}</p>
+            <p class="manga-synopsis" style="font-size: 0.8rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;">
+                ${factSheet.synopsis}
+            </p>
         </div>
     `;
 
