@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangaMood 📖 - Discovery Portal</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Loading Bar Indicator -->
@@ -14,7 +16,6 @@
     <header>
         <h1>MangaMood 📖</h1>
         <div class="search-container">
-            <!-- Smart Input Bridge -->
             <input type="text" id="manga-search-input" placeholder="Search titles, or tags (e.g. Action, Fantasy, status:completed)">
             <button id="search-submit-btn" class="vibe-btn" style="background: var(--accent); color: white; margin-top: 10px; width: 100%;">Discover</button>
             <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 5px;">
@@ -22,60 +23,54 @@
             </p>
         </div>
     </header>
+
     <!-- Main Content -->
     <main class="container">
-        <!-- Mood Selector Panel with Rotating UI -->
+        <!-- Mood Selector Panel -->
         <section class="vibe-panel-container">
             <div id="rotating-vibes" class="vibe-panel"></div>
             <button class="vibe-btn" id="more-btn" onclick="toggleTags()" style="margin-top: 15px; border: 1px solid var(--accent); background: transparent; color: var(--accent);">+ Show All 50 Moods</button>
             <div id="extra-tags" class="hidden-tags" style="margin-top: 20px;"></div>
         </section>
+
         <!-- Results Area -->
         <section id="results-area">
             <div class="results-header">
                 <h2>⭐ Mood Discoveries</h2>
-                <button id="mood-quiz-btn" class="search-btn">
-    🎭 Mood Quiz
-                </button>
-                <!-- New Refresh Button -->
-                <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh Results</button>
+                <div style="display: flex; gap: 10px;">
+                    <!-- New Mood Quiz Button -->
+                    <button id="mood-quiz-btn" class="vibe-btn" style="background: linear-gradient(135deg, #6e8efb, #a777e3); color: white; border: none;">
+                        🎭 Mood Quiz
+                    </button>
+                    <!-- Refresh Button -->
+                    <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh Results</button>
+                </div>
             </div>
             <div class="grid" id="community-grid">
                 <!-- Dynamic Manga Cards Inject Here -->
             </div>
         </section>
     </main>
-    <!-- Main Content Above -->
 
+    <!-- Quiz Modal -->
     <div id="quiz-modal" class="quiz-modal">
-
-    <div class="quiz-box">
-
-        <h2>Mood Quiz</h2>
-
-        <p id="quiz-question">
-            How are you feeling today?
-        </p>
-
-        <div id="quiz-options">
-
-            <button class="quiz-option" data-value="Happy">😊 Happy</button>
-
-            <button class="quiz-option" data-value="Sad">😢 Sad</button>
-
-            <button class="quiz-option" data-value="Excited">🔥 Excited</button>
-
-            <button class="quiz-option" data-value="Relaxed">😌 Relaxed</button>
-
+        <div class="quiz-box glass">
+            <button class="close-quiz" onclick="closeQuiz()">×</button>
+            <div id="quiz-progress-bar"><div id="progress-fill"></div></div>
+            <div id="quiz-content">
+                <!-- Questions injected by script.js -->
+            </div>
+            <div class="quiz-nav">
+                <button id="prev-btn" class="nav-btn" onclick="prevQuestion()" disabled>Previous</button>
+                <button id="next-btn" class="nav-btn" onclick="nextQuestion()">Next</button>
+            </div>
         </div>
-
     </div>
-
-</div>
 
     <footer>
         <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
     </footer>
+
     <!-- Firebase requires type="module" -->
     <script type="module" src="script.js"></script>
 </body>
