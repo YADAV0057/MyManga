@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangaMood 📖 - Discovery Portal</title>
     <link rel="stylesheet" href="style.css">
-</head> 
-<body> 
-    <!-- Loading Bar Indicator --> 
-    <div id="loading-bar"></div> 
- 
-    <!-- Header Section --> 
+</head>
+<body>
+    <!-- Loading Bar Indicator -->
+    <div id="loading-bar"></div>
+
+    <!-- Header Section -->
     <header>
         <h1>MangaMood 📖</h1>
         <div class="search-container">
@@ -22,7 +22,6 @@
             </p>
         </div>
     </header>
-
     <!-- Main Content -->
     <main class="container">
         <!-- Mood Selector Panel with Rotating UI -->
@@ -31,7 +30,6 @@
             <button class="vibe-btn" id="more-btn" onclick="toggleTags()" style="margin-top: 15px; border: 1px solid var(--accent); background: transparent; color: var(--accent);">+ Show All 50 Moods</button>
             <div id="extra-tags" class="hidden-tags" style="margin-top: 20px;"></div>
         </section>
-
         <!-- Results Area -->
         <section id="results-area">
             <div class="results-header">
@@ -44,13 +42,11 @@
             </div>
         </section>
     </main>
-
     <!-- Main Content Above -->
-    
+
     <footer>
         <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
     </footer>
-
     <!-- Firebase requires type="module" -->
     <script type="module" src="script.js"></script>
 </body>
