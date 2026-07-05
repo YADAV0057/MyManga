@@ -1,19 +1,16 @@
 /* --- Global Reset & AniList Variables --- */
 :root {
-    --bg-dark: #0b1622;         /* AniList Deep Blue Background */
-    --card-bg: #151f2e;         /* AniList Card Background */
-    --accent: #3db4f2;          /* AniList Primary Blue */
-    --accent-hover: #1184be;    /* Darker Blue for hover */
-    --text-main: #9fadbd;       /* Soft grey for secondary text */
-    --text-title: #e5e9f4;      /* Bright grey for titles */
-    --score-green: #4cca51;     /* AniList Score Green */
+    --bg-dark: #0b1622;
+    --card-bg: #151f2e;
+    --accent: #3db4f2;
+    --accent-hover: #1184be;
+    --text-main: #9fadbd;
+    --text-title: #e5e9f4;
+    --text-bright: #f8fafc; /* Added for readable synopsis */
+    --score-green: #4cca51;
 }
 
-* {  
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     background-color: var(--bg-dark);
@@ -25,6 +22,30 @@ body {
     flex-direction: column;
 }
 
+/* --- Loading Bar --- */
+#loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background-color: var(--accent);
+    width: 0%;
+    z-index: 9999;
+    display: none; /* Hidden by default */
+    box-shadow: 0 0 10px var(--accent);
+}
+
+@keyframes loadingProgress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+.is-loading {
+    display: block !important;
+    animation: loadingProgress 1.5s ease-out infinite;
+}
+
 /* --- Header Section --- */
 header {
     display: flex;
@@ -34,11 +55,7 @@ header {
     gap: 20px;
 }
 
-header h1 { 
-    font-size: 2.5rem; 
-    color: var(--text-title);
-    letter-spacing: -1px; 
-}
+header h1 { font-size: 2.5rem; color: var(--text-title); letter-spacing: -1px; }
 
 .search-container {
     width: 100%;
@@ -61,29 +78,12 @@ header h1 {
     transition: box-shadow 0.2s;
 }
 
-.search-container input:focus { 
-    box-shadow: 0 0 0 2px var(--accent); 
-}
+.search-container input:focus { box-shadow: 0 0 0 2px var(--accent); }
 
 /* --- Vibe Panel & Buttons --- */
-.vibe-panel-container {
-    text-align: center;
-    padding: 30px 0;
-}
-
-.vibe-panel {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-}
-
-.hidden-tags { 
-    display: none; 
-    gap: 12px; 
-    flex-wrap: wrap; 
-    justify-content: center;
-}
+.vibe-panel-container { text-align: center; padding: 30px 0; }
+.vibe-panel { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.hidden-tags { display: none; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
 .vibe-btn {
     padding: 10px 20px;
@@ -104,24 +104,13 @@ header h1 {
 }
 
 /* --- Results Section --- */
-#results-area {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    flex: 1;
-}
-
-h2 { 
-    margin: 40px 0 20px 0; 
-    font-size: 1.3rem; 
-    color: var(--text-title); 
-    font-weight: 700;
-}
+#results-area { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
+h2 { margin: 40px 0 20px 0; font-size: 1.3rem; color: var(--text-title); font-weight: 700; }
 
 /* --- The AniList Grid --- */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 25px 20px;
 }
 
@@ -137,7 +126,8 @@ h2 {
 .manga-cover-container {
     position: relative;
     width: 100%;
-    padding-top: 140%; /* Force aspect ratio */
+    /* Reduced image height to make space for more metadata below */
+    padding-top: 110%; 
     border-radius: 4px;
     overflow: hidden;
     background: var(--card-bg);
@@ -190,24 +180,44 @@ h2 {
     overflow: hidden;
 }
 
-.manga-card:hover .manga-title {
-    color: var(--accent);
-}
+.manga-card:hover .manga-title { color: var(--accent); }
 
 .manga-meta {
     font-size: 0.8rem;
     color: var(--text-main);
     margin-top: 4px;
+    margin-bottom: 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* --- Footer --- */
-footer {
-    text-align: center;
-    padding: 30px;
-    color: var(--text-main);
-    font-size: 0.9rem;
-    margin-top: 40px;
+/* Extra Facts Container */
+.manga-facts {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: 4px 8px;
+    border-radius: 4px;
 }
+
+/* Updated Synopsis for readability */
+.manga-synopsis {
+    font-size: 0.8rem;
+    color: var(--text-bright); /* Brighter, high-contrast text */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+    background: rgba(21, 31, 46, 0.5);
+    padding: 4px;
+    border-radius: 4px;
+}
+
+/* --- Footer --- */
+footer { text-align: center; padding: 30px; color: var(--text-main); font-size: 0.9rem; margin-top: 40px; }
