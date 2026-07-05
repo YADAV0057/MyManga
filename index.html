@@ -34,6 +34,9 @@
         <section id="results-area">
             <div class="results-header">
                 <h2>⭐ Mood Discoveries</h2>
+                <button id="mood-quiz-btn" class="search-btn">
+    🎭 Mood Quiz
+                </button>
                 <!-- New Refresh Button -->
                 <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh Results</button>
             </div>
@@ -43,6 +46,32 @@
         </section>
     </main>
     <!-- Main Content Above -->
+
+    <div id="quiz-modal" class="quiz-modal">
+
+    <div class="quiz-box">
+
+        <h2>Mood Quiz</h2>
+
+        <p id="quiz-question">
+            How are you feeling today?
+        </p>
+
+        <div id="quiz-options">
+
+            <button class="quiz-option" data-value="Happy">😊 Happy</button>
+
+            <button class="quiz-option" data-value="Sad">😢 Sad</button>
+
+            <button class="quiz-option" data-value="Excited">🔥 Excited</button>
+
+            <button class="quiz-option" data-value="Relaxed">😌 Relaxed</button>
+
+        </div>
+
+    </div>
+
+</div>
 
     <footer>
         <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
