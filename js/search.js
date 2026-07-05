@@ -2,7 +2,7 @@
 // CORE SEARCH ENGINE (js/search.js)
 // ==========================================
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
-import { parseSmartQuery } from './parser.js';
+import { parseSmartQuery } from './parser.js'; // Assumes you made parser.js earlier
 import { fetchFromAniListUnified } from './anilist.js';
 import { suggestTitlesFromMangaDex, resolveReadLinks } from './mangadex.js';
 import { renderMangaCard, renderDidYouMean, renderFallbackBanner, formatStatus } from './renderer.js';
@@ -75,7 +75,6 @@ export async function triggerSearch(rawQuery, page = 1) {
         grid.innerHTML = '';
         
         if (finalResults.length > 0) {
-            // Resolve read links for every result in parallel
             const factSheets = await Promise.all(finalResults.map(async (aniManga) => {
                 const title = aniManga.title.english || aniManga.title.romaji;
                 const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
@@ -108,10 +107,14 @@ export async function triggerSearch(rawQuery, page = 1) {
 
     } catch (err) {
         console.error("Search failed:", err);
-        if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
+        if (err.message === "RATELIMIT") {
+            // NEW: Shows a warning if AniList temporarily blocks you for clicking too fast
+            if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444; font-weight: bold;">API Rate limit exceeded! You clicked a bit too fast. Please wait 1 minute before searching again.</p>';
+        } else {
+            if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
+        }
     } finally {
         isSearching = false;
         if (loadingBar) loadingBar.classList.remove('is-loading');
     }
 }
-
