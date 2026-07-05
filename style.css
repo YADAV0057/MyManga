@@ -159,4 +159,33 @@ h2 { margin: 40px 0 20px 0; font-size: 1.3rem; color: var(--text-title); font-we
 .manga-synopsis:hover { background: rgba(21, 31, 46, 0.8); }
 .manga-synopsis.expanded { -webkit-line-clamp: unset; }
 
+.quiz-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.quiz-box{
+    width:90%;
+    max-width:420px;
+    background:#1e293b;
+    border-radius:16px;
+    padding:24px;
+    text-align:center;
+}
+
+.quiz-option{
+    width:100%;
+    margin:8px 0;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+}
+
 footer { text-align: center; padding: 30px; color: var(--text-main); font-size: 0.9rem; margin-top: 40px; }
