@@ -27,7 +27,7 @@ const allMoods = [
     { label: "⏳ Intense", query: "Thriller, Psychological" },
     { label: "🌿 Peaceful", query: "Slice of Life" },
     { label: "🐶 Wholesome", query: "Comedy, Slice of Life" },
-    { label: "🥋 Sweaty", query: "Sports, Action" },
+    { label: "🥋 Sweaty", query: "Sports, Action" }, 
     { label: "📖 Philosophical", query: "Psychological, Drama" },
     { label: "🤪 Chaotic", query: "Comedy, Sci-Fi" },
     { label: "🦇 Gloomy", query: "Supernatural, Horror" },
