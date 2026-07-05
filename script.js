@@ -206,17 +206,20 @@ function parseSmartQuery(rawQuery) {
 async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let queryArgs = `$page: Int, $perPage: Int`;
-    let mediaArgs = `type: MANGA, sort: POPULARITY_DESC, isAdult: false${countryFilter}`;
+    // 'sort' is added exactly once below, based on which branch runs.
+    let mediaArgs = `type: MANGA, isAdult: false${countryFilter}`;
     let variables = { page: page, perPage: limit };
 
     if (parsedData.isVibeOrTag) {
         queryArgs += `, $genres: [String]`;
-        mediaArgs += `, genre_in: $genres`;
+        mediaArgs += `, genre_in: $genres, sort: POPULARITY_DESC`;
         variables.genres = parsedData.cleanQuery.split(',').map(g => g.trim()).filter(g => g.length > 0);
     } else if (parsedData.cleanQuery.length > 0) {
         queryArgs += `, $search: String`;
         mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`;
         variables.search = parsedData.cleanQuery;
+    } else {
+        mediaArgs += `, sort: POPULARITY_DESC`;
     }
 
     if (parsedData.statusFilter) {
