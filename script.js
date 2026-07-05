@@ -1,3 +1,35 @@
+
+
+// ==========================================
+// 0. FIREBASE INITIALIZATION & CACHE SETUP
+// ==========================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
+  authDomain: "moodmanga-80a58.firebaseapp.com",
+  projectId: "moodmanga-80a58",
+  storageBucket: "moodmanga-80a58.firebasestorage.app",
+  messagingSenderId: "970051387669",
+  appId: "1:970051387669:web:f9789bb0b568eb803ca91c",
+  measurementId: "G-JZSZ0TYYEL"
+};
+
+// Initialize Firebase App, Database, and Analytics
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const analytics = getAnalytics(app);
+
+// Helper function to generate a clean, database-safe ID for the search
+function generateCacheKey(query, page) {
+    const cleanQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    return `search_${cleanQuery}_page_${page}`;
+}
+
+
+
 // ==========================================
 // 1. MOOD ROTATION ENGINE
 // ==========================================
