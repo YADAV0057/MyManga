@@ -35,7 +35,7 @@ const allMoods = [
     { label: "🔮 Magical", query: "Fantasy, Supernatural" },
     { label: "💪 Overpowered", query: "Action, Sci-Fi" },
     { label: "♟️ Strategic", query: "Mecha, Psychological" },
-    { label: "🌧️ Melancholic", query: "Music, Romance" },
+    { label: "🌧️ Melancholic", query: "Music, Romance" }, 
     { label: "🩹 Hopeful", query: "Drama, Slice of Life" },
     { label: "🕴️ Fearless", query: "Action, Thriller" },
     { label: "🦾 Tech-Savvy", query: "Sci-Fi, Mecha" },
