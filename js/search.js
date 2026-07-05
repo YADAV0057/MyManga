@@ -3,7 +3,7 @@ import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
 import { resolveReadLinks } from './mangadex.js';
 import { renderMangaCard, formatStatus } from './renderer.js';
 
-let isSearching = false; 
+let isSearching = false;  
 
 export async function triggerSearch(rawQuery, page = 1) {
     if (!rawQuery) return;
