@@ -3,40 +3,11 @@
     --bg-dark: #0b1622;
     --card-bg: #151f2e;
     --accent: #3db4f2;
-    --accent-hover: #1184be; 
+    --accent-hover: #1184be;
     --text-main: #9fadbd;
     --text-title: #e5e9f4;
     --text-bright: #f8fafc;
     --score-green: #4cca51;
-}
-/* Add this to your existing style.css */
-
-.results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 40px 0 20px 0;
-}
-
-.results-header h2 {
-    margin: 0; /* Reset margin since flexbox handles spacing now */
-}
-
-.refresh-btn {
-    background: var(--card-bg);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 6px 15px;
-    font-size: 0.9rem;
-}
-
-.refresh-btn:hover {
-    background: var(--accent);
-    color: white;
-}
-
-/* Also add this text variable to the :root if it isn't there already */
-:root {
     --text-muted: #647380;
 }
 
@@ -105,6 +76,30 @@ header h1 { font-size: 2.5rem; color: var(--text-title); letter-spacing: -1px; }
 #results-area { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
 h2 { margin: 40px 0 20px 0; font-size: 1.3rem; color: var(--text-title); font-weight: 700; }
 
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0 20px 0;
+}
+
+.results-header h2 {
+    margin: 0;
+}
+
+.refresh-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 15px;
+    font-size: 0.9rem;
+}
+
+.refresh-btn:hover {
+    background: var(--accent);
+    color: white;
+}
+
 /* --- The AniList Grid --- */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px 20px; }
 
@@ -126,7 +121,7 @@ h2 { margin: 40px 0 20px 0; font-size: 1.3rem; color: var(--text-title); font-we
     padding: 5px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; backdrop-filter: blur(4px);
 }
 
-/* --- NEW: Read Options Overlay --- */
+/* --- Read Options Overlay --- */
 .read-options {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(11, 22, 34, 0.95); display: flex; flex-direction: column;
@@ -162,6 +157,6 @@ h2 { margin: 40px 0 20px 0; font-size: 1.3rem; color: var(--text-title); font-we
     padding: 6px; border-radius: 4px; cursor: pointer; transition: background 0.2s;
 }
 .manga-synopsis:hover { background: rgba(21, 31, 46, 0.8); }
-.manga-synopsis.expanded { -webkit-line-clamp: unset; } /* Toggled via JS */
+.manga-synopsis.expanded { -webkit-line-clamp: unset; }
 
 footer { text-align: center; padding: 30px; color: var(--text-main); font-size: 0.9rem; margin-top: 40px; }
