@@ -1,4 +1,4 @@
-// ========================================== 
+// ==========================================
 // 0. FIREBASE INITIALIZATION & CACHE SETUP
 // ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -6,37 +6,45 @@ import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/fireb
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
-  authDomain: "moodmanga-80a58.firebaseapp.com", 
-  projectId: "moodmanga-80a58",
-  storageBucket: "moodmanga-80a58.firebasestorage.app", 
-  messagingSenderId: "970051387669",
-  appId: "1:970051387669:web:f9789bb0b568eb803ca91c",
-  measurementId: "G-JZSZ0TYYEL"
-}; 
+    apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
+    authDomain: "moodmanga-80a58.firebaseapp.com",
+    projectId: "moodmanga-80a58",
+    storageBucket: "moodmanga-80a58.firebasestorage.app",
+    messagingSenderId: "970051387669",
+    appId: "1:970051387669:web:f9789bb0b568eb803ca91c",
+    measurementId: "G-JZSZ0TYYEL"
+};
 
-// Keep Firebase init isolated: a blocked Analytics call (ad blockers, privacy
-// extensions) should never be able to take the entire app down with it.
-let app, db, analytics;
+let app = null;
+let db = null;
+let analytics = null;
 
 try {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
 } catch (e) {
-    console.error("CRITICAL: Firebase core init failed. Caching will be disabled.", e);
+    console.error("CRITICAL: Firebase initialization failed. Caching will be disabled.", e);
 }
 
 try {
     if (app) analytics = getAnalytics(app);
 } catch (e) {
-    console.warn("Analytics blocked or failed (likely an ad blocker) — continuing without it.", e);
+    console.warn("Analytics failed (possibly blocked). Continuing without it.", e);
 }
 
+/**
+ * Generates a consistent cache key for Firestore.
+ * Trimmed to prevent duplicate keys from accidental spacing.
+ */
 function generateCacheKey(query, page) {
-    const cleanQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const cleanQuery = query.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
     return `search_${cleanQuery}_page_${page}`;
 }
 
+// Export db so other modules can access it if needed
+export { db, generateCacheKey };
+
+// ==========================================
 // ==========================================
 // 1. MOOD ROTATION ENGINE 
 // ==========================================
@@ -95,11 +103,11 @@ const allMoods = [
 
 let currentIndex = 0;
 let rotationInterval;
-let currentActiveQuery = "";
-let currentActivePage = 1;
+window.currentActiveQuery = "";
+window.currentActivePage = 1;
 
 function createVibeButton(moodObj) {
-    return `<button class="vibe-btn" onclick="triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
+    return `<button class="vibe-btn" onclick="window.triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
 }
 
 function updateRotatingVibes() {
@@ -121,7 +129,6 @@ function populateAllVibes() {
     hiddenContainer.innerHTML = html;
 }
 
-// Attached to window so inline HTML onclick="" attributes work with ES modules
 window.toggleTags = function() {
     const extra = document.getElementById('extra-tags');
     const btn = document.getElementById('more-btn');
@@ -140,8 +147,6 @@ window.toggleTags = function() {
     }
 };
 
-// FIX: These were called from renderMangaCard's inline HTML but never defined,
-// so clicking a cover or a synopsis silently did nothing.
 window.toggleOptions = function(id) {
     const overlay = document.getElementById(`overlay-${id}`);
     if (overlay) overlay.classList.toggle('active');
@@ -159,21 +164,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const refreshBtn = document.getElementById('refresh-btn');
     if (refreshBtn) {
         refreshBtn.addEventListener('click', () => {
-            currentActivePage++;
-            window.triggerSearch(currentActiveQuery, currentActivePage);
+            window.currentActivePage++;
+            window.triggerSearch(window.currentActiveQuery, window.currentActivePage);
         });
     }
 
-    // Event Listeners for Search (moved inside DOMContentLoaded so they don't
-    // silently fail to attach if this script ever runs before the DOM is ready)
     const searchBtn = document.getElementById('search-submit-btn');
+    const searchInput = document.getElementById('manga-search-input');
+
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
-            window.triggerSearch(document.getElementById('manga-search-input').value, 1);
+            if (searchInput) window.triggerSearch(searchInput.value, 1);
         });
     }
 
-    const searchInput = document.getElementById('manga-search-input');
     if (searchInput) {
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -182,9 +186,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
+                                                      
 // ==========================================
-// 2. SMART PARSER & API STACK
+// 3. SMART PARSER & API STACK
 // ==========================================
 
 function parseSmartQuery(rawQuery) {
@@ -199,24 +203,37 @@ function parseSmartQuery(rawQuery) {
         cleanQuery = cleanQuery.replace(statusMatch[0], '').trim();
     }
 
-    const isVibeOrTag = cleanQuery.includes(',') || allMoods.some(mood => mood.query === cleanQuery);
+    // List of standard standalone genres for direct validation fallback
+    const validGenres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Psychological", "Romance", "Slice of Life", "Thriller", "Supernatural", "Sci-Fi", "Mecha", "Sports", "Music"];
+    
+    // Normalize string comparisons to safely match case differences or whitespace variations
+    const normalizedQuery = cleanQuery.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    const isVibeOrTag = 
+        cleanQuery.includes(',') || 
+        allMoods.some(mood => mood.query.trim().toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedQuery) ||
+        validGenres.some(g => g.trim().toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedQuery);
+
     return { cleanQuery, statusFilter, isVibeOrTag };
 }
 
 async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let queryArgs = `$page: Int, $perPage: Int`;
-    // NOTE: 'sort' is intentionally left out here — it's added exactly once below,
-    // based on which branch runs. Setting it here AND in the search branch caused
-    // a duplicate 'sort' key in the GraphQL args, which AniList rejects outright,
-    // silently breaking every typed (non-mood) search.
     let mediaArgs = `type: MANGA, isAdult: false${countryFilter}`;
     let variables = { page: page, perPage: limit };
 
     if (parsedData.isVibeOrTag) {
         queryArgs += `, $genres: [String]`;
         mediaArgs += `, genre_in: $genres, sort: POPULARITY_DESC`;
-        variables.genres = parsedData.cleanQuery.split(',').map(g => g.trim()).filter(g => g.length > 0);
+        
+        // Ensure keys like 'SliceOfLife' translate perfectly to 'Slice of Life' for AniList syntax
+        variables.genres = parsedData.cleanQuery.split(',').map(g => {
+            let item = g.trim();
+            if (item.toLowerCase() === 'sliceoflife') return 'Slice of Life';
+            return item;
+        }).filter(g => g.length > 0);
+        
     } else if (parsedData.cleanQuery.length > 0) {
         queryArgs += `, $search: String`;
         mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`;
@@ -261,17 +278,26 @@ async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, l
     }
 }
 
+
 // ==========================================
-// 3. READ LINK RESOLVER
+// 3. READ LINK RESOLVER (Part 4)
 // ==========================================
 
 async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
 
-    // Live-check MangaDex API (free, high-confidence source of truth)
+    // MangaDex API is generally fast, but we add a 3-second timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+
     try {
-        const mdRes = await fetch(`https://api.mangadex.org/manga?title=${encodedTitle}&limit=1`);
+        const mdRes = await fetch(`https://api.mangadex.org/manga?title=${encodedTitle}&limit=1`, {
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeout);
+
         if (mdRes.ok) {
             const mdData = await mdRes.json();
             if (mdData.data && mdData.data.length > 0) {
@@ -283,45 +309,62 @@ async function resolveReadLinks(title) {
             }
         }
     } catch (e) {
-        console.log("MangaDex check failed for:", title, e);
+        // Silently fail to fallback links if API is down or blocked
+        console.warn("MangaDex link resolution skipped for:", title);
     }
 
-    // Search-routing fallbacks (no live validation, but always resolve to something)
-    // Original Links
-validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
+    // Mandatory Search Fallback
+    validLinks.push({ 
+        name: "🌐 Google Search", 
+        url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, 
+        isValidated: false 
+    });
 
-  return validLinks;
+    return validLinks;
 }
+
 // ==========================================
 // 3b. TYPO-TOLERANCE (MangaDex title suggestions)
 // ==========================================
 
-// MangaDex's title search tolerates misspellings much better than AniList's,
-// so on a zero-result AniList search we borrow it purely for suggestions.
 async function suggestTitlesFromMangaDex(query, limit = 5) {
+    if (!query || query.length < 2) return [];
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+
     try {
-        const res = await fetch(`https://api.mangadex.org/manga?title=${encodeURIComponent(query)}&limit=${limit}`);
+        const res = await fetch(`https://api.mangadex.org/manga?title=${encodeURIComponent(query)}&limit=${limit}`, {
+            signal: controller.signal
+        });
+        clearTimeout(timeout);
+
         if (!res.ok) return [];
         const data = await res.json();
-        if (!data.data) return [];
+        
+        if (!data.data || !Array.isArray(data.data)) return [];
 
         return data.data
             .map(m => {
                 const titles = m.attributes?.title || {};
+                // Prefer English title, fall back to first available locale
                 return titles.en || Object.values(titles)[0] || null;
             })
-            .filter(Boolean);
+            .filter(Boolean); // Removes nulls or undefined
+            
     } catch (e) {
+        clearTimeout(timeout);
         console.warn("MangaDex suggestion lookup failed:", e);
         return [];
     }
 }
 
+
 // ==========================================
 // 4. CORE ENGINE
 // ==========================================
 
-let isSearching = false; // Prevents overlapping searches from racing each other
+let isSearching = false; 
 
 function formatStatus(status) {
     if (!status) return "Unknown";
@@ -336,100 +379,99 @@ function formatStatus(status) {
 }
 
 window.triggerSearch = async function(rawQuery, page = 1) {
-    if (!rawQuery) return;
-    if (isSearching) return; // Ignore rapid double-clicks / double Enter presses
+    if (!rawQuery || isSearching) return;
+    
     isSearching = true;
-
-    currentActiveQuery = rawQuery;
-    currentActivePage = page;
+    window.currentActiveQuery = rawQuery;
+    window.currentActivePage = page;
 
     const grid = document.getElementById('community-grid');
     const loadingBar = document.getElementById('loading-bar');
     const refreshBtn = document.getElementById('refresh-btn');
 
-    loadingBar.classList.add('is-loading');
-    refreshBtn.style.display = 'none';
-    grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Checking database...</p>';
-    document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
+    if (loadingBar) loadingBar.classList.add('is-loading');
+    if (refreshBtn) refreshBtn.style.display = 'none';
+    if (grid) grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Checking database...</p>';
+    
+    document.getElementById('results-area')?.scrollIntoView({ behavior: 'smooth' });
 
     try {
         const parsedQuery = parseSmartQuery(rawQuery);
         const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
 
-        // FIREBASE LOGIC: Check cache first (skipped gracefully if db failed to init)
-        let docSnap = null;
+        // FIREBASE CACHE CHECK
         if (db) {
             try {
-                const docRef = doc(db, "searches", cacheKey);
-                docSnap = await getDoc(docRef);
-            } catch (e) {
-                console.warn("Firestore read failed, falling back to live API:", e);
-            }
+                const docSnap = await getDoc(doc(db, "searches", cacheKey));
+                if (docSnap.exists()) finalResults = docSnap.data().results;
+            } catch (e) { console.warn("Cache read skipped:", e); }
         }
 
-        if (docSnap && docSnap.exists()) {
-            console.log("Loaded from Firebase cache.");
-            finalResults = docSnap.data().results;
-        } else {
-            console.log("Not in cache (or cache unavailable). Fetching from APIs...");
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating fresh metadata...</p>';
-
+        // API FETCH IF NO CACHE
+        if (finalResults.length === 0) {
             if (parsedQuery.isVibeOrTag) {
-                const [koreanResults, globalResults] = await Promise.all([
+                const [korean, global] = await Promise.all([
                     fetchFromAniListUnified(parsedQuery, page, true, 5),
                     fetchFromAniListUnified(parsedQuery, page, false, 5)
                 ]);
-                finalResults = [...koreanResults, ...globalResults];
-                finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
+                finalResults = [...new Map([...korean, ...global].map(i => [i.id, i])).values()];
             } else {
                 finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
             }
 
-            // FIREBASE LOGIC: Save to cache (best-effort, non-blocking failure)
-            if (db && finalResults && finalResults.length > 0) {
-                try {
-                    const docRef = doc(db, "searches", cacheKey);
-                    await setDoc(docRef, { results: finalResults });
-                } catch (e) {
-                    console.warn("Firestore write failed (results still shown to user):", e);
-                }
+            // CACHE SAVE
+            if (db && finalResults.length > 0) {
+                setDoc(doc(db, "searches", cacheKey), { results: finalResults }).catch(console.warn);
             }
         }
 
-        // TYPO TOLERANCE: if the exact query drew a blank (and it's a plain
-        // text search, not a mood/tag), ask MangaDex for close title matches.
-        // If it has a strong guess, silently retry AniList with that guess;
-        // either way, keep the alternatives so the user can pick one.
+        // TYPO TOLERANCE FALLBACK
         let suggestions = [];
-        let usedFallbackQuery = null;
-
         if ((!finalResults || finalResults.length === 0) && !parsedQuery.isVibeOrTag && parsedQuery.cleanQuery.trim().length > 1) {
             suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery);
-
             if (suggestions.length > 0) {
-                const topGuess = suggestions[0];
-                const retryResults = await fetchFromAniListUnified(
-                    { cleanQuery: topGuess, statusFilter: parsedQuery.statusFilter, isVibeOrTag: false },
+                finalResults = await fetchFromAniListUnified(
+                    { cleanQuery: suggestions[0], statusFilter: parsedQuery.statusFilter, isVibeOrTag: false },
                     page, false, 10
                 );
-                if (retryResults.length > 0) {
-                    finalResults = retryResults;
-                    usedFallbackQuery = topGuess;
-                }
             }
         }
 
-        if (!finalResults || finalResults.length === 0) {
-            grid.innerHTML = '';
-            if (suggestions.length > 0) {
-                renderDidYouMean(rawQuery, suggestions);
-            } else {
-                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
-            }
-            return;
+        // RENDER RESULTS
+        grid.innerHTML = '';
+        if (finalResults.length > 0) {
+            // Transform AniList raw data to your factSheet structure here
+            finalResults.forEach(manga => {
+                const factSheet = {
+                    id: manga.id,
+                    title: manga.title.english || manga.title.romaji,
+                    coverUrl: manga.coverImage.large,
+                    globalScore: manga.averageScore || "N/A",
+                    rawGenres: manga.genres,
+                    synopsis: manga.description,
+                    chapters: manga.chapters || "??",
+                    status: formatStatus(manga.status),
+                    readLinks: [] // Resolve this via resolveReadLinks later
+                };
+                renderMangaCard(factSheet);
+            });
+            if (refreshBtn) refreshBtn.style.display = 'block';
+        } else if (suggestions.length > 0) {
+            window.renderSuggestionBanner(rawQuery, suggestions);
+        } else {
+            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found. Try a different page or filter!</p>';
         }
 
+    } catch (err) {
+        console.error("Search failed:", err);
+        if (grid) grid.innerHTML = '<p>Error loading results. Please try again.</p>';
+    } finally {
+        isSearching = false;
+        if (loadingBar) loadingBar.classList.remove('is-loading');
+    }
+};
+              
         // Resolve read links for every result in parallel instead of one-by-one,
         // so a slow/hanging MangaDex lookup for one title doesn't stall the rest.
         const factSheets = await Promise.all(finalResults.map(async (aniManga) => {
@@ -465,16 +507,19 @@ window.triggerSearch = async function(rawQuery, page = 1) {
         isSearching = false;
     }
 };
+// ==========================================
+// 5. RENDERING ENGINE
+// ==========================================
 
-// Shown when the exact query returned nothing, but MangaDex has close
-// title matches — lets the user pick the right one themselves.
 function renderDidYouMean(originalQuery, suggestions) {
     const grid = document.getElementById('community-grid');
+    if (!grid) return;
+    
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 20px;';
 
     let chipsHtml = suggestions.map(s =>
-        `<button class="vibe-btn" onclick="triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`
+        `<button class="vibe-btn" onclick="window.triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`
     ).join(' ');
 
     wrapper.innerHTML = `
@@ -488,16 +533,16 @@ function renderDidYouMean(originalQuery, suggestions) {
     grid.appendChild(wrapper);
 }
 
-// Shown when we auto-corrected the query and found results under a
-// different spelling — keeps the swap transparent instead of silent.
 function renderFallbackBanner(originalQuery, usedQuery, otherSuggestions) {
     const grid = document.getElementById('community-grid');
+    if (!grid) return;
+
     const banner = document.createElement('div');
     banner.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 10px 0 20px 0;';
 
     let altHtml = otherSuggestions.length > 0
         ? `<div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
-             ${otherSuggestions.map(s => `<button class="vibe-btn" style="padding:6px 14px; font-size:0.85rem;" onclick="triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`).join(' ')}
+             ${otherSuggestions.map(s => `<button class="vibe-btn" style="padding:6px 14px; font-size:0.85rem;" onclick="window.triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`).join(' ')}
            </div>`
         : '';
 
@@ -512,27 +557,30 @@ function renderFallbackBanner(originalQuery, usedQuery, otherSuggestions) {
 
 function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
+    if (!grid) return;
+
     const card = document.createElement('div');
     card.className = 'manga-card';
 
-    const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
-    const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
+    const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
+    const formattedScore = (factSheet.globalScore && factSheet.globalScore !== "N/A") ? factSheet.globalScore + "%" : "N/A";
 
     let linksHtml = '';
-    factSheet.readLinks.forEach((link) => {
+    (factSheet.readLinks || []).forEach((link) => {
         const linkBg = link.isValidated
             ? '#22c55e'
             : (link.name === "🌐 Google Search" ? '#ef4444' : '#64748b');
 
         linksHtml += `
-            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn" style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
+            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn" 
+               style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
                ${link.name}
             </a>`;
     });
 
     card.innerHTML = `
-        <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
-            <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
+        <div class="manga-cover-container" onclick="window.toggleOptions('${factSheet.id}')">
+            <img src="${factSheet.coverUrl}" alt="${factSheet.title.replace(/"/g, '&quot;')}" class="manga-cover" loading="lazy">
             <div class="score-badge">⭐ ${formattedScore}</div>
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
@@ -540,22 +588,22 @@ function renderMangaCard(factSheet) {
             </div>
         </div>
         <div class="manga-info">
-            <h3 class="manga-title" title="${factSheet.title}">${factSheet.title}</h3>
+            <h3 class="manga-title" title="${factSheet.title.replace(/"/g, '&quot;')}">${factSheet.title}</h3>
             <p class="manga-meta">${genresText}</p>
             <div class="manga-facts">
-                <span>📚 ${factSheet.chapters}</span>
-                <span>📌 ${factSheet.status}</span>
+                <span>📚 ${factSheet.chapters || 'N/A'}</span>
+                <span>📌 ${factSheet.status || 'Unknown'}</span>
             </div>
-            <p class="manga-synopsis" onclick="toggleSynopsis(this)" title="Click to read full description">
-                ${factSheet.synopsis}
+            <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
+                ${factSheet.synopsis || 'No description available.'}
             </p>
         </div>
     `;
     grid.appendChild(card);
-  
 }
 
-// ==========================================
+
+  // ==========================================
 // 5. MOOD QUIZ ENGINE
 // ==========================================
 const quizData = [
@@ -569,14 +617,13 @@ const quizData = [
 let currentQ = 0;
 let userScores = {};
 
-// We attach these to 'window' so your HTML buttons can find them
 window.openQuiz = function() {
     currentQ = 0;
     userScores = {};
     const modal = document.getElementById('quiz-modal');
     if (modal) {
         modal.style.display = 'flex';
-        renderQ();
+        window.renderQ();
     }
 };
 
@@ -589,26 +636,27 @@ window.selectOpt = function(score) {
     userScores[currentQ] = score;
     if (currentQ < quizData.length - 1) {
         currentQ++;
-        renderQ();
+        window.renderQ();
     } else {
-        finalizeQuiz();
+        window.finalizeQuiz();
     }
 };
 
-function renderQ() {
+window.renderQ = function() {
     const data = quizData[currentQ];
     const container = document.getElementById('quiz-content');
     if (!container) return;
 
     container.innerHTML = `<h3 style="margin-bottom:20px; color:var(--text-title);">${data.q}</h3>` + 
         data.o.map(opt => 
-            `<button class="quiz-option" onclick="selectOpt(${JSON.stringify(opt.s).replace(/"/g, '&quot;')})">${opt.t}</button>`
+            `<button class="quiz-option" onclick="window.selectOpt(${JSON.stringify(opt.s).replace(/"/g, '&quot;')})">${opt.t}</button>`
         ).join('');
     
     const progress = document.getElementById('progress-fill');
     if (progress) progress.style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
-}
-function finalizeQuiz() {
+};
+
+window.finalizeQuiz = function() {
     let finalScores = {};
     Object.values(userScores).forEach(s => {
         for(let key in s) finalScores[key] = (finalScores[key] || 0) + s[key];
@@ -634,9 +682,9 @@ function finalizeQuiz() {
     
     window.closeQuiz();
     
-    // IMPORTANT: Adding a comma at the end ensures your parseSmartQuery 
-    // function detects this as a "Vibe or Tag" search instead of a "Title" search.
+    // The comma ensures the smart parser treats this as a tag search
     if (typeof window.triggerSearch === 'function') {
         window.triggerSearch(topGenre + ",", 1); 
     }
-}
+};
+  
