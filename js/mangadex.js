@@ -7,7 +7,7 @@ export async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
 
-    // MangaDex API is generally fast, but we add a 3-second timeout
+    // MangaDex API is generally fast, but we add a 3-second timeout 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
 
