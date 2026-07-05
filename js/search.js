@@ -4,7 +4,7 @@
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
 import { fetchFromJikanFallback } from './jikan.js';
-import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js';
+import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
 import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';  
 
 let isSearching = false;
