@@ -1,11 +1,12 @@
 // ==========================================
 // SEARCH / AGGREGATION ENGINE (js/search.js)
-// ========================================== 
+// ==========================================
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
+import { fetchFromJikanFallback } from './jikan.js';
 import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js';
 import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';
-  
+
 let isSearching = false;
 
 export async function triggerSearch(rawQuery, page = 1) {
@@ -59,7 +60,21 @@ export async function triggerSearch(rawQuery, page = 1) {
                 finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
             }
 
-            if (db && finalResults && finalResults.length > 0) {
+            // AniList came back empty — could be a real "no matches," but it's also
+            // exactly what happens when AniList is down, rate-limited, or blocking
+            // this IP. Try Jikan (MyAnimeList) as a second source before giving up.
+            let usedFallback = false;
+            if (!finalResults || finalResults.length === 0) {
+                console.log("AniList returned nothing, trying Jikan fallback...");
+                try {
+                    finalResults = await fetchFromJikanFallback(parsedQuery, page, 10);
+                    usedFallback = finalResults.length > 0;
+                } catch (e) {
+                    console.warn("Jikan fallback failed:", e);
+                }
+            }
+
+            if (db && finalResults && finalResults.length > 0 && !usedFallback) {
                 try {
                     const docRef = doc(db, "searches", cacheKey);
                     await setDoc(docRef, { results: finalResults });
