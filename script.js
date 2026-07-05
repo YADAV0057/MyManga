@@ -38,7 +38,7 @@ function generateCacheKey(query, page) {
 }
 
 // ==========================================
-// 1. MOOD ROTATION ENGINE
+// 1. MOOD ROTATION ENGINE 
 // ==========================================
 const allMoods = [
     { label: "😊 Happy", query: "Slice of Life, Comedy" },
