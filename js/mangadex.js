@@ -1,4 +1,3 @@
-
 // ==========================================
 // MANGADEX API RESOLVER (js/mangadex.js)
 // ==========================================
@@ -7,7 +6,7 @@ export async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
 
-    // MangaDex API is generally fast, but we add a 3-second timeout 
+    // MangaDex API is generally fast, but we add a 3-second timeout
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
 
@@ -15,7 +14,7 @@ export async function resolveReadLinks(title) {
         const mdRes = await fetch(`https://api.mangadex.org/manga?title=${encodedTitle}&limit=1`, {
             signal: controller.signal
         });
-        
+
         clearTimeout(timeout);
 
         if (mdRes.ok) {
@@ -34,10 +33,10 @@ export async function resolveReadLinks(title) {
     }
 
     // Mandatory Search Fallback
-    validLinks.push({ 
-        name: "🌐 Google Search", 
-        url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, 
-        isValidated: false 
+    validLinks.push({
+        name: "🌐 Google Search",
+        url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`,
+        isValidated: false
     });
 
     return validLinks;
@@ -57,7 +56,7 @@ export async function suggestTitlesFromMangaDex(query, limit = 5) {
 
         if (!res.ok) return [];
         const data = await res.json();
-        
+
         if (!data.data || !Array.isArray(data.data)) return [];
 
         return data.data
@@ -67,7 +66,7 @@ export async function suggestTitlesFromMangaDex(query, limit = 5) {
                 return titles.en || Object.values(titles)[0] || null;
             })
             .filter(Boolean); // Removes nulls or undefined
-            
+
     } catch (e) {
         clearTimeout(timeout);
         console.warn("MangaDex suggestion lookup failed:", e);
