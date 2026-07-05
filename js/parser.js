@@ -8,7 +8,7 @@ export function parseSmartQuery(rawQuery) {
     let cleanQuery = rawQuery;
 
     // Check for status filters
-    const statusMatch = cleanQuery.match(/status:(completed|releasing|hiatus|cancelled)/i);
+    const statusMatch = cleanQuery.match(/status:(completed|releasing|hiatus|cancelled)/i); 
     if (statusMatch) {
         const s = statusMatch[1].toUpperCase();
         if (s === 'COMPLETED') statusFilter = 'FINISHED';
