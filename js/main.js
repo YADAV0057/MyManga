@@ -2,6 +2,21 @@
 // ==========================================
 // MANGA MOOD MAIN HUB (js/main.js)
 // ==========================================
+// ==========================================
+// RADICAL DEBUGGER: DO NOT REMOVE UNTIL FIXED
+// ==========================================
+window.onerror = function(message, source, lineno, colno, error) {
+    alert(`💥 FATAL CRASH:\n${message}\nLine: ${lineno}`);
+    return true;
+};
+
+window.onunhandledrejection = function(event) {
+    alert(`🚨 API/PROMISE FAILED:\n${event.reason}`);
+};
+// ==========================================
+
+
+
 import { CONFIG } from './config.js';
 import { populateAllVibes, updateRotatingVibes } from './moods.js';
 import { triggerSearch } from './search.js';
