@@ -1,6 +1,4 @@
-
-
-// ========================================== 
+// ==========================================
 // 0. FIREBASE INITIALIZATION & CACHE SETUP
 // ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -17,18 +15,15 @@ const firebaseConfig = {
   measurementId: "G-JZSZ0TYYEL"
 };
 
-// Initialize Firebase App, Database, and Analytics
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
 
-// Helper function to generate a clean, database-safe ID for the search
 function generateCacheKey(query, page) {
     const cleanQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '_');
     return `search_${cleanQuery}_page_${page}`;
 }
-
-
 
 // ==========================================
 // 1. MOOD ROTATION ENGINE
@@ -86,7 +81,6 @@ const allMoods = [
     { label: "🦉 Sleepless", query: "Psychological, Thriller" }
 ];
 
-// Global State for the Refresh Button
 let currentIndex = 0;
 let rotationInterval;
 let currentActiveQuery = "";
@@ -115,7 +109,8 @@ function populateAllVibes() {
     hiddenContainer.innerHTML = html;
 }
 
-function toggleTags() {
+// FIX: Attached to window so HTML onClick works with Modules
+window.toggleTags = function() {
     const extra = document.getElementById('extra-tags');
     const btn = document.getElementById('more-btn');
     const rotatingContainer = document.getElementById('rotating-vibes');
@@ -131,19 +126,18 @@ function toggleTags() {
         btn.innerText = "- Hide Moods";
         clearInterval(rotationInterval);
     }
-}
+};
 
 window.addEventListener('DOMContentLoaded', () => {
     populateAllVibes();
     updateRotatingVibes();
     rotationInterval = setInterval(updateRotatingVibes, 30000);
     
-    // Attach Refresh Button Event
     const refreshBtn = document.getElementById('refresh-btn');
     if(refreshBtn) {
         refreshBtn.addEventListener('click', () => {
-            currentActivePage++; // Increment the page to get new results
-            triggerSearch(currentActiveQuery, currentActivePage);
+            currentActivePage++;
+            window.triggerSearch(currentActiveQuery, currentActivePage);
         });
     }
 });
@@ -152,33 +146,24 @@ window.addEventListener('DOMContentLoaded', () => {
 // 2. SMART PARSER & API STACK
 // ==========================================
 
-// Parses search input for custom filters (e.g., "status:completed Action, Fantasy")
 function parseSmartQuery(rawQuery) {
     let statusFilter = null;
     let cleanQuery = rawQuery;
 
-    // Detect Status Filter
     const statusMatch = cleanQuery.match(/status:(completed|releasing|hiatus|cancelled)/i);
     if (statusMatch) {
         const s = statusMatch[1].toUpperCase();
         if (s === 'COMPLETED') statusFilter = 'FINISHED';
         else statusFilter = s;
-        // Remove the filter text from the main query
         cleanQuery = cleanQuery.replace(statusMatch[0], '').trim(); 
     }
 
-    // Determine if Tag/Genre Search or Title Search
-    // If it has commas (Action, Fantasy) or matches a vibe button, it's a Tag Search
     const isVibeOrTag = cleanQuery.includes(',') || allMoods.some(mood => mood.query === cleanQuery);
-
     return { cleanQuery, statusFilter, isVibeOrTag };
 }
 
-// Unified GraphQL Query handling Titles, Tags, Status, and Pagination simultaneously
 async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
-    
-    // Build query arguments dynamically based on what the user typed
     let queryArgs = `$page: Int, $perPage: Int`;
     let mediaArgs = `type: MANGA, sort: POPULARITY_DESC, isAdult: false${countryFilter}`;
     let variables = { page: page, perPage: limit };
@@ -189,7 +174,7 @@ async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, l
         variables.genres = parsedData.cleanQuery.split(',').map(g => g.trim()).filter(g => g.length > 0);
     } else if (parsedData.cleanQuery.length > 0) {
         queryArgs += `, $search: String`;
-        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`; // Override sort for exact title matches
+        mediaArgs += `, search: $search, sort: [SEARCH_MATCH, POPULARITY_DESC]`; 
         variables.search = parsedData.cleanQuery;
     }
 
@@ -238,32 +223,43 @@ function formatStatus(status) {
 window.toggleOptions = function(id) {
     const overlay = document.getElementById(`overlay-${id}`);
     if(overlay) overlay.classList.toggle('active');
-}
+};
 
 window.toggleSynopsis = function(element) {
     element.classList.toggle('expanded');
-}
+};
 
-function resolveReadLinks(title) {
+// FIX: Async function checking MangaDex properly
+async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
-    let activeLinks = [
-        { name: "AsuraScans", url: `https://asuracomic.net/?s=${encodedTitle}` },
-        { name: "Toonily", url: `https://toonily.com/?s=${encodedTitle}&post_type=wp-manga` },
-        { name: "MangaTx", url: `https://mangatx.com/?s=${encodedTitle}&post_type=wp-manga` },
-        { name: "Mgeko", url: `https://www.mgeko.cc/search/?search=${encodedTitle}` }
-    ];
-    activeLinks.push({ 
-        name: "Deep Web Search", 
-        url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free+chapter+1` 
-    });
-    return activeLinks;
+    let validLinks = [];
+
+    try {
+        const mdRes = await fetch(`https://api.mangadex.org/manga?title=${encodedTitle}&limit=1`);
+        const mdData = await mdRes.json();
+        if(mdData.data && mdData.data.length > 0) {
+            validLinks.push({ 
+                name: "✅ Read on MangaDex", 
+                url: `https://mangadex.org/title/${mdData.data[0].id}`,
+                isValidated: true 
+            });
+        }
+    } catch(e) {
+        console.log("MangaDex check failed.");
+    }
+
+    validLinks.push({ name: "Search AsuraScans", url: `https://asuracomic.net/?s=${encodedTitle}`, isValidated: false });
+    validLinks.push({ name: "Search Toonily", url: `https://toonily.com/?s=${encodedTitle}&post_type=wp-manga`, isValidated: false });
+    validLinks.push({ name: "Search MangaTx", url: `https://mangatx.com/?s=${encodedTitle}&post_type=wp-manga`, isValidated: false });
+    validLinks.push({ name: "Web Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online+free+chapter+1`, isValidated: false });
+
+    return validLinks;
 }
 
-// Updated to accept Page Numbers for the Refresh Feature
-async function triggerSearch(rawQuery, page = 1) {
+// FIX: Attached to window and integrated with Firebase Firestore
+window.triggerSearch = async function(rawQuery, page = 1) {
     if (!rawQuery) return;
 
-    // Save global state so the Refresh Button knows what to refresh
     currentActiveQuery = rawQuery;
     currentActivePage = page;
 
@@ -272,25 +268,41 @@ async function triggerSearch(rawQuery, page = 1) {
     const refreshBtn = document.getElementById('refresh-btn');
     
     loadingBar.classList.add('is-loading');
-    refreshBtn.style.display = 'none'; // Hide refresh while loading
-    grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating metadata...</p>';
+    refreshBtn.style.display = 'none';
+    grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Checking database...</p>';
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
         const parsedQuery = parseSmartQuery(rawQuery);
+        const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
 
-        // Dual Fetching for Tags/Vibes to balance Korean/Global priorities
-        if (parsedQuery.isVibeOrTag) {
-            const [koreanResults, globalResults] = await Promise.all([
-                fetchFromAniListUnified(parsedQuery, page, true, 5),
-                fetchFromAniListUnified(parsedQuery, page, false, 5)
-            ]);
-            finalResults = [...koreanResults, ...globalResults];
-            finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
+        // FIREBASE LOGIC: Check Cache First
+        const docRef = doc(db, "searches", cacheKey);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            console.log("Loaded from Firebase Cache!");
+            finalResults = docSnap.data().results;
         } else {
-            // Standard Title Search
-            finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
+            console.log("Not in Cache. Fetching from APIs...");
+            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating fresh metadata...</p>';
+
+            if (parsedQuery.isVibeOrTag) {
+                const [koreanResults, globalResults] = await Promise.all([
+                    fetchFromAniListUnified(parsedQuery, page, true, 5),
+                    fetchFromAniListUnified(parsedQuery, page, false, 5)
+                ]);
+                finalResults = [...koreanResults, ...globalResults];
+                finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
+            } else {
+                finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
+            }
+
+            // FIREBASE LOGIC: Save to Cache
+            if (finalResults && finalResults.length > 0) {
+                await setDoc(docRef, { results: finalResults });
+            }
         }
         
         if (!finalResults || finalResults.length === 0) {
@@ -300,12 +312,14 @@ async function triggerSearch(rawQuery, page = 1) {
         }
 
         grid.innerHTML = ''; 
-        refreshBtn.style.display = 'block'; // Show refresh button once loaded
+        refreshBtn.style.display = 'block'; 
 
-        finalResults.forEach((aniManga) => {
+        // FIX: Using for...of loop to support await inside
+        for (const aniManga of finalResults) {
             const title = aniManga.title.english || aniManga.title.romaji;
             const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
-            const generatedLinks = resolveReadLinks(title);
+            
+            const generatedLinks = await resolveReadLinks(title);
 
             const factSheet = {
                 id: aniManga.id,
@@ -320,15 +334,15 @@ async function triggerSearch(rawQuery, page = 1) {
             };
 
             renderMangaCard(factSheet);
-        });
+        }
 
     } catch (error) {
         console.error("Aggregation Error:", error);
-        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred fetching API data.</p>';
+        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
     } finally {
         loadingBar.classList.remove('is-loading');
     }
-}
+};
 
 function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
@@ -340,8 +354,10 @@ function renderMangaCard(factSheet) {
     
     let linksHtml = '';
     factSheet.readLinks.forEach((link, index) => {
-        const isFallback = index === factSheet.readLinks.length - 1;
-        const styleModifier = isFallback ? 'style="background: var(--score-green);"' : '';
+        const styleModifier = link.isValidated 
+            ? 'style="background: var(--score-green);"' 
+            : (link.name === "Web Search" ? 'style="background: #ef4444;"' : '');
+            
         linksHtml += `
             <a href="${link.url}" target="_blank" class="read-link-btn" ${styleModifier} onclick="event.stopPropagation()">
                ${link.name}
@@ -376,8 +392,7 @@ function renderMangaCard(factSheet) {
 const searchBtn = document.getElementById('search-submit-btn');
 if(searchBtn) {
     searchBtn.addEventListener('click', () => {
-        // Reset to page 1 on new manual search
-        triggerSearch(document.getElementById('manga-search-input').value, 1);
+        window.triggerSearch(document.getElementById('manga-search-input').value, 1);
     });
 }
 
@@ -385,8 +400,7 @@ const searchInput = document.getElementById('manga-search-input');
 if(searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            // Reset to page 1 on new manual search
-            triggerSearch(e.target.value, 1);
+            window.triggerSearch(e.target.value, 1);
         }
     });
 }
