@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangaMood 📖 - Discovery Portal</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts for better typography -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div id="loading-bar"></div>
 
     <!-- Header Section -->
-    <header> 
+    <header>
         <h1>MangaMood 📖</h1>
         <div class="search-container">
             <input type="text" id="manga-search-input" placeholder="Search titles, or tags (e.g. Action, Fantasy, status:completed)">
@@ -39,11 +39,11 @@
                 <h2>⭐ Mood Discoveries</h2>
                 <div style="display: flex; gap: 10px;">
                     <!-- New Mood Quiz Button -->
-                    <button id="mood-quiz-btn" class="vibe-btn" style="background: linear-gradient(135deg, #6e8efb, #a777e3); color: white; border: none;">
+                    <button id="mood-quiz-btn" class="vibe-btn" onclick="openQuiz()" style="background: linear-gradient(135deg, #6e8efb, #a777e3); color: white; border: none; font-weight: 700;">
                         🎭 Mood Quiz
                     </button>
                     <!-- Refresh Button -->
-                    <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh Results</button>
+                    <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">🎲 Refresh</button>
                 </div>
             </div>
             <div class="grid" id="community-grid">
@@ -58,11 +58,7 @@
             <button class="close-quiz" onclick="closeQuiz()">×</button>
             <div id="quiz-progress-bar"><div id="progress-fill"></div></div>
             <div id="quiz-content">
-                <!-- Questions injected by script.js -->
-            </div>
-            <div class="quiz-nav">
-                <button id="prev-btn" class="nav-btn" onclick="prevQuestion()" disabled>Previous</button>
-                <button id="next-btn" class="nav-btn" onclick="nextQuestion()">Next</button>
+                <!-- Questions injected dynamically by script.js -->
             </div>
         </div>
     </div>
@@ -71,7 +67,7 @@
         <p>Data powered by MangaDex, AniList, and MyAnimeList.</p>
     </footer>
 
-    <!-- Firebase requires type="module" -->
+    <!-- Firebase and main app logic -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
