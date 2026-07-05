@@ -555,7 +555,9 @@ function renderMangaCard(factSheet) {
   
 }
 
-// --- Mood Quiz Engine ---
+// ==========================================
+// 5. MOOD QUIZ ENGINE
+// ==========================================
 const quizData = [
     { q: "How are you feeling today?", o: [{t: "😊 Happy", s: {Comedy: 2, SliceOfLife: 2}}, {t: "😢 Sad", s: {Drama: 3, Psychological: 2}}, {t: "😌 Relaxed", s: {SliceOfLife: 3, Fantasy: 1}}, {t: "🔥 Excited", s: {Action: 3, Adventure: 2}}, {t: "🤔 Thoughtful", s: {Mystery: 3, Psychological: 2}}, {t: "😴 Tired", s: {SliceOfLife: 2, Fantasy: 1}}] },
     { q: "What kind of story do you want?", o: [{t: "⚔️ Action", s: {Action: 3}}, {t: "💕 Romance", s: {Romance: 3}}, {t: "😂 Comedy", s: {Comedy: 3}}, {t: "👻 Horror", s: {Horror: 3}}, {t: "✨ Fantasy", s: {Fantasy: 3}}, {t: "🕵 Mystery", s: {Mystery: 3}}] },
@@ -564,16 +566,47 @@ const quizData = [
     { q: "Pick your ending.", o: [{t: "😊 Happy", s: {Comedy: 2}}, {t: "😭 Emotional", s: {Drama: 3}}, {t: "🤯 Mind-blowing", s: {Psychological: 3}}, {t: "🎲 Surprise", s: {}}] }
 ];
 
-let currentQ = 0; let userScores = {};
+let currentQ = 0; 
+let userScores = {};
 
-window.openQuiz = () => { document.getElementById('quiz-modal').style.display = 'flex'; renderQ(); };
-window.closeQuiz = () => { document.getElementById('quiz-modal').style.display = 'none'; };
+window.openQuiz = () => {
+    currentQ = 0;
+    userScores = {};
+    document.getElementById('quiz-modal').style.display = 'flex';
+    renderQ();
+};
+
+window.closeQuiz = () => {
+    document.getElementById('quiz-modal').style.display = 'none';
+};
+
+window.nextQuestion = () => {
+    if (currentQ < quizData.length - 1) {
+        currentQ++;
+        renderQ();
+    } else {
+        finalizeQuiz();
+    }
+};
+
+window.prevQuestion = () => {
+    if (currentQ > 0) {
+        currentQ--;
+        renderQ();
+    }
+};
 
 function renderQ() {
     const data = quizData[currentQ];
     const container = document.getElementById('quiz-content');
-    container.innerHTML = `<h3>${data.q}</h3>` + data.o.map(opt => `<button class="quiz-option" onclick="selectOpt(this, ${JSON.stringify(opt.s)})">${opt.t}</button>`).join('');
-    document.getElementById('progress-fill').style.width = `${(currentQ / quizData.length) * 100}%`;
+    const prevBtn = document.getElementById('prev-btn');
+    prevBtn.disabled = (currentQ === 0);
+    
+    container.innerHTML = `<h3>${data.q}</h3>` + data.o.map(opt => 
+        `<button class="quiz-option" onclick="selectOpt(this, ${JSON.stringify(opt.s)})">${opt.t}</button>`
+    ).join('');
+    
+    document.getElementById('progress-fill').style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
 }
 
 window.selectOpt = (btn, score) => {
@@ -582,20 +615,20 @@ window.selectOpt = (btn, score) => {
     userScores[currentQ] = score;
 };
 
-window.nextQuestion = () => {
-    if (currentQ < quizData.length - 1) { currentQ++; renderQ(); }
-    else { finalizeQuiz(); }
-};
-
 function finalizeQuiz() {
     let finalScores = {};
     Object.values(userScores).forEach(s => {
         for(let key in s) finalScores[key] = (finalScores[key] || 0) + s[key];
     });
-    const topGenres = Object.keys(finalScores).sort((a,b) => finalScores[b] - finalScores[a]).slice(0, 2).join(', ');
+    const sorted = Object.keys(finalScores).sort((a,b) => finalScores[b] - finalScores[a]);
+    const topGenres = sorted.slice(0, 2).join(', ');
+    
     closeQuiz();
-    triggerSearch(topGenres, 1);
+    window.triggerSearch(topGenres || "Fantasy", 1);
 }
 
-// Hook up the button in DOMContentLoaded
-document.getElementById('mood-quiz-btn').addEventListener('click', openQuiz);
+// Ensure the quiz button listener is attached
+document.addEventListener('DOMContentLoaded', () => {
+    const quizBtn = document.getElementById('mood-quiz-btn');
+    if (quizBtn) quizBtn.addEventListener('click', window.openQuiz);
+});
