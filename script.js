@@ -29,7 +29,7 @@ try {
 try {
     if (app) analytics = getAnalytics(app);
 } catch (e) {
-    console.warn("Analytics blocked or failed (likely an ad blocker) — continuing without it.", e);
+    console.warn("Analytics blocked or failed (likely an ad blocker) â€” continuing without it.", e);
 }
 
 function generateCacheKey(query, page) {
@@ -41,56 +41,56 @@ function generateCacheKey(query, page) {
 // 1. MOOD ROTATION ENGINE
 // ==========================================
 const allMoods = [
-    { label: "😊 Happy", query: "Slice of Life, Comedy" },
-    { label: "😭 Sad", query: "Drama, Psychological" },
-    { label: "🔥 Hype", query: "Action, Fantasy" },
-    { label: "🍵 Chill", query: "Slice of Life, Adventure" },
-    { label: "👻 Spooky", query: "Horror, Mystery" },
-    { label: "💕 Romantic", query: "Romance, Comedy" },
-    { label: "🧠 Big Brain", query: "Mystery, Psychological" },
-    { label: "✨ Escapism", query: "Fantasy, Adventure" },
-    { label: "☕ Cozy", query: "Slice of Life, Romance" },
-    { label: "📼 Nostalgic", query: "Mecha, Sci-Fi" },
-    { label: "⚡ Adrenaline", query: "Sports, Drama" },
-    { label: "😂 Laugh Out Loud", query: "Comedy, Action" },
-    { label: "🧸 Heartwarming", query: "Slice of Life, Fantasy" },
-    { label: "🌀 Mind-Bending", query: "Sci-Fi, Psychological" },
-    { label: "⚔️ Epic", query: "Action, Adventure" },
-    { label: "🎀 Cute", query: "Mahou Shoujo, Comedy" },
-    { label: "🖤 Edgy", query: "Action, Horror" },
-    { label: "🌟 Inspiring", query: "Music, Drama" },
-    { label: "🕵️ Mysterious", query: "Mystery, Supernatural" },
-    { label: "🏚️ Lonely", query: "Sci-Fi, Drama" },
-    { label: "🎸 Rebellious", query: "Action, Music" },
-    { label: "🪄 Dreamy", query: "Mahou Shoujo, Fantasy" },
-    { label: "⏳ Intense", query: "Thriller, Psychological" },
-    { label: "🌿 Peaceful", query: "Slice of Life" },
-    { label: "🐶 Wholesome", query: "Comedy, Slice of Life" },
-    { label: "🥋 Sweaty", query: "Sports, Action" },
-    { label: "📖 Philosophical", query: "Psychological, Drama" },
-    { label: "🤪 Chaotic", query: "Comedy, Sci-Fi" },
-    { label: "🦇 Gloomy", query: "Supernatural, Horror" },
-    { label: "🗡️ Revenge", query: "Drama, Fantasy" },
-    { label: "🔮 Magical", query: "Fantasy, Supernatural" },
-    { label: "💪 Overpowered", query: "Action, Sci-Fi" },
-    { label: "♟️ Strategic", query: "Mecha, Psychological" },
-    { label: "🌧️ Melancholic", query: "Music, Romance" },
-    { label: "🩹 Hopeful", query: "Drama, Slice of Life" },
-    { label: "🕴️ Fearless", query: "Action, Thriller" },
-    { label: "🦾 Tech-Savvy", query: "Sci-Fi, Mecha" },
-    { label: "🎒 Academic", query: "Comedy, Romance" },
-    { label: "🗺️ Wanderlust", query: "Adventure, Fantasy" },
-    { label: "🚬 Gritty", query: "Mystery, Thriller" },
-    { label: "⛩️ Mythological", query: "Supernatural, Adventure" },
-    { label: "📈 Ambitious", query: "Drama, Sports" },
-    { label: "💔 Heartbroken", query: "Romance, Drama" },
-    { label: "🦸 Heroic", query: "Action, Supernatural" },
-    { label: "👑 Royal", query: "Fantasy, Drama" },
-    { label: "🃏 Mischievous", query: "Comedy, Adventure" },
-    { label: "🎖️ Tactical", query: "Mecha, Action" },
-    { label: "🕯️ Paranormal", query: "Horror, Supernatural" },
-    { label: "🍳 Gourmet", query: "Slice of Life, Drama" },
-    { label: "🦉 Sleepless", query: "Psychological, Thriller" }
+    { label: "ðŸ˜Š Happy", query: "Slice of Life, Comedy" },
+    { label: "ðŸ˜­ Sad", query: "Drama, Psychological" },
+    { label: "ðŸ”¥ Hype", query: "Action, Fantasy" },
+    { label: "ðŸµ Chill", query: "Slice of Life, Adventure" },
+    { label: "ðŸ‘» Spooky", query: "Horror, Mystery" },
+    { label: "ðŸ’• Romantic", query: "Romance, Comedy" },
+    { label: "ðŸ§  Big Brain", query: "Mystery, Psychological" },
+    { label: "âœ¨ Escapism", query: "Fantasy, Adventure" },
+    { label: "â˜• Cozy", query: "Slice of Life, Romance" },
+    { label: "ðŸ“¼ Nostalgic", query: "Mecha, Sci-Fi" },
+    { label: "âš¡ Adrenaline", query: "Sports, Drama" },
+    { label: "ðŸ˜‚ Laugh Out Loud", query: "Comedy, Action" },
+    { label: "ðŸ§¸ Heartwarming", query: "Slice of Life, Fantasy" },
+    { label: "ðŸŒ€ Mind-Bending", query: "Sci-Fi, Psychological" },
+    { label: "âš”ï¸ Epic", query: "Action, Adventure" },
+    { label: "ðŸŽ€ Cute", query: "Mahou Shoujo, Comedy" },
+    { label: "ðŸ–¤ Edgy", query: "Action, Horror" },
+    { label: "ðŸŒŸ Inspiring", query: "Music, Drama" },
+    { label: "ðŸ•µï¸ Mysterious", query: "Mystery, Supernatural" },
+    { label: "ðŸšï¸ Lonely", query: "Sci-Fi, Drama" },
+    { label: "ðŸŽ¸ Rebellious", query: "Action, Music" },
+    { label: "ðŸª„ Dreamy", query: "Mahou Shoujo, Fantasy" },
+    { label: "â³ Intense", query: "Thriller, Psychological" },
+    { label: "ðŸŒ¿ Peaceful", query: "Slice of Life" },
+    { label: "ðŸ¶ Wholesome", query: "Comedy, Slice of Life" },
+    { label: "ðŸ¥‹ Sweaty", query: "Sports, Action" },
+    { label: "ðŸ“– Philosophical", query: "Psychological, Drama" },
+    { label: "ðŸ¤ª Chaotic", query: "Comedy, Sci-Fi" },
+    { label: "ðŸ¦‡ Gloomy", query: "Supernatural, Horror" },
+    { label: "ðŸ—¡ï¸ Revenge", query: "Drama, Fantasy" },
+    { label: "ðŸ”® Magical", query: "Fantasy, Supernatural" },
+    { label: "ðŸ’ª Overpowered", query: "Action, Sci-Fi" },
+    { label: "â™Ÿï¸ Strategic", query: "Mecha, Psychological" },
+    { label: "ðŸŒ§ï¸ Melancholic", query: "Music, Romance" },
+    { label: "ðŸ©¹ Hopeful", query: "Drama, Slice of Life" },
+    { label: "ðŸ•´ï¸ Fearless", query: "Action, Thriller" },
+    { label: "ðŸ¦¾ Tech-Savvy", query: "Sci-Fi, Mecha" },
+    { label: "ðŸŽ’ Academic", query: "Comedy, Romance" },
+    { label: "ðŸ—ºï¸ Wanderlust", query: "Adventure, Fantasy" },
+    { label: "ðŸš¬ Gritty", query: "Mystery, Thriller" },
+    { label: "â›©ï¸ Mythological", query: "Supernatural, Adventure" },
+    { label: "ðŸ“ˆ Ambitious", query: "Drama, Sports" },
+    { label: "ðŸ’” Heartbroken", query: "Romance, Drama" },
+    { label: "ðŸ¦¸ Heroic", query: "Action, Supernatural" },
+    { label: "ðŸ‘‘ Royal", query: "Fantasy, Drama" },
+    { label: "ðŸƒ Mischievous", query: "Comedy, Adventure" },
+    { label: "ðŸŽ–ï¸ Tactical", query: "Mecha, Action" },
+    { label: "ðŸ•¯ï¸ Paranormal", query: "Horror, Supernatural" },
+    { label: "ðŸ³ Gourmet", query: "Slice of Life, Drama" },
+    { label: "ðŸ¦‰ Sleepless", query: "Psychological, Thriller" }
 ];
 
 let currentIndex = 0;
@@ -206,7 +206,10 @@ function parseSmartQuery(rawQuery) {
 async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let queryArgs = `$page: Int, $perPage: Int`;
-    // 'sort' is added exactly once below, based on which branch runs.
+    // NOTE: 'sort' is intentionally left out here â€” it's added exactly once below,
+    // based on which branch runs. Setting it here AND in the search branch caused
+    // a duplicate 'sort' key in the GraphQL args, which AniList rejects outright,
+    // silently breaking every typed (non-mood) search.
     let mediaArgs = `type: MANGA, isAdult: false${countryFilter}`;
     let variables = { page: page, perPage: limit };
 
@@ -273,7 +276,7 @@ async function resolveReadLinks(title) {
             const mdData = await mdRes.json();
             if (mdData.data && mdData.data.length > 0) {
                 validLinks.push({
-                    name: "📖 MangaDex (Verified)",
+                    name: "ðŸ“– MangaDex (Verified)",
                     url: `https://mangadex.org/title/${mdData.data[0].id}`,
                     isValidated: true
                 });
@@ -284,11 +287,36 @@ async function resolveReadLinks(title) {
     }
 
     // Search-routing fallbacks (no live validation, but always resolve to something)
-    validLinks.push({ name: "🔍 Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
-    validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
-    validLinks.push({ name: "🌐 Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
+    validLinks.push({ name: "ðŸ” Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
+    validLinks.push({ name: "ðŸ” Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
+    validLinks.push({ name: "ðŸŒ Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false });
 
     return validLinks;
+}
+
+// ==========================================
+// 3b. TYPO-TOLERANCE (MangaDex title suggestions)
+// ==========================================
+
+// MangaDex's title search tolerates misspellings much better than AniList's,
+// so on a zero-result AniList search we borrow it purely for suggestions.
+async function suggestTitlesFromMangaDex(query, limit = 5) {
+    try {
+        const res = await fetch(`https://api.mangadex.org/manga?title=${encodeURIComponent(query)}&limit=${limit}`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        if (!data.data) return [];
+
+        return data.data
+            .map(m => {
+                const titles = m.attributes?.title || {};
+                return titles.en || Object.values(titles)[0] || null;
+            })
+            .filter(Boolean);
+    } catch (e) {
+        console.warn("MangaDex suggestion lookup failed:", e);
+        return [];
+    }
 }
 
 // ==========================================
@@ -371,8 +399,36 @@ window.triggerSearch = async function(rawQuery, page = 1) {
             }
         }
 
+        // TYPO TOLERANCE: if the exact query drew a blank (and it's a plain
+        // text search, not a mood/tag), ask MangaDex for close title matches.
+        // If it has a strong guess, silently retry AniList with that guess;
+        // either way, keep the alternatives so the user can pick one.
+        let suggestions = [];
+        let usedFallbackQuery = null;
+
+        if ((!finalResults || finalResults.length === 0) && !parsedQuery.isVibeOrTag && parsedQuery.cleanQuery.trim().length > 1) {
+            suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery);
+
+            if (suggestions.length > 0) {
+                const topGuess = suggestions[0];
+                const retryResults = await fetchFromAniListUnified(
+                    { cleanQuery: topGuess, statusFilter: parsedQuery.statusFilter, isVibeOrTag: false },
+                    page, false, 10
+                );
+                if (retryResults.length > 0) {
+                    finalResults = retryResults;
+                    usedFallbackQuery = topGuess;
+                }
+            }
+        }
+
         if (!finalResults || finalResults.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
+            grid.innerHTML = '';
+            if (suggestions.length > 0) {
+                renderDidYouMean(rawQuery, suggestions);
+            } else {
+                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
+            }
             return;
         }
 
@@ -398,6 +454,9 @@ window.triggerSearch = async function(rawQuery, page = 1) {
 
         grid.innerHTML = '';
         refreshBtn.style.display = 'block';
+        if (usedFallbackQuery) {
+            renderFallbackBanner(rawQuery, usedFallbackQuery, suggestions.slice(1));
+        }
         factSheets.forEach(renderMangaCard);
 
     } catch (error) {
@@ -409,19 +468,63 @@ window.triggerSearch = async function(rawQuery, page = 1) {
     }
 };
 
+// Shown when the exact query returned nothing, but MangaDex has close
+// title matches â€” lets the user pick the right one themselves.
+function renderDidYouMean(originalQuery, suggestions) {
+    const grid = document.getElementById('community-grid');
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 20px;';
+
+    let chipsHtml = suggestions.map(s =>
+        `<button class="vibe-btn" onclick="triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`
+    ).join(' ');
+
+    wrapper.innerHTML = `
+        <p style="color: var(--text-muted); margin-bottom: 12px;">
+            No results for "<b>${originalQuery}</b>". Did you mean:
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+            ${chipsHtml}
+        </div>
+    `;
+    grid.appendChild(wrapper);
+}
+
+// Shown when we auto-corrected the query and found results under a
+// different spelling â€” keeps the swap transparent instead of silent.
+function renderFallbackBanner(originalQuery, usedQuery, otherSuggestions) {
+    const grid = document.getElementById('community-grid');
+    const banner = document.createElement('div');
+    banner.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 10px 0 20px 0;';
+
+    let altHtml = otherSuggestions.length > 0
+        ? `<div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+             ${otherSuggestions.map(s => `<button class="vibe-btn" style="padding:6px 14px; font-size:0.85rem;" onclick="triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`).join(' ')}
+           </div>`
+        : '';
+
+    banner.innerHTML = `
+        <p style="color: var(--text-muted);">
+            No exact match for "<b>${originalQuery}</b>" â€” showing results for "<b>${usedQuery}</b>" instead.
+        </p>
+        ${altHtml}
+    `;
+    grid.appendChild(banner);
+}
+
 function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
     const card = document.createElement('div');
     card.className = 'manga-card';
 
-    const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
+    const genresText = factSheet.rawGenres.length > 0 ? factSheet.rawGenres.slice(0, 3).join(' â€¢ ') : "Various";
     const formattedScore = factSheet.globalScore !== "N/A" ? factSheet.globalScore + "%" : "N/A";
 
     let linksHtml = '';
     factSheet.readLinks.forEach((link) => {
         const linkBg = link.isValidated
             ? '#22c55e'
-            : (link.name === "🌐 Google Search" ? '#ef4444' : '#64748b');
+            : (link.name === "ðŸŒ Google Search" ? '#ef4444' : '#64748b');
 
         linksHtml += `
             <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn" style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
@@ -432,7 +535,7 @@ function renderMangaCard(factSheet) {
     card.innerHTML = `
         <div class="manga-cover-container" onclick="toggleOptions('${factSheet.id}')">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title}" class="manga-cover" loading="lazy">
-            <div class="score-badge">⭐ ${formattedScore}</div>
+            <div class="score-badge">â­ ${formattedScore}</div>
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
                 ${linksHtml}
@@ -442,8 +545,8 @@ function renderMangaCard(factSheet) {
             <h3 class="manga-title" title="${factSheet.title}">${factSheet.title}</h3>
             <p class="manga-meta">${genresText}</p>
             <div class="manga-facts">
-                <span>📚 ${factSheet.chapters}</span>
-                <span>📌 ${factSheet.status}</span>
+                <span>ðŸ“š ${factSheet.chapters}</span>
+                <span>ðŸ“Œ ${factSheet.status}</span>
             </div>
             <p class="manga-synopsis" onclick="toggleSynopsis(this)" title="Click to read full description">
                 ${factSheet.synopsis}
