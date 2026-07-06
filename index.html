@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangaMood 🔮 - Discovery Portal</title> 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cards.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,15 +13,20 @@
     <!-- Loading Bar Indicator -->
     <div id="loading-bar"></div>
 
+    <!-- Top Navigation -->
+    <nav class="topbar">
+        <span class="topbar-brand">MangaMood 🔮</span>
+        <div class="view-toggle">
+            <button id="nav-discover-btn" class="tab-btn active-view">🔍 Discover</button>
+            <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
+        </div>
+    </nav>
+
     <!-- Header Section -->
     <header>
-        <h1>MangaMood 🔮</h1>
-        <div class="view-toggle">
-            <button id="nav-discover-btn" class="vibe-btn active-view">🔍 Discover</button>
-            <button id="nav-favorites-btn" class="vibe-btn">❤️ My List</button>
-        </div>
+        <h2 class="tagline">What are you in the mood for today?</h2>
         <div class="search-container">
-            <input type="text" id="manga-search-input" placeholder="What are you in the mood for today?">
+            <input type="text" id="manga-search-input" placeholder="e.g. Cyberpunk, Slow Burn Romance...">
             
             <!-- Removed hardcoded colors so it uses your beautiful glassmorphism CSS -->
             <button id="search-submit-btn" class="vibe-btn" style="margin-top: 10px; width: 100%;">
