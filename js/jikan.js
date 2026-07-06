@@ -1,33 +1,13 @@
-
 // ==========================================
 // JIKAN (MyAnimeList) FALLBACK ENGINE (js/jikan.js) 
 // ==========================================
-// Used only when AniList returns nothing (blocked, rate-limited, or down).
-// Normalizes results into the same shape as AniList media objects so
-// search.js / renderer.js don't need to know which source they came from.
+import { CONFIG } from './config.js';
 
-// Verified directly against https://api.jikan.moe/v4/genres/manga
-// Keys are pre-normalized (lowercase, spaces/hyphens stripped) to match how
-// fetchFromJikanFallback() normalizes incoming genre names below. 
 const GENRE_ID_MAP = {
-    action: 1,
-    adventure: 2,
-    comedy: 4,
-    drama: 8,
-    fantasy: 10,
-    horror: 14,
-    mystery: 7,
-    psychological: 40,
-    romance: 22,
-    scifi: 24,
-    sliceoflife: 36,
-    sports: 30,
-    supernatural: 37,
-    // MAL's manga genre list has no "Thriller" — "Suspense" is the closest equivalent
-    thriller: 45,
-    mecha: 18,
-    music: 19,
-    mahoushoujo: 66
+    action: 1, adventure: 2, comedy: 4, drama: 8, fantasy: 10,
+    horror: 14, mystery: 7, psychological: 40, romance: 22, scifi: 24,
+    sliceoflife: 36, sports: 30, supernatural: 37, thriller: 45,
+    mecha: 18, music: 19, mahoushoujo: 66
 };
 
 const STATUS_TO_JIKAN = {
@@ -50,7 +30,7 @@ export async function fetchFromJikanFallback(parsedData, page = 1, limit = 10) {
     params.set('page', page);
     params.set('limit', Math.min(limit, 25));
     params.set('order_by', 'popularity');
-    params.set('sort', 'asc'); // lower popularity rank = more popular on Jikan
+    params.set('sort', 'asc');
 
     if (parsedData.isVibeOrTag) {
         const ids = parsedData.cleanQuery
@@ -71,7 +51,7 @@ export async function fetchFromJikanFallback(parsedData, page = 1, limit = 10) {
     const timeout = setTimeout(() => controller.abort(), 6000);
 
     try {
-        const response = await fetch(`https://api.jikan.moe/v4/manga?${params.toString()}`, {
+        const response = await fetch(`${CONFIG.JIKAN_URL}/manga?${params.toString()}`, {
             signal: controller.signal
         });
         clearTimeout(timeout);
