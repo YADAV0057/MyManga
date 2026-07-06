@@ -2,77 +2,117 @@
 // DYNAMIC THEME ENGINE (js/theme.js)
 // ==========================================
 
+// We only change --bg-dark to create a subtle ambient glow. 
+// Cards, text, and buttons remain your standard default colors!
 const THEMES = {
-    // 🌌 The standard AniList dark mode (Default, Sci-Fi, Mystery)
-    default: {
-        '--bg-dark': '#0b1622',
-        '--card-bg': '#151f2e',
-        '--accent': '#3db4f2',
-        '--accent-hover': '#1184be',
-        '--text-main': '#9fadbd',
-        '--text-title': '#e5e9f4',
-        '--text-muted': '#647380'
-    },
-    // 🩸 Dark & oppressive (Sad, Spooky, Edgy, Thrillers)
-    dark: {
-        '--bg-dark': '#09090b',
-        '--card-bg': '#18181b',
-        '--accent': '#dc2626',
-        '--accent-hover': '#991b1b',
-        '--text-main': '#a1a1aa',
-        '--text-title': '#f4f4f5',
-        '--text-muted': '#52525b'
-    },
-    // 🌸 Soft & warm (Happy, Romantic, Cozy, Cute)
-    light: {
-        '--bg-dark': '#fdf2f8',
-        '--card-bg': '#fce7f3',
-        '--accent': '#e11d48',
-        '--accent-hover': '#be123c',
-        '--text-main': '#475569',
-        '--text-title': '#0f172a',
-        '--text-muted': '#94a3b8'
-    },
-    // 🔥 High energy (Hype, Action, Epic, Sports)
-    energetic: {
-        '--bg-dark': '#1e1b4b',
-        '--card-bg': '#312e81',
-        '--accent': '#f97316',
-        '--accent-hover': '#c2410c',
-        '--text-main': '#c7d2fe',
-        '--text-title': '#ffffff',
-        '--text-muted': '#6366f1'
-    },
-    // 🍵 Relaxing (Chill, Peaceful, Slice of Life)
-    chill: {
-        '--bg-dark': '#022c22',
-        '--card-bg': '#064e3b',
-        '--accent': '#10b981',
-        '--accent-hover': '#047857',
-        '--text-main': '#a7f3d0',
-        '--text-title': '#ffffff',
-        '--text-muted': '#059669'
-    }
+    // --- THE BASE DEFAULT ---
+    default: { '--bg-dark': '#0b1622' },
+
+    // --- BLUES (Calm, Intellect, Sadness) ---
+    midnight_blue: { '--bg-dark': '#09101a' },
+    steel_blue: { '--bg-dark': '#0a1017' },
+    abyss_blue: { '--bg-dark': '#04080f' },
+
+    // --- REDS & ORANGES (Action, Anger, Energy) ---
+    dark_crimson: { '--bg-dark': '#140808' },
+    rust_orange: { '--bg-dark': '#170c08' },
+    blood_red: { '--bg-dark': '#0a0000' },
+
+    // --- PINKS & MAUVES (Love, Comfort, Cute) ---
+    dusky_rose: { '--bg-dark': '#170c12' },
+    soft_plum: { '--bg-dark': '#140c14' },
+    warm_blush: { '--bg-dark': '#1a1011' },
+
+    // --- GREENS (Peace, Nature, Growth) ---
+    forest_green: { '--bg-dark': '#05120c' },
+    sage_green: { '--bg-dark': '#0c1410' },
+    swamp_green: { '--bg-dark': '#0a0f0a' },
+
+    // --- PURPLES (Mystery, Magic, Fear) ---
+    deep_violet: { '--bg-dark': '#0f0a14' },
+    obsidian_purple: { '--bg-dark': '#07040a' },
+    
+    // --- YELLOWS & BROWNS (Joy, Chaos, Nostalgia) ---
+    dark_amber: { '--bg-dark': '#171108' },
+    sepia_brown: { '--bg-dark': '#14110e' }
+};
+
+// Maps all 50 specific moods to their ambient background colors
+const MOOD_TO_THEME_MAP = {
+    // Joy & Energy
+    '😊 happy': 'dark_amber',
+    '😂 laugh out loud': 'dark_amber',
+    '🤪 chaotic': 'rust_orange',
+    '🌟 inspiring': 'sepia_brown',
+    '🃏 mischievous': 'rust_orange',
+    '🐶 wholesome': 'sage_green',
+
+    // Sadness & Melancholy
+    '😭 sad': 'abyss_blue',
+    '🌧️ melancholic': 'midnight_blue',
+    '💔 heartbroken': 'abyss_blue',
+    '🏚️ lonely': 'steel_blue',
+    '🩹 hopeful': 'midnight_blue',
+
+    // Action & Intensity
+    '🔥 hype': 'rust_orange',
+    '⚡ adrenaline': 'dark_crimson',
+    '⚔️ epic': 'dark_crimson',
+    '🥋 sweaty': 'rust_orange',
+    '🦸 heroic': 'rust_orange',
+    '💪 overpowered': 'dark_crimson',
+    '🕴️ fearless': 'blood_red',
+    '🎸 rebellious': 'blood_red',
+    '🗡️ revenge': 'blood_red',
+    '⏳ intense': 'blood_red',
+
+    // Love & Comfort
+    '💕 romantic': 'dusky_rose',
+    '☕ cozy': 'warm_blush',
+    '🧸 heartwarming': 'warm_blush',
+    '🎀 cute': 'soft_plum',
+
+    // Chill & Nature
+    '🍵 chill': 'sage_green',
+    '🌿 peaceful': 'forest_green',
+    '🗺️ wanderlust': 'forest_green',
+    '🍳 gourmet': 'sage_green',
+
+    // Mystery, Magic & Fear
+    '👻 spooky': 'obsidian_purple',
+    '🦇 gloomy': 'obsidian_purple',
+    '🕯️ paranormal': 'obsidian_purple',
+    '🕵️ mysterious': 'deep_violet',
+    '🔮 magical': 'deep_violet',
+    '🪄 dreamy': 'soft_plum',
+    '👑 royal': 'deep_violet',
+    '⛩️ mythological': 'deep_violet',
+    '🖤 edgy': 'blood_red',
+
+    // Intellect & Sci-Fi
+    '🧠 big brain': 'midnight_blue',
+    '🌀 mind-bending': 'obsidian_purple',
+    '📖 philosophical': 'steel_blue',
+    '♟️ strategic': 'steel_blue',
+    '🎖️ tactical': 'steel_blue',
+    '🦾 tech-savvy': 'midnight_blue',
+    '🎒 academic': 'sepia_brown',
+    '🦉 sleepless': 'abyss_blue',
+    '🚬 gritty': 'swamp_green',
+    
+    // Concepts
+    '✨ escapism': 'deep_violet',
+    '📼 nostalgic': 'sepia_brown',
+    '📈 ambitious': 'dark_amber'
 };
 
 export function applyMoodTheme(moodLabel) {
-    const name = (moodLabel || '').toLowerCase();
-    let themeKey = 'default';
+    const cleanLabel = (moodLabel || '').toLowerCase().trim();
+    const themeKey = MOOD_TO_THEME_MAP[cleanLabel] || 'default';
+    const selectedTheme = THEMES[themeKey];
 
-    // Sort moods into their color categories
-    if (name.match(/sad|spooky|edgy|lonely|intense|gloomy|philosophical|gritty|paranormal|revenge|heartbroken|sleepless/)) {
-        themeKey = 'dark';
-    } else if (name.match(/happy|romantic|cozy|cute|heartwarming|dreamy|wholesome|academic/)) {
-        themeKey = 'light';
-    } else if (name.match(/hype|adrenaline|epic|rebellious|sweaty|overpowered|fearless|ambitious|heroic|tactical|strategic/)) {
-        themeKey = 'energetic';
-    } else if (name.match(/chill|escapism|peaceful|wanderlust|gourmet|mythological/)) {
-        themeKey = 'chill';
-    }
-
-    // Inject the new colors into the CSS variables
     const root = document.documentElement;
-    for (const [property, color] of Object.entries(THEMES[themeKey])) {
+    for (const [property, color] of Object.entries(selectedTheme)) {
         root.style.setProperty(property, color);
     }
 }
