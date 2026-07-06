@@ -1,7 +1,7 @@
 
 /**
  * Normalize user search text.
- * Cleans the input so later parser modules can work consistently.
+ * Cleans the input so later parser modules can work consistently. 
  */
 
 export function normalize(input) {
