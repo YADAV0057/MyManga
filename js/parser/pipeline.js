@@ -1,39 +1,47 @@
 import { MangaIntent } from './intentSchema.js';
 import { normalize } from './normalize.js';
+import { extractHardFilters } from './rules.js'; // The script we built for "completed" etc.
 import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
-import { mapMoodsToCategories } from './genreMapper.js'; // Updated import
+import { mapMoodsToCategories } from './genreMapper.js';
+import { applyReasoningRules } from './ruleEngine.js'; // ⭐ NEW
 
 export function buildIntent(rawUserInput) {
-    // 1. Instantiate the contract
-    const intent = new MangaIntent();
+    let intent = new MangaIntent();
     intent.originalQuery = rawUserInput;
 
-    // 2. Clean and Translate
+    // 1. Normalize
     intent.normalizedQuery = normalize(rawUserInput);
     
-    let translatedText = intent.normalizedQuery;
+    // 2. Extract Hard Filters (Status, Sort, Chapters)
+    const filterData = extractHardFilters(intent.normalizedQuery);
+    intent.status = filterData.status;
+    intent.sort = filterData.sort;
+    intent.maxChapters = filterData.maxChapters;
+
+    // 3. Translate Synonyms
+    let translatedText = filterData.cleanText; 
     try {
-        translatedText = applySynonyms(intent.normalizedQuery);
+        translatedText = applySynonyms(filterData.cleanText);
     } catch (e) {
         console.warn("Synonym engine skipped:", e.message);
     }
 
-    
-        // 3. Extract Moods
+    // 4. Extract Moods & Tone
     const moodData = analyzeMood(translatedText);
     intent.moods = moodData.moods;
     intent.intensity = moodData.intensity;
-    intent.moodProfile = moodData.moodProfile; // <-- ADD THIS LINE
+    intent.moodProfile = moodData.moodProfile;
     intent.tone = moodData.tone;
 
-    // (Optional: you can also attach moodData.moodProfile to intent if your UI needs it)
-
-    // 4. Map to Standard Categories (Genres, Themes, Demographics)
+    // 5. Map to Standard Categories
     const mappedCategories = mapMoodsToCategories(intent.moods, 3);
     intent.genres = mappedCategories.genres;
     intent.themes = mappedCategories.themes;
     intent.demographics = mappedCategories.demographics;
+
+    // 6. ⭐ Apply Smart Reasoning Rules
+    intent = applyReasoningRules(intent);
 
     return intent;
 }
