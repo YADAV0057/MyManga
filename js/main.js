@@ -2,7 +2,7 @@
 // APP ENTRY POINT (js/main.js)
 // ==========================================
 
-import { normalize } from "./parser/normalize.js";
+
 
 // ===============================
 // DIAGNOSTICS SYSTEM
@@ -211,44 +211,68 @@ function setupParserTester() {
     const output = document.getElementById("parser-output");
 
     if (!btn || !input || !output) {
-        console.warn("Parser tester UI missing");
+        console.warn("Parser UI missing");
         return;
     }
 
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
 
         const raw = input.value || "";
-        const normalized = normalize(raw);
 
-import("./parser/moodEngine.js").then(module => {
+        try {
+            // SAFE dynamic import
+            const normalizeModule = await import("./parser/normalize.js");
+            const normalize = normalizeModule.normalize;
 
-    const analysis = module.analyzeMood(normalized);
+            const normalized = normalize(raw);
 
-    output.innerHTML = `
-        <div style="line-height:1.7">
+            let moodData = null;
 
-            <h3>📝 Original</h3>
-            <div>${raw}</div>
+            try {
+                const engine = await import("./parser/moodEngine.js");
+                moodData = engine.analyzeMood(normalized);
+            } catch (e) {
+                moodData = null;
+            }
 
-            <hr>
+            output.innerHTML = `
+                <div style="line-height:1.7">
 
-            <h3>🧹 Normalized</h3>
-            <div style="color:#00ff9d">${normalized}</div>
+                    <h3>📝 Original</h3>
+                    <div>${raw}</div>
 
-            <hr>
+                    <hr>
 
-            <h3>🎭 Detected Moods</h3>
-            <div>${analysis.moods.join(", ") || "none"}</div>
+                    <h3>🧹 Normalized</h3>
+                    <div style="color:#00ff9d">${normalized}</div>
 
-            <h3>🔥 Intensity</h3>
-            <div>${analysis.intensity.toFixed(2)}</div>
+                    <hr>
 
-        </div>
-    `;
-});
+                    <h3>🎭 Mood Analysis</h3>
+                    <div>
+                        ${moodData
+                            ? moodData.moods.join(", ") + " (intensity: " + moodData.intensity.toFixed(2) + ")"
+                            : "Mood engine not loaded yet"}
+                    </div>
+
+                </div>
+            `;
+
+        } catch (err) {
+            console.error(err);
+
+            output.innerHTML = `
+                <div style="color:red">
+                    ❌ Error in parser:<br><br>
+                    ${err.message}
+                </div>
+            `;
+        }
+    });
 
     window.AppDiagnostics.log("Parser", true, "Tester initialized");
 }
+
 
 // ===============================
 // START APP
