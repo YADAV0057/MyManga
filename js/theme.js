@@ -2,7 +2,7 @@
 // DYNAMIC THEME ENGINE (js/theme.js)
 // ==========================================
 
-// Every single mood has its own unique, vibrant jewel tone.
+// Every single mood has its own unique, vibrant jewel tone. 
 const MOOD_COLORS = {
     // Joy & Energy (Vibrant Yellows, Oranges, Bright Greens)
     '😊 happy': '#d97706',         // Vibrant Amber
