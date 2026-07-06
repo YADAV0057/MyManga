@@ -43,7 +43,7 @@ document.getElementById("parser-test-btn").addEventListener("click", () => {
         }, null, 2);
 
 });  
-        let allGood = true;
+        let allGood = true; 
         checks.forEach(check => {
             const result = check.fn();
             const icon = result ? '✅' : '❌';
