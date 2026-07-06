@@ -8,9 +8,11 @@ export class MangaIntent {
         this.originalQuery = "";
         this.normalizedQuery = "";
         
-        // AI Understanding
-        this.moods = [];          // e.g., ["dark", "sad", "revenge"]
-        this.intensity = 0.0;     // 0.0 to 1.0
+                // AI Understanding
+        this.moods = [];          
+        this.moodProfile = [];    // <-- ADD THIS LINE
+        this.intensity = 0.0;     
+        
         
         // API Translations
         this.genres = [];         // e.g., ["Psychological", "Drama"]
