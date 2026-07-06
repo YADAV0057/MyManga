@@ -2,6 +2,18 @@
 // APP ENTRY POINT (js/main.js)
 // ==========================================
 
+// js/main.js
+
+import { setupParserTester } from './setupParserTester.js';
+
+// Initialize everything when the DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // Initialize the Parser Preview UI
+    setupParserTester();
+
+    // ... initialize your other components (e.g., your vibes panel)
+});
 
 
 // ===============================
@@ -308,65 +320,6 @@ function setupParserTester() {
                                 ? intent.demographics.map(d => `${d.name} <span style="opacity:0.6">(${Math.round(d.confidence * 100)}%)</span>`).join(", ") 
                                 : "<span style='opacity:0.5'>None</span>"}
                         </div>
-                    </div>
-
-                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
-
-                    <h3>🚀 Smart Reasoning (Rule Engine)</h3>
-                    <div style="background: rgba(255, 255, 255, 0.05); border-left: 4px solid #00e5ff; padding: 10px; border-radius: 4px; margin-top: 10px;">
-                        
-                        <div style="margin-bottom: 12px;">
-                            <strong style="color: #00ff9d;">🔥 Boosts (Prioritize):</strong> 
-                            <div style="padding-left: 10px; font-size: 13px; opacity: 0.9; margin-top: 4px;">
-                                <span style="opacity:0.7">Genres:</span> ${intent.boosts?.genres?.length ? intent.boosts.genres.join(", ") : "None"}<br>
-                                <span style="opacity:0.7">Themes:</span> ${intent.boosts?.themes?.length ? intent.boosts.themes.join(", ") : "None"}<br>
-                                <span style="opacity:0.7">Demos:</span> ${intent.boosts?.demographics?.length ? intent.boosts.demographics.join(", ") : "None"}
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 12px;">
-                            <strong style="color: #ff4b4b;">🚫 Avoids (Exclude):</strong> 
-                            <div style="padding-left: 10px; font-size: 13px; opacity: 0.9; margin-top: 4px;">
-                                <span style="opacity:0.7">Genres:</span> ${intent.avoids?.genres?.length ? intent.avoids.genres.join(", ") : "None"}<br>
-                                <span style="opacity:0.7">Themes:</span> ${intent.avoids?.themes?.length ? intent.avoids.themes.join(", ") : "None"}
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 8px;">
-                            <strong style="color: #ffcc00;">🔌 API Waterfall Route:</strong> 
-                            <span style="font-size: 13px;">${intent.searchPriority ? intent.searchPriority.join(" → ") : "Default"}</span>
-                        </div>
-                        
-                        <div>
-                            <strong style="color: #b388ff;">🤖 AI Confidence:</strong> 
-                            ${intent.confidence ? (intent.confidence * 100).toFixed(0) + "%" : "100%"}
-                        </div>
-
-                    </div>
-
-                </div>
-            `;
-
-                
-            
-        } catch (err) {
-            console.error("Parser Error:", err);
-            output.innerHTML = `
-                <div style="color:red">
-                    ❌ Error in parser pipeline:
-                    <br><br>
-                    ${err.message}
-                </div>
-            `;
-        }
-    });
-
-    window.AppDiagnostics.log(
-        "Parser",
-        true,
-        "Tester initialized with pipeline.js"
-    );
-}
 
 
 
