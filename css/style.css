@@ -1,171 +1,606 @@
+/* ===================================================
+   MangaMood - style.css
+   Part 1
+   Global • Layout • Navigation • Search • Buttons
+=================================================== */
 
-/* ==========================================
-   APP STYLES — BASE (style.css) 
-   Layout, navigation, search, vibe panel
-========================================== */
+/* ==========================
+   RESET
+========================== */
 
-/* --- Global Reset & Variables --- */ 
-:root {
-    --bg-dark: #0b1622;
-    --card-bg: #151f2e;
-    --accent: #3db4f2;
-    --accent-hover: #1184be;
-    --text-main: #9fadbd;
-    --text-title: #e5e9f4;
-    --text-bright: #f8fafc;
-    --score-green: #4cca51;
-    --text-muted: #647380;
-
-    --transition-speed: 1.2s;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+html{
+    scroll-behavior:smooth;
 }
 
-/* --- Custom Glass Scrollbar --- */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+/* ==========================
+   ROOT VARIABLES
+========================== */
+
+:root{
+
+    --bg-dark:#0b1622;
+    --card-bg:#151f2e;
+
+    --accent:#3db4f2;
+    --accent-hover:#1184be;
+
+    --text-title:#eef4ff;
+    --text-main:#a2afc0;
+    --text-muted:#6f7d8c;
+    --text-bright:#ffffff;
+
+    --glass:rgba(21,31,46,.58);
+
+    --border:rgba(255,255,255,.08);
+
+    --shadow:
+        0 12px 30px rgba(0,0,0,.28);
+
+    --radius:20px;
+
+    --transition:.3s ease;
 }
 
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: 'Inter', system-ui, sans-serif;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    transition: background-color var(--transition-speed) ease;
+/* ==========================
+   BODY
+========================== */
+
+body{
+
+    background:var(--bg-dark);
+
+    color:var(--text-main);
+
+    font-family:"Inter",system-ui,sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:22px;
+
+    overflow-x:hidden;
 }
 
-/* --- Loading Bar (Top of Screen) --- */
-#loading-bar {
-    position: fixed; top: 0; left: 0; height: 4px; background-color: var(--accent);
-    width: 0%; z-index: 9999; display: none;
-    box-shadow: 0 0 15px var(--accent), 0 0 5px var(--accent);
-    transition: width 0.3s ease;
+/* ==========================
+   SCROLLBAR
+========================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
 }
 
-.is-loading { display: block !important; animation: loadingProgress 1.5s ease-out infinite; }
-@keyframes loadingProgress {
-    0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; }
+::-webkit-scrollbar-track{
+
+    background:#09121d;
 }
 
-/* --- Top Navigation Bar --- */
-.topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 900px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 14px 22px;
-    background: rgba(21, 31, 46, 0.55);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+::-webkit-scrollbar-thumb{
+
+    background:#2c4155;
+
+    border-radius:50px;
 }
 
-.topbar-brand {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--text-title);
-    letter-spacing: -0.5px;
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--accent);
 }
 
-.view-toggle {
-    display: flex;
-    gap: 4px;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 4px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+/* ==========================
+   LOADING BAR
+========================== */
+
+#loading-bar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:0;
+
+    height:4px;
+
+    background:var(--accent);
+
+    z-index:9999;
+
+    box-shadow:
+        0 0 15px var(--accent);
+
+    transition:width .3s;
 }
 
-.tab-btn {
-    padding: 9px 20px;
-    border-radius: 24px;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-    transition: all 0.25s ease;
-}
-.tab-btn:hover { color: var(--text-title); }
-.tab-btn.active-view {
-    background: var(--accent);
-    color: #ffffff;
-    box-shadow: 0 6px 16px rgba(61, 180, 242, 0.35);
+.is-loading{
+
+    display:block !important;
+
+    animation:loading 1.5s infinite;
 }
 
-/* --- Header & Search --- */
-header { display: flex; flex-direction: column; align-items: center; padding: 48px 20px 20px; gap: 18px; text-align: center; }
-header .tagline { font-size: 1.4rem; color: var(--text-title); letter-spacing: -0.5px; }
+@keyframes loading{
 
-.search-container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 10px; }
+    0%{
+        width:0%;
+    }
 
-.search-container input {
-    width: 100%; padding: 16px 28px; font-size: 1.1rem;
-    background: rgba(21, 31, 46, 0.65);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px; color: var(--text-title); outline: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
-}
-.search-container input:focus {
-    background: rgba(21, 31, 46, 0.9);
-    border-color: var(--accent);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    50%{
+        width:70%;
+    }
+
+    100%{
+        width:100%;
+    }
+
 }
 
-/* --- Vibe Panel & Buttons --- */
-.vibe-panel-container { text-align: center; padding: 20px 0 40px 0; }
-.vibe-panel { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-.hidden-tags { display: none; gap: 12px; flex-wrap: wrap; justify-content: center; }
-.hidden-tags.show { display: flex !important; }
+/* ==========================
+   TOP NAVIGATION
+========================== */
 
-.vibe-btn {
-    padding: 10px 24px; border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(61, 180, 242, 0.15);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    color: var(--text-title); cursor: pointer; font-weight: 600;
-    letter-spacing: 0.5px; transition: all 0.3s ease;
-    font-size: 0.95rem;
-    white-space: nowrap;
-}
-.vibe-btn:hover {
-    background: rgba(61, 180, 242, 0.3);
-    color: white; transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(61, 180, 242, 0.4);
-    border-color: var(--accent);
-}
-.vibe-btn:active {
-    transform: translateY(-2px) scale(0.98);
+.topbar{
+
+    width:min(1100px,95%);
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px 22px;
+
+    background:var(--glass);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    box-shadow:var(--shadow);
 }
 
-/* --- Results Section Header --- */
-#results-area { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
-.results-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
+.topbar-brand{
 
-/* --- Footer --- */
-footer { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); font-size: 0.9rem; margin-top: auto; }
+    font-size:1.45rem;
+
+    font-weight:700;
+
+    color:var(--text-title);
+
+    letter-spacing:-.5px;
+}
+
+/* ==========================
+   NAVIGATION BUTTONS
+========================== */
+
+.view-toggle{
+
+    display:flex;
+
+    gap:6px;
+
+    padding:5px;
+
+    background:rgba(0,0,0,.18);
+
+    border-radius:40px;
+
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.tab-btn{
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--text-main);
+
+    padding:10px 22px;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    font-size:.95rem;
+
+    font-weight:600;
+
+    transition:var(--transition);
+}
+
+.tab-btn:hover{
+
+    background:rgba(61,180,242,.15);
+
+    color:white;
+}
+
+.tab-btn.active-view{
+
+    background:var(--accent);
+
+    color:white;
+
+    box-shadow:
+        0 8px 18px rgba(61,180,242,.35);
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+header{
+
+    width:min(700px,94%);
+
+    margin:55px auto 40px;
+
+    text-align:center;
+}
+
+.tagline{
+
+    color:var(--text-title);
+
+    font-size:2.4rem;
+
+    font-weight:700;
+
+    line-height:1.3;
+
+    margin-bottom:28px;
+}
+
+/* ==========================
+   SEARCH
+========================== */
+
+.search-container{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+}
+
+.search-container input{
+
+    width:100%;
+
+    padding:18px 26px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:999px;
+
+    background:rgba(21,31,46,.72);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(10px);
+
+    color:white;
+
+    font-size:1rem;
+
+    transition:var(--transition);
+
+    box-shadow:var(--shadow);
+}
+
+.search-container input::placeholder{
+
+    color:#8d98a8;
+}
+
+.search-container input:focus{
+
+    border-color:var(--accent);
+
+    box-shadow:
+        0 0 0 2px rgba(61,180,242,.15),
+        var(--shadow);
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.vibe-btn{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:14px 24px;
+
+    border-radius:999px;
+
+    background:rgba(61,180,242,.16);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(8px);
+
+    color:var(--text-title);
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    transition:all .3s ease;
+}
+
+.vibe-btn:hover{
+
+    background:var(--accent);
+
+    color:white;
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 10px 24px rgba(61,180,242,.35);
+}
+
+.vibe-btn:active{
+
+    transform:scale(.98);
+}
+
+/* ===================================================
+   MangaMood - style.css
+   Part 2
+   Layout • Results • Footer • Responsive
+=================================================== */
+
+/* ==========================
+   MAIN CONTAINER
+========================== */
+
+.container{
+    width:min(1200px,95%);
+    margin:0 auto;
+    flex:1;
+}
+
+/* ==========================
+   MOOD SECTION
+========================== */
+
+.vibe-panel-container{
+    padding:20px 0 40px;
+    text-align:center;
+}
+
+.vibe-panel,
+.hidden-tags{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+}
+
+.hidden-tags{
+    display:none;
+    margin-top:20px;
+}
+
+.hidden-tags.show{
+    display:flex;
+}
+
+/* ==========================
+   RESULTS
+========================== */
+
+#results-area{
+    width:100%;
+    margin-top:40px;
+}
+
+.results-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+#results-title{
+    color:var(--text-title);
+    font-size:2rem;
+    font-weight:700;
+}
+
+.refresh-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.grid{
+    width:100%;
+}
+
+/* ==========================
+   FOOTER
+========================== */
+
+footer{
+    margin-top:auto;
+    text-align:center;
+    padding:40px 20px;
+    color:rgba(255,255,255,.45);
+    font-size:.9rem;
+}
+
+/* ==========================
+   ANIMATIONS
+========================== */
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+header,
+.vibe-panel-container,
+#results-area{
+    animation:fadeUp .5s ease;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width:768px){
+
+    body{
+        padding:16px;
+    }
+
+    .topbar{
+
+        width:100%;
+
+        flex-direction:column;
+
+        gap:16px;
+
+        padding:18px;
+    }
+
+    .topbar-brand{
+
+        font-size:1.7rem;
+
+        text-align:center;
+    }
+
+    .view-toggle{
+
+        width:100%;
+
+        justify-content:center;
+    }
+
+    .tab-btn{
+
+        flex:1;
+
+        max-width:170px;
+
+        padding:12px 16px;
+    }
+
+    header{
+
+        width:100%;
+
+        margin:35px auto;
+    }
+
+    .tagline{
+
+        font-size:1.9rem;
+
+        line-height:1.3;
+    }
+
+    .search-container input{
+
+        font-size:1rem;
+
+        padding:16px 20px;
+    }
+
+    .vibe-btn{
+
+        width:100%;
+    }
+
+    .vibe-panel,
+    .hidden-tags{
+
+        gap:12px;
+    }
+
+    .results-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    #results-title{
+
+        font-size:1.7rem;
+    }
+
+}
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (min-width:769px) and (max-width:1024px){
+
+    .container{
+        width:94%;
+    }
+
+    .tagline{
+        font-size:2.1rem;
+    }
+
+}
+
+/* ==========================
+   LARGE SCREENS
+========================== */
+
+@media (min-width:1400px){
+
+    .container{
+        max-width:1300px;
+    }
+
+}
