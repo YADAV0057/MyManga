@@ -135,14 +135,14 @@ export const MOOD_MAPPINGS = {
  * @param {number} maxResults - Max items per category
  * @returns {Object} - { genres: [], themes: [], demographics: [] }
  */
+// js/parser/genreMapper.js
+// (Keep MOOD_MAPPINGS the exact same as before)
+
 export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
     const scores = { genres: {}, themes: {}, demographics: {} };
 
-    // 1. Tally up the weights across all categories
     (detectedMoods || []).forEach(mood => {
-        const normalizedMood = mood.toLowerCase();
-        const map = MOOD_MAPPINGS[normalizedMood];
-        
+        const map = MOOD_MAPPINGS[mood.toLowerCase()];
         if (map) {
             ['genres', 'themes', 'demographics'].forEach(category => {
                 for (const [tag, weight] of Object.entries(map[category] || {})) {
@@ -153,18 +153,29 @@ export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
         }
     });
 
-    // 2. Helper function to sort and slice top results
-    const extractTop = (scoreObj) => {
+    // Flat array for Genres and Themes
+    const extractFlat = (scoreObj) => {
         return Object.entries(scoreObj)
             .sort((a, b) => b[1] - a[1])
             .map(entry => entry[0])
             .slice(0, maxResults);
     };
 
-    // 3. Return the fully populated categorization object
+    // Object array for Demographics with Confidence
+    const extractDemographics = (scoreObj) => {
+        return Object.entries(scoreObj)
+            .sort((a, b) => b[1] - a[1])
+            .map(entry => ({
+                name: entry[0],
+                // Cap confidence at 1.0 (100%) and format to 2 decimals
+                confidence: Math.min(Number(entry[1].toFixed(2)), 1.0)
+            }))
+            .slice(0, maxResults);
+    };
+
     return {
-        genres: extractTop(scores.genres),
-        themes: extractTop(scores.themes),
-        demographics: extractTop(scores.demographics)
+        genres: extractFlat(scores.genres),
+        themes: extractFlat(scores.themes),
+        demographics: extractDemographics(scores.demographics) // UPGRADED
     };
 }
