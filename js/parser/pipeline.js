@@ -1,6 +1,8 @@
+// js/parser/pipeline.js
+
 import { MangaIntent } from './intentSchema.js';
 import { normalize } from './normalize.js';
-import { extractRules } from './rules.js'; // 🐛 FIXED IMPORT NAME
+import { extractRules } from './rules.js';
 import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
 import { mapMoodsToCategories } from './genreMapper.js';
@@ -14,12 +16,10 @@ export function buildIntent(rawUserInput) {
     intent.normalizedQuery = normalize(rawUserInput);
     
     // 2. Extract Hard Filters
-    const filterData = extractRules(intent.normalizedQuery); // 🐛 FIXED FUNCTION CALL
+    const filterData = extractRules(intent.normalizedQuery); 
     intent.status = filterData.status;
     intent.sort = filterData.sort;
     intent.maxChapters = filterData.maxChapters;
-
-    // ... (the rest of the file remains exactly the same)
 
     // 3. Translate Synonyms
     let translatedText = filterData.cleanText; 
@@ -42,7 +42,7 @@ export function buildIntent(rawUserInput) {
     intent.themes = mappedCategories.themes;
     intent.demographics = mappedCategories.demographics;
 
-    // 6. ⭐ Apply Smart Reasoning Rules
+    // 6. Apply Smart Reasoning Rules
     intent = applyReasoningRules(intent);
 
     return intent;
