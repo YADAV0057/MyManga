@@ -24,6 +24,20 @@ export function formatStatus(status) {
     return map[status] || status;
 }
 
+// Maps a (possibly already-formatted) status string to a meaningful icon,
+// instead of using the same pin 📌 for every status regardless of meaning.
+function getStatusIcon(status) {
+    const key = String(status || '').toUpperCase();
+    const map = {
+        FINISHED: '✅', COMPLETED: '✅',
+        RELEASING: '🔄',
+        NOT_YET_RELEASED: '⏳', UPCOMING: '⏳',
+        CANCELLED: '🚫',
+        HIATUS: '⏸️'
+    };
+    return map[key] || '📍';
+}
+
 export function renderDidYouMean(originalQuery, suggestions) {
     const grid = document.getElementById('community-grid');
     if (!grid) return;
@@ -78,7 +92,9 @@ export function renderMangaCard(factSheet) {
     card.className = 'manga-card';
 
     const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
-    const formattedScore = (factSheet.globalScore && factSheet.globalScore !== "N/A") ? factSheet.globalScore + "%" : "N/A";
+    const hasScore = factSheet.globalScore && factSheet.globalScore !== "N/A";
+    const statusText = factSheet.status || 'Unknown';
+    const statusIcon = getStatusIcon(statusText);
     const saved = isFavorite(factSheet.id);
 
     let linksHtml = '';
@@ -100,7 +116,7 @@ export function renderMangaCard(factSheet) {
             <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                     onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
                     title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
-            <div class="score-badge">⭐ ${formattedScore}</div>
+            ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
                 ${linksHtml}
@@ -111,7 +127,7 @@ export function renderMangaCard(factSheet) {
             <p class="manga-meta">${genresText}</p>
             <div class="manga-facts">
                 <span>📚 ${factSheet.chapters || 'N/A'}</span>
-                <span>📌 ${factSheet.status || 'Unknown'}</span>
+                <span>${statusIcon} ${statusText}</span>
             </div>
             <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
                 ${factSheet.synopsis || 'No description available.'}
