@@ -1,10 +1,10 @@
 import { MangaIntent } from './intentSchema.js';
 import { normalize } from './normalize.js';
-import { extractHardFilters } from './rules.js'; // The script we built for "completed" etc.
+import { extractRules } from './rules.js'; // 🐛 FIXED IMPORT NAME
 import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
 import { mapMoodsToCategories } from './genreMapper.js';
-import { applyReasoningRules } from './ruleEngine.js'; // ⭐ NEW
+import { applyReasoningRules } from './ruleEngine.js'; 
 
 export function buildIntent(rawUserInput) {
     let intent = new MangaIntent();
@@ -13,11 +13,13 @@ export function buildIntent(rawUserInput) {
     // 1. Normalize
     intent.normalizedQuery = normalize(rawUserInput);
     
-    // 2. Extract Hard Filters (Status, Sort, Chapters)
-    const filterData = extractHardFilters(intent.normalizedQuery);
+    // 2. Extract Hard Filters
+    const filterData = extractRules(intent.normalizedQuery); // 🐛 FIXED FUNCTION CALL
     intent.status = filterData.status;
     intent.sort = filterData.sort;
     intent.maxChapters = filterData.maxChapters;
+
+    // ... (the rest of the file remains exactly the same)
 
     // 3. Translate Synonyms
     let translatedText = filterData.cleanText; 
