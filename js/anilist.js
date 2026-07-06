@@ -7,7 +7,7 @@ export { parseSmartQuery };
 
 export async function fetchFromAniListUnified(parsedData, page = 1, isKorean = false, limit = 10) {
     // Country enum must be raw (unquoted), not a string
-    const countryFilter = isKorean ? ', countryOfOrigin: KR' : '';
+    const countryFilter = isKorean ? ', countryOfOrigin: "KR"' : '';
     let queryArgs = `$page: Int, $perPage: Int`;
 
     let mediaArgs = `type: MANGA, isAdult: false${countryFilter}`;
