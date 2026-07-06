@@ -2,6 +2,16 @@
 // RENDERING ENGINE (js/renderer.js)
 // ==========================================
 
+import { isFavorite } from './favorites.js';
+
+// Keeps the full data for every card ever rendered so the ♡ button
+// can hand the complete manga object off to favorites.js by id alone.
+const factSheetCache = {};
+
+export function getCachedFactSheet(id) {
+    return factSheetCache[String(id)];
+}
+
 export function formatStatus(status) {
     if (!status) return "Unknown";
     const map = {
@@ -62,11 +72,14 @@ export function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
     if (!grid) return;
 
+    factSheetCache[String(factSheet.id)] = factSheet;
+
     const card = document.createElement('div');
     card.className = 'manga-card';
 
     const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     const formattedScore = (factSheet.globalScore && factSheet.globalScore !== "N/A") ? factSheet.globalScore + "%" : "N/A";
+    const saved = isFavorite(factSheet.id);
 
     let linksHtml = '';
     (factSheet.readLinks || []).forEach((link) => {
@@ -84,6 +97,9 @@ export function renderMangaCard(factSheet) {
     card.innerHTML = `
         <div class="manga-cover-container" onclick="window.toggleOptions('${factSheet.id}')">
             <img src="${factSheet.coverUrl}" alt="${factSheet.title.replace(/"/g, '&quot;')}" class="manga-cover" loading="lazy">
+            <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
+                    onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
+                    title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
             <div class="score-badge">⭐ ${formattedScore}</div>
             <div class="read-options" id="overlay-${factSheet.id}">
                 <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
