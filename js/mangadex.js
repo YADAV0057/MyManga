@@ -74,30 +74,40 @@ export async function fetchFromMangaDexFallback(parsedData, page = 1, limit = 10
         if (!data.data || !Array.isArray(data.data)) return [];
 
         return data.data.map(m => {
-            const attr = m.attributes;
+            // Bomb-proofed: defaults to empty objects/arrays if MangaDex is missing data
+            const attr = m.attributes || {};
+            const rels = m.relationships || [];
             
-            // Extract cover art filename from relationships
-            const coverRel = m.relationships.find(rel => rel.type === 'cover_art');
-            const coverFile = coverRel ? coverRel.attributes?.fileName : null;
+            // Extract cover art safely
+            const coverRel = rels.find(rel => rel?.type === 'cover_art');
+            const coverFile = coverRel?.attributes?.fileName;
             const coverUrl = coverFile ? `${CONFIG.MANGADEX_COVER}/${m.id}/${coverFile}` : null;
 
-            // Extract genres
-            const genres = attr.tags
-                .filter(t => t.attributes.group === 'genre' || t.attributes.group === 'theme')
-                .map(t => t.attributes.name.en);
+            // Extract genres safely
+            const tags = attr.tags || [];
+            const genres = tags
+                .filter(t => t?.attributes?.group === 'genre' || t?.attributes?.group === 'theme')
+                .map(t => t?.attributes?.name?.en)
+                .filter(Boolean);
+
+            const titleObj = attr.title || {};
+            const altTitles = attr.altTitles || [];
+            const engAltTitle = altTitles.find(t => t?.en)?.en;
+
+            const descObj = attr.description || {};
 
             return {
                 id: `mangadex-${m.id}`,
                 title: { 
-                    english: attr.title.en || attr.altTitles.find(t => t.en)?.en || 'Unknown Title',
-                    romaji: attr.title['ja-ro'] || null
+                    english: titleObj.en || engAltTitle || Object.values(titleObj)[0] || 'Unknown Title',
+                    romaji: titleObj['ja-ro'] || null
                 },
                 averageScore: null, // Skipped for speed (requires secondary API call)
                 genres: genres,
-                description: attr.description.en || "No synopsis available.",
+                description: descObj.en || "No synopsis available.",
                 coverImage: { large: coverUrl },
                 chapters: attr.lastChapter || null,
-                status: REVERSE_MD_STATUS[attr.status] || attr.status
+                status: REVERSE_MD_STATUS[attr.status] || attr.status || "Unknown"
             };
         });
     } catch (error) {
