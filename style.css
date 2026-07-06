@@ -87,20 +87,26 @@ header h1 { font-size: 2.5rem; color: var(--text-title); letter-spacing: -1px; t
 .vibe-panel-container { text-align: center; padding: 20px 0 40px 0; }
 .vibe-panel { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 .hidden-tags { display: none; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.hidden-tags.show { display: flex !important; }
 
 .vibe-btn {
     padding: 10px 24px; border-radius: 30px; 
     border: 1px solid rgba(255, 255, 255, 0.08); 
-    background: rgba(21, 31, 46, 0.5); 
+    background: rgba(61, 180, 242, 0.15);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     color: var(--text-title); cursor: pointer; font-weight: 600; 
     letter-spacing: 0.5px; transition: all 0.3s ease;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 .vibe-btn:hover { 
-    background: rgba(255, 255, 255, 0.15); 
+    background: rgba(61, 180, 242, 0.3); 
     color: white; transform: translateY(-4px) scale(1.05); 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
-    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(61, 180, 242, 0.4); 
+    border-color: var(--accent);
+}
+.vibe-btn:active {
+    transform: translateY(-2px) scale(0.98);
 }
 
 /* --- Results Section --- */
@@ -148,6 +154,7 @@ header h1 { font-size: 2.5rem; color: var(--text-title); letter-spacing: -1px; t
     font-size: 0.85rem; font-weight: 600; text-decoration: none; text-align: center;
     background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 .read-link-btn:hover { background: var(--accent); border-color: var(--accent); transform: scale(1.05); }
 
