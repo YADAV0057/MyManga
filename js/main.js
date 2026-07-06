@@ -201,7 +201,6 @@ function setupRefreshButton() {
     });
 }
 
-
 // ===============================
 // 🧠 PARSER TESTER (PREVIEW BOARD)
 // ===============================
@@ -237,14 +236,23 @@ function setupParserTester() {
             const normalize = normalizeModule.normalize;
             const normalized = normalize(raw);
 
+            // 2. Apply Synonyms
+            let translatedText = normalized;
+            try {
+                const synonymModule = await import("./parser/synonyms.js");
+                translatedText = synonymModule.applySynonyms(normalized);
+            } catch (e) {
+                console.warn("Synonym engine unavailable:", e.message);
+            }
+
             let moodData = null;
             let topGenres = [];
 
-            // 2. Run Intelligence Layer
+            // 3. Run Intelligence Layer
             try {
-                // Mood Engine
+                // Mood Engine (Must use translatedText, not normalized)
                 const engineModule = await import("./parser/moodEngine.js");
-                moodData = engineModule.analyzeMood(normalized);
+                moodData = engineModule.analyzeMood(translatedText);
 
                 // Genre Mapper
                 const genreMapperModule = await import("./parser/genreMapper.js");
@@ -257,7 +265,7 @@ function setupParserTester() {
                 );
             }
 
-            // 3. Build Visual Bars for Mood Profile
+            // 4. Build Visual Bars for Mood Profile
             let profileHTML = "<div style='opacity: 0.5;'>No specific moods detected. Try different words!</div>";
             
             if (moodData && moodData.moodProfile && moodData.moodProfile.length > 0) {
@@ -274,7 +282,7 @@ function setupParserTester() {
                 `).join('');
             }
 
-            // 4. Render Output
+            // 5. Render Output
             output.innerHTML = `
 
                 <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
@@ -287,6 +295,13 @@ function setupParserTester() {
                     <h3>🧹 Normalized Text</h3>
                     <div style="color:#00ff9d">
                         ${normalized}
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+
+                    <h3>🔄 Synonym Translation</h3>
+                    <div style="color:#00e5ff">
+                        ${translatedText !== normalized ? translatedText : "<span style='opacity: 0.6; font-style: italic;'>No synonyms detected (same as normalized)</span>"}
                     </div>
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
@@ -310,7 +325,6 @@ function setupParserTester() {
                 </div>
 
             `;
-
 
         } catch (err) {
 
@@ -337,13 +351,14 @@ function setupParserTester() {
 
     });
 
-
     window.AppDiagnostics.log(
         "Parser",
         true,
         "Tester initialized"
     );
 }
+
+
 
 // ===============================
 // START APP
