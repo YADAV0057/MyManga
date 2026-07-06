@@ -1,49 +1,63 @@
-
-import { MOOD_DICTIONARY } from "./dictionary.js";
+// js/parser/moodEngine.js
+import { MOOD_DICTIONARY, URGENCY_MODIFIERS } from "./dictionary.js";
 
 export function analyzeMood(text) {
     const words = text.toLowerCase().split(" ");
     
     let moodScores = {}; 
-    let globalIntensity = 0;
     let uniqueMoods = new Set(); 
+    
+    // Intensity & Tone Trackers
+    let baseIntensities = [];
+    let urgencyMultiplier = 1.0;
+    let toneScores = { positive: 0, negative: 0, neutral: 0 };
 
     words.forEach(word => {
+        // 1. Check for urgency modifiers
+        if (URGENCY_MODIFIERS[word]) {
+            urgencyMultiplier *= URGENCY_MODIFIERS[word];
+        }
+
+        // 2. Check for core moods
         if (MOOD_DICTIONARY[word]) {
             const entry = MOOD_DICTIONARY[word];
             
-            // Add to global intensity
-            globalIntensity += entry.intensity;
+            baseIntensities.push(entry.intensity);
+            toneScores[entry.tone] += entry.intensity;
 
-            // Tally individual mood scores for the visual profile
             entry.moods.forEach(m => {
-                uniqueMoods.add(m); // Keep flat list for the genreMapper
-                
-                if (!moodScores[m]) {
-                    moodScores[m] = 0;
-                }
+                uniqueMoods.add(m);
+                if (!moodScores[m]) moodScores[m] = 0;
                 moodScores[m] += entry.intensity; 
             });
         }
     });
 
-    // Format the data for your frontend UI visual bars
+    // 3. Calculate Final Intensity
+    let avgIntensity = baseIntensities.length > 0 
+        ? baseIntensities.reduce((a, b) => a + b, 0) / baseIntensities.length 
+        : 0;
+    
+    let finalIntensity = Math.min(avgIntensity * urgencyMultiplier, 1.0);
+
+    // 4. Determine Dominant Tone
+    let dominantTone = "neutral";
+    if (toneScores.positive > toneScores.negative) dominantTone = "positive";
+    if (toneScores.negative > toneScores.positive) dominantTone = "negative";
+
+    // 5. Build Visual Profile
     const moodProfile = Object.keys(moodScores).map(mood => {
-        // Cap individual mood score at 1.0 (100%)
         const rawScore = Math.min(moodScores[mood], 1.0);
         return {
             category: mood,
-            // Convert to a clean integer percentage (e.g., 0.9 -> 90)
             score: Math.round(rawScore * 100) 
         };
-    });
-
-    // Sort the profile so the highest percentages appear first
-    moodProfile.sort((a, b) => b.score - a.score);
+    }).sort((a, b) => b.score - a.score);
 
     return {
-        moods: [...uniqueMoods],        // For genreMapper.js
-        moodProfile: moodProfile,       // For the UI Preview Board
-        intensity: Math.min(globalIntensity, 1) 
+        moods: [...uniqueMoods],        
+        moodProfile: moodProfile,       
+        tone: dominantTone,             // NEW
+        intensity: finalIntensity       // UPGRADED MATH
     };
 }
