@@ -1,78 +1,181 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaMood 🔮 - Discovery Portal</title> 
+
+    <title>MangaMood 🔮 - Discovery Portal</title>
+
     <link rel="stylesheet" href="./css/style.css">
-<link rel="stylesheet" href="./css/cards.css">
+    <link rel="stylesheet" href="./css/cards.css">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <!-- Loading Bar Indicator -->
+
+    <!-- Loading Bar -->
     <div id="loading-bar"></div>
 
-    <!-- Top Navigation -->
+    <!-- Navigation -->
     <nav class="topbar">
-        <span class="topbar-brand">MangaMood 🔮</span>
+
+        <span class="topbar-brand">
+            MangaMood 🔮
+        </span>
+
         <div class="view-toggle">
-            <button id="nav-discover-btn" class="tab-btn active-view">🔍 Discover</button>
-            <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
+
+            <button
+                id="nav-discover-btn"
+                class="tab-btn active-view"
+                aria-label="Discover manga">
+
+                🔍 Discover
+
+            </button>
+
+            <button
+                id="nav-favorites-btn"
+                class="tab-btn"
+                aria-label="Open My List">
+
+                ❤️ My List
+
+            </button>
+
         </div>
+
     </nav>
 
-    <!-- Header Section -->
-    <header>
-        <h2 class="tagline">What are you in the mood for today?</h2>
+    <!-- Hero -->
+
+    <header class="hero">
+
+        <h1 class="tagline">
+            What are you in the mood for today?
+        </h1>
+
         <div class="search-container">
-            <input type="text" id="manga-search-input" placeholder="e.g. Cyberpunk, Slow Burn Romance...">
-            
-            <!-- Removed hardcoded colors so it uses your beautiful glassmorphism CSS -->
-            <button id="search-submit-btn" class="vibe-btn" style="margin-top: 10px; width: 100%;">
+
+            <input
+                type="text"
+                id="manga-search-input"
+                placeholder="e.g. Cyberpunk, Slow Burn Romance..."
+                autocomplete="off"
+                aria-label="Search manga by mood or tags">
+
+            <button
+                id="search-submit-btn"
+                class="vibe-btn full-width mt-10"
+                aria-label="Search manga">
+
                 Find My Vibe
+
             </button>
-            
-            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 10px;">
-                ✨ <b>Pro-tip:</b> Mix tags like 'Cyberpunk, Romance, status:completed'
+
+            <p class="pro-tip">
+
+                ✨ <strong>Pro-tip:</strong>
+
+                Mix tags like
+                "Cyberpunk,
+                Romance,
+                status:completed"
+
             </p>
+
         </div>
+
     </header>
 
-    <!-- Main Content -->
+    <!-- Main -->
+
     <main class="container">
-        <!-- Mood Selector Panel -->
+
+        <!-- Mood Selector -->
+
         <section class="vibe-panel-container">
-            <div id="rotating-vibes" class="vibe-panel"></div>
-            
-            <!-- Removed hardcoded borders so it perfectly matches the other pill buttons -->
-            <button class="vibe-btn" id="more-btn" onclick="toggleTags()" style="margin-top: 20px;">
+
+            <div
+                id="rotating-vibes"
+                class="vibe-panel">
+            </div>
+
+            <button
+                id="more-btn"
+                class="vibe-btn mt-20"
+                onclick="toggleTags()"
+                aria-label="Show more moods">
+
                 + Show All 50 Moods
+
             </button>
-            
-            <div id="extra-tags" class="hidden-tags" style="margin-top: 20px;"></div>
+
+            <div
+                id="extra-tags"
+                class="hidden-tags mt-20">
+            </div>
+
         </section>
 
-        <!-- Results Area -->
-        <section id="results-area">
+        <!-- Results -->
+
+        <section
+            id="results-area"
+            aria-live="polite">
+
             <div class="results-header">
-                <h2 id="results-title">✨ Your Curated Picks</h2>
-                <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">
+
+                <h2 id="results-title">
+
+                    ✨ Your Curated Picks
+
+                </h2>
+
+                <button
+                    id="refresh-btn"
+                    class="vibe-btn refresh-btn hidden"
+                    aria-label="Reroll recommendations">
+
                     🎲 Reroll
+
                 </button>
+
             </div>
-            
-            <div class="grid" id="community-grid">
-                <!-- Dynamic Manga Cards (and Skeletons) Inject Here -->
+
+            <div
+                class="grid"
+                id="community-grid">
+
+                <!-- Manga Cards -->
+
             </div>
+
         </section>
+
     </main>
 
+    <!-- Footer -->
+
     <footer>
-        <p>Data powered by the AniList, MangaDex & Kitsu API Waterfall.</p>
+
+        <p>
+            Built with ❤️ using AniList, MangaDex & Kitsu APIs.
+        </p>
+
+        <p>
+            © 2026 MangaMood
+        </p>
+
     </footer>
 
-    <!-- Firebase and main app logic -->
+    <!-- Scripts -->
+
     <script type="module" src="./js/main.js"></script>
+
 </body>
+
 </html>
