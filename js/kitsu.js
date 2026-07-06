@@ -1,5 +1,5 @@
 // ==========================================
-// KITSU FALLBACK ENGINE (js/kitsu.js)
+// KITSU FALLBACK ENGINE (js/kitsu.js) 
 // ==========================================
 import { CONFIG } from './config.js';
 
