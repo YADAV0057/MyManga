@@ -27,6 +27,10 @@ export const CONFIG = {
     JIKAN_URL:
         "https://api.jikan.moe/v4",
 
+    // NEW: Added Kitsu so kitsu.js knows where to connect
+    KITSU_URL:
+        "https://kitsu.io/api/edge",
+
     MANGADEX_API:
         "https://api.mangadex.org",
 
