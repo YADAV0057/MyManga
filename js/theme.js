@@ -2,82 +2,81 @@
 // DYNAMIC THEME ENGINE (js/theme.js)
 // ==========================================
 
-// Every single mood has its own unique, vibrant jewel tone. 
+// DEEP CINEMA TONES: 
+// Darker, richer shades to ensure text remains highly readable.
 const MOOD_COLORS = {
-    // Joy & Energy (Vibrant Yellows, Oranges, Bright Greens)
-    '😊 happy': '#d97706',         // Vibrant Amber
-    '😂 laugh out loud': '#ca8a04', // Bright Gold
-    '🌟 inspiring': '#f59e0b',      // Glowing Yellow
-    '🐶 wholesome': '#65a30d',      // Fresh Lime
-    '🤪 chaotic': '#ea580c',        // Bright Orange
-    '🃏 mischievous': '#84cc16',    // Acid Green
+    // Joy & Energy (Deep Ambers & Dark Golds)
+    '😊 happy': '#78350f',         // Dark Amber
+    '😂 laugh out loud': '#713f12', // Deep Bronze
+    '🌟 inspiring': '#92400e',      // Rich Caramel
+    '🐶 wholesome': '#3f6212',      // Dark Olive
+    '🤪 chaotic': '#7c2d12',        // Deep Rust
+    '🃏 mischievous': '#4d7c0f',    // Dark Moss
 
-    // Sadness & Melancholy (Deep Blues, Cool Grays)
-    '😭 sad': '#1e40af',            // Deep Royal Blue
-    '🌧️ melancholic': '#3730a3',    // Indigo
-    '💔 heartbroken': '#9f1239',    // Deep Crimson
-    '🏚️ lonely': '#334155',         // Slate Blue
-    '🩹 hopeful': '#0ea5e9',        // Bright Sky Blue
+    // Sadness & Melancholy (Midnight & Abyss Blues)
+    '😭 sad': '#172554',            // Abyss Blue
+    '🌧️ melancholic': '#1e3a8a',    // Midnight Blue
+    '💔 heartbroken': '#4c0519',    // Very Dark Crimson
+    '🏚️ lonely': '#0f172a',         // Deep Slate
+    '🩹 hopeful': '#0369a1',        // Deep Ocean Blue
 
-    // Action & Intensity (Reds, Burnt Oranges)
-    '🔥 hype': '#dc2626',           // Pure Red
-    '⚡ adrenaline': '#e11d48',      // Vibrant Rose
-    '⚔️ epic': '#b91c1c',           // Strong Red
-    '🥋 sweaty': '#c2410c',         // Burnt Orange
-    '🦸 heroic': '#2563eb',         // Heroic Blue
-    '💪 overpowered': '#991b1b',    // Dark Red
-    '🕴️ fearless': '#be123c',       // Crimson
-    '🎸 rebellious': '#be185d',     // Punk Pink
-    '🗡️ revenge': '#881337',        // Blood Red
-    '⏳ intense': '#7f1d1d',        // Dark Ruby
+    // Action & Intensity (Smoldering Crimsons)
+    '🔥 hype': '#7f1d1d',           // Smoldering Red (Fixed brightness)
+    '⚡ adrenaline': '#881337',      // Deep Ruby
+    '⚔️ epic': '#450a0a',           // Pitch Red
+    '🥋 sweaty': '#7c2d12',         // Dark Burnt Orange
+    '🦸 heroic': '#1e3a8a',         // Dark Heroic Blue
+    '💪 overpowered': '#450a0a',    // Pitch Red
+    '🕴️ fearless': '#4c0519',       // Deep Blood Red
+    '🎸 rebellious': '#831843',     // Dark Magenta
+    '🗡️ revenge': '#4c0519',        // Deep Blood Red
+    '⏳ intense': '#450a0a',        // Pitch Red
 
-    // Love & Comfort (Pinks, Warm Browns)
-    '💕 romantic': '#db2777',       // Bright Pink
-    '☕ cozy': '#92400e',           // Warm Cinnamon
-    '🧸 heartwarming': '#f43f5e',   // Soft Rose
-    '🎀 cute': '#ec4899',           // Bubblegum Pink
+    // Love & Comfort (Deep Plums & Warm Woods)
+    '💕 romantic': '#831843',       // Deep Plum
+    '☕ cozy': '#451a03',           // Dark Espresso
+    '🧸 heartwarming': '#881337',   // Deep Rose
+    '🎀 cute': '#701a75',           // Dark Fuchsia
 
-    // Chill & Nature (Teals, Emeralds, Greens)
-    '🍵 chill': '#0d9488',          // Calming Teal
-    '🌿 peaceful': '#059669',       // Emerald Green
-    '🗺️ wanderlust': '#16a34a',     // Bright Forest Green
-    '🍳 gourmet': '#b45309',        // Caramel Brown
+    // Chill & Nature (Deep Forests & Teals)
+    '🍵 chill': '#0f766e',          // Dark Teal
+    '🌿 peaceful': '#064e3b',       // Midnight Forest
+    '🗺️ wanderlust': '#14532d',     // Deep Pine
+    '🍳 gourmet': '#78350f',        // Dark Caramel
 
-    // Mystery, Magic & Fear (Purples, Violets, Magentas)
-    '👻 spooky': '#6b21a8',         // Eerie Purple
-    '🦇 gloomy': '#475569',         // Stormy Blue
-    '🕯️ paranormal': '#581c87',     // Dark Violet
-    '🕵️ mysterious': '#4c1d95',     // Deep Purple
-    '🔮 magical': '#8b5cf6',        // Bright Violet
-    '🪄 dreamy': '#d946ef',         // Bright Fuchsia
-    '👑 royal': '#7c3aed',          // Royal Purple
-    '⛩️ mythological': '#a21caf',   // Magenta
-    '🖤 edgy': '#171717',           // Pitch Black
+    // Mystery, Magic & Fear (Void Purples)
+    '👻 spooky': '#3b0764',         // Void Purple
+    '🦇 gloomy': '#1e293b',         // Stormy Slate
+    '🕯️ paranormal': '#2e1065',     // Pitch Violet
+    '🕵️ mysterious': '#2e1065',     // Pitch Violet
+    '🔮 magical': '#4c1d95',        // Deep Violet
+    '🪄 dreamy': '#701a75',         // Dark Magenta
+    '👑 royal': '#3b0764',          // Royal Plum
+    '⛩️ mythological': '#4a044e',   // Deep Purple
+    '🖤 edgy': '#000000',           // Pure Black
 
-    // Intellect & Sci-Fi (Navys, Cyans, Indigos)
-    '🧠 big brain': '#4338ca',      // Bright Indigo
-    '🌀 mind-bending': '#6d28d9',   // Deep Violet
-    '📖 philosophical': '#1e3a8a',  // Navy Blue
-    '♟️ strategic': '#1d4ed8',      // Sharp Blue
-    '🎖️ tactical': '#3f6212',       // Olive Green
-    '🦾 tech-savvy': '#0284c7',     // Cyber Cyan
-    '🎒 academic': '#78350f',       // Leather Brown
-    '🦉 sleepless': '#312e81',      // Midnight Indigo
-    '🚬 gritty': '#4b5563',         // Ash Gray
+    // Intellect & Sci-Fi (Dark Cyans & Indigos)
+    '🧠 big brain': '#312e81',      // Dark Indigo
+    '🌀 mind-bending': '#2e1065',   // Pitch Violet
+    '📖 philosophical': '#172554',  // Abyss Blue
+    '♟️ strategic': '#1e3a8a',      // Midnight Blue
+    '🎖️ tactical': '#14532d',       // Deep Pine
+    '🦾 tech-savvy': '#0369a1',     // Dark Cyber Blue
+    '🎒 academic': '#451a03',       // Dark Leather
+    '🦉 sleepless': '#1e1b4b',      // Pitch Indigo
+    '🚬 gritty': '#1f2937',         // Charcoal
 
     // Concepts
-    '✨ escapism': '#c026d3',       // Vibrant Fuchsia
-    '📼 nostalgic': '#d97706',      // Sepia Amber
-    '📈 ambitious': '#047857'       // Success Green
+    '✨ escapism': '#701a75',       // Dark Magenta
+    '📼 nostalgic': '#713f12',      // Deep Bronze
+    '📈 ambitious': '#064e3b'       // Midnight Forest
 };
 
 export function applyMoodTheme(moodLabel) {
-    // Standardize the label for exact matching
     const cleanLabel = (moodLabel || '').toLowerCase().trim();
     
-    // Find the specific vibrant color, or fallback to default AniList dark blue
+    // Fallback to the standard AniList deep blue if no match is found
     const newBgColor = MOOD_COLORS[cleanLabel] || '#0b1622';
 
-    // Apply it directly to the root background variable
     document.documentElement.style.setProperty('--bg-dark', newBgColor);
 }
