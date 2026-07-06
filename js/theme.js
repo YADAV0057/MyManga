@@ -2,117 +2,82 @@
 // DYNAMIC THEME ENGINE (js/theme.js)
 // ==========================================
 
-// We only change --bg-dark to create a subtle ambient glow. 
-// Cards, text, and buttons remain your standard default colors!
-const THEMES = {
-    // --- THE BASE DEFAULT ---
-    default: { '--bg-dark': '#0b1622' },
+// Every single mood has its own unique, vibrant jewel tone.
+const MOOD_COLORS = {
+    // Joy & Energy (Vibrant Yellows, Oranges, Bright Greens)
+    '😊 happy': '#d97706',         // Vibrant Amber
+    '😂 laugh out loud': '#ca8a04', // Bright Gold
+    '🌟 inspiring': '#f59e0b',      // Glowing Yellow
+    '🐶 wholesome': '#65a30d',      // Fresh Lime
+    '🤪 chaotic': '#ea580c',        // Bright Orange
+    '🃏 mischievous': '#84cc16',    // Acid Green
 
-    // --- BLUES (Calm, Intellect, Sadness) ---
-    midnight_blue: { '--bg-dark': '#09101a' },
-    steel_blue: { '--bg-dark': '#0a1017' },
-    abyss_blue: { '--bg-dark': '#04080f' },
+    // Sadness & Melancholy (Deep Blues, Cool Grays)
+    '😭 sad': '#1e40af',            // Deep Royal Blue
+    '🌧️ melancholic': '#3730a3',    // Indigo
+    '💔 heartbroken': '#9f1239',    // Deep Crimson
+    '🏚️ lonely': '#334155',         // Slate Blue
+    '🩹 hopeful': '#0ea5e9',        // Bright Sky Blue
 
-    // --- REDS & ORANGES (Action, Anger, Energy) ---
-    dark_crimson: { '--bg-dark': '#140808' },
-    rust_orange: { '--bg-dark': '#170c08' },
-    blood_red: { '--bg-dark': '#0a0000' },
+    // Action & Intensity (Reds, Burnt Oranges)
+    '🔥 hype': '#dc2626',           // Pure Red
+    '⚡ adrenaline': '#e11d48',      // Vibrant Rose
+    '⚔️ epic': '#b91c1c',           // Strong Red
+    '🥋 sweaty': '#c2410c',         // Burnt Orange
+    '🦸 heroic': '#2563eb',         // Heroic Blue
+    '💪 overpowered': '#991b1b',    // Dark Red
+    '🕴️ fearless': '#be123c',       // Crimson
+    '🎸 rebellious': '#be185d',     // Punk Pink
+    '🗡️ revenge': '#881337',        // Blood Red
+    '⏳ intense': '#7f1d1d',        // Dark Ruby
 
-    // --- PINKS & MAUVES (Love, Comfort, Cute) ---
-    dusky_rose: { '--bg-dark': '#170c12' },
-    soft_plum: { '--bg-dark': '#140c14' },
-    warm_blush: { '--bg-dark': '#1a1011' },
+    // Love & Comfort (Pinks, Warm Browns)
+    '💕 romantic': '#db2777',       // Bright Pink
+    '☕ cozy': '#92400e',           // Warm Cinnamon
+    '🧸 heartwarming': '#f43f5e',   // Soft Rose
+    '🎀 cute': '#ec4899',           // Bubblegum Pink
 
-    // --- GREENS (Peace, Nature, Growth) ---
-    forest_green: { '--bg-dark': '#05120c' },
-    sage_green: { '--bg-dark': '#0c1410' },
-    swamp_green: { '--bg-dark': '#0a0f0a' },
+    // Chill & Nature (Teals, Emeralds, Greens)
+    '🍵 chill': '#0d9488',          // Calming Teal
+    '🌿 peaceful': '#059669',       // Emerald Green
+    '🗺️ wanderlust': '#16a34a',     // Bright Forest Green
+    '🍳 gourmet': '#b45309',        // Caramel Brown
 
-    // --- PURPLES (Mystery, Magic, Fear) ---
-    deep_violet: { '--bg-dark': '#0f0a14' },
-    obsidian_purple: { '--bg-dark': '#07040a' },
-    
-    // --- YELLOWS & BROWNS (Joy, Chaos, Nostalgia) ---
-    dark_amber: { '--bg-dark': '#171108' },
-    sepia_brown: { '--bg-dark': '#14110e' }
-};
+    // Mystery, Magic & Fear (Purples, Violets, Magentas)
+    '👻 spooky': '#6b21a8',         // Eerie Purple
+    '🦇 gloomy': '#475569',         // Stormy Blue
+    '🕯️ paranormal': '#581c87',     // Dark Violet
+    '🕵️ mysterious': '#4c1d95',     // Deep Purple
+    '🔮 magical': '#8b5cf6',        // Bright Violet
+    '🪄 dreamy': '#d946ef',         // Bright Fuchsia
+    '👑 royal': '#7c3aed',          // Royal Purple
+    '⛩️ mythological': '#a21caf',   // Magenta
+    '🖤 edgy': '#171717',           // Pitch Black
 
-// Maps all 50 specific moods to their ambient background colors
-const MOOD_TO_THEME_MAP = {
-    // Joy & Energy
-    '😊 happy': 'dark_amber',
-    '😂 laugh out loud': 'dark_amber',
-    '🤪 chaotic': 'rust_orange',
-    '🌟 inspiring': 'sepia_brown',
-    '🃏 mischievous': 'rust_orange',
-    '🐶 wholesome': 'sage_green',
+    // Intellect & Sci-Fi (Navys, Cyans, Indigos)
+    '🧠 big brain': '#4338ca',      // Bright Indigo
+    '🌀 mind-bending': '#6d28d9',   // Deep Violet
+    '📖 philosophical': '#1e3a8a',  // Navy Blue
+    '♟️ strategic': '#1d4ed8',      // Sharp Blue
+    '🎖️ tactical': '#3f6212',       // Olive Green
+    '🦾 tech-savvy': '#0284c7',     // Cyber Cyan
+    '🎒 academic': '#78350f',       // Leather Brown
+    '🦉 sleepless': '#312e81',      // Midnight Indigo
+    '🚬 gritty': '#4b5563',         // Ash Gray
 
-    // Sadness & Melancholy
-    '😭 sad': 'abyss_blue',
-    '🌧️ melancholic': 'midnight_blue',
-    '💔 heartbroken': 'abyss_blue',
-    '🏚️ lonely': 'steel_blue',
-    '🩹 hopeful': 'midnight_blue',
-
-    // Action & Intensity
-    '🔥 hype': 'rust_orange',
-    '⚡ adrenaline': 'dark_crimson',
-    '⚔️ epic': 'dark_crimson',
-    '🥋 sweaty': 'rust_orange',
-    '🦸 heroic': 'rust_orange',
-    '💪 overpowered': 'dark_crimson',
-    '🕴️ fearless': 'blood_red',
-    '🎸 rebellious': 'blood_red',
-    '🗡️ revenge': 'blood_red',
-    '⏳ intense': 'blood_red',
-
-    // Love & Comfort
-    '💕 romantic': 'dusky_rose',
-    '☕ cozy': 'warm_blush',
-    '🧸 heartwarming': 'warm_blush',
-    '🎀 cute': 'soft_plum',
-
-    // Chill & Nature
-    '🍵 chill': 'sage_green',
-    '🌿 peaceful': 'forest_green',
-    '🗺️ wanderlust': 'forest_green',
-    '🍳 gourmet': 'sage_green',
-
-    // Mystery, Magic & Fear
-    '👻 spooky': 'obsidian_purple',
-    '🦇 gloomy': 'obsidian_purple',
-    '🕯️ paranormal': 'obsidian_purple',
-    '🕵️ mysterious': 'deep_violet',
-    '🔮 magical': 'deep_violet',
-    '🪄 dreamy': 'soft_plum',
-    '👑 royal': 'deep_violet',
-    '⛩️ mythological': 'deep_violet',
-    '🖤 edgy': 'blood_red',
-
-    // Intellect & Sci-Fi
-    '🧠 big brain': 'midnight_blue',
-    '🌀 mind-bending': 'obsidian_purple',
-    '📖 philosophical': 'steel_blue',
-    '♟️ strategic': 'steel_blue',
-    '🎖️ tactical': 'steel_blue',
-    '🦾 tech-savvy': 'midnight_blue',
-    '🎒 academic': 'sepia_brown',
-    '🦉 sleepless': 'abyss_blue',
-    '🚬 gritty': 'swamp_green',
-    
     // Concepts
-    '✨ escapism': 'deep_violet',
-    '📼 nostalgic': 'sepia_brown',
-    '📈 ambitious': 'dark_amber'
+    '✨ escapism': '#c026d3',       // Vibrant Fuchsia
+    '📼 nostalgic': '#d97706',      // Sepia Amber
+    '📈 ambitious': '#047857'       // Success Green
 };
 
 export function applyMoodTheme(moodLabel) {
+    // Standardize the label for exact matching
     const cleanLabel = (moodLabel || '').toLowerCase().trim();
-    const themeKey = MOOD_TO_THEME_MAP[cleanLabel] || 'default';
-    const selectedTheme = THEMES[themeKey];
+    
+    // Find the specific vibrant color, or fallback to default AniList dark blue
+    const newBgColor = MOOD_COLORS[cleanLabel] || '#0b1622';
 
-    const root = document.documentElement;
-    for (const [property, color] of Object.entries(selectedTheme)) {
-        root.style.setProperty(property, color);
-    }
+    // Apply it directly to the root background variable
+    document.documentElement.style.setProperty('--bg-dark', newBgColor);
 }
