@@ -1,34 +1,38 @@
-/**
- * The standard definition of user intent.
- * Every parser module contributes to this, and every API adapter reads from it.
- */
+// js/parser/intentSchema.js
+
 export class MangaIntent {
     constructor() {
         // Raw data
         this.originalQuery = "";
         this.normalizedQuery = "";
         
-                // AI Understanding
+        // AI Understanding
         this.moods = [];          
-        this.moodProfile = [];    // <-- ADD THIS LINE
+        this.moodProfile = [];    
         this.intensity = 0.0;     
         this.tone = "neutral";
-        
-        // API Translations
-        this.genres = [];         // e.g., ["Psychological", "Drama"]
-        this.themes = [];         // e.g., ["School Life", "Monsters"]
-        this.demographics = [];   // e.g., ["Seinen", "Shounen"]
-        
-        // Rule Engine Modifiers
-        this.status = null;       // "completed", "ongoing"
-        this.year = null;         // e.g., 2023
-        this.sort = "relevance";  // "rating", "popularity", "newest"
-    }
 
-    /**
-     * Helper to verify if the intent is empty
-     */
-    isEmpty() {
-        return this.moods.length === 0 && this.genres.length === 0 && !this.originalQuery;
+        // API Translations
+        this.genres = [];         
+        this.themes = [];         
+        this.demographics = [];   
+        
+        // Rule Engine Modifiers (Hard Constraints)
+        this.status = null;       
+        this.sort = "relevance";  
+        this.maxChapters = null;  
+        
+        // 🌟 ENRICHED RECOMMENDATION ENGINE (NEW)
+        this.boosts = {
+            genres: [],
+            themes: [],
+            demographics: []
+        };
+        this.avoids = {
+            genres: [],
+            themes: []
+        };
+        this.searchPriority = ["AniList", "MangaDex", "Jikan", "Kitsu"];
+        this.confidence = 1.0;
     }
 }
