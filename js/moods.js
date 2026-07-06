@@ -10,7 +10,7 @@ export const allMoods = [
     { label: "🍵 Chill", query: "Slice of Life, Adventure" },
     { label: "👻 Spooky", query: "Horror, Mystery" },
     { label: "💕 Romantic", query: "Romance, Comedy" },
-    { label: "🧠 Big Brain", query: "Mystery, Psychological" },
+    { label: "🧠 Big Brain", query: "Mystery, Psychological" }, 
     { label: "✨ Escapism", query: "Fantasy, Adventure" },
     { label: "☕ Cozy", query: "Slice of Life, Romance" },
     { label: "📼 Nostalgic", query: "Mecha, Sci-Fi" },
