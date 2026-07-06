@@ -9,6 +9,9 @@
     --text-bright: #f8fafc;
     --score-green: #4cca51;
     --text-muted: #647380;
+    
+    /* NEW: Controls how smoothly the colors swap */
+    --transition-speed: 0.6s; 
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +24,33 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* NEW: Animates the background and text color smoothly */
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
+
+/* Update your manga-card and vibe buttons to transition too */
+.manga-card { 
+    background: var(--card-bg); 
+    border-radius: 8px; 
+    overflow: hidden; 
+    transition: background-color var(--transition-speed) ease;
+}
+
+.search-container input {
+    /* (keep your existing rules, just add transition) */
+    width: 100%; padding: 15px 25px; font-size: 1.1rem; background: var(--card-bg);
+    border: none; border-radius: 6px; color: var(--text-title); outline: none;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.1); 
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, box-shadow 0.2s;
+}
+
+.manga-title { 
+    font-size: 0.95rem; color: var(--text-title); font-weight: 600; 
+    transition: color var(--transition-speed) ease;
+}
+
+
+
 
 /* --- Loading Bar --- */
 #loading-bar {
