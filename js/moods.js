@@ -60,8 +60,10 @@ let currentIndex = 0;
 export let rotationInterval;
 
 export function createVibeButton(moodObj) {
-    return `<button class="vibe-btn" onclick="window.triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
+    // NEW: We added window.applyMoodTheme before the search triggers
+    return `<button class="vibe-btn" onclick="window.applyMoodTheme('${moodObj.label}'); window.triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
 }
+
 
 export function updateRotatingVibes() {
     const rotatingContainer = document.getElementById('rotating-vibes');
