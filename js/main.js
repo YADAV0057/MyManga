@@ -4,7 +4,7 @@
 import './firebase.js';
 import { CONFIG } from './config.js';
 // Added toggleTags to the import list below
-import { populateAllVibes, startVibeRotation, toggleTags } from './moods.js';
+import { populateAllVibes, startVibeRotation, toggleTags, attachMoodButtonListeners } from './moods.js';
 import { triggerSearch } from './search.js';
 import { applyMoodTheme } from './theme.js';
 
@@ -43,6 +43,9 @@ function setupRefreshButton() {
 document.addEventListener('DOMContentLoaded', () => {
     populateAllVibes();
     startVibeRotation(CONFIG.VIBE_ROTATION_TIME);
+    
+    // NEW: Attach mood button click listeners
+    attachMoodButtonListeners();
 
     setupSearchBar();
     setupRefreshButton();
