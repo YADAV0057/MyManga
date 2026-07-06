@@ -12,7 +12,7 @@ export class MangaIntent {
         this.moods = [];          
         this.moodProfile = [];    // <-- ADD THIS LINE
         this.intensity = 0.0;     
-        
+        this.tone = "neutral";
         
         // API Translations
         this.genres = [];         // e.g., ["Psychological", "Drama"]
