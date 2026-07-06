@@ -2,7 +2,7 @@ import { MangaIntent } from './intentSchema.js';
 import { normalize } from './normalize.js';
 import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
-import { mapMoodsToGenres } from './genreMapper.js';
+import { mapMoodsToCategories } from './genreMapper.js'; // Updated import
 
 export function buildIntent(rawUserInput) {
     // 1. Instantiate the contract
@@ -11,15 +11,25 @@ export function buildIntent(rawUserInput) {
 
     // 2. Clean and Translate
     intent.normalizedQuery = normalize(rawUserInput);
-    const translatedText = applySynonyms(intent.normalizedQuery);
+    
+    let translatedText = intent.normalizedQuery;
+    try {
+        translatedText = applySynonyms(intent.normalizedQuery);
+    } catch (e) {
+        console.warn("Synonym engine skipped:", e.message);
+    }
 
     // 3. Extract Moods
     const moodData = analyzeMood(translatedText);
     intent.moods = moodData.moods;
     intent.intensity = moodData.intensity;
+    // (Optional: you can also attach moodData.moodProfile to intent if your UI needs it)
 
-    // 4. Map to Standard Genres
-    intent.genres = mapMoodsToGenres(intent.moods, 3);
+    // 4. Map to Standard Categories (Genres, Themes, Demographics)
+    const mappedCategories = mapMoodsToCategories(intent.moods, 3);
+    intent.genres = mappedCategories.genres;
+    intent.themes = mappedCategories.themes;
+    intent.demographics = mappedCategories.demographics;
 
     return intent;
 }
