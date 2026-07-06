@@ -60,8 +60,9 @@ let currentIndex = 0;
 export let rotationInterval;
 
 export function createVibeButton(moodObj) {
-    // NEW: We added window.applyMoodTheme before the search triggers
-    return `<button class="vibe-btn" onclick="window.applyMoodTheme('${moodObj.label}'); window.triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
+    // Escaping the string ensures that mood labels like "😊 Happy" don't break the HTML attribute
+    const escapedLabel = moodObj.label.replace(/'/g, "\\'");
+    return `<button class="vibe-btn" onclick="window.applyMoodTheme('${escapedLabel}'); window.triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
 }
 
 
