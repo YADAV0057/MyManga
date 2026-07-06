@@ -251,7 +251,8 @@ function setupParserTester() {
                 `).join('');
             }
 
-            // 3. Render Output Dashboard
+            
+             // 5. Render Output Dashboard
             output.innerHTML = `
                 <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
 
@@ -260,25 +261,22 @@ function setupParserTester() {
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
-                    <h3>🧹 Normalized Text</h3>
-                    <div style="color:#00ff9d">
-                        ${intent.normalizedQuery}
-                    </div>
-
-                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
-
                     <h3>🎭 Dynamic Mood Profile</h3>
                     <div style="margin-top: 15px;">
                         ${profileHTML}
                     </div>
 
-                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.6; text-align: right;">
-                        Global Intensity: ${intent.intensity ? intent.intensity.toFixed(2) : "0.00"}
+                    <div style="margin-top: 15px; font-size: 12px; text-align: right;">
+                        <span style="opacity: 0.6;">Global Intensity:</span> 
+                        <strong style="color: #00ff9d;">${intent.intensity ? intent.intensity.toFixed(2) : "0.00"}</strong>
+                        &nbsp;|&nbsp;
+                        <span style="opacity: 0.6;">Calculated Tone:</span> 
+                        <strong style="color: #00e5ff; text-transform: capitalize;">${intent.tone}</strong>
                     </div>
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
-                    <h3>🎯 Universal Intent Schema (API Ready)</h3>
+                    <h3>🎯 Base Intent Schema</h3>
                     <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-top: 10px;">
                         <div style="margin-bottom: 8px;">
                             <strong style="color: #ffcc00;">Genres:</strong> 
@@ -288,19 +286,54 @@ function setupParserTester() {
                             <strong style="color: #ff9d00;">Themes:</strong> 
                             ${intent.themes && intent.themes.length > 0 ? intent.themes.join(", ") : "<span style='opacity:0.5'>None</span>"}
                         </div>
-                       <div style="margin-bottom: 8px;">
-    <strong style="color: #ff007b;">Demographics:</strong> 
-    ${intent.demographics && intent.demographics.length > 0 
-        ? intent.demographics.map(d => `${d.name} <span style="opacity:0.6">(${Math.round(d.confidence * 100)}%)</span>`).join(", ") 
-        : "<span style='opacity:0.5'>None</span>"}
-</div>
-<div style="margin-top: 8px; font-weight: bold;">
-    <strong style="color: #00e5ff;">Calculated Tone:</strong> <span style="text-transform: capitalize;">${intent.tone}</span>
-</div>
- 
+                        <div>
+                            <strong style="color: #ff007b;">Demographics:</strong> 
+                            ${intent.demographics && intent.demographics.length > 0 
+                                ? intent.demographics.map(d => `${d.name} <span style="opacity:0.6">(${Math.round(d.confidence * 100)}%)</span>`).join(", ") 
+                                : "<span style='opacity:0.5'>None</span>"}
+                        </div>
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+
+                    <h3>🚀 Smart Reasoning (Rule Engine)</h3>
+                    <div style="background: rgba(255, 255, 255, 0.05); border-left: 4px solid #00e5ff; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                        
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: #00ff9d;">🔥 Boosts (Prioritize):</strong> 
+                            <div style="padding-left: 10px; font-size: 13px; opacity: 0.9; margin-top: 4px;">
+                                <span style="opacity:0.7">Genres:</span> ${intent.boosts?.genres?.length ? intent.boosts.genres.join(", ") : "None"}<br>
+                                <span style="opacity:0.7">Themes:</span> ${intent.boosts?.themes?.length ? intent.boosts.themes.join(", ") : "None"}<br>
+                                <span style="opacity:0.7">Demos:</span> ${intent.boosts?.demographics?.length ? intent.boosts.demographics.join(", ") : "None"}
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: #ff4b4b;">🚫 Avoids (Exclude):</strong> 
+                            <div style="padding-left: 10px; font-size: 13px; opacity: 0.9; margin-top: 4px;">
+                                <span style="opacity:0.7">Genres:</span> ${intent.avoids?.genres?.length ? intent.avoids.genres.join(", ") : "None"}<br>
+                                <span style="opacity:0.7">Themes:</span> ${intent.avoids?.themes?.length ? intent.avoids.themes.join(", ") : "None"}
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: #ffcc00;">🔌 API Waterfall Route:</strong> 
+                            <span style="font-size: 13px;">${intent.searchPriority ? intent.searchPriority.join(" → ") : "Default"}</span>
+                        </div>
+                        
+                        <div>
+                            <strong style="color: #b388ff;">🤖 AI Confidence:</strong> 
+                            ${intent.confidence ? (intent.confidence * 100).toFixed(0) + "%" : "100%"}
+                        </div>
+
+                    </div>
 
                 </div>
             `;
+
+
+                
+            
         } catch (err) {
             console.error("Parser Error:", err);
             output.innerHTML = `
