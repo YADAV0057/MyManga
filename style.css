@@ -1,5 +1,5 @@
 /* --- Global Reset & AniList Variables --- */
-:root { 
+:root {
     --bg-dark: #0b1622;
     --card-bg: #151f2e;
     --accent: #3db4f2;
@@ -10,8 +10,8 @@
     --score-green: #4cca51;
     --text-muted: #647380;
     
-    /* NEW: Controls how smoothly the colors swap */
-    --transition-speed: 0.6s; 
+    /* NEW: Controls how smoothly the background color swaps */
+    --transition-speed: 1.2s; 
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,8 +24,9 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    /* NEW: Animates the background and text color smoothly */
-    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    
+    /* NEW: This tells the body to use the transition speed when the color changes */
+    transition: background-color var(--transition-speed) ease;
 }
 
 /* Update your manga-card and vibe buttons to transition too */
