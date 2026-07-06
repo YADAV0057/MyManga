@@ -11,6 +11,9 @@ export class MangaIntent {
         this.moodProfile = [];    
         this.intensity = 0.0;     
         this.tone = "neutral";
+                this.confidence = 1.0;
+        this.confidenceReasons = []; // 🌟 NEW: Explain the AI's logic
+        
 
         // API Translations
         this.genres = [];         
