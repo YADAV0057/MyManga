@@ -1,3 +1,4 @@
+}
 // ==========================================
 // SEARCH / AGGREGATION ENGINE (js/search.js)
 // ==========================================
@@ -5,8 +6,9 @@ import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
 import { fetchFromJikanFallback } from './jikan.js';
 import { fetchFromKitsuFallback } from './kitsu.js';
-import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; // NEW IMPORT
+import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
 import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';  
+import { CONFIG } from './config.js'; // Ensure CONFIG is imported for IMAGE_FALLBACK
 
 let isSearching = false;
 
@@ -24,7 +26,9 @@ export async function triggerSearch(rawQuery, page = 1) {
 
     loadingBar.classList.add('is-loading');
     refreshBtn.style.display = 'none';
-    grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Checking database...</p>';
+    
+    // NEW: Instantly inject 15 shimmering skeleton cards while we wait!
+    renderSkeletonLoaders(15);
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
@@ -48,7 +52,6 @@ export async function triggerSearch(rawQuery, page = 1) {
             finalResults = docSnap.data().results;
         } else {
             console.log("Not in cache. Beginning API Waterfall...");
-            grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating fresh metadata...</p>';
 
             // TIER 1: AniList
             dataSource = "anilist";
@@ -79,7 +82,7 @@ export async function triggerSearch(rawQuery, page = 1) {
                 catch (e) { console.warn("Kitsu failed:", e); }
             }
 
-            // TIER 4: MangaDex Fallback (NEW)
+            // TIER 4: MangaDex Fallback 
             if (!finalResults || finalResults.length === 0) {
                 console.log("Kitsu failed. Trying MangaDex...");
                 dataSource = "mangadex";
@@ -130,7 +133,7 @@ export async function triggerSearch(rawQuery, page = 1) {
             };
         }));
 
-        grid.innerHTML = '';
+        grid.innerHTML = ''; // Clears the skeletons before rendering real cards
         refreshBtn.style.display = 'block';
         factSheets.forEach(renderMangaCard);
 
@@ -141,4 +144,29 @@ export async function triggerSearch(rawQuery, page = 1) {
         loadingBar.classList.remove('is-loading');
         isSearching = false;
     }
+}
+
+// ==========================================
+// SKELETON LOADER UI
+// ==========================================
+export function renderSkeletonLoaders(count = 15) {
+    const grid = document.getElementById('community-grid');
+    if (!grid) return;
+    
+    let skeletonHTML = '';
+    for (let i = 0; i < count; i++) {
+        skeletonHTML += `
+            <div class="skeleton-card">
+                <div class="skeleton-cover"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-meta" style="margin-top: 5px; margin-bottom: 12px;"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                    <div class="skeleton-line skeleton-text-short"></div>
+                </div>
+            </div>
+        `;
+    }
+    grid.innerHTML = skeletonHTML;
 }
