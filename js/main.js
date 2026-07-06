@@ -220,27 +220,32 @@ function setupParserTester() {
         const raw = input.value || "";
         const normalized = normalize(raw);
 
-        output.innerHTML = `
-            <div style="line-height:1.7">
+import("./parser/moodEngine.js").then(module => {
 
-                <h3>📝 Original Input</h3>
-                <div>${raw}</div>
+    const analysis = module.analyzeMood(normalized);
 
-                <hr>
+    output.innerHTML = `
+        <div style="line-height:1.7">
 
-                <h3>🧹 Normalized</h3>
-                <div style="color:#00ff9d">${normalized}</div>
+            <h3>📝 Original</h3>
+            <div>${raw}</div>
 
-                <hr>
+            <hr>
 
-                <h3>🧠 Analysis</h3>
-                <div>
-                    Mood parsing not enabled yet (Phase 2)
-                </div>
+            <h3>🧹 Normalized</h3>
+            <div style="color:#00ff9d">${normalized}</div>
 
-            </div>
-        `;
-    });
+            <hr>
+
+            <h3>🎭 Detected Moods</h3>
+            <div>${analysis.moods.join(", ") || "none"}</div>
+
+            <h3>🔥 Intensity</h3>
+            <div>${analysis.intensity.toFixed(2)}</div>
+
+        </div>
+    `;
+});
 
     window.AppDiagnostics.log("Parser", true, "Tester initialized");
 }
