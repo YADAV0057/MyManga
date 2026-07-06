@@ -59,12 +59,32 @@ export const allMoods = [
 let currentIndex = 0;
 export let rotationInterval;
 
+// Helper function to handle mood button clicks
+window.handleMoodClick = function(mood) {
+    if (window.applyMoodTheme) {
+        window.applyMoodTheme(mood.label);
+    }
+    if (window.triggerSearch) {
+        window.triggerSearch(mood.query, 1);
+    }
+};
+
 export function createVibeButton(moodObj) {
-    // Escaping the string ensures that mood labels like "😊 Happy" don't break the HTML attribute
-    const escapedLabel = moodObj.label.replace(/'/g, "\\'");
-    return `<button class="vibe-btn" onclick="window.applyMoodTheme('${escapedLabel}'); window.triggerSearch('${moodObj.query}', 1)">${moodObj.label}</button>`;
+    // Use data attributes instead of inline onclick to avoid escaping issues
+    return `<button class="vibe-btn" data-mood-label="${moodObj.label}" data-mood-query="${moodObj.query}">${moodObj.label}</button>`;
 }
 
+export function attachMoodButtonListeners() {
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('vibe-btn') && e.target.hasAttribute('data-mood-label')) {
+            const mood = {
+                label: e.target.getAttribute('data-mood-label'),
+                query: e.target.getAttribute('data-mood-query')
+            };
+            window.handleMoodClick(mood);
+        }
+    });
+}
 
 export function updateRotatingVibes() {
     const rotatingContainer = document.getElementById('rotating-vibes');
@@ -99,13 +119,13 @@ window.toggleTags = function () {
     const btn = document.getElementById('more-btn');
     const rotatingContainer = document.getElementById('rotating-vibes');
 
-    if (extra.style.display === "flex") {
-        extra.style.display = "none";
+    if (extra.classList.contains('show')) {
+        extra.classList.remove('show');
         rotatingContainer.style.display = "flex";
         btn.innerText = "+ Show All 50 Moods";
         startVibeRotation(30000);
     } else {
-        extra.style.display = "flex";
+        extra.classList.add('show');
         rotatingContainer.style.display = "none";
         btn.innerText = "- Hide Moods";
         clearInterval(rotationInterval);
@@ -120,4 +140,3 @@ window.toggleOptions = function (id) {
 window.toggleSynopsis = function (el) {
     el.classList.toggle('expanded');
 };
-
