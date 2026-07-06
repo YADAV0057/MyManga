@@ -28,7 +28,21 @@ window.AppDiagnostics = {
             { name: 'toggleFavorite', fn: () => typeof window.toggleFavorite === 'function' },
             { name: 'DOM Elements', fn: () => document.getElementById('manga-search-input') && document.getElementById('rotating-vibes') && document.getElementById('community-grid') }
         ];
-        
+      import { normalize } from "./parser/normalize.js";
+
+document.getElementById("parser-test-btn").addEventListener("click", () => {
+
+    const input = document.getElementById("parser-input").value;
+
+    const result = normalize(input);
+
+    document.getElementById("parser-output").textContent =
+        JSON.stringify({
+            original: input,
+            normalized: result
+        }, null, 2);
+
+});  
         let allGood = true;
         checks.forEach(check => {
             const result = check.fn();
