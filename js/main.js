@@ -5,10 +5,11 @@ import './firebase.js';
 import { CONFIG } from './config.js';
 import { populateAllVibes, startVibeRotation } from './moods.js';
 import { triggerSearch } from './search.js';
+import { applyMoodTheme } from './theme.js'; // NEW IMPORT
 
-// Mood buttons, "did you mean" chips, and manga cards all call
-// window.triggerSearch(...) from inline onclick handlers.
+// Attach global functions to the window for inline onclick handlers
 window.triggerSearch = triggerSearch;
+window.applyMoodTheme = applyMoodTheme; // NEW: Allows buttons to change colors
 
 function setupSearchBar() {
     const input = document.getElementById('manga-search-input');
@@ -16,6 +17,8 @@ function setupSearchBar() {
     if (!input || !btn) return;
 
     const runSearch = () => {
+        // Reset to default theme when manually typing a search
+        applyMoodTheme('default'); 
         triggerSearch(input.value.trim(), 1);
     };
 
