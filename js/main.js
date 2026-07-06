@@ -201,6 +201,7 @@ function setupRefreshButton() {
     });
 }
 
+
 // ===============================
 // 🧠 PARSER TESTER (PREVIEW BOARD)
 // ===============================
@@ -231,68 +232,79 @@ function setupParserTester() {
 
         try {
 
-            // main.js is already inside /js
+            // 1. Normalize
             const normalizeModule = await import("./parser/normalize.js");
-
             const normalize = normalizeModule.normalize;
-
             const normalized = normalize(raw);
 
-
             let moodData = null;
+            let topGenres = [];
 
+            // 2. Run Intelligence Layer
             try {
-
+                // Mood Engine
                 const engineModule = await import("./parser/moodEngine.js");
-
                 moodData = engineModule.analyzeMood(normalized);
 
-            } catch (e) {
+                // Genre Mapper
+                const genreMapperModule = await import("./parser/genreMapper.js");
+                topGenres = genreMapperModule.mapMoodsToGenres(moodData.moods, 3);
 
+            } catch (e) {
                 console.warn(
-                    "Mood engine unavailable:",
+                    "Intelligence layer unavailable:",
                     e.message
                 );
-
             }
 
+            // 3. Build Visual Bars for Mood Profile
+            let profileHTML = "<div style='opacity: 0.5;'>No specific moods detected. Try different words!</div>";
+            
+            if (moodData && moodData.moodProfile && moodData.moodProfile.length > 0) {
+                profileHTML = moodData.moodProfile.map(m => `
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; font-weight: 600;">
+                            <span style="text-transform: capitalize;">${m.category}</span>
+                            <span style="color: #00ff9d;">${m.score}%</span>
+                        </div>
+                        <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 6px; overflow: hidden; height: 8px;">
+                            <div style="width: ${m.score}%; background: #00ff9d; height: 100%; border-radius: 6px; transition: width 0.4s ease-out;"></div>
+                        </div>
+                    </div>
+                `).join('');
+            }
 
+            // 4. Render Output
             output.innerHTML = `
 
-                <div style="line-height:1.7">
+                <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
 
-                    <h3>📝 Original Input</h3>
-                    <div>${raw}</div>
+                    <h3 style="margin-top: 0;">📝 Original Input</h3>
+                    <div style="opacity: 0.8; font-style: italic;">"${raw}"</div>
 
-
-                    <hr>
-
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
                     <h3>🧹 Normalized Text</h3>
                     <div style="color:#00ff9d">
                         ${normalized}
                     </div>
 
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
-                    <hr>
+                    <h3>🎭 Dynamic Mood Profile</h3>
+                    <div style="margin-top: 15px;">
+                        ${moodData ? profileHTML : "Mood engine not connected yet"}
+                    </div>
 
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.6; text-align: right;">
+                        Global Intensity: ${moodData ? moodData.intensity.toFixed(2) : "0.00"}
+                    </div>
 
-                    <h3>🎭 Mood Analysis</h3>
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
-                    <div>
-                        ${
-                            moodData
-                            ?
-                            `
-                            <b>Moods:</b>
-                            ${moodData.moods.join(", ")}
-                            <br>
-                            <b>Intensity:</b>
-                            ${moodData.intensity.toFixed(2)}
-                            `
-                            :
-                            "Mood engine not connected yet"
-                        }
+                    <h3>🎯 Translated API Genres</h3>
+                    <div style="color:#ffcc00; font-weight:bold; font-size: 16px;">
+                        ${topGenres.length > 0 ? topGenres.join(" + ") : "No genres mapped"}
                     </div>
 
                 </div>
