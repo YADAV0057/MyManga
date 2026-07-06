@@ -25,6 +25,7 @@ export function buildIntent(rawUserInput) {
     intent.moods = moodData.moods;
     intent.intensity = moodData.intensity;
     intent.moodProfile = moodData.moodProfile; // <-- ADD THIS LINE
+    intent.tone = moodData.tone;
 
     // (Optional: you can also attach moodData.moodProfile to intent if your UI needs it)
 
