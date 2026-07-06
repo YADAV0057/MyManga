@@ -1,6 +1,6 @@
 
 // ==========================================
-// MOOD ROTATION ENGINE (js/moods.js)
+// MOOD ROTATION ENGINE (js/moods.js) 
 // ==========================================
 
 export const allMoods = [
