@@ -15,6 +15,10 @@
     <!-- Header Section -->
     <header>
         <h1>MangaMood 🔮</h1>
+        <div class="view-toggle">
+            <button id="nav-discover-btn" class="vibe-btn active-view">🔍 Discover</button>
+            <button id="nav-favorites-btn" class="vibe-btn">❤️ My List</button>
+        </div>
         <div class="search-container">
             <input type="text" id="manga-search-input" placeholder="What are you in the mood for today?">
             
@@ -46,7 +50,7 @@
         <!-- Results Area -->
         <section id="results-area">
             <div class="results-header">
-                <h2>✨ Your Curated Picks</h2>
+                <h2 id="results-title">✨ Your Curated Picks</h2>
                 <button id="refresh-btn" class="vibe-btn refresh-btn" style="display: none;">
                     🎲 Reroll
                 </button>
