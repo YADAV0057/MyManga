@@ -230,46 +230,15 @@ function setupParserTester() {
         }
 
         try {
+            // 1. Let pipeline.js do ALL the heavy lifting
+            const pipelineModule = await import("./parser/pipeline.js");
+            const intent = pipelineModule.buildIntent(raw);
 
-            // 1. Normalize
-            const normalizeModule = await import("./parser/normalize.js");
-            const normalize = normalizeModule.normalize;
-            const normalized = normalize(raw);
-
-            // 2. Apply Synonyms
-            let translatedText = normalized;
-            try {
-                const synonymModule = await import("./parser/synonyms.js");
-                translatedText = synonymModule.applySynonyms(normalized);
-            } catch (e) {
-                console.warn("Synonym engine unavailable:", e.message);
-            }
-
-            let moodData = null;
-            let topGenres = [];
-
-            // 3. Run Intelligence Layer
-            try {
-                // Mood Engine (Must use translatedText, not normalized)
-                const engineModule = await import("./parser/moodEngine.js");
-                moodData = engineModule.analyzeMood(translatedText);
-
-                // Genre Mapper
-                const genreMapperModule = await import("./parser/genreMapper.js");
-                topGenres = genreMapperModule.mapMoodsToGenres(moodData.moods, 3);
-
-            } catch (e) {
-                console.warn(
-                    "Intelligence layer unavailable:",
-                    e.message
-                );
-            }
-
-            // 4. Build Visual Bars for Mood Profile
+            // 2. Build Visual Bars for Mood Profile
             let profileHTML = "<div style='opacity: 0.5;'>No specific moods detected. Try different words!</div>";
             
-            if (moodData && moodData.moodProfile && moodData.moodProfile.length > 0) {
-                profileHTML = moodData.moodProfile.map(m => `
+            if (intent && intent.moodProfile && intent.moodProfile.length > 0) {
+                profileHTML = intent.moodProfile.map(m => `
                     <div style="margin-bottom: 12px;">
                         <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; font-weight: 600;">
                             <span style="text-transform: capitalize;">${m.category}</span>
@@ -282,79 +251,68 @@ function setupParserTester() {
                 `).join('');
             }
 
-            // 5. Render Output
+            // 3. Render Output Dashboard
             output.innerHTML = `
-
                 <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
 
                     <h3 style="margin-top: 0;">📝 Original Input</h3>
-                    <div style="opacity: 0.8; font-style: italic;">"${raw}"</div>
+                    <div style="opacity: 0.8; font-style: italic;">"${intent.originalQuery}"</div>
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
                     <h3>🧹 Normalized Text</h3>
                     <div style="color:#00ff9d">
-                        ${normalized}
-                    </div>
-
-                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
-
-                    <h3>🔄 Synonym Translation</h3>
-                    <div style="color:#00e5ff">
-                        ${translatedText !== normalized ? translatedText : "<span style='opacity: 0.6; font-style: italic;'>No synonyms detected (same as normalized)</span>"}
+                        ${intent.normalizedQuery}
                     </div>
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
                     <h3>🎭 Dynamic Mood Profile</h3>
                     <div style="margin-top: 15px;">
-                        ${moodData ? profileHTML : "Mood engine not connected yet"}
+                        ${profileHTML}
                     </div>
 
                     <div style="margin-top: 15px; font-size: 12px; opacity: 0.6; text-align: right;">
-                        Global Intensity: ${moodData ? moodData.intensity.toFixed(2) : "0.00"}
+                        Global Intensity: ${intent.intensity ? intent.intensity.toFixed(2) : "0.00"}
                     </div>
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
 
-                    <h3>🎯 Translated API Genres</h3>
-                    <div style="color:#ffcc00; font-weight:bold; font-size: 16px;">
-                        ${topGenres.length > 0 ? topGenres.join(" + ") : "No genres mapped"}
+                    <h3>🎯 Universal Intent Schema (API Ready)</h3>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: #ffcc00;">Genres:</strong> 
+                            ${intent.genres && intent.genres.length > 0 ? intent.genres.join(", ") : "<span style='opacity:0.5'>None</span>"}
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: #ff9d00;">Themes:</strong> 
+                            ${intent.themes && intent.themes.length > 0 ? intent.themes.join(", ") : "<span style='opacity:0.5'>None</span>"}
+                        </div>
+                        <div>
+                            <strong style="color: #ff007b;">Demographics:</strong> 
+                            ${intent.demographics && intent.demographics.length > 0 ? intent.demographics.join(", ") : "<span style='opacity:0.5'>None</span>"}
+                        </div>
                     </div>
 
                 </div>
-
             `;
 
         } catch (err) {
-
-            console.error(
-                "Parser Error:",
-                err
-            );
-
+            console.error("Parser Error:", err);
             output.innerHTML = `
-
                 <div style="color:red">
-
-                    ❌ Error in parser:
-
+                    ❌ Error in parser pipeline:
                     <br><br>
-
                     ${err.message}
-
                 </div>
-
             `;
-
         }
-
     });
 
     window.AppDiagnostics.log(
         "Parser",
         true,
-        "Tester initialized"
+        "Tester initialized with pipeline.js"
     );
 }
 
