@@ -4,7 +4,7 @@
 import { CONFIG } from './config.js';
 
 const KITSU_STATUS_MAP = {
-    'current': 'RELEASING',
+    'current': 'RELEASING', 
     'finished': 'FINISHED',
     'tba': 'NOT_YET_RELEASED',
     'unreleased': 'NOT_YET_RELEASED',
