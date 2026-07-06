@@ -1,43 +1,44 @@
+// js/parser/dictionary.js
+
+// 1. Add Urgency Modifiers
+export const URGENCY_MODIFIERS = {
+    // Amplifiers
+    "devastating": 1.5,
+    "destroy": 1.5,
+    "need": 1.3,
+    "extremely": 1.4,
+    "really": 1.2,
+    "very": 1.2,
+    "super": 1.2,
+    
+    // Dampeners
+    "mild": 0.6,
+    "chill": 0.7,
+    "little": 0.8,
+    "somewhat": 0.8
+};
+
+// 2. Add Tone to Core Dictionary (Positive, Negative, Neutral)
 export const MOOD_DICTIONARY = {
+    // 😭 SAD & EMOTIONAL (Negative Tone, High Base Intensity)
+    "cry": { moods: ["sad", "emotional", "tragedy"], intensity: 0.9, tone: "negative" },
+    "depressing": { moods: ["sad", "dark", "psychological"], intensity: 1.0, tone: "negative" },
+    "bittersweet": { moods: ["sad", "romance", "emotional"], intensity: 0.7, tone: "neutral" },
 
-    // 😭 SAD & EMOTIONAL
-    "cry": { moods: ["sad", "emotional", "tragedy"], intensity: 0.9 },
-    "depressing": { moods: ["sad", "dark", "psychological"], intensity: 1.0 },
-    "bittersweet": { moods: ["sad", "romance", "emotional"], intensity: 0.7 },
-    "angst": { moods: ["drama", "serious", "emotional"], intensity: 0.8 },
+    // 🥰 ROMANCE & FLUFF (Positive Tone, Lower Base Intensity)
+    "romance": { moods: ["romance", "emotional"], intensity: 0.6, tone: "positive" },
+    "fluff": { moods: ["wholesome", "romance", "happy"], intensity: 0.4, tone: "positive" },
+    "healing": { moods: ["wholesome", "sliceoflife", "soft"], intensity: 0.3, tone: "positive" },
 
-    // 🥰 ROMANCE & FLUFF
-    "romance": { moods: ["romance", "emotional"], intensity: 0.8 },
-    "fluff": { moods: ["wholesome", "romance", "happy"], intensity: 0.6 },
-    "spicy": { moods: ["romance", "mature"], intensity: 0.9 },
-    "heartwarming": { moods: ["wholesome", "emotional", "happy"], intensity: 0.7 },
+    // 💀 DARK & EDGY (Negative Tone, High Base Intensity)
+    "dark": { moods: ["dark", "serious", "psychological"], intensity: 0.8, tone: "negative" },
+    "revenge": { moods: ["dark", "revenge", "action"], intensity: 0.9, tone: "negative" },
+    "gory": { moods: ["horror", "dark", "action"], intensity: 1.0, tone: "negative" },
 
-    // 💀 DARK & EDGY
-    "dark": { moods: ["dark", "serious", "psychological"], intensity: 0.8 },
-    "revenge": { moods: ["dark", "revenge", "action"], intensity: 0.9 },
-    "gory": { moods: ["horror", "dark", "action"], intensity: 1.0 },
-    "creepy": { moods: ["horror", "psychological", "mystery"], intensity: 0.8 },
-    "despair": { moods: ["dark", "tragedy", "psychological"], intensity: 1.0 },
-
-    // 🔥 HYPE & BADASS
-    "hype": { moods: ["action", "epic"], intensity: 0.9 },
-    "badass": { moods: ["action", "cool", "serious"], intensity: 0.8 },
-    "tournament": { moods: ["action", "sports"], intensity: 0.7 },
-    "survival": { moods: ["action", "thriller", "dark"], intensity: 0.9 },
-
-    // 😂 COMEDY & LIGHTHEARTED
-    "funny": { moods: ["comedy"], intensity: 0.8 },
-    "hilarious": { moods: ["comedy", "parody"], intensity: 1.0 },
-    "gag": { moods: ["comedy", "parody"], intensity: 0.9 },
-
-    // ☕ CHILL & COZY
-    "healing": { moods: ["wholesome", "sliceoflife", "soft"], intensity: 0.8 },
-    "cozy": { moods: ["wholesome", "sliceoflife"], intensity: 0.7 },
-    "chill": { moods: ["sliceoflife", "soft"], intensity: 0.6 },
-    "relaxing": { moods: ["sliceoflife", "soft"], intensity: 0.6 },
-
-    // 🤯 MIND-BENDING
-    "mindfuck": { moods: ["psychological", "mystery", "thriller"], intensity: 1.0 },
-    "smart": { moods: ["psychological", "mystery", "serious"], intensity: 0.7 },
-    "mystery": { moods: ["mystery", "thriller"], intensity: 0.8 }
+    // 😂 COMEDY (Positive Tone, Medium Intensity)
+    "funny": { moods: ["comedy"], intensity: 0.6, tone: "positive" },
+    "hilarious": { moods: ["comedy", "parody"], intensity: 0.9, tone: "positive" },
+    
+    // 🤯 MIND-BENDING (Neutral Tone, High Intensity)
+    "mindfuck": { moods: ["psychological", "mystery", "thriller"], intensity: 1.0, tone: "neutral" }
 };
