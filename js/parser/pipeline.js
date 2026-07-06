@@ -19,10 +19,13 @@ export function buildIntent(rawUserInput) {
         console.warn("Synonym engine skipped:", e.message);
     }
 
-    // 3. Extract Moods
+    
+        // 3. Extract Moods
     const moodData = analyzeMood(translatedText);
     intent.moods = moodData.moods;
     intent.intensity = moodData.intensity;
+    intent.moodProfile = moodData.moodProfile; // <-- ADD THIS LINE
+
     // (Optional: you can also attach moodData.moodProfile to intent if your UI needs it)
 
     // 4. Map to Standard Categories (Genres, Themes, Demographics)
