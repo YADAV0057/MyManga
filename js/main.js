@@ -288,15 +288,19 @@ function setupParserTester() {
                             <strong style="color: #ff9d00;">Themes:</strong> 
                             ${intent.themes && intent.themes.length > 0 ? intent.themes.join(", ") : "<span style='opacity:0.5'>None</span>"}
                         </div>
-                        <div>
-                            <strong style="color: #ff007b;">Demographics:</strong> 
-                            ${intent.demographics && intent.demographics.length > 0 ? intent.demographics.join(", ") : "<span style='opacity:0.5'>None</span>"}
-                        </div>
-                    </div>
+                       <div style="margin-bottom: 8px;">
+    <strong style="color: #ff007b;">Demographics:</strong> 
+    ${intent.demographics && intent.demographics.length > 0 
+        ? intent.demographics.map(d => `${d.name} <span style="opacity:0.6">(${Math.round(d.confidence * 100)}%)</span>`).join(", ") 
+        : "<span style='opacity:0.5'>None</span>"}
+</div>
+<div style="margin-top: 8px; font-weight: bold;">
+    <strong style="color: #00e5ff;">Calculated Tone:</strong> <span style="text-transform: capitalize;">${intent.tone}</span>
+</div>
+ 
 
                 </div>
             `;
-
         } catch (err) {
             console.error("Parser Error:", err);
             output.innerHTML = `
