@@ -218,65 +218,119 @@ function setupParserTester() {
 
     btn.addEventListener("click", async () => {
 
-        const raw = input.value || "";
+        const raw = input.value.trim();
+
+        if (!raw) {
+            output.innerHTML = `
+                <div style="color:#ffcc00">
+                    ⚠️ Enter some text first
+                </div>
+            `;
+            return;
+        }
 
         try {
 
-            // ✅ FIXED PATH
-            const normalizeModule = await import("./js/parser/normalize.js");
+            // main.js is already inside /js
+            const normalizeModule = await import("./parser/normalize.js");
+
             const normalize = normalizeModule.normalize;
 
             const normalized = normalize(raw);
 
+
             let moodData = null;
 
             try {
-                const engine = await import("./js/parser/moodEngine.js");
-                moodData = engine.analyzeMood(normalized);
+
+                const engineModule = await import("./parser/moodEngine.js");
+
+                moodData = engineModule.analyzeMood(normalized);
+
             } catch (e) {
-                console.warn("Mood engine not loaded:", e.message);
-                moodData = null;
+
+                console.warn(
+                    "Mood engine unavailable:",
+                    e.message
+                );
+
             }
 
+
             output.innerHTML = `
+
                 <div style="line-height:1.7">
 
-                    <h3>📝 Original</h3>
+                    <h3>📝 Original Input</h3>
                     <div>${raw}</div>
 
-                    <hr>
-
-                    <h3>🧹 Normalized</h3>
-                    <div style="color:#00ff9d">${normalized}</div>
 
                     <hr>
+
+
+                    <h3>🧹 Normalized Text</h3>
+                    <div style="color:#00ff9d">
+                        ${normalized}
+                    </div>
+
+
+                    <hr>
+
 
                     <h3>🎭 Mood Analysis</h3>
+
                     <div>
                         ${
                             moodData
-                            ? `${moodData.moods.join(", ")} (intensity: ${moodData.intensity.toFixed(2)})`
-                            : "Mood engine not loaded yet"
+                            ?
+                            `
+                            <b>Moods:</b>
+                            ${moodData.moods.join(", ")}
+                            <br>
+                            <b>Intensity:</b>
+                            ${moodData.intensity.toFixed(2)}
+                            `
+                            :
+                            "Mood engine not connected yet"
                         }
                     </div>
 
                 </div>
+
             `;
+
 
         } catch (err) {
 
-            console.error("Parser Error:", err);
+            console.error(
+                "Parser Error:",
+                err
+            );
 
             output.innerHTML = `
+
                 <div style="color:red">
-                    ❌ Error in parser:<br><br>
+
+                    ❌ Error in parser:
+
+                    <br><br>
+
                     ${err.message}
+
                 </div>
+
             `;
+
         }
+
     });
 
-    window.AppDiagnostics.log("Parser", true, "Tester initialized");
+
+    window.AppDiagnostics.log(
+        "Parser",
+        true,
+        "Tester initialized"
+    );
 }
 
 // ===============================
