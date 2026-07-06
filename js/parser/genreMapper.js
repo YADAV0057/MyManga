@@ -1,73 +1,170 @@
 /**
- * MOOD_TO_GENRE_MAP
- * Maps abstract internal moods to standard genres.
- * Weights determine how strongly a mood correlates to a genre.
+ * MOOD_MAPPINGS
+ * Maps internal moods to Genres, Themes, and Demographics.
+ * Weights determine how strongly a mood correlates to a specific tag.
  */
-export const MOOD_TO_GENRE_MAP = {
-    // EMOTIONS
-    sad: { Drama: 1.0, Tragedy: 0.9 }, 
-    emotional: { Drama: 0.8, Romance: 0.5, Psychological: 0.4 },
-    happy: { Comedy: 1.0, SliceOfLife: 0.8, Adventure: 0.5 },
-    uplifting: { SliceOfLife: 0.9, Fantasy: 0.6, Comedy: 0.5 },
+export const MOOD_MAPPINGS = {
+    // 😭 SAD & EMOTIONAL
+    sad: { 
+        genres: { Drama: 1.0, Tragedy: 0.9 },
+        themes: {},
+        demographics: {}
+    }, 
+    emotional: { 
+        genres: { Drama: 0.8, Romance: 0.5, Psychological: 0.4 },
+        themes: {},
+        demographics: {}
+    },
     
-    // VIBES & THEMES
-    wholesome: { SliceOfLife: 1.0, Romance: 0.8, Comedy: 0.6 },
-    soft: { SliceOfLife: 0.9, Romance: 0.7 },
-    dark: { Psychological: 1.0, Horror: 0.9, Thriller: 0.8, Mystery: 0.5 },
-    serious: { Drama: 0.8, Psychological: 0.7, Action: 0.5 },
-    revenge: { Drama: 1.0, Psychological: 0.9, Action: 0.8, Mystery: 0.4 },
-    psychological: { Psychological: 1.0, Mystery: 0.8, Thriller: 0.8 },
-    romance: { Romance: 1.0, Drama: 0.6, SliceOfLife: 0.5 },
-    comedy: { Comedy: 1.0, SliceOfLife: 0.7, Parody: 0.6 },
+    // 💀 DARK & EDGY
+    dark: { 
+        genres: { Psychological: 1.0, Horror: 0.9, Thriller: 0.8, Mystery: 0.5 },
+        themes: { Survival: 0.7, Monsters: 0.5 },
+        demographics: { Seinen: 0.8 } 
+    },
+    serious: { 
+        genres: { Drama: 0.8, Psychological: 0.7, Action: 0.5 },
+        themes: {},
+        demographics: {}
+    },
+    revenge: {
+        genres: { Drama: 1.0, Psychological: 0.9, Action: 0.8, Mystery: 0.4 },
+        themes: { Villainess: 0.7 },
+        demographics: { Seinen: 0.6, Josei: 0.5 }
+    },
+    psychological: { 
+        genres: { Psychological: 1.0, Mystery: 0.8, Thriller: 0.8 },
+        themes: {},
+        demographics: {}
+    },
+    horror: { 
+        genres: { Horror: 1.0, Psychological: 0.9, Thriller: 0.8, Supernatural: 0.5 },
+        themes: { Survival: 0.8, Monsters: 0.7 },
+        demographics: { Seinen: 0.7 }
+    },
+    mystery: { 
+        genres: { Mystery: 1.0, Psychological: 0.8, Thriller: 0.8 },
+        themes: {},
+        demographics: {}
+    },
+    thriller: { 
+        genres: { Thriller: 1.0, Mystery: 0.9, Psychological: 0.9 },
+        themes: { Survival: 0.6 },
+        demographics: { Seinen: 0.6 }
+    },
+    tragedy: { 
+        genres: { Tragedy: 1.0, Drama: 0.9, Psychological: 0.6 },
+        themes: {},
+        demographics: { Seinen: 0.5, Josei: 0.5 }
+    },
 
-    // NEW MOODS FROM EXPANDED DICTIONARY
-    tragedy: { Tragedy: 1.0, Drama: 0.9, Psychological: 0.6 },
-    horror: { Horror: 1.0, Psychological: 0.9, Thriller: 0.8, Supernatural: 0.5 },
-    action: { Action: 1.0, Adventure: 0.7, Fantasy: 0.5 },
-    epic: { Action: 1.0, Adventure: 1.0, Fantasy: 0.8 },
-    cool: { Action: 0.8, SciFi: 0.6, Thriller: 0.5 },
-    sports: { Sports: 1.0, Drama: 0.6, Action: 0.5 },
-    parody: { Comedy: 1.0, Parody: 1.0 },
-    mystery: { Mystery: 1.0, Psychological: 0.8, Thriller: 0.8 },
-    thriller: { Thriller: 1.0, Mystery: 0.9, Psychological: 0.9 },
-    mature: { Mature: 1.0, Romance: 0.6, Drama: 0.6 }
+    // 🥰 ROMANCE & FLUFF
+    happy: { 
+        genres: { Comedy: 1.0, SliceOfLife: 0.8, Adventure: 0.5 },
+        themes: {},
+        demographics: {}
+    },
+    uplifting: { 
+        genres: { SliceOfLife: 0.9, Fantasy: 0.6, Comedy: 0.5 },
+        themes: {},
+        demographics: {}
+    },
+    wholesome: { 
+        genres: { SliceOfLife: 1.0, Romance: 0.8, Comedy: 0.6 },
+        themes: { SchoolLife: 0.8, FoundFamily: 0.7 },
+        demographics: { Shoujo: 0.8, Shounen: 0.5 }
+    },
+    soft: { 
+        genres: { SliceOfLife: 0.9, Romance: 0.7 },
+        themes: { Iyashikei: 0.8 },
+        demographics: {}
+    },
+    romance: { 
+        genres: { Romance: 1.0, Drama: 0.6, SliceOfLife: 0.5 },
+        themes: { SchoolLife: 0.6 },
+        demographics: { Shoujo: 0.9, Josei: 0.8 }
+    },
+    spicy: {
+        genres: { Romance: 1.0, Drama: 0.6 },
+        themes: { Harem: 0.5 },
+        demographics: { Josei: 0.9, Seinen: 0.7 }
+    },
+    mature: { 
+        genres: { Mature: 1.0, Romance: 0.6, Drama: 0.6 },
+        themes: {},
+        demographics: { Josei: 1.0, Seinen: 1.0 }
+    },
+
+    // 😂 COMEDY & ACTION
+    comedy: { 
+        genres: { Comedy: 1.0, SliceOfLife: 0.7, Parody: 0.6 },
+        themes: { Gag: 0.9 },
+        demographics: { Shounen: 0.6 }
+    },
+    parody: { 
+        genres: { Comedy: 1.0, Parody: 1.0 },
+        themes: { Gag: 0.8 },
+        demographics: {}
+    },
+    action: { 
+        genres: { Action: 1.0, Adventure: 0.7, Fantasy: 0.5 },
+        themes: {},
+        demographics: { Shounen: 0.9, Seinen: 0.6 }
+    },
+    epic: { 
+        genres: { Action: 1.0, Adventure: 1.0, Fantasy: 0.8 },
+        themes: { Military: 0.6 },
+        demographics: { Shounen: 0.8, Seinen: 0.7 }
+    },
+    cool: { 
+        genres: { Action: 0.8, SciFi: 0.6, Thriller: 0.5 },
+        themes: {},
+        demographics: { Shounen: 0.7 }
+    },
+    sports: { 
+        genres: { Sports: 1.0, Drama: 0.6, Action: 0.5 },
+        themes: { SchoolLife: 0.7 },
+        demographics: { Shounen: 0.9 }
+    }
 };
 
 /**
- * Converts an array of detected moods into standard API genres.
+ * Converts detected moods into standard API Genres, Themes, and Demographics.
  * 
- * @param {Array<string>} detectedMoods - e.g., ["dark", "revenge", "sad"]
- * @param {number} maxResults - How many top genres to return
- * @returns {Array<string>} - e.g., ["Psychological", "Drama", "Horror"]
+ * @param {Array<string>} detectedMoods 
+ * @param {number} maxResults - Max items per category
+ * @returns {Object} - { genres: [], themes: [], demographics: [] }
  */
-export function mapMoodsToGenres(detectedMoods, maxResults = 3) {
-    if (!detectedMoods || detectedMoods.length === 0) return [];
+export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
+    const scores = { genres: {}, themes: {}, demographics: {} };
 
-    const genreScores = {};
-
-    // 1. Tally up the weights for all detected moods
-    detectedMoods.forEach(mood => {
+    // 1. Tally up the weights across all categories
+    (detectedMoods || []).forEach(mood => {
         const normalizedMood = mood.toLowerCase();
-        const mappings = MOOD_TO_GENRE_MAP[normalizedMood];
+        const map = MOOD_MAPPINGS[normalizedMood];
         
-        if (mappings) {
-            for (const [genre, weight] of Object.entries(mappings)) {
-                if (!genreScores[genre]) {
-                    genreScores[genre] = 0;
+        if (map) {
+            ['genres', 'themes', 'demographics'].forEach(category => {
+                for (const [tag, weight] of Object.entries(map[category] || {})) {
+                    if (!scores[category][tag]) scores[category][tag] = 0;
+                    scores[category][tag] += weight;
                 }
-                // Accumulate the score (e.g., if "dark" and "revenge" both trigger Psychological, it stacks)
-                genreScores[genre] += weight;
-            }
+            });
         }
     });
 
-    // 2. Convert the scores object into an array of [genre, score] pairs
-    const sortedGenres = Object.entries(genreScores)
-        // Sort descending by score
-        .sort((a, b) => b[1] - a[1])
-        // Extract just the genre name
-        .map(entry => entry[0]);
+    // 2. Helper function to sort and slice top results
+    const extractTop = (scoreObj) => {
+        return Object.entries(scoreObj)
+            .sort((a, b) => b[1] - a[1])
+            .map(entry => entry[0])
+            .slice(0, maxResults);
+    };
 
-    // 3. Return the top N genres
-    return sortedGenres.slice(0, maxResults);
+    // 3. Return the fully populated categorization object
+    return {
+        genres: extractTop(scores.genres),
+        themes: extractTop(scores.themes),
+        demographics: extractTop(scores.demographics)
+    };
 }
