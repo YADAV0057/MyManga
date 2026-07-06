@@ -1,7 +1,7 @@
 
 // ==========================================
 // MOOD ROTATION ENGINE (js/moods.js) 
-// ==========================================
+// ========================================== 
 
 export const allMoods = [
     { label: "😊 Happy", query: "Slice of Life, Comedy" },
