@@ -4,13 +4,13 @@
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
 import { fetchFromJikanFallback } from './jikan.js';
-import { resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
+import { fetchFromKitsuFallback } from './kitsu.js';
+import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; // NEW IMPORT
 import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';  
 
 let isSearching = false;
 
 export async function triggerSearch(rawQuery, page = 1) {
-    // Allow an empty string through (used for the default "browse popular" load)
     if (rawQuery === undefined || rawQuery === null) return;
     if (isSearching) return;
     isSearching = true;
@@ -31,6 +31,7 @@ export async function triggerSearch(rawQuery, page = 1) {
         const parsedQuery = parseSmartQuery(rawQuery);
         const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
+        let dataSource = "cache"; 
 
         let docSnap = null;
         if (db) {
@@ -46,9 +47,11 @@ export async function triggerSearch(rawQuery, page = 1) {
             console.log("Loaded from Firebase cache.");
             finalResults = docSnap.data().results;
         } else {
-            console.log("Not in cache (or cache unavailable). Fetching from APIs...");
+            console.log("Not in cache. Beginning API Waterfall...");
             grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Curating fresh metadata...</p>';
 
+            // TIER 1: AniList
+            dataSource = "anilist";
             if (parsedQuery.isVibeOrTag) {
                 const [koreanResults, globalResults] = await Promise.all([
                     fetchFromAniListUnified(parsedQuery, page, true, 5),
@@ -60,46 +63,51 @@ export async function triggerSearch(rawQuery, page = 1) {
                 finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
             }
 
-            // AniList came back empty — could be a real "no matches," but it's also
-            // exactly what happens when AniList is down, rate-limited, or blocking
-            // this IP. Try Jikan (MyAnimeList) as a second source before giving up.
-            let usedFallback = false;
+            // TIER 2: Jikan (MAL) Fallback
             if (!finalResults || finalResults.length === 0) {
-                console.log("AniList returned nothing, trying Jikan fallback...");
-                try {
-                    finalResults = await fetchFromJikanFallback(parsedQuery, page, 10);
-                    usedFallback = finalResults.length > 0;
-                } catch (e) {
-                    console.warn("Jikan fallback failed:", e);
-                }
+                console.log("AniList failed. Trying Jikan...");
+                dataSource = "jikan";
+                try { finalResults = await fetchFromJikanFallback(parsedQuery, page, 10); } 
+                catch (e) { console.warn("Jikan failed:", e); }
             }
 
-            if (db && finalResults && finalResults.length > 0 && !usedFallback) {
+            // TIER 3: Kitsu Fallback
+            if (!finalResults || finalResults.length === 0) {
+                console.log("Jikan failed. Trying Kitsu...");
+                dataSource = "kitsu";
+                try { finalResults = await fetchFromKitsuFallback(parsedQuery, page, 10); } 
+                catch (e) { console.warn("Kitsu failed:", e); }
+            }
+
+            // TIER 4: MangaDex Fallback (NEW)
+            if (!finalResults || finalResults.length === 0) {
+                console.log("Kitsu failed. Trying MangaDex...");
+                dataSource = "mangadex";
+                try { finalResults = await fetchFromMangaDexFallback(parsedQuery, page, 10); } 
+                catch (e) { console.warn("MangaDex failed:", e); }
+            }
+
+            // CACHE SAVE: Only save Tier 1 (AniList) data to Firebase to keep cache clean
+            if (db && finalResults && finalResults.length > 0 && dataSource === "anilist") {
                 try {
                     const docRef = doc(db, "searches", cacheKey);
                     await setDoc(docRef, { results: finalResults });
-                } catch (e) {
-                    console.warn("Firestore write failed (results still shown to user):", e);
-                }
+                } catch (e) { console.warn("Firestore write failed:", e); }
             }
         }
 
         if (!finalResults || finalResults.length === 0) {
-            // Try to recover with "Did you mean" suggestions from MangaDex before giving up.
             let suggestions = [];
             if (parsedQuery.cleanQuery && parsedQuery.cleanQuery.length > 0) {
-                try {
-                    suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery, 5);
-                } catch (e) {
-                    console.warn("Did-you-mean suggestion lookup failed:", e);
-                }
+                try { suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery, 5); } 
+                catch (e) { console.warn("Did-you-mean lookup failed:", e); }
             }
 
             grid.innerHTML = '';
             if (suggestions.length > 0) {
                 renderDidYouMean(rawQuery, suggestions);
             } else {
-                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. Try a different page or filter!</p>';
+                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. All fallbacks exhausted!</p>';
             }
             return;
         }
@@ -114,7 +122,7 @@ export async function triggerSearch(rawQuery, page = 1) {
                 title: title,
                 globalScore: aniManga.averageScore || "N/A",
                 rawGenres: aniManga.genres || [],
-                coverUrl: aniManga.coverImage?.large || "https://via.placeholder.com/220x300?text=No+Cover",
+                coverUrl: aniManga.coverImage?.large || CONFIG.IMAGE_FALLBACK,
                 synopsis: cleanSynopsis,
                 status: formatStatus(aniManga.status),
                 chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A",
@@ -128,7 +136,7 @@ export async function triggerSearch(rawQuery, page = 1) {
 
     } catch (error) {
         console.error("Aggregation Error:", error);
-        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the database.</p>';
+        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the databases.</p>';
     } finally {
         loadingBar.classList.remove('is-loading');
         isSearching = false;
