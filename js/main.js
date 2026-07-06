@@ -204,6 +204,7 @@ function setupRefreshButton() {
 // ===============================
 // 🧠 PARSER TESTER (PREVIEW BOARD)
 // ===============================
+
 function setupParserTester() {
 
     const btn = document.getElementById("parser-test-btn");
@@ -220,8 +221,9 @@ function setupParserTester() {
         const raw = input.value || "";
 
         try {
-            // SAFE dynamic import
-            const normalizeModule = await import("./parser/normalize.js");
+
+            // ✅ FIXED PATH
+            const normalizeModule = await import("./js/parser/normalize.js");
             const normalize = normalizeModule.normalize;
 
             const normalized = normalize(raw);
@@ -229,9 +231,10 @@ function setupParserTester() {
             let moodData = null;
 
             try {
-                const engine = await import("./parser/moodEngine.js");
+                const engine = await import("./js/parser/moodEngine.js");
                 moodData = engine.analyzeMood(normalized);
             } catch (e) {
+                console.warn("Mood engine not loaded:", e.message);
                 moodData = null;
             }
 
@@ -250,16 +253,19 @@ function setupParserTester() {
 
                     <h3>🎭 Mood Analysis</h3>
                     <div>
-                        ${moodData
-                            ? moodData.moods.join(", ") + " (intensity: " + moodData.intensity.toFixed(2) + ")"
-                            : "Mood engine not loaded yet"}
+                        ${
+                            moodData
+                            ? `${moodData.moods.join(", ")} (intensity: ${moodData.intensity.toFixed(2)})`
+                            : "Mood engine not loaded yet"
+                        }
                     </div>
 
                 </div>
             `;
 
         } catch (err) {
-            console.error(err);
+
+            console.error("Parser Error:", err);
 
             output.innerHTML = `
                 <div style="color:red">
@@ -272,7 +278,6 @@ function setupParserTester() {
 
     window.AppDiagnostics.log("Parser", true, "Tester initialized");
 }
-
 
 // ===============================
 // START APP
