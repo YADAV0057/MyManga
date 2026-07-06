@@ -3,13 +3,15 @@
 // ==========================================
 import './firebase.js';
 import { CONFIG } from './config.js';
-import { populateAllVibes, startVibeRotation } from './moods.js';
+// Added toggleTags to the import list below
+import { populateAllVibes, startVibeRotation, toggleTags } from './moods.js';
 import { triggerSearch } from './search.js';
-import { applyMoodTheme } from './theme.js'; // NEW IMPORT
+import { applyMoodTheme } from './theme.js';
 
-// Attach global functions to the window for inline onclick handlers
+// Attach global functions to the window so HTML 'onclick' can find them
 window.triggerSearch = triggerSearch;
-window.applyMoodTheme = applyMoodTheme; // NEW: Allows buttons to change colors
+window.applyMoodTheme = applyMoodTheme;
+window.toggleTags = toggleTags; // <--- THIS WAS MISSING
 
 function setupSearchBar() {
     const input = document.getElementById('manga-search-input');
@@ -17,7 +19,6 @@ function setupSearchBar() {
     if (!input || !btn) return;
 
     const runSearch = () => {
-        // Reset to default theme when manually typing a search
         applyMoodTheme('default'); 
         triggerSearch(input.value.trim(), 1);
     };
