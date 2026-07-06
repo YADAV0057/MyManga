@@ -153,6 +153,24 @@ export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
         }
     });
 
+    // Universal extractor that attaches confidence to everything
+    const extractWithConfidence = (scoreObj) => {
+        return Object.entries(scoreObj)
+            .sort((a, b) => b[1] - a[1])
+            .map(([name, score]) => ({
+                name,
+                confidence: Math.min(Number(score.toFixed(2)), 1.0)
+            }))
+            .slice(0, maxResults);
+    };
+
+    return {
+        genres: extractWithConfidence(scores.genres),
+        themes: extractWithConfidence(scores.themes),
+        demographics: extractWithConfidence(scores.demographics)
+    };
+}
+
     // Flat array for Genres and Themes
     const extractFlat = (scoreObj) => {
         return Object.entries(scoreObj)
