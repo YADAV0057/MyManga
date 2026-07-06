@@ -1,32 +1,47 @@
-
 // js/parser/ruleEngine.js
 
 /**
  * Independent rule blocks for scalable logic.
- * If ANY word in `when` matches the user's detected moods, the rule fires.
+ * Boosts now use weights (0.1 to 1.0) to separate strong inferences from gentle nudges.
  */
 const RULES = [
     {
         name: "Dark & Gritty",
         when: ["dark", "revenge", "gory", "despair", "creepy"],
         boosts: {
-            genres: ["Psychological", "Action", "Horror"],
-            themes: ["Survival", "Monsters"],
-            demographics: ["Seinen"]
+            genres: [
+                { name: "Psychological", score: 0.90 }, 
+                { name: "Action", score: 0.85 }, 
+                { name: "Horror", score: 0.40 } // Gentle inference, not a hard requirement
+            ],
+            themes: [
+                { name: "Survival", score: 0.80 }, 
+                { name: "Monsters", score: 0.50 }
+            ],
+            demographics: [
+                { name: "Seinen", score: 0.90 }
+            ]
         },
         avoids: {
             genres: ["Comedy", "SliceOfLife"],
             themes: ["Iyashikei", "Fluff"]
         },
-        priority: ["MangaDex", "AniList", "Kitsu", "Jikan"], // MangaDex tags are great for specific dark themes
+        priority: ["MangaDex", "AniList", "Kitsu", "Jikan"],
         confidenceModifier: 0.95
     },
     {
         name: "Wholesome Healing",
         when: ["healing", "wholesome", "fluff", "happy", "cozy", "relaxing", "soft"],
         boosts: {
-            genres: ["SliceOfLife", "Comedy"],
-            themes: ["Iyashikei", "FoundFamily", "SchoolLife"],
+            genres: [
+                { name: "SliceOfLife", score: 0.95 }, 
+                { name: "Comedy", score: 0.70 }
+            ],
+            themes: [
+                { name: "Iyashikei", score: 0.90 }, 
+                { name: "FoundFamily", score: 0.85 }, 
+                { name: "SchoolLife", score: 0.60 }
+            ],
             demographics: []
         },
         avoids: {
@@ -40,8 +55,14 @@ const RULES = [
         name: "Tearjerker",
         when: ["cry", "sad", "depressing", "tragedy", "angst", "bittersweet"],
         boosts: {
-            genres: ["Drama", "Tragedy"],
-            themes: ["Loss", "CharacterGrowth"],
+            genres: [
+                { name: "Drama", score: 0.95 }, 
+                { name: "Tragedy", score: 0.90 }
+            ],
+            themes: [
+                { name: "Loss", score: 0.85 }, 
+                { name: "CharacterGrowth", score: 0.70 }
+            ],
             demographics: []
         },
         avoids: {
@@ -50,34 +71,18 @@ const RULES = [
         },
         priority: ["AniList", "MangaDex", "Jikan", "Kitsu"],
         confidenceModifier: 0.92
-    },
-    {
-        name: "Hype Action",
-        when: ["hype", "badass", "tournament", "epic"],
-        boosts: {
-            genres: ["Action", "Adventure", "Fantasy"],
-            themes: ["MartialArts", "SuperPower"],
-            demographics: ["Shounen"]
-        },
-        avoids: {
-            genres: ["SliceOfLife", "Romance"],
-            themes: ["Iyashikei"]
-        },
-        priority: ["AniList", "Jikan", "MangaDex", "Kitsu"], // Jikan (MAL) is excellent for Shounen metrics
-        confidenceModifier: 0.88
     }
 ];
 
-/**
- * Enriches the Universal Intent Schema based on detected moods.
- * @param {Object} intent - The current MangaIntent object
- * @returns {Object} - The enriched MangaIntent
- */
 export function applyReasoningRules(intent) {
     if (!intent.moods || intent.moods.length === 0) return intent;
 
-    // Use Sets to prevent duplicate entries from multiple overlapping rules
-    const boosts = { genres: new Set(), themes: new Set(), demographics: new Set() };
+    // Use Maps to store the highest score if multiple rules boost the same tag
+    const boostMaps = {
+        genres: new Map(),
+        themes: new Map(),
+        demographics: new Map()
+    };
     const avoids = { genres: new Set(), themes: new Set() };
     
     let appliedPriorities = [];
@@ -85,14 +90,29 @@ export function applyReasoningRules(intent) {
 
     // 1. Evaluate all rules
     RULES.forEach(rule => {
-        // Does the user's mood profile intersect with this rule's triggers?
         const isMatch = rule.when.some(trigger => intent.moods.includes(trigger));
         
         if (isMatch) {
-            // Merge Boosts
-            if (rule.boosts.genres) rule.boosts.genres.forEach(g => boosts.genres.add(g));
-            if (rule.boosts.themes) rule.boosts.themes.forEach(t => boosts.themes.add(t));
-            if (rule.boosts.demographics) rule.boosts.demographics.forEach(d => boosts.demographics.add(d));
+            // Merge Boosts (Keep the highest score)
+            ['genres', 'themes', 'demographics'].forEach(category => {
+                if (rule.boosts[category]) {
+                    rule.boosts[category].forEach(item => {
+                        // STRICT SEPARATION: Only add as a suggestion if it wasn't explicitly requested (Primary)
+                        const isAlreadyPrimary = intent[category] && (
+                            // Handle flat strings (genres/themes) or objects (demographics)
+                            intent[category].includes(item.name) || 
+                            intent[category].some(primaryItem => primaryItem.name === item.name)
+                        );
+                        
+                        if (!isAlreadyPrimary) {
+                            const currentScore = boostMaps[category].get(item.name) || 0;
+                            if (item.score > currentScore) {
+                                boostMaps[category].set(item.name, item.score);
+                            }
+                        }
+                    });
+                }
+            });
 
             // Merge Avoids
             if (rule.avoids.genres) rule.avoids.genres.forEach(g => avoids.genres.add(g));
@@ -104,11 +124,15 @@ export function applyReasoningRules(intent) {
         }
     });
 
-    // 2. Attach enriched data back to the intent payload
+    // 2. Convert Maps back to sorted arrays of objects { name, score }
+    const mapToArray = (map) => Array.from(map.entries())
+                                    .map(([name, score]) => ({ name, score }))
+                                    .sort((a, b) => b.score - a.score);
+
     intent.boosts = {
-        genres: [...boosts.genres],
-        themes: [...boosts.themes],
-        demographics: [...boosts.demographics]
+        genres: mapToArray(boostMaps.genres),
+        themes: mapToArray(boostMaps.themes),
+        demographics: mapToArray(boostMaps.demographics)
     };
     
     intent.avoids = {
@@ -116,10 +140,7 @@ export function applyReasoningRules(intent) {
         themes: [...avoids.themes]
     };
 
-    if (appliedPriorities.length > 0) {
-        intent.searchPriority = appliedPriorities;
-    }
-    
+    if (appliedPriorities.length > 0) intent.searchPriority = appliedPriorities;
     intent.confidence = lowestConfidence;
 
     return intent;
