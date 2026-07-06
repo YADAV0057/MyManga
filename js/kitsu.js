@@ -7,7 +7,7 @@ const KITSU_STATUS_MAP = {
     'current': 'RELEASING', 
     'finished': 'FINISHED',
     'tba': 'NOT_YET_RELEASED',
-    'unreleased': 'NOT_YET_RELEASED',
+    'unreleased': 'NOT_YET_RELEASED', 
     'upcoming': 'NOT_YET_RELEASED'
 };
 
