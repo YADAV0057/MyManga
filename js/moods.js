@@ -21,7 +21,7 @@ export const allMoods = [
     { label: "⚔️ Epic", query: "Action, Adventure" },
     { label: "🎀 Cute", query: "Mahou Shoujo, Comedy" },
     { label: "🖤 Edgy", query: "Action, Horror" },
-    { label: "🌟 Inspiring", query: "Music, Drama" },
+    { label: "��� Inspiring", query: "Music, Drama" },
     { label: "🕵️ Mysterious", query: "Mystery, Supernatural" },
     { label: "🏚️ Lonely", query: "Sci-Fi, Drama" },
     { label: "🎸 Rebellious", query: "Action, Music" },
@@ -107,24 +107,33 @@ export function attachMoodButtonListeners() {
     });
 }
 
-// Toggle display of moods
-window.toggleTags = function () {
+// Export toggleTags
+export function toggleTags() {
     const extra = document.getElementById('extra-tags');
     const btn = document.getElementById('more-btn');
     const rotatingContainer = document.getElementById('rotating-vibes');
+
+    if (!extra || !btn || !rotatingContainer) {
+        console.error("DOM elements not found for toggleTags");
+        return;
+    }
+
+    console.log("Toggling tags. Current state:", extra.classList.contains('show'));
 
     if (extra.classList.contains('show')) {
         extra.classList.remove('show');
         rotatingContainer.style.display = "flex";
         btn.innerText = "+ Show All 50 Moods";
         startVibeRotation(30000);
+        console.log("Hidden all moods, showing rotation");
     } else {
         extra.classList.add('show');
         rotatingContainer.style.display = "none";
         btn.innerText = "- Hide Moods";
         clearInterval(rotationInterval);
+        console.log("Showing all 50 moods");
     }
-};
+}
 
 window.toggleOptions = function (id) {
     const overlay = document.getElementById(`overlay-${id}`);
