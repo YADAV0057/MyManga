@@ -1,5 +1,5 @@
 // ==========================================
-// APP ENTRY POINT (js/main.js)
+// APP ENTRY POINT (js/main.js) 
 // ==========================================
 import './firebase.js';
 import { CONFIG } from './config.js';
