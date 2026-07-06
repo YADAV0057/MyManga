@@ -2,19 +2,7 @@
 // APP ENTRY POINT (js/main.js)
 // ==========================================
 
-// js/main.js
-
 import { setupParserTester } from './setupParserTester.js';
-
-// Initialize everything when the DOM is ready
-document.addEventListener("DOMContentLoaded", () => {
-    
-    // Initialize the Parser Preview UI
-    setupParserTester();
-
-    // ... initialize your other components (e.g., your vibes panel)
-});
-
 
 // ===============================
 // DIAGNOSTICS SYSTEM
@@ -141,7 +129,7 @@ async function initializeApp() {
         setupViewToggle();
         setupRefreshButton();
 
-        // Setup Parser Tester (NEW)
+        // Setup Parser Tester (Imported from external file)
         setupParserTester();
 
         window.AppDiagnostics.log("App", true, "Initialized");
@@ -212,116 +200,6 @@ function setupRefreshButton() {
         }
     });
 }
-
-// ===============================
-// 🧠 PARSER TESTER (PREVIEW BOARD)
-// ===============================
-
-function setupParserTester() {
-
-    const btn = document.getElementById("parser-test-btn");
-    const input = document.getElementById("parser-input");
-    const output = document.getElementById("parser-output");
-
-    if (!btn || !input || !output) {
-        console.warn("Parser UI missing");
-        return;
-    }
-
-    btn.addEventListener("click", async () => {
-
-        const raw = input.value.trim();
-
-        if (!raw) {
-            output.innerHTML = `
-                <div style="color:#ffcc00">
-                    ⚠️ Enter some text first
-                </div>
-            `;
-            return;
-        }
-
-        try {
-            // 1. Let pipeline.js do ALL the heavy lifting
-            const pipelineModule = await import("./parser/pipeline.js");
-            const intent = pipelineModule.buildIntent(raw);
-
-            // 2. Build Visual Bars for Mood Profile
-            let profileHTML = "<div style='opacity: 0.5;'>No specific moods detected. Try different words!</div>";
-            
-            if (intent && intent.moodProfile && intent.moodProfile.length > 0) {
-                profileHTML = intent.moodProfile.map(m => `
-                    <div style="margin-bottom: 12px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; font-weight: 600;">
-                            <span style="text-transform: capitalize;">${m.category}</span>
-                            <span style="color: #00ff9d;">${m.score}%</span>
-                        </div>
-                        <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 6px; overflow: hidden; height: 8px;">
-                            <div style="width: ${m.score}%; background: #00ff9d; height: 100%; border-radius: 6px; transition: width 0.4s ease-out;"></div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            
-     
-            // 5. Render Output Dashboard
-            output.innerHTML = `
-                <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
-
-                    <h3 style="margin-top: 0;">📝 Original Input</h3>
-                    <div style="opacity: 0.8; font-style: italic;">"${intent.originalQuery}"</div>
-
-                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
-
-                    <h3>🎭 Dynamic Mood Profile</h3>
-                    <div style="margin-top: 15px;">
-                        ${profileHTML}
-                    </div>
-
-                    <div style="margin-top: 15px; font-size: 12px; text-align: right;">
-                        <span style="opacity: 0.6;">Global Intensity:</span> 
-                        <strong style="color: #00ff9d;">${intent.intensity ? intent.intensity.toFixed(2) : "0.00"}</strong>
-                        &nbsp;|&nbsp;
-                        <span style="opacity: 0.6;">Calculated Tone:</span> 
-                        <strong style="color: #00e5ff; text-transform: capitalize;">${intent.tone}</strong>
-                    </div>
-
-                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
-
-                    <h3>⚙️ Hard Constraints (Rules)</h3>
-                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-top: 10px;">
-                        <div style="margin-bottom: 8px;">
-                            <strong style="color: #00ff9d;">Status:</strong> <span style="text-transform: capitalize;">${intent.status || "<span style='opacity:0.5'>Any</span>"}</span>
-                        </div>
-                        <div style="margin-bottom: 8px;">
-                            <strong style="color: #00ff9d;">Sorting:</strong> <span style="text-transform: capitalize;">${intent.sort}</span>
-                        </div>
-                        <div>
-                            <strong style="color: #00ff9d;">Max Chapters:</strong> ${intent.maxChapters ? intent.maxChapters : "<span style='opacity:0.5'>No limit</span>"}
-                        </div>
-                    </div>
-
-                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
-
-                    <h3>🎯 Base Intent Schema</h3>
-                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-top: 10px;">
-                        <div style="margin-bottom: 8px;">
-                            <strong style="color: #ffcc00;">Genres:</strong> 
-                            ${intent.genres && intent.genres.length > 0 ? intent.genres.join(", ") : "<span style='opacity:0.5'>None</span>"}
-                        </div>
-                        <div style="margin-bottom: 8px;">
-                            <strong style="color: #ff9d00;">Themes:</strong> 
-                            ${intent.themes && intent.themes.length > 0 ? intent.themes.join(", ") : "<span style='opacity:0.5'>None</span>"}
-                        </div>
-                        <div>
-                            <strong style="color: #ff007b;">Demographics:</strong> 
-                            ${intent.demographics && intent.demographics.length > 0 
-                                ? intent.demographics.map(d => `${d.name} <span style="opacity:0.6">(${Math.round(d.confidence * 100)}%)</span>`).join(", ") 
-                                : "<span style='opacity:0.5'>None</span>"}
-                        </div>
-
-
 
 // ===============================
 // START APP
