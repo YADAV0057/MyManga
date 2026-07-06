@@ -4,7 +4,7 @@
 import { CONFIG } from './config.js';
 
 const GENRE_ID_MAP = {
-    action: 1, adventure: 2, comedy: 4, drama: 8, fantasy: 10,
+    action: 1, adventure: 2, comedy: 4, drama: 8, fantasy: 10, 
     horror: 14, mystery: 7, psychological: 40, romance: 22, scifi: 24,
     sliceoflife: 36, sports: 30, supernatural: 37, thriller: 45,
     mecha: 18, music: 19, mahoushoujo: 66
