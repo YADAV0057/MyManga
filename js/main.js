@@ -252,7 +252,8 @@ function setupParserTester() {
             }
 
             
-             // 5. Render Output Dashboard
+     
+            // 5. Render Output Dashboard
             output.innerHTML = `
                 <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
 
@@ -272,6 +273,21 @@ function setupParserTester() {
                         &nbsp;|&nbsp;
                         <span style="opacity: 0.6;">Calculated Tone:</span> 
                         <strong style="color: #00e5ff; text-transform: capitalize;">${intent.tone}</strong>
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+
+                    <h3>⚙️ Hard Constraints (Rules)</h3>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: #00ff9d;">Status:</strong> <span style="text-transform: capitalize;">${intent.status || "<span style='opacity:0.5'>Any</span>"}</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: #00ff9d;">Sorting:</strong> <span style="text-transform: capitalize;">${intent.sort}</span>
+                        </div>
+                        <div>
+                            <strong style="color: #00ff9d;">Max Chapters:</strong> ${intent.maxChapters ? intent.maxChapters : "<span style='opacity:0.5'>No limit</span>"}
+                        </div>
                     </div>
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
@@ -330,7 +346,6 @@ function setupParserTester() {
 
                 </div>
             `;
-
 
                 
             
