@@ -8,6 +8,7 @@ import { analyzeMood } from './moodEngine.js';
 import { mapMoodsToCategories } from './genreMapper.js';
 import { applyReasoningRules } from './ruleEngine.js'; 
 
+// js/parser/pipeline.js
 export function buildIntent(rawUserInput) {
     let intent = new MangaIntent();
     intent.originalQuery = rawUserInput;
@@ -36,14 +37,24 @@ export function buildIntent(rawUserInput) {
     intent.moodProfile = moodData.moodProfile;
     intent.tone = moodData.tone;
 
-    // 5. Map to Standard Categories
-    const mappedCategories = mapMoodsToCategories(intent.moods, 3);
-    intent.genres = mappedCategories.genres;
-    intent.themes = mappedCategories.themes;
-    intent.demographics = mappedCategories.demographics;
+     // 5. Map to Standard Categories
+    const allMapped = mapMoodsToCategories(intent.moods, 5);
+    
+    // NEW: Split into Primary vs Inferred
+    // Anything with > 80% confidence is a Primary requirement
+    intent.genres = allMapped.genres.filter(g => g.confidence >= 0.80);
+    intent.themes = allMapped.themes.filter(t => t.confidence >= 0.80);
+    
+    // Anything < 80% confidence is relegated to "Inferred/Suggested"
+    const suggestedGenres = allMapped.genres.filter(g => g.confidence < 0.80);
+    const suggestedThemes = allMapped.themes.filter(t => t.confidence < 0.80);
 
     // 6. Apply Smart Reasoning Rules
     intent = applyReasoningRules(intent);
+
+    // Merge rule-based boosts into the suggested bucket
+    intent.boosts.genres = [...intent.boosts.genres, ...suggestedGenres];
+    intent.boosts.themes = [...intent.boosts.themes, ...suggestedThemes];
 
     return intent;
 }
