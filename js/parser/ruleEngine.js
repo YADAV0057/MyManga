@@ -83,16 +83,18 @@ const RULES = [
 export function applyReasoningRules(intent) {
     if (!intent.moods || intent.moods.length === 0) return intent;
 
+    // 1. Initialize variables first
     const boostMaps = { genres: new Map(), themes: new Map(), demographics: new Map() };
     const avoids = { genres: new Set(), themes: new Set() };
     const ruleLogs = [];
     
-    // 1. Sort rules by rulePriority (Highest first)
+    // 2. Sort rules by rulePriority (Highest first)
     const sortedRules = [...RULES].sort((a, b) => b.rulePriority - a.rulePriority);
 
-    let apiPriority = []; // Renamed for clarity
+    let apiPriority = []; 
     let lowestConfidence = 1.0;
 
+    // 3. Process rules
     sortedRules.forEach(rule => {
         const isMatch = rule.when.some(trigger => intent.moods.includes(trigger));
         
@@ -107,10 +109,9 @@ export function applyReasoningRules(intent) {
                             intent[category].some(primaryItem => primaryItem.name === item.name)
                         );
                         
-                        if (!isAlreadyPrimary) {
-                            if (!boostMaps[category].has(item.name)) {
-                                boostMaps[category].set(item.name, item.score);
-                            }
+                        // Check if it's already in the Primary Intent OR already boosted
+                        if (!isAlreadyPrimary && !boostMaps[category].has(item.name)) {
+                            boostMaps[category].set(item.name, item.score);
                         }
                     });
                 }
@@ -126,7 +127,7 @@ export function applyReasoningRules(intent) {
         }
     });
 
-    // Convert Maps back to sorted arrays
+    // 4. Finalize Intent
     const mapToArray = (map) => Array.from(map.entries())
                                     .map(([name, score]) => ({ name, score }))
                                     .sort((a, b) => b.score - a.score);
@@ -148,4 +149,3 @@ export function applyReasoningRules(intent) {
 
     return intent;
 }
-
