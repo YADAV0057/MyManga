@@ -7,12 +7,13 @@
 const RULES = [
     {
         name: "Dark & Gritty",
+        rulePriority: 80, // Priority level
         when: ["dark", "revenge", "gory", "despair", "creepy"],
         boosts: {
             genres: [
                 { name: "Psychological", score: 0.90 }, 
                 { name: "Action", score: 0.85 }, 
-                { name: "Horror", score: 0.40 } // Gentle inference, not a hard requirement
+                { name: "Horror", score: 0.40 }
             ],
             themes: [
                 { name: "Survival", score: 0.80 }, 
@@ -31,6 +32,7 @@ const RULES = [
     },
     {
         name: "Wholesome Healing",
+        rulePriority: 70, // Priority level
         when: ["healing", "wholesome", "fluff", "happy", "cozy", "relaxing", "soft"],
         boosts: {
             genres: [
@@ -53,6 +55,7 @@ const RULES = [
     },
     {
         name: "Tearjerker",
+        rulePriority: 90, // Priority level
         when: ["cry", "sad", "depressing", "tragedy", "angst", "bittersweet"],
         boosts: {
             genres: [
@@ -73,43 +76,39 @@ const RULES = [
         confidenceModifier: 0.92
     }
 ];
+
 // js/parser/ruleEngine.js
 
 // ... (KEEP YOUR RULES ARRAY EXACTLY AS IT IS ABOVE) ...
-
 export function applyReasoningRules(intent) {
     if (!intent.moods || intent.moods.length === 0) return intent;
 
-    const boostMaps = {
-        genres: new Map(),
-        themes: new Map(),
-        demographics: new Map()
-    };
+    const boostMaps = { genres: new Map(), themes: new Map(), demographics: new Map() };
     const avoids = { genres: new Set(), themes: new Set() };
+    const ruleLogs = [];
     
-    // 🌟 NEW: Initialize the log array
-    const ruleLogs = []; 
-    let appliedPriorities = [];
+    // 1. Sort rules by rulePriority (Highest first)
+    const sortedRules = [...RULES].sort((a, b) => b.rulePriority - a.rulePriority);
+
+    let apiPriority = []; // Renamed for clarity
     let lowestConfidence = 1.0;
 
-    RULES.forEach(rule => {
+    sortedRules.forEach(rule => {
         const isMatch = rule.when.some(trigger => intent.moods.includes(trigger));
         
         if (isMatch) {
-            // 🌟 NEW: Log the triggered rule
-            ruleLogs.push(`✓ Triggered: ${rule.name}`);
+            ruleLogs.push(`✓ Triggered: ${rule.name} (Priority: ${rule.rulePriority})`);
 
+            // Merge Boosts
             ['genres', 'themes', 'demographics'].forEach(category => {
                 if (rule.boosts[category]) {
                     rule.boosts[category].forEach(item => {
                         const isAlreadyPrimary = intent[category] && (
-                            intent[category].includes(item.name) || 
                             intent[category].some(primaryItem => primaryItem.name === item.name)
                         );
                         
                         if (!isAlreadyPrimary) {
-                            const currentScore = boostMaps[category].get(item.name) || 0;
-                            if (item.score > currentScore) {
+                            if (!boostMaps[category].has(item.name)) {
                                 boostMaps[category].set(item.name, item.score);
                             }
                         }
@@ -117,14 +116,17 @@ export function applyReasoningRules(intent) {
                 }
             });
 
+            // Merge Avoids
             if (rule.avoids.genres) rule.avoids.genres.forEach(g => avoids.genres.add(g));
             if (rule.avoids.themes) rule.avoids.themes.forEach(t => avoids.themes.add(t));
 
-            if (appliedPriorities.length === 0) appliedPriorities = rule.priority;
+            // Only set API priority if it hasn't been set by a higher-priority rule yet
+            if (apiPriority.length === 0) apiPriority = rule.priority;
             if (rule.confidenceModifier < lowestConfidence) lowestConfidence = rule.confidenceModifier;
         }
     });
 
+    // Convert Maps back to sorted arrays
     const mapToArray = (map) => Array.from(map.entries())
                                     .map(([name, score]) => ({ name, score }))
                                     .sort((a, b) => b.score - a.score);
@@ -140,11 +142,10 @@ export function applyReasoningRules(intent) {
         themes: [...avoids.themes]
     };
 
-    // 🌟 NEW: Attach the logs to the intent for the UI to display
     intent.ruleLogs = ruleLogs;
-    
-    if (appliedPriorities.length > 0) intent.searchPriority = appliedPriorities;
+    intent.searchPriority = apiPriority;
     intent.confidence = lowestConfidence;
 
     return intent;
 }
+
