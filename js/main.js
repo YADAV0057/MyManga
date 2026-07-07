@@ -99,6 +99,14 @@ async function initializeApp() {
             window.toggleTags = moods.toggleTags;
             window.attachMoodButtonListeners = moods.attachMoodButtonListeners;
             window.AppDiagnostics.log("Moods", true, "Loaded");
+
+            // BUGFIX: the functions above were only ever assigned to window,
+            // never actually invoked, so the 50-mood grid was never populated,
+            // the 3-button rotation never started, and mood buttons had no
+            // click handler. Start the mood system here.
+            moods.populateAllVibes();          // fills #extra-tags with all 50 mood buttons
+            moods.attachMoodButtonListeners(); // delegated click handler for every .vibe-btn
+            moods.startVibeRotation(30000);    // starts the 3-button rotation, every 30s
         } catch (e) {
             window.AppDiagnostics.log("Moods", false, e.message);
         }
@@ -132,6 +140,7 @@ async function initializeApp() {
         setupSearchBar();
         setupViewToggle();
         setupRefreshButton();
+        setupMoodPanel();
 
         // Setup Parser Tester (Imported from external file)
         setupParserTester();
@@ -185,6 +194,22 @@ function setupViewToggle() {
         window.currentView = goingToFavorites ? "favorites" : "discover";
         favBtn.classList.toggle("active-view", goingToFavorites);
         favBtn.textContent = goingToFavorites ? "🔍 Back to Discover" : "❤️ My List";
+    });
+}
+
+// ===============================
+// MOOD PANEL ("+ Show All Moods" toggle)
+// ===============================
+// BUGFIX: #more-btn's inline onclick="toggleTags()" was removed from
+// index.html at some point (likely during the discover-button cleanup)
+// and never replaced with an addEventListener here, so the button did
+// nothing. window.toggleTags itself was fine — it just had no caller.
+function setupMoodPanel() {
+    const moreBtn = document.getElementById("more-btn");
+    if (!moreBtn) return;
+
+    moreBtn.addEventListener("click", () => {
+        if (window.toggleTags) window.toggleTags();
     });
 }
 
