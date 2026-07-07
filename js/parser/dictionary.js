@@ -167,28 +167,45 @@ export const URGENCY_MODIFIERS = {
     "little": 0.8,
     "somewhat": 0.8,
     "slightly": 0.5,
-    "a bit": 0.7
+  export  "a bit": 0.7
 };
 
-
 export const MOOD_DICTIONARY = {
+    // 😭 SAD & EMOTIONAL
     "cry": { moods: ["sad", "emotional", "tragedy"], intensity: 0.9, tone: "negative" },
     "depressing": { moods: ["sad", "dark", "psychological"], intensity: 1.0, tone: "negative" },
     "bittersweet": { moods: ["sad", "romance", "emotional"], intensity: 0.7, tone: "neutral" },
+    
+    // 🥰 ROMANCE & FLUFF
     "romance": { moods: ["romance", "emotional"], intensity: 0.6, tone: "positive" },
     "fluff": { moods: ["wholesome", "romance", "happy"], intensity: 0.4, tone: "positive" },
     "healing": { moods: ["wholesome", "sliceoflife", "soft"], intensity: 0.3, tone: "positive" },
+    
+    // 💀 DARK & EDGY
     "dark": { moods: ["dark", "serious", "psychological"], intensity: 0.8, tone: "negative" },
     "revenge": { moods: ["dark", "revenge", "action"], intensity: 0.9, tone: "negative" },
     "gory": { moods: ["horror", "dark", "action"], intensity: 1.0, tone: "negative" },
     "scary": { moods: ["horror"], intensity: 0.8, tone: "negative" },
+    
+    // 😂 COMEDY
     "funny": { moods: ["comedy"], intensity: 0.6, tone: "positive" },
     "hilarious": { moods: ["comedy", "parody"], intensity: 0.9, tone: "positive" },
+    
+    // 🧠 MIND-BENDING & NICHE
     "mindfuck": { moods: ["psychological", "mystery", "thriller"], intensity: 1.0, tone: "neutral" },
     "supernatural": { moods: ["supernatural"], intensity: 0.7, tone: "neutral" },
     "isekai": { moods: ["supernatural"], intensity: 0.8, tone: "positive" },
     "nostalgic": { moods: ["sentimental"], intensity: 0.6, tone: "positive" },
     "educational": { moods: ["academic"], intensity: 0.4, tone: "positive" },
     "philosophical": { moods: ["philosophical"], intensity: 0.9, tone: "neutral" },
-    "deep": { moods: ["philosophical", "psychological"], intensity: 0.8, tone: "neutral" }
+    "deep": { moods: ["philosophical", "psychological"], intensity: 0.8, tone: "neutral" },
+
+    // 🏷️ LITERAL GENRE MAPPINGS (New!)
+    "drama": { moods: ["serious", "emotional"], intensity: 0.7, tone: "neutral" },
+    "action": { moods: ["action", "epic"], intensity: 0.8, tone: "neutral" },
+    "horror": { moods: ["horror", "dark"], intensity: 0.8, tone: "negative" },
+    "comedy": { moods: ["comedy"], intensity: 0.7, tone: "positive" },
+    "thriller": { moods: ["thriller", "psychological"], intensity: 0.8, tone: "negative" },
+    "fantasy": { moods: ["supernatural", "epic"], intensity: 0.7, tone: "positive" },
+    "scifi": { moods: ["cool", "psychological"], intensity: 0.7, tone: "neutral" }
 };
