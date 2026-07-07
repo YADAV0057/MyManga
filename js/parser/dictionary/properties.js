@@ -12378,6 +12378,205 @@ export const CONCEPT_PROPERTIES = {
         },
         "tone": "positive",
         "intensity": 0.3
+    },
+    "​cyberpunk": {
+        "id": "​cyberpunk",
+        "aliases": [
+            "​cyberpunk"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Psychological",
+                "weight": 0.9
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Cyberpunk",
+                "weight": 0.8
+            },
+            {
+                "name": "Urban",
+                "weight": 0.8
+            },
+            {
+                "name": "Crime",
+                "weight": 0.8
+            },
+            {
+                "name": "Anti-Hero",
+                "weight": 0.8
+            },
+            {
+                "name": "Dystopian",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.78,
+            "violent": 0.63,
+            "emotional": 1,
+            "tragic": 0.42,
+            "dark": 0.67,
+            "mysterious": 0.52
+        }
+    },
+    "​necromancer": {
+        "id": "​necromancer",
+        "aliases": [
+            "​necromancer"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Mystery",
+                "weight": 0.7
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Horror",
+                "weight": 0.9
+            },
+            {
+                "name": "Psychological",
+                "weight": 0.9
+            }
+        ],
+        "themes": [
+            {
+                "name": "Zombie",
+                "weight": 0.8
+            },
+            {
+                "name": "Clone",
+                "weight": 0.8
+            },
+            {
+                "name": "Dystopian",
+                "weight": 0.8
+            },
+            {
+                "name": "Survival",
+                "weight": 0.8
+            },
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "dark": 0.81,
+            "mysterious": 0.63,
+            "emotional": 0.45
+        }
+    },
+    "​time_loop": {
+        "id": "​time_loop",
+        "aliases": [
+            "​time_loop",
+            "​time loop",
+            "circle",
+            "coil",
+            "cycle"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Thriller",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "themes": [
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Time Manipulation",
+                "weight": 0.8
+            },
+            {
+                "name": "Cultivation",
+                "weight": 0.8
+            },
+            {
+                "name": "Family Life",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    "​space_bounty_hunter": {
+        "id": "​space_bounty_hunter",
+        "aliases": [
+            "​space_bounty_hunter",
+            "​space bounty hunter",
+            "reward",
+            "dog",
+            "captor"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
     }
-    
 };
