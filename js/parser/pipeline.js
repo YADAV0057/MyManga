@@ -86,25 +86,37 @@ export function buildIntent(rawUserInput) {
         intent.avoids.genres = [...new Set([...intent.avoids.genres, ...intent.excluded])];
     }
 
-
-      // 7. Deduplicate and Clean (The "Hardening" step)
-    const mergeUnique = (primary, suggested) => {
+    // 7. Deduplicate and Clean (The "Hardening" step)
+    const filterSuggested = (primary, suggested) => {
         const map = new Map();
         
-        // Extract value using either property name to be safe
-        primary.forEach(item => {
-            const val = item.confidence ?? item.score ?? 0.5;
-            map.set(item.name, val);
-        });
-        
-        // Merge suggested items, keeping the highest value
         [...suggested].forEach(item => {
-            const existing = map.get(item.name) || 0;
-            const current = item.confidence ?? item.score ?? 0.5;
-            if (current > existing) {
-                map.set(item.name, current);
+            // Check if this item is already a primary requirement
+            const isPrimary = primary.some(p => p.name === item.name);
+            
+            if (!isPrimary) {
+                const existing = map.get(item.name)?.score || 0;
+                const current = item.confidence ?? item.score ?? 0.5;
+                
+                if (current > existing) {
+                    map.set(item.name, {
+                        name: item.name,
+                        confidence: Math.min(Number(current), 1.0),
+                        score: Math.min(Number(current), 1.0),
+                        reason: item.reason || null // Pass the reasoning string through
+                    });
+                }
             }
         });
+        
+        return Array.from(map.values()).sort((a, b) => b.score - a.score);
+    };
+
+    // Apply strict filtering
+    intent.boosts.genres = filterSuggested(intent.genres, [...intent.boosts.genres, ...suggestedGenres]);
+    intent.boosts.themes = filterSuggested(intent.themes, [...intent.boosts.themes, ...suggestedThemes]);
+
+      
         
         // Output BOTH confidence and score so the UI never prints NaN%
         return Array.from(map.entries()).map(([name, val]) => ({ 
