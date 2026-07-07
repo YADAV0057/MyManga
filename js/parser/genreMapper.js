@@ -39,7 +39,7 @@ const extractWithConfidence = (scoreObj) => {
             name,
             confidence: Math.min(Number(score.toFixed(2)), 1.0)
         }))
-        .slice(0, maxResults);
+        .slice(0, maxResults); 
 };
 
     // 3. Return the unified object
