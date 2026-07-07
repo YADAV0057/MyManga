@@ -4,6 +4,9 @@ on:
     paths:
       - 'queue.txt'
 
+permissions:
+  contents: write
+
 jobs: 
   harvest:
     runs-on: ubuntu-latest
@@ -25,9 +28,14 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add js/parser/dictionary/properties.js queue.txt
-          git commit -m "Auto-harvested new concepts" || echo "No changes to commit"
-          git push
           
- 
- 
+          # Add the updated files
+          git add js/parser/dictionary/properties.js
+          
+          # Clear the queue file after processing to prevent re-harvesting
+          echo "" > queue.txt
+          git add queue.txt
+          
+          # Commit and push if there are changes
+          git commit -m "Auto-harvested new concepts and cleared queue" || echo "No changes to commit"
+          git push
