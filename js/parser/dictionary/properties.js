@@ -12565,18 +12565,6 @@ export const CONCEPT_PROPERTIES = {
             "emotional": 0.77,
             "tragic": 0.51
         }
-    },
-    "​space_bounty_hunter": {
-        "id": "​space_bounty_hunter",
-        "aliases": [
-            "​space_bounty_hunter",
-            "​space bounty hunter",
-            "reward",
-            "dog",
-            "captor"
-        ],
-        "genres": [],
-        "themes": [],
-        "moodWeights": {}
     }
+
 };
