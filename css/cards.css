@@ -708,7 +708,7 @@
 /* ===================================================
    MangaMood - cards.css
    Part 4
-   Match Score Badge • Match Reasons (Phase 2, Step 5/6)
+   Match Score Badge • "Why?" Match Breakdown
 =================================================== */
 
 /* ==========================
@@ -779,6 +779,82 @@
 }
 
 /* ==========================
+   "WHY?" TRIGGER BUTTON
+========================== */
+/* NEW: match-reasons used to render as an always-visible block under every
+   card's facts row. That's now collapsed behind this button by default, so
+   compact cards are the norm and the full explanation is opt-in. */
+
+.why-btn{
+
+    align-self:flex-start;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:4px 10px;
+
+    border-radius:14px;
+
+    font-size:.76rem;
+
+    font-weight:700;
+
+    color:var(--accent);
+
+    background:rgba(61,180,242,.1);
+
+    border:1px solid rgba(61,180,242,.25);
+
+    transition:var(--transition);
+}
+
+.why-btn:hover{
+
+    background:rgba(61,180,242,.2);
+
+    color:var(--text-bright);
+}
+
+/* ==========================
+   WHY PANEL (collapsible)
+========================== */
+
+.why-panel{
+
+    display:none;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.why-panel.open{
+
+    display:flex;
+}
+
+.why-panel-score{
+
+    align-self:flex-start;
+
+    padding:4px 12px;
+
+    border-radius:20px;
+
+    font-size:.8rem;
+
+    font-weight:700;
+
+    color:#48c78e;
+
+    background:rgba(72,199,142,.1);
+
+    border:1px solid rgba(72,199,142,.3);
+}
+
+/* ==========================
    MATCH REASONS
 ========================== */
 
@@ -841,7 +917,8 @@
 ========================== */
 
 .fav-btn:focus,
-.read-link-btn:focus{
+.read-link-btn:focus,
+.why-btn:focus{
 
     outline:2px solid var(--accent);
 
