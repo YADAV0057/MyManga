@@ -627,3 +627,139 @@ header,
     }
 
 }
+
+/* ===================================================
+   MangaMood - style.css
+   Part 4
+   Mood Analyzer Panel (replaces old inline-styled
+   "Mood Intelligence Preview" debug block)
+=================================================== */
+
+.mood-analyzer{
+
+    margin-top:30px;
+
+    padding:26px;
+
+    border-radius:var(--radius);
+
+    background:var(--glass);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+}
+
+.mood-analyzer-header h2{
+
+    color:var(--text-title);
+
+    font-size:1.3rem;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+}
+
+.mood-analyzer-header p{
+
+    color:var(--text-muted);
+
+    font-size:.88rem;
+
+    margin-bottom:18px;
+}
+
+.mood-analyzer-input{
+
+    width:100%;
+
+    padding:13px 16px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:rgba(0,0,0,.22);
+
+    color:var(--text-bright);
+
+    font-family:inherit;
+
+    font-size:.95rem;
+
+    outline:none;
+
+    transition:border-color var(--transition), background var(--transition);
+}
+
+.mood-analyzer-input::placeholder{
+
+    color:var(--text-muted);
+}
+
+.mood-analyzer-input:focus{
+
+    border-color:var(--accent);
+
+    background:rgba(0,0,0,.32);
+}
+
+.mood-analyzer-btn{
+
+    width:100%;
+
+    margin-top:12px;
+
+    padding:13px 16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:var(--accent);
+
+    color:white;
+
+    font-weight:700;
+
+    font-size:.95rem;
+
+    letter-spacing:.2px;
+
+    transition:background var(--transition), transform var(--transition);
+}
+
+.mood-analyzer-btn:hover{
+
+    background:var(--accent-hover);
+
+    transform:translateY(-1px);
+}
+
+.mood-analyzer-output{
+
+    margin-top:18px;
+}
+
+.mood-analyzer-output:empty{
+
+    margin-top:0;
+}
+
+@media (max-width:768px){
+
+    .mood-analyzer{
+        padding:20px;
+    }
+
+    .mood-analyzer-header h2{
+        font-size:1.15rem;
+    }
+}
