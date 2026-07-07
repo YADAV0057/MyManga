@@ -1,6 +1,6 @@
 // js/parser/pipeline.js
 
-import { mangaIntent } from './intentSchema.js';
+import { MangaIntent } from './intentSchema.js'; // Fixed capitalization
 import { normalize } from './normalize.js'; 
 import { extractRules } from './rules.js';
 import { applySynonyms } from './synonyms.js';
@@ -14,21 +14,27 @@ import { applyReasoningRules } from './ruleEngine.js';
 function handleNegations(text) {
     const negations = ["no", "not", "without", "avoid", "except", "don't"];
     let excluded = [];
-    let cleanText = text;
+    let cleanText = " " + text + " "; // Pad for easier boundary matching
 
     negations.forEach(neg => {
-        if (cleanText.includes(neg)) {
-            const parts = cleanText.split(neg);
+        // Use Regex with word boundaries to prevent "no" from matching "novel"
+        const regex = new RegExp(`\\b${neg}\\b`, 'i');
+        
+        if (regex.test(cleanText)) {
+            const parts = cleanText.split(regex);
             if (parts.length > 1) {
+                // Grab the word immediately following the negation
                 const term = parts[1].trim().split(" ")[0];
                 if (term) {
                     excluded.push(term.charAt(0).toUpperCase() + term.slice(1));
-                    cleanText = cleanText.replace(neg + " " + term, "").trim();
+                    // Replace only the specific negation and the targeted word
+                    cleanText = cleanText.replace(new RegExp(`\\b${neg}\\s+${term}\\b`, 'i'), "").trim();
                 }
             }
         }
     });
-    return { cleanText, excluded };
+    
+    return { cleanText: cleanText.trim(), excluded };
 }
 
 /**
