@@ -1,7 +1,7 @@
 // js/parser/dictionary.js
 
 // 1. Import your curated Base Knowledge
-import { CONCEPT_PROPERTIES as BASE_PROPERTIES } from './properties.js';
+import { CONCEPT_PROPERTIES as BASE_PROPERTIES } from './dictionary/properties.js';
 
 // 2. Import your auto-harvested Growth Layer
 // We use a safe check; if the file doesn't exist yet, we default to an empty object
