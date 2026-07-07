@@ -1,41 +1,59 @@
-import fs from 'fs'; 
+// js/parser/dictionary/upgrade.js
+import fs from 'fs';
 import { GENRE_WEIGHTS, THEME_WEIGHTS, SOURCE_MULTIPLIERS } from './MoodConfig.js';
-import { CONCEPT_PROPERTIES } from './properties.js'; 
+import { CONCEPT_PROPERTIES } from './properties.js';
 
-// ... calculateMood function remains exactly as is ...
+/**
+ * Calculates a mood vector based on genre, theme, and source weights.
+ */
+export function calculateMood(concept) {
+    let scores = {};
+    
+    const process = (items = [], map, mult) => {
+        items.forEach(item => {
+            const moodMap = map[item.name];
+            if (moodMap) {
+                for (let [m, v] of Object.entries(moodMap)) {
+                    scores[m] = (scores[m] || 0) + (v * item.weight * mult);
+                }
+            }
+        });
+    };
 
+    process(concept.genres || [], GENRE_WEIGHTS, SOURCE_MULTIPLIERS.Genre);
+    process(concept.themes || [], THEME_WEIGHTS, SOURCE_MULTIPLIERS.Theme);
+    
+    const max = Math.max(...Object.values(scores), 1);
+    Object.keys(scores).forEach(m => scores[m] = parseFloat((scores[m] / max).toFixed(2)));
+    
+    return scores;
+}
+
+// --- EXECUTION BLOCK ---
 if (process.argv[1] && process.argv[1].endsWith('upgrade.js')) {
+    runUpgrade();
+}
+
+function runUpgrade() {
     const finalProperties = { ...CONCEPT_PROPERTIES };
     const reviewQueue = [];
 
     for (let key in CONCEPT_PROPERTIES) {
         const concept = CONCEPT_PROPERTIES[key];
-        
-        // Calculate mood vectors
         concept.moodWeights = calculateMood(concept);
         
-        // --- STEP 2: GATEKEEPER LOGIC ---
-        // We check the confidence metadata we added in Step 1
         const confidence = concept.metadata?.confidence || 0;
-
         if (confidence >= 0.75) {
             console.log(`[Auto-Published] ${key} (Conf: ${confidence})`);
         } else {
             console.log(`[Queued for Review] ${key} (Conf: ${confidence})`);
             reviewQueue.push(concept);
-            // Remove from main properties so it doesn't pollute production
             delete finalProperties[key];
         }
     }
 
-    // ... (Your calculateMood function and loop logic remains exactly the same)
-
-    // --- STEP 3 INTEGRATION: WRITE TO HARVESTED LAYER ONLY ---
-    // Instead of overwriting properties.js, we write only to harvested_knowledge.js
     const harvestFile = `export const HARVESTED_RULES = ${JSON.stringify(finalProperties, null, 4)};\n`;
     fs.writeFileSync('./harvested_knowledge.js', harvestFile);
-
-    // Write the review queue (This remains the same)
     fs.writeFileSync('./review_queue.json', JSON.stringify(reviewQueue, null, 4));
     
     console.log("Upgrade complete. Harvested knowledge updated and review queue synchronized.");
