@@ -47,7 +47,7 @@ export const SYNONYM_MAP = {
 "heartwarming": "wholesome",
 "comfort": "healing",
 "chill": "healing"
-
+ 
 };
 
 /**
