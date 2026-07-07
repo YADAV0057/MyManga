@@ -66,12 +66,12 @@ export function analyzeMood(text) {
         dominantTone = "positive";
     }
 
-    // 5. Normalize Mood Profile Scores
-    const normalizedProfile = {};
-    Object.keys(moodProfile).forEach(mood => {
-        // Cap individual mood profile scores at 1.0 and format to 2 decimal places
-        normalizedProfile[mood] = Number(Math.min(moodProfile[mood], 1.0).toFixed(2));
-    });
+    
+    // 5. Normalize Mood Profile Scores (Formatted as Array for the UI)
+    const normalizedProfile = Object.keys(moodProfile).map(mood => ({
+        name: mood,
+        score: Number(Math.min(moodProfile[mood], 1.0).toFixed(2))
+    })).sort((a, b) => b.score - a.score); // Sorts highest intensity first
 
     return {
         moods: Array.from(detectedMoods),
