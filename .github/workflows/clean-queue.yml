@@ -1,0 +1,40 @@
+name: Clean Queue Input
+
+on:
+  push:
+    paths:
+      - 'raw_paste.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Clean raw paste into queue.txt
+        run: node js/clean_queue.js raw_paste.txt queue.txt
+
+      - name: Commit cleaned queue.txt
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+
+          git add queue.txt
+
+          # Empty out raw_paste.txt so it doesn't re-trigger this workflow
+          # forever, and so old pastes don't linger in the repo.
+          printf "" > raw_paste.txt
+          git add raw_paste.txt
+
+          git commit -m "Clean raw_paste.txt into queue.txt" || echo "No changes to commit"
+          git push
+
