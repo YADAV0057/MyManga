@@ -65,6 +65,11 @@ function minMaxNormalize(values) {
     return (v) => (typeof v === 'number' && !isNaN(v)) ? (v - min) / (max - min) : NEUTRAL;
 }
 
+/** Strips punctuation/casing/whitespace so title comparisons ignore formatting noise. */
+function normalizeTitle(s) {
+    return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
 /**
  * @param {import('../resultNormalizer.js').UnifiedResult} item
  * @param {object} intent   - buildIntent() output
@@ -76,23 +81,45 @@ function scoreOne(item, intent, plan, normPopularity) {
     const itemThemes = (item.themes && item.themes.length > 0) ? item.themes : itemGenres;
     const reasons = [];
 
-    // --- Mood match (40%) — overlap against the FULL mood-weighted genre/theme signature
-    const moodSignal = [...(intent.genres || []), ...(intent.themes || [])];
+    // --- Exact/near-exact title match — if the user searched for a specific
+    // title and we found it, that's a 100% match, full stop. No amount of
+    // genre/mood/popularity math should override "this is the manga you typed."
+    const queryNorm = normalizeTitle(plan.cleanQuery);
+    const titleNorm = normalizeTitle(item.title);
+    if (queryNorm.length > 0 && titleNorm.length > 0 &&
+        (queryNorm === titleNorm || titleNorm.includes(queryNorm) || queryNorm.includes(titleNorm))) {
+        reasons.push({ ok: true, text: 'Exact title match' });
+        return {
+            matchScore: 100,
+            matchBreakdown: { mood: 100, genre: 100, theme: 100, constraint: 100, popularity: 100, rating: 100 },
+            matchReasons: dedupeReasons(reasons).slice(0, 6)
+        };
+    }
+
+    // --- Mood match (40%) — overlap against the FULL mood-weighted genre/theme
+    // signature. NOTE: must include intent.boosts (the <0.80-confidence tail
+    // pipeline.js splits off), not just intent.genres/themes (the >=0.80
+    // subset also used as hard plan filters) — otherwise most moods never
+    // produce a signal at all and this always fell back to NEUTRAL.
+    const moodSignal = [
+        ...(intent.genres || []), ...(intent.boosts?.genres || []),
+        ...(intent.themes || []), ...(intent.boosts?.themes || [])
+    ];
     const moodOverlap = weightedOverlap(moodSignal, [...itemGenres, ...itemThemes]);
-    const moodScore = moodOverlap ?? NEUTRAL;
-    if (intent.moods && intent.moods.length > 0 && moodScore >= 0.5) {
+    const moodScore = moodOverlap; // null when there's genuinely no mood signal
+    if (intent.moods && intent.moods.length > 0 && moodScore !== null && moodScore >= 0.5) {
         const label = intent.moods[0];
         reasons.push({ ok: true, text: `Strong "${label}" match` });
     }
 
     // --- Genre match (25%) — required primaryGenres from the plan
     const genreResult = listOverlap(plan.primaryGenres, itemGenres);
-    const genreScore = genreResult ? genreResult.fraction : NEUTRAL;
+    const genreScore = genreResult ? genreResult.fraction : null;
     (genreResult?.matched || []).forEach(g => reasons.push({ ok: true, text: g }));
 
     // --- Theme match (15%) — secondaryThemes from the plan
     const themeResult = listOverlap(plan.secondaryThemes, itemThemes);
-    const themeScore = themeResult ? themeResult.fraction : NEUTRAL;
+    const themeScore = themeResult ? themeResult.fraction : null;
     (themeResult?.matched || []).forEach(t => reasons.push({ ok: true, text: t }));
 
     // --- Constraint match (10%) — excluded genres/themes should NOT be present;
@@ -125,20 +152,35 @@ function scoreOne(item, intent, plan, normPopularity) {
         reasons.push({ ok: true, text: 'Highly rated' });
     }
 
-    const total =
-        moodScore * WEIGHTS.mood +
-        genreScore * WEIGHTS.genre +
-        themeScore * WEIGHTS.theme +
-        constraintScore * WEIGHTS.constraint +
-        popularityScore * WEIGHTS.popularity +
-        ratingScore * WEIGHTS.rating;
+    // --- Weighted average over only the signals that actually have data.
+    // CHANGED: mood/genre/theme used to fall back to NEUTRAL (0.6) when the
+    // query gave no signal for them, which silently capped every score with
+    // a missing signal at ~58-68% no matter how well the item actually
+    // fit — a query with no genre/theme requirement isn't a 60% genre match,
+    // it's a component that shouldn't be counted at all. Constraint/
+    // popularity/rating are always present (constraint defaults to a clean
+    // 1.0, popularity/rating are batch/item properties independent of the
+    // query), so they're always included.
+    const components = [
+        { score: moodScore, weight: WEIGHTS.mood },
+        { score: genreScore, weight: WEIGHTS.genre },
+        { score: themeScore, weight: WEIGHTS.theme },
+        { score: constraintScore, weight: WEIGHTS.constraint },
+        { score: popularityScore, weight: WEIGHTS.popularity },
+        { score: ratingScore, weight: WEIGHTS.rating }
+    ].filter(c => c.score !== null && c.score !== undefined);
+
+    const weightSum = components.reduce((sum, c) => sum + c.weight, 0);
+    const total = weightSum > 0
+        ? components.reduce((sum, c) => sum + c.score * c.weight, 0) / weightSum
+        : NEUTRAL;
 
     return {
         matchScore: Math.round(total * 100),
         matchBreakdown: {
-            mood: Math.round(moodScore * 100),
-            genre: Math.round(genreScore * 100),
-            theme: Math.round(themeScore * 100),
+            mood: moodScore !== null ? Math.round(moodScore * 100) : null,
+            genre: genreScore !== null ? Math.round(genreScore * 100) : null,
+            theme: themeScore !== null ? Math.round(themeScore * 100) : null,
             constraint: Math.round(constraintScore * 100),
             popularity: Math.round(popularityScore * 100),
             rating: Math.round(ratingScore * 100)
