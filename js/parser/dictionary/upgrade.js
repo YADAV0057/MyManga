@@ -28,12 +28,15 @@ if (process.argv[1] && process.argv[1].endsWith('upgrade.js')) {
         }
     }
 
-    // Write updated production properties
-    const prodFile = `export const CONCEPT_PROPERTIES = ${JSON.stringify(finalProperties, null, 4)};\n`;
-    fs.writeFileSync('./properties.js', prodFile);
+    // ... (Your calculateMood function and loop logic remains exactly the same)
 
-    // Write the review queue
+    // --- STEP 3 INTEGRATION: WRITE TO HARVESTED LAYER ONLY ---
+    // Instead of overwriting properties.js, we write only to harvested_knowledge.js
+    const harvestFile = `export const HARVESTED_RULES = ${JSON.stringify(finalProperties, null, 4)};\n`;
+    fs.writeFileSync('./harvested_knowledge.js', harvestFile);
+
+    // Write the review queue (This remains the same)
     fs.writeFileSync('./review_queue.json', JSON.stringify(reviewQueue, null, 4));
     
-    console.log("Upgrade complete. Check review_queue.json for manual approval.");
+    console.log("Upgrade complete. Harvested knowledge updated and review queue synchronized.");
 }
