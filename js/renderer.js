@@ -13,10 +13,14 @@
 //   4. originalQuery/usedQuery/title/synopsis/genres/status are now run
 //      through escapeHTML() (utils.js) before hitting innerHTML — closes an
 //      XSS hole where a typed search query could inject HTML/JS.
-// CHANGED (new feature): renderMangaCard now renders the matchScore /
-// matchReasons that recommendationScorer.js attaches to each factSheet, via
-// .match-badge / .match-reasons (cards.css Part 4). Both are optional —
-// cards without a matchScore (e.g. old cached shape) just skip that block.
+// CHANGED (new feature): renderMangaCard renders the matchScore that
+// recommendationScorer.js attaches to each factSheet via .match-badge, same
+// as before. matchReasons, however, no longer render as an always-visible
+// block — they now live behind a "Why?" button (renderMatchBreakdown) that
+// toggles a .why-panel open/closed via toggleWhyPanel(), exported below and
+// wired to window.toggleWhyPanel in main.js (same pattern as
+// handleFavoriteClick). This keeps cards compact by default while still
+// giving power users the full match explanation on demand.
 
 import { isFavorite, toggleFavorite } from './favorites.js';
 import { escapeHTML } from './utils.js';
@@ -76,6 +80,20 @@ export function handleFavoriteClick(event, id) {
     btn.title = nowSaved ? 'Remove from My List' : 'Save to My List';
 }
 
+// NEW: toggles the "Why?" match-breakdown panel open/closed. Exported here
+// for the same reason handleFavoriteClick is — main.js must add:
+//   window.toggleWhyPanel = toggleWhyPanel;
+export function toggleWhyPanel(event, id) {
+    event.stopPropagation(); // don't also trigger the cover's toggleOptions()
+
+    const panel = document.getElementById(`why-${id}`);
+    const btn = document.getElementById(`why-btn-${id}`);
+    if (!panel) return;
+
+    const open = panel.classList.toggle('open');
+    if (btn) btn.textContent = open ? 'Why? ▴' : 'Why? ▾';
+}
+
 export function renderDidYouMean(originalQuery, suggestions) {
     const grid = document.getElementById('community-grid');
     if (!grid) return;
@@ -133,20 +151,31 @@ function renderMatchBadge(factSheet) {
     return `<div class="match-badge ${tier}">✨ ${score}% Match</div>`;
 }
 
-// Renders the .match-reasons list (recommendationScorer.js's matchReasons).
-// Returns '' if there's nothing to show.
-function renderMatchReasons(factSheet) {
-    const reasons = factSheet.matchReasons;
-    if (!reasons || reasons.length === 0) return '';
+// NEW: renders the "Why?" trigger button + its collapsible breakdown panel
+// (recommendationScorer.js's matchReasons, same {ok, text} shape as before —
+// just no longer shown inline by default). Returns '' if there's nothing to
+// show, so cards without a matchScore render exactly as before.
+function renderMatchBreakdown(factSheet) {
+    if (typeof factSheet.matchScore !== 'number') return '';
 
-    const items = reasons.map(r =>
-        `<div class="match-reason ${r.ok ? 'is-match' : ''}">
-            <span class="match-reason-icon">${r.ok ? '✓' : '✗'}</span>
-            <span>${escapeHTML(r.text)}</span>
-        </div>`
-    ).join('');
+    const reasons = factSheet.matchReasons || [];
+    const items = reasons.length > 0
+        ? reasons.map(r =>
+            `<div class="match-reason ${r.ok ? 'is-match' : ''}">
+                <span class="match-reason-icon">${r.ok ? '✓' : '✗'}</span>
+                <span>${escapeHTML(r.text)}</span>
+            </div>`
+          ).join('')
+        : `<div class="match-reason">No detailed signals for this result.</div>`;
 
-    return `<div class="match-reasons">${items}</div>`;
+    return `
+        <button class="why-btn" id="why-btn-${factSheet.id}"
+                onclick="window.toggleWhyPanel(event, '${factSheet.id}')">Why? ▾</button>
+        <div class="why-panel" id="why-${factSheet.id}">
+            <div class="why-panel-score">${factSheet.matchScore}% Match</div>
+            <div class="match-reasons">${items}</div>
+        </div>
+    `;
 }
 
 export function renderMangaCard(factSheet) {
@@ -200,7 +229,7 @@ export function renderMangaCard(factSheet) {
                 <span>📚 ${escapeHTML(factSheet.chapters || 'N/A')}</span>
                 <span>${statusIcon} ${escapeHTML(statusText)}</span>
             </div>
-            ${renderMatchReasons(factSheet)}
+            ${renderMatchBreakdown(factSheet)}
             <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
                 ${escapeHTML(factSheet.synopsis || 'No description available.')}
             </p>
