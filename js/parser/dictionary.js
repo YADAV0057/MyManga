@@ -149,11 +149,27 @@ export const MOOD_MAPPINGS = {
     }
 };
 
+// 1. Add Urgency Modifiers
 export const URGENCY_MODIFIERS = {
-    "devastating": 1.5, "destroy": 1.5, "need": 1.3, "extremely": 1.4, 
-    "insanely": 1.5, "really": 1.2, "very": 1.2, "super": 1.2,
-    "mild": 0.6, "chill": 0.7, "little": 0.8, "somewhat": 0.8, "slightly": 0.5, "a bit": 0.7
+    // Amplifiers
+    "devastating": 1.5,
+    "destroy": 1.5,
+    "need": 1.3,
+    "extremely": 1.4,
+    "insanely": 1.5,
+    "really": 1.2,
+    "very": 1.2,
+    "super": 1.2,
+    
+    // Dampeners
+    "mild": 0.6,
+    "chill": 0.7,
+    "little": 0.8,
+    "somewhat": 0.8,
+    "slightly": 0.5,
+    "a bit": 0.7
 };
+
 
 export const MOOD_DICTIONARY = {
     "cry": { moods: ["sad", "emotional", "tragedy"], intensity: 0.9, tone: "negative" },
