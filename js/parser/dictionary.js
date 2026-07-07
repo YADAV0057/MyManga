@@ -167,7 +167,7 @@ export const URGENCY_MODIFIERS = {
     "little": 0.8,
     "somewhat": 0.8,
     "slightly": 0.5,
-  export  "a bit": 0.7
+     "a bit": 0.7
 };
 
 export const MOOD_DICTIONARY = {
