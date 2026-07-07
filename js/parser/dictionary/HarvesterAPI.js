@@ -1,7 +1,7 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
 
-// These weights will be applied automatically to any genres found
+// These weights will be applied automatically to any genres found 
 const WEIGHT_MAP = {
     "Action": 0.95, "Psychological": 0.90, "Drama": 0.85, 
     "SliceOfLife": 1.0, "Fantasy": 0.80, "Romance": 0.75
