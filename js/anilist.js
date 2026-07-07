@@ -74,7 +74,7 @@ export async function fetchFromAniListUnified(plan, page = 1, isKorean = false, 
         query (${queryArgs}) {
             Page(page: $page, perPage: $perPage) {
                 media(${mediaArgs}) {
-                    id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status
+                    id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status popularity
                 }
             }
         }
