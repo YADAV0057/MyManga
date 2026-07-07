@@ -1,0 +1,31 @@
+name: Auto-Harvest Concepts
+on:
+  push:
+    paths:
+      - 'queue.txt'
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - run: npm install axios xml2js
+      
+      - name: Run Harvester
+        run: node js/parser/dictionary/harvester.js
+      
+      - name: Commit changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add js/parser/dictionary/properties.js queue.txt
+          git commit -m "Auto-harvested new concepts" || echo "No changes to commit"
+          git push
+          
