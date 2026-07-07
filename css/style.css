@@ -631,15 +631,18 @@ header,
 /* ===================================================
    MangaMood - style.css
    Part 4
-   Mood Analyzer Panel (replaces old inline-styled
-   "Mood Intelligence Preview" debug block)
+   AI Search Intelligence Panel
+   (replaces the old standalone .mood-analyzer /
+   "Mood Intelligence Preview" debug block — this now
+   lives inside the search flow, see #ai-panel in
+   index.html and js/aiPanel.js)
 =================================================== */
 
-.mood-analyzer{
+.ai-panel{
 
-    margin-top:30px;
+    margin-top:22px;
 
-    padding:26px;
+    padding:18px 22px;
 
     border-radius:var(--radius);
 
@@ -652,114 +655,450 @@ header,
     border:1px solid var(--border);
 
     box-shadow:var(--shadow);
+
+    text-align:left;
 }
 
-.mood-analyzer-header h2{
+/* ==========================
+   LIVE REASONING (while searching)
+========================== */
+
+.ai-panel-live{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    max-height:220px;
+
+    overflow-y:auto;
+}
+
+.ai-line{
+
+    font-size:.92rem;
+
+    color:var(--text-main);
+
+    animation:aiLineIn .3s ease;
+}
+
+.ai-line-lead{
 
     color:var(--text-title);
 
-    font-size:1.3rem;
-
     font-weight:700;
-
-    margin-bottom:6px;
 }
 
-.mood-analyzer-header p{
+.ai-line-status{
+
+    color:var(--accent);
+
+    font-weight:600;
+}
+
+.ai-line-done{
+
+    color:#48c78e;
+
+    font-weight:700;
+}
+
+@keyframes aiLineIn{
+
+    from{
+        opacity:0;
+        transform:translateY(6px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* ==========================
+   API WATERFALL CHIPS
+========================== */
+
+.ai-api-row{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:4px;
+}
+
+.ai-api-chip{
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:.8rem;
+
+    font-weight:600;
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.1);
 
     color:var(--text-muted);
 
-    font-size:.88rem;
-
-    margin-bottom:18px;
+    transition:var(--transition);
 }
 
-.mood-analyzer-input{
+.ai-api-pending{
 
-    width:100%;
+    color:var(--accent);
 
-    padding:13px 16px;
+    border-color:rgba(61,180,242,.4);
 
-    border-radius:12px;
+    animation:aiPulse 1.2s ease infinite;
+}
 
-    border:1px solid var(--border);
+.ai-api-success{
 
-    background:rgba(0,0,0,.22);
+    color:#48c78e;
+
+    border-color:rgba(72,199,142,.4);
+
+    background:rgba(72,199,142,.08);
+}
+
+.ai-api-fail{
+
+    color:#ef4444;
+
+    border-color:rgba(239,68,68,.35);
+
+    background:rgba(239,68,68,.06);
+}
+
+.ai-api-skip{
+
+    opacity:.5;
+}
+
+@keyframes aiPulse{
+
+    0%,100%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.55;
+    }
+
+}
+
+/* ==========================
+   COMPACT SUMMARY (after searching)
+========================== */
+
+.ai-panel-summary{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:14px;
+
+    flex-wrap:wrap;
+}
+
+.ai-panel-summary-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.ai-panel-icon{
+
+    font-size:1.2rem;
+}
+
+.ai-panel-title{
+
+    color:var(--text-title);
+
+    font-weight:700;
+
+    font-size:.95rem;
+}
+
+.ai-panel-summary-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.ai-confidence-pill{
+
+    padding:5px 14px;
+
+    border-radius:20px;
+
+    font-size:.82rem;
+
+    font-weight:700;
 
     color:var(--text-bright);
 
-    font-family:inherit;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(61,180,242,.35),
+            rgba(61,180,242,.12)
+        );
 
-    font-size:.95rem;
-
-    outline:none;
-
-    transition:border-color var(--transition), background var(--transition);
+    border:1px solid rgba(61,180,242,.4);
 }
 
-.mood-analyzer-input::placeholder{
-
-    color:var(--text-muted);
-}
-
-.mood-analyzer-input:focus{
-
-    border-color:var(--accent);
-
-    background:rgba(0,0,0,.32);
-}
-
-.mood-analyzer-btn{
-
-    width:100%;
-
-    margin-top:12px;
-
-    padding:13px 16px;
+.ai-panel-toggle{
 
     border:none;
 
-    border-radius:12px;
+    background:transparent;
 
-    cursor:pointer;
-
-    background:var(--accent);
-
-    color:white;
+    color:var(--accent);
 
     font-weight:700;
 
-    font-size:.95rem;
+    font-size:.85rem;
 
-    letter-spacing:.2px;
+    cursor:pointer;
 
-    transition:background var(--transition), transform var(--transition);
+    padding:4px 6px;
+
+    transition:var(--transition);
 }
 
-.mood-analyzer-btn:hover{
+.ai-panel-toggle:hover{
 
-    background:var(--accent-hover);
-
-    transform:translateY(-1px);
+    color:var(--accent-hover);
 }
 
-.mood-analyzer-output{
+/* ==========================
+   DETAILS (collapsible)
+========================== */
 
-    margin-top:18px;
+.ai-panel-details{
+
+    margin-top:16px;
+
+    padding-top:16px;
+
+    border-top:1px solid var(--border);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
 }
 
-.mood-analyzer-output:empty{
+.ai-panel-details:not(.open){
 
-    margin-top:0;
+    display:none;
+}
+
+.ai-detail-section h4{
+
+    color:var(--text-title);
+
+    font-size:.85rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    margin-bottom:10px;
+
+    opacity:.85;
+}
+
+.ai-empty{
+
+    color:var(--text-muted);
+
+    font-size:.85rem;
+}
+
+/* Mood bars */
+
+.ai-mood-bars{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.ai-mood-bar-label{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:.85rem;
+
+    font-weight:600;
+
+    color:var(--text-main);
+
+    margin-bottom:4px;
+}
+
+.ai-mood-bar-track{
+
+    width:100%;
+
+    height:8px;
+
+    border-radius:6px;
+
+    background:rgba(255,255,255,.08);
+
+    overflow:hidden;
+}
+
+.ai-mood-bar-fill{
+
+    height:100%;
+
+    border-radius:6px;
+
+    background:linear-gradient(90deg,var(--accent),#48c78e);
+
+    transition:width .5s ease;
+}
+
+/* Must have / nice to have / avoid */
+
+.ai-tag-columns{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:16px;
+}
+
+.ai-tag-group{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:6px;
+}
+
+.ai-tag{
+
+    padding:4px 10px;
+
+    border-radius:14px;
+
+    font-size:.78rem;
+
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+.ai-tag-must{
+
+    color:#48c78e;
+
+    background:rgba(72,199,142,.1);
+
+    border:1px solid rgba(72,199,142,.3);
+}
+
+.ai-tag-nice{
+
+    color:var(--accent);
+
+    background:rgba(61,180,242,.1);
+
+    border:1px solid rgba(61,180,242,.3);
+}
+
+.ai-tag-avoid{
+
+    color:#ef4444;
+
+    background:rgba(239,68,68,.08);
+
+    border:1px solid rgba(239,68,68,.28);
+}
+
+.ai-route{
+
+    font-size:.85rem;
+
+    color:var(--text-main);
+}
+
+.ai-reasoning-list{
+
+    list-style:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+}
+
+.ai-reasoning-list li{
+
+    font-size:.82rem;
+
+    color:var(--text-muted);
+
+    padding-left:14px;
+
+    position:relative;
+}
+
+.ai-reasoning-list li:not(.ai-empty)::before{
+
+    content:"•";
+
+    position:absolute;
+
+    left:0;
+
+    color:var(--accent);
 }
 
 @media (max-width:768px){
 
-    .mood-analyzer{
-        padding:20px;
+    .ai-panel{
+        padding:16px 18px;
     }
 
-    .mood-analyzer-header h2{
-        font-size:1.15rem;
+    .ai-tag-columns{
+        grid-template-columns:1fr;
+        gap:14px;
     }
 }
