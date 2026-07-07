@@ -29,8 +29,7 @@ export function setupParserTester() {
             const pipelineModule = await import("./parser/pipeline.js");
             const intent = pipelineModule.buildIntent(raw);
 
-            
-                       // 2. Build Visual Bars for Mood Profile
+            // 2. Build Visual Bars for Mood Profile
             let profileHTML = "<div style='opacity: 0.5;'>No specific moods detected. Try different words!</div>";
             
             if (intent && intent.moodProfile && intent.moodProfile.length > 0) {
@@ -110,8 +109,18 @@ export function setupParserTester() {
                         <div style="margin-bottom: 12px;">
                             <strong style="color: #00ff9d;">💡 Suggested Additions:</strong> 
                             <div style="padding-left: 10px; font-size: 13px; opacity: 0.9; margin-top: 4px;">
-                                <span style="opacity:0.7">Genres:</span> ${intent.boosts?.genres?.length ? intent.boosts.genres.map(g => `${g.name} (${Math.round(g.score * 100)}%)`).join(", ") : "None"}<br>
-                                <span style="opacity:0.7">Themes:</span> ${intent.boosts?.themes?.length ? intent.boosts.themes.map(t => `${t.name} (${Math.round(t.score * 100)}%)`).join(", ") : "None"}
+                                <div style="margin-bottom: 8px;">
+                                    <span style="opacity:0.7">Genres:</span><br>
+                                    ${intent.boosts?.genres?.length 
+                                        ? intent.boosts.genres.map(g => `<div style="padding-left: 10px;">${g.name} (${Math.round(g.score * 100)}%) ${g.reason ? `<br><span style="opacity:0.5; padding-left:10px;">↳ ${g.reason}</span>` : ''}</div>`).join("") 
+                                        : "<span style='padding-left: 10px;'>None</span>"}
+                                </div>
+                                <div>
+                                    <span style="opacity:0.7">Themes:</span><br>
+                                    ${intent.boosts?.themes?.length 
+                                        ? intent.boosts.themes.map(t => `<div style="padding-left: 10px;">${t.name} (${Math.round(t.score * 100)}%) ${t.reason ? `<br><span style="opacity:0.5; padding-left:10px;">↳ ${t.reason}</span>` : ''}</div>`).join("") 
+                                        : "<span style='padding-left: 10px;'>None</span>"}
+                                </div>
                             </div>
                         </div>
 
@@ -128,7 +137,7 @@ export function setupParserTester() {
                             <span style="font-size: 13px;">${intent.searchPriority ? intent.searchPriority.join(" → ") : "Default"}</span>
                         </div>
                         
-                                              <div>
+                        <div>
                             <strong style="color: #b388ff;">🤖 AI Confidence: ${(intent.confidence * 100).toFixed(0)}%</strong> 
                             <ul style="margin: 4px 0 0 0; padding-left: 16px; font-size: 12px; opacity: 0.8; list-style-type: '• ';">
                                 ${intent.ruleLogs?.length 
