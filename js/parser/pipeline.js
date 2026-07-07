@@ -1,3 +1,5 @@
+// js/parser/pipeline.js
+
 import { MangaIntent } from './intentSchema.js';
 import { normalize } from './normalize.js';
 import { extractRules } from './rules.js';
@@ -6,7 +8,9 @@ import { analyzeMood } from './moodEngine.js';
 import { mapMoodsToCategories } from './genreMapper.js';
 import { applyReasoningRules } from './ruleEngine.js'; 
 
-// NEW: Negation handler to strip "no comedy" before mood analysis
+/**
+ * Strips negation terms from the input and tracks excluded intent.
+ */
 function handleNegations(text) {
     const negations = ["no", "not", "without", "avoid", "except", "don't"];
     let excluded = [];
@@ -17,14 +21,19 @@ function handleNegations(text) {
             const parts = cleanText.split(neg);
             if (parts.length > 1) {
                 const term = parts[1].trim().split(" ")[0];
-                excluded.push(term.charAt(0).toUpperCase() + term.slice(1));
-                cleanText = cleanText.replace(neg + " " + term, "");
+                if (term) {
+                    excluded.push(term.charAt(0).toUpperCase() + term.slice(1));
+                    cleanText = cleanText.replace(neg + " " + term, "").trim();
+                }
             }
         }
     });
     return { cleanText, excluded };
 }
 
+/**
+ * Orchestrates the full intent analysis pipeline.
+ */
 export function buildIntent(rawUserInput) {
     let intent = new MangaIntent();
     intent.originalQuery = rawUserInput;
@@ -32,9 +41,9 @@ export function buildIntent(rawUserInput) {
     // 1. Normalize & Handle Negations
     const normalized = normalize(rawUserInput);
     const { cleanText, excluded } = handleNegations(normalized);
-    intent.excluded = excluded; // Store for the Search Planner
+    intent.excluded = excluded;
     
-    // 2. Extract Hard Filters
+    // 2. Extract Hard Filters (Status, Sort, etc.)
     const filterData = extractRules(cleanText); 
     intent.status = filterData.status;
     intent.sort = filterData.sort;
@@ -65,19 +74,32 @@ export function buildIntent(rawUserInput) {
     // 7. Deduplicate and Clean (The "Hardening" step)
     const mergeUnique = (primary, suggested) => {
         const map = new Map();
-        [...primary, ...suggested].forEach(item => {
-            if (!map.has(item.name) || item.confidence > map.get(item.name)) {
-                map.set(item.name, item.confidence || 0.5); // Default to 0.5 instead of NaN
+        
+        // Add existing primary items
+        primary.forEach(item => map.set(item.name, item.confidence || 0.5));
+        
+        // Merge suggested/boosted items, keeping the highest confidence
+        [...suggested].forEach(item => {
+            const existing = map.get(item.name) || 0;
+            const current = item.confidence || 0.5;
+            if (current > existing) {
+                map.set(item.name, current);
             }
         });
-        return Array.from(map.entries()).map(([name, confidence]) => ({ name, confidence }));
+        
+        return Array.from(map.entries()).map(([name, confidence]) => ({ 
+            name, 
+            confidence: Math.min(confidence, 1.0) 
+        }));
     };
 
     intent.boosts.genres = mergeUnique(intent.genres, [...intent.boosts.genres, ...suggestedGenres]);
     intent.boosts.themes = mergeUnique(intent.themes, [...intent.boosts.themes, ...suggestedThemes]);
 
     // 8. Final Confidence Check
-    if (intent.moods.length === 0) intent.confidence = 0.2;
+    if (!intent.moods || intent.moods.length === 0) {
+        intent.confidence = 0.2;
+    }
 
     return intent;
 }
