@@ -7,8 +7,8 @@ import { CONCEPT_PROPERTIES as BASE_PROPERTIES } from './dictionary/properties.j
 // We use a safe check; if the file doesn't exist yet, we default to an empty object
 let HARVESTED_RULES = {};
 try {
-    const { HARVESTED_RULES } = await import('./dictionary/harvested_knowledge.js');
-    HARVESTED_RULES = data.HARVESTED_RULES;
+    const harvestedModule = await import('./dictionary/harvested_knowledge.js');
+    HARVESTED_RULES = harvestedModule.HARVESTED_RULES || {};
 } catch (e) {
     console.warn("[System] Harvested knowledge not found, using base only.");
 }
