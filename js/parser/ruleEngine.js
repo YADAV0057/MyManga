@@ -83,14 +83,20 @@ export function applyReasoningRules(intent) {
 
             if (rule.avoids.genres) rule.avoids.genres.forEach(g => avoids.genres.add(g));
             if (rule.avoids.themes) rule.avoids.themes.forEach(t => avoids.themes.add(t));
-
+            // ... inside sortedRules.forEach ...
             if (apiPriority.length === 0) apiPriority = rule.priority;
             if (rule.confidenceModifier < lowestConfidence) lowestConfidence = rule.confidenceModifier;
         }
     });
 
+    // [ADD THIS]: Provide a default API fallback if no specific rules were triggered
+    if (apiPriority.length === 0) {
+        apiPriority = ["AniList", "MangaDex", "Jikan", "Kitsu"];
+    }
+
+    // Ensure mapToArray provides both 'score' and 'confidence' to match the pipeline
     const mapToArray = (map) => Array.from(map.entries())
-                                    .map(([name, score]) => ({ name, score }))
+                                    .map(([name, score]) => ({ name, score, confidence: score }))
                                     .sort((a, b) => b.score - a.score);
 
     intent.boosts = {
@@ -101,8 +107,10 @@ export function applyReasoningRules(intent) {
     
     intent.avoids = { genres: [...avoids.genres], themes: [...avoids.themes] };
     intent.ruleLogs = ruleLogs;
-    intent.searchPriority = apiPriority;
+    intent.searchPriority = apiPriority; // Now guaranteed to have a route!
     intent.confidence = lowestConfidence;
 
     return intent;
 }
+
+            
