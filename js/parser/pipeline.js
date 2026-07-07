@@ -1,6 +1,6 @@
 // js/parser/pipeline.js
 
-import { MangaIntent } from './intentSchema.js';
+import { mangaIntent } from './intentSchema.js';
 import { normalize } from './normalize.js';
 import { extractRules } from './rules.js';
 import { applySynonyms } from './synonyms.js';
