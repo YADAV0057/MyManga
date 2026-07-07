@@ -16,6 +16,15 @@
 
 <body>
 
+<!-- BUGFIX: style.css already defines #loading-bar / .is-loading (the thin
+     progress bar during search), and search.js's triggerSearch() calls
+     document.getElementById('loading-bar').classList.add('is-loading')
+     BEFORE its own try/catch even starts — this element was missing from
+     the page, so that line threw a TypeError on every single call and
+     killed triggerSearch() instantly, before it did anything else. That's
+     why search, mood/vibe buttons, and refresh all appeared totally dead. -->
+<div id="loading-bar"></div>
+
 <!-- =========================
     TOP BAR
 ========================= -->
