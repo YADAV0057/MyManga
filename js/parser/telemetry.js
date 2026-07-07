@@ -1,23 +1,23 @@
 // js/parser/telemetry.js
-import fs from 'fs';
-import path from 'path';
 
 /**
- * Logs search terms that the parser failed to categorize.
- * @param {string} query - The raw input from the user that resulted in 0 mood matches.
+ * Stores missed searches in the browser's localStorage.
  */
 export function logMissedSearch(query) {
-    const logPath = path.join(process.cwd(), 'missed_searches.txt');
-    const timestamp = new Date().toISOString();
+    // 1. Get existing logs (or start with an empty array)
+    const existingLogs = JSON.parse(localStorage.getItem('missed_searches') || '[]');
     
-    // Create a clean entry
-    const logEntry = `${timestamp} | SEARCH: ${query}\n`;
+    // 2. Add new entry
+    const entry = {
+        timestamp: new Date().toISOString(),
+        query: query
+    };
     
-    try {
-        // Append the missed search to the file
-        fs.appendFileSync(logPath, logEntry, 'utf8');
-        console.log(`[Telemetry] Logged unknown intent: "${query}"`);
-    } catch (err) {
-        console.error(`[Telemetry] Failed to log search: ${err.message}`);
-    }
+    existingLogs.push(entry);
+    
+    // 3. Save back to localStorage
+    localStorage.setItem('missed_searches', JSON.stringify(existingLogs));
+    
+    console.log(`[Telemetry] Logged unknown intent: "${query}"`);
+    console.log(`[Telemetry] Total missed: ${existingLogs.length}`);
 }
