@@ -705,6 +705,137 @@
 }
 
 
+/* ===================================================
+   MangaMood - cards.css
+   Part 4
+   Match Score Badge • Match Reasons (Phase 2, Step 5/6)
+=================================================== */
+
+/* ==========================
+   MATCH BADGE
+========================== */
+/* Reuses .score-badge's position slot conceptually, but this is the
+   RECOMMENDATION match %, not the raw API rating (globalScore already
+   shows via .score-badge elsewhere in the card). Placed as a pill inside
+   .manga-info so it doesn't collide with .score-badge/.fav-btn, which are
+   both absolutely positioned over the cover. */
+
+.match-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    align-self:flex-start;
+
+    padding:4px 12px;
+
+    border-radius:30px;
+
+    font-size:.78rem;
+
+    font-weight:700;
+
+    letter-spacing:.3px;
+
+    color:var(--text-bright);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(61,180,242,.35),
+            rgba(61,180,242,.12)
+        );
+
+    border:1px solid rgba(61,180,242,.4);
+}
+
+.match-badge.match-high{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(72,199,142,.35),
+            rgba(72,199,142,.12)
+        );
+
+    border-color:rgba(72,199,142,.45);
+}
+
+.match-badge.match-low{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.03)
+        );
+
+    border-color:rgba(255,255,255,.12);
+
+    color:var(--text-muted);
+}
+
+/* ==========================
+   MATCH REASONS
+========================== */
+
+.match-reasons{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+    padding:10px 12px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.match-reason{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:.8rem;
+
+    line-height:1.4;
+
+    color:var(--text-muted);
+}
+
+.match-reason.is-match{
+
+    color:var(--text-main);
+}
+
+.match-reason-icon{
+
+    flex-shrink:0;
+
+    font-weight:700;
+}
+
+.match-reason.is-match .match-reason-icon{
+
+    color:#48c78e;
+}
+
+.match-reason:not(.is-match) .match-reason-icon{
+
+    color:#ef4444;
+}
+
 /* ==========================
    ACCESSIBILITY
 ========================== */
