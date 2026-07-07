@@ -21,15 +21,15 @@ export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
 
     // 2. Helper to extract and format
     const extractWithConfidence = (scoreObj) => {
-        return Object.entries(scoreObj)
-            .filter(([_, score]) => score > 0)
-            .sort((a, b) => b[1] - a[1])
-            .map(([name, score]) => ({
-                name,
-                confidence: Math.min(Number(score.toFixed(2)), 1.0)
-            }))
-            .slice(0, maxResults);
-    };
+    return Object.entries(scoreObj)
+        .filter(([_, score]) => score > 0 && !isNaN(score)) // 👈 Add !isNaN check
+        .sort((a, b) => b[1] - a[1])
+        .map(([name, score]) => ({
+            name,
+            confidence: Math.min(Number(score.toFixed(2)), 1.0)
+        }))
+        .slice(0, maxResults);
+};
 
     // 3. Return formatted object
     return {
