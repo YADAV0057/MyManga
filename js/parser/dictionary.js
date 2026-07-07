@@ -166,6 +166,8 @@ export const MOOD_DICTIONARY = {
     "dark": { moods: ["dark", "serious", "psychological"], intensity: 0.8, tone: "negative" },
     "revenge": { moods: ["dark", "revenge", "action"], intensity: 0.9, tone: "negative" },
     "gory": { moods: ["horror", "dark", "action"], intensity: 1.0, tone: "negative" },
+// Add to your mood extraction logic or dictionary
+"scary": { moods: ["horror"], intensity: 0.8, tone: "negative" }
 
     // 😂 COMEDY (Positive Tone, Medium Intensity)
     "funny": { moods: ["comedy"], intensity: 0.6, tone: "positive" },
