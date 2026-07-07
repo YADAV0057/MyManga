@@ -1,6 +1,9 @@
 // ==========================================
 // KITSU FALLBACK ENGINE (js/kitsu.js) 
 // ==========================================
+// CHANGED: now consumes a SearchPlan (js/parser/searchPlanner.js) instead of
+// the simple parser's parsedData. KITSU_STATUS_MAP/STATUS_TO_KITSU and the
+// overall request-building logic are unchanged.
 import { CONFIG } from './config.js';
 
 const KITSU_STATUS_MAP = {
@@ -17,28 +20,44 @@ const STATUS_TO_KITSU = {
     NOT_YET_RELEASED: 'upcoming'
 };
 
-export async function fetchFromKitsuFallback(parsedData, page = 1, limit = 10) {
+/**
+ * @param {import('./parser/searchPlanner.js').SearchPlan} plan
+ * @param {number} page
+ * @param {number} limit
+ */
+export async function fetchFromKitsuFallback(plan, page = 1, limit = 10) {
     const params = new URLSearchParams();
     
     const offset = (page - 1) * limit;
     params.set('page[limit]', limit);
     params.set('page[offset]', offset);
-    params.set('sort', '-userCount');
 
-    if (parsedData.isVibeOrTag) {
-        const categories = parsedData.cleanQuery
-            .split(',')
-            .map(g => g.trim().toLowerCase())
-            .filter(Boolean);
+    // Kitsu has no rating-sort equivalent as clean as AniList's SCORE_DESC;
+    // -averageRating is the closest field. Keep -userCount (popularity) as
+    // the default to match the original behavior.
+    params.set('sort', plan.filters?.sort === 'rating' ? '-averageRating' : '-userCount');
+
+    const genreList = [...(plan.primaryGenres || []), ...(plan.secondaryThemes || [])];
+    const isGenreSearch = genreList.length > 0;
+    const freeText = (plan.cleanQuery || '').trim();
+
+    if (isGenreSearch) {
+        const categories = genreList.map(g => g.trim().toLowerCase()).filter(Boolean);
         if (categories.length > 0) {
             params.set('filter[categories]', categories.join(','));
         }
-    } else if (parsedData.cleanQuery && parsedData.cleanQuery.length > 0) {
-        params.set('filter[text]', parsedData.cleanQuery);
+    } else if (freeText.length > 0) {
+        params.set('filter[text]', freeText);
     }
 
-    if (parsedData.statusFilter && STATUS_TO_KITSU[parsedData.statusFilter]) {
-        params.set('filter[status]', STATUS_TO_KITSU[parsedData.statusFilter]);
+    // NOTE: Kitsu's JSON:API filtering doesn't support a clean "exclude
+    // category" filter the way AniList/Jikan do, so plan.excludedGenres is
+    // intentionally not applied here — Kitsu results may include an
+    // excluded genre. This mirrors a real limitation of the Kitsu API,
+    // not an oversight.
+
+    if (plan.filters?.statusFilter && STATUS_TO_KITSU[plan.filters.statusFilter]) {
+        params.set('filter[status]', STATUS_TO_KITSU[plan.filters.statusFilter]);
     }
 
     const controller = new AbortController();
@@ -84,4 +103,3 @@ export async function fetchFromKitsuFallback(parsedData, page = 1, limit = 10) {
         return [];
     }
 }
-
