@@ -11,27 +11,28 @@ const WEIGHT_MAP = {
 export class HarvesterAPI {
     static async getNormalizedConcept(tag) {
         try {
-            const cleanTag = tag.replace(/_/g, ' '); // Convert "time_loop" to "time loop"
+            const cleanTag = tag.replace(/_/g, ' '); 
             console.log(`[Automated] Harvesting: ${cleanTag} (ID: ${tag})`);
             
-            // Fire all 3 APIs at the same time for maximum speed
-            const [annData, aniListData, synonyms] = await Promise.all([
+            // 🔥 Quad-Core Fetch: Firing 4 APIs simultaneously
+            const [annData, aniListData, jikanData, synonyms] = await Promise.all([
                 this.fetchFromANN(cleanTag),
                 this.fetchFromAniList(cleanTag),
+                this.fetchFromJikan(cleanTag), // New MyAnimeList Search
                 this.fetchAliases(cleanTag)
             ]);
 
-            // Merge unique genres from ANN and AniList
+            // Merge unique genres from ALL THREE anime/manga databases
             const mergedGenres = new Map();
-            [...annData.genres, ...aniListData.genres].forEach(g => {
+            [...annData.genres, ...aniListData.genres, ...jikanData.genres].forEach(g => {
                 if (!mergedGenres.has(g.name)) {
                     mergedGenres.set(g.name, { name: g.name, weight: WEIGHT_MAP[g.name] || 0.70 });
                 }
             });
 
-            // Merge unique themes from ANN and AniList
+            // Merge unique themes from ALL THREE anime/manga databases
             const mergedThemes = new Map();
-            [...annData.themes, ...aniListData.themes].forEach(t => {
+            [...annData.themes, ...aniListData.themes, ...jikanData.themes].forEach(t => {
                 if (!mergedThemes.has(t.name)) {
                     mergedThemes.set(t.name, { name: t.name, weight: 0.80 });
                 }
@@ -39,13 +40,40 @@ export class HarvesterAPI {
 
             return {
                 id: tag,
-                aliases: [...new Set([tag, cleanTag, ...synonyms])], // Remove duplicates
+                aliases: [...new Set([tag, cleanTag, ...synonyms])], 
                 genres: Array.from(mergedGenres.values()),
                 themes: Array.from(mergedThemes.values())
             };
         } catch (err) {
             console.error(`[Error] Pipeline failed for ${tag}:`, err.message);
             return null;
+        }
+    }
+
+    // 🌟 NEW: MyAnimeList (Jikan) API
+    // Searches descriptions/synopses, not just titles!
+    static async fetchFromJikan(tag) {
+        try {
+            const url = `https://api.jikan.moe/v4/manga?q=${encodeURIComponent(tag)}&limit=3`;
+            const response = await axios.get(url);
+            
+            const extractedGenres = new Set();
+            const extractedThemes = new Set();
+
+            if (response.data && response.data.data) {
+                response.data.data.forEach(manga => {
+                    if (manga.genres) manga.genres.forEach(g => extractedGenres.add(g.name));
+                    if (manga.themes) manga.themes.forEach(t => extractedThemes.add(t.name));
+                });
+            }
+
+            return {
+                genres: Array.from(extractedGenres).map(name => ({ name })),
+                themes: Array.from(extractedThemes).map(name => ({ name }))
+            };
+        } catch (e) {
+            console.log(`[Jikan] Failed or no data for ${tag}`);
+            return { genres: [], themes: [] };
         }
     }
 
@@ -73,23 +101,16 @@ export class HarvesterAPI {
             const extractedGenres = new Set();
             const extractedThemes = new Set();
 
-            // Loop through the top manga results and steal their genres/tags
             mediaList.forEach(media => {
-                if (media.genres) {
-                    media.genres.forEach(g => extractedGenres.add(g));
-                }
-                if (media.tags) {
-                    media.tags.forEach(t => extractedThemes.add(t.name));
-                }
+                if (media.genres) media.genres.forEach(g => extractedGenres.add(g));
+                if (media.tags) media.tags.forEach(t => extractedThemes.add(t.name));
             });
 
             return {
                 genres: Array.from(extractedGenres).map(name => ({ name })),
-                // We limit to the first 5 themes so the object doesn't get ridiculously huge
                 themes: Array.from(extractedThemes).slice(0, 5).map(name => ({ name }))
             };
         } catch (e) {
-            console.log(`[AniList] Failed or no data for ${tag}`);
             return { genres: [], themes: [] };
         }
     }
