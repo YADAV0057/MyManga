@@ -1,8 +1,25 @@
 // ==========================================
 // RENDERING ENGINE (js/renderer.js)
 // ==========================================
+// CHANGED (bug fixes):
+//   1. handleFavoriteClick was referenced by onclick but never defined
+//      anywhere — now exported here and must be wired to window in main.js
+//      (see bottom of this file for the exact line to add there), matching
+//      this codebase's "only main.js touches window" convention.
+//   2. fav-btn now calls event.stopPropagation() so favoriting no longer
+//      also triggers the parent cover's toggleOptions() overlay.
+//   3. hasScore now checks typeof === 'number' instead of truthiness, so a
+//      legitimate globalScore of 0 still shows its badge.
+//   4. originalQuery/usedQuery/title/synopsis/genres/status are now run
+//      through escapeHTML() (utils.js) before hitting innerHTML — closes an
+//      XSS hole where a typed search query could inject HTML/JS.
+// CHANGED (new feature): renderMangaCard now renders the matchScore /
+// matchReasons that recommendationScorer.js attaches to each factSheet, via
+// .match-badge / .match-reasons (cards.css Part 4). Both are optional —
+// cards without a matchScore (e.g. old cached shape) just skip that block.
 
-import { isFavorite } from './favorites.js';
+import { isFavorite, toggleFavorite } from './favorites.js';
+import { escapeHTML } from './utils.js';
 
 // Keeps the full data for every card ever rendered so the ♡ button
 // can hand the complete manga object off to favorites.js by id alone.
@@ -38,6 +55,27 @@ function getStatusIcon(status) {
     return map[key] || '📍';
 }
 
+// BUGFIX #1/#2: was referenced via onclick as window.handleFavoriteClick
+// but never defined anywhere — clicking ♥ threw a silent ReferenceError.
+// Exported here; main.js must add:  window.handleFavoriteClick = handleFavoriteClick;
+// (matches the existing "only main.js writes to window" convention, so this
+// file doesn't touch window itself).
+export function handleFavoriteClick(event, id) {
+    event.stopPropagation(); // don't also trigger the cover's toggleOptions()
+
+    const factSheet = getCachedFactSheet(id);
+    if (!factSheet) return;
+
+    toggleFavorite(factSheet);
+
+    const btn = document.getElementById(`fav-${id}`);
+    if (!btn) return;
+    const nowSaved = isFavorite(id);
+    btn.classList.toggle('active', nowSaved);
+    btn.textContent = nowSaved ? '♥' : '♡';
+    btn.title = nowSaved ? 'Remove from My List' : 'Save to My List';
+}
+
 export function renderDidYouMean(originalQuery, suggestions) {
     const grid = document.getElementById('community-grid');
     if (!grid) return;
@@ -45,13 +83,16 @@ export function renderDidYouMean(originalQuery, suggestions) {
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 20px;';
 
-    let chipsHtml = suggestions.map(s =>
-        `<button class="vibe-btn" onclick="window.triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`
-    ).join(' ');
+    // BUGFIX #4: escape suggestion text used inside the onclick string too —
+    // a raw single-quote breaks out of the handler, not just innerHTML.
+    let chipsHtml = suggestions.map(s => {
+        const safe = escapeHTML(s);
+        return `<button class="vibe-btn" onclick="window.triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${safe}</button>`;
+    }).join(' ');
 
     wrapper.innerHTML = `
         <p style="color: var(--text-muted); margin-bottom: 12px;">
-            No results for "<b>${originalQuery}</b>". Did you mean:
+            No results for "<b>${escapeHTML(originalQuery)}</b>". Did you mean:
         </p>
         <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
             ${chipsHtml}
@@ -69,17 +110,43 @@ export function renderFallbackBanner(originalQuery, usedQuery, otherSuggestions)
 
     let altHtml = otherSuggestions.length > 0
         ? `<div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
-             ${otherSuggestions.map(s => `<button class="vibe-btn" style="padding:6px 14px; font-size:0.85rem;" onclick="window.triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${s}</button>`).join(' ')}
+             ${otherSuggestions.map(s => `<button class="vibe-btn" style="padding:6px 14px; font-size:0.85rem;" onclick="window.triggerSearch('${s.replace(/'/g, "\\'")}', 1)">${escapeHTML(s)}</button>`).join(' ')}
            </div>`
         : '';
 
     banner.innerHTML = `
         <p style="color: var(--text-muted);">
-            No exact match for "<b>${originalQuery}</b>" — showing results for "<b>${usedQuery}</b>" instead.
+            No exact match for "<b>${escapeHTML(originalQuery)}</b>" — showing results for "<b>${escapeHTML(usedQuery)}</b>" instead.
         </p>
         ${altHtml}
     `;
     grid.appendChild(banner);
+}
+
+// Renders the .match-badge (recommendationScorer.js's matchScore). Returns
+// '' if the factSheet wasn't scored (e.g. an older cached shape), so this
+// stays backward-compatible rather than showing a broken/empty badge.
+function renderMatchBadge(factSheet) {
+    if (typeof factSheet.matchScore !== 'number') return '';
+    const score = factSheet.matchScore;
+    const tier = score >= 75 ? 'match-high' : (score < 45 ? 'match-low' : '');
+    return `<div class="match-badge ${tier}">✨ ${score}% Match</div>`;
+}
+
+// Renders the .match-reasons list (recommendationScorer.js's matchReasons).
+// Returns '' if there's nothing to show.
+function renderMatchReasons(factSheet) {
+    const reasons = factSheet.matchReasons;
+    if (!reasons || reasons.length === 0) return '';
+
+    const items = reasons.map(r =>
+        `<div class="match-reason ${r.ok ? 'is-match' : ''}">
+            <span class="match-reason-icon">${r.ok ? '✓' : '✗'}</span>
+            <span>${escapeHTML(r.text)}</span>
+        </div>`
+    ).join('');
+
+    return `<div class="match-reasons">${items}</div>`;
 }
 
 export function renderMangaCard(factSheet) {
@@ -92,10 +159,13 @@ export function renderMangaCard(factSheet) {
     card.className = 'manga-card';
 
     const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
-    const hasScore = factSheet.globalScore && factSheet.globalScore !== "N/A";
+    // BUGFIX #3: was `factSheet.globalScore && ...`, which hid a legitimate
+    // score of 0 because 0 is falsy. Now checks the actual type.
+    const hasScore = typeof factSheet.globalScore === 'number';
     const statusText = factSheet.status || 'Unknown';
     const statusIcon = getStatusIcon(statusText);
     const saved = isFavorite(factSheet.id);
+    const safeTitle = escapeHTML(factSheet.title);
 
     let linksHtml = '';
     (factSheet.readLinks || []).forEach((link) => {
@@ -106,13 +176,13 @@ export function renderMangaCard(factSheet) {
         linksHtml += `
             <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn"
                style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
-               ${link.name}
+               ${escapeHTML(link.name)}
             </a>`;
     });
 
     card.innerHTML = `
         <div class="manga-cover-container" onclick="window.toggleOptions('${factSheet.id}')">
-            <img src="${factSheet.coverUrl}" alt="${factSheet.title.replace(/"/g, '&quot;')}" class="manga-cover" loading="lazy">
+            <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
             <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                     onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
                     title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
@@ -123,14 +193,16 @@ export function renderMangaCard(factSheet) {
             </div>
         </div>
         <div class="manga-info">
-            <h3 class="manga-title" title="${factSheet.title.replace(/"/g, '&quot;')}">${factSheet.title}</h3>
-            <p class="manga-meta">${genresText}</p>
+            <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
+            ${renderMatchBadge(factSheet)}
+            <p class="manga-meta">${escapeHTML(genresText)}</p>
             <div class="manga-facts">
-                <span>📚 ${factSheet.chapters || 'N/A'}</span>
-                <span>${statusIcon} ${statusText}</span>
+                <span>📚 ${escapeHTML(factSheet.chapters || 'N/A')}</span>
+                <span>${statusIcon} ${escapeHTML(statusText)}</span>
             </div>
+            ${renderMatchReasons(factSheet)}
             <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
-                ${factSheet.synopsis || 'No description available.'}
+                ${escapeHTML(factSheet.synopsis || 'No description available.')}
             </p>
         </div>
     `;
