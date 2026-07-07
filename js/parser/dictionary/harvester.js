@@ -19,6 +19,15 @@ const QUEUE_PATH = path.join(__dirname, '../../../queue.txt');
 
 const CONFIDENCE_THRESHOLD = 0.75;
 
+// --- Rate-limit protection ---
+// How many tags to process before taking a longer breather, and how long to
+// pause between every single API call. Tune these if you still get 429s.
+const BATCH_SIZE = 20;
+const DELAY_BETWEEN_CALLS_MS = 1500;
+const DELAY_BETWEEN_BATCHES_MS = 15000;
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Read the current harvested_knowledge.js so we can merge into it instead of
 // clobbering everything that's already been auto-published.
 async function loadHarvestedRules() {
@@ -84,35 +93,54 @@ async function run() {
     let autoPublishedCount = 0;
     let queuedForReviewCount = 0;
 
-    for (const tag of uniqueToProcess) {
-        const key = tag.toLowerCase();
-        console.log(`[Processing] ${tag}`);
+    const totalBatches = Math.ceil(uniqueToProcess.length / BATCH_SIZE);
 
-        try {
-            const data = await HarvesterAPI.getNormalizedConcept(tag);
-            if (!data) {
-                console.log(`[No Data] Skipping ${tag}, harvester returned nothing.`);
-                continue;
+    for (let b = 0; b < totalBatches; b++) {
+        const batch = uniqueToProcess.slice(b * BATCH_SIZE, (b + 1) * BATCH_SIZE);
+        console.log(`[Batch ${b + 1}/${totalBatches}] Processing ${batch.length} tag(s)...`);
+
+        for (let i = 0; i < batch.length; i++) {
+            const tag = batch[i];
+            const key = tag.toLowerCase();
+            console.log(`[Processing] ${tag}`);
+
+            try {
+                const data = await HarvesterAPI.getNormalizedConcept(tag);
+                if (!data) {
+                    console.log(`[No Data] Skipping ${tag}, harvester returned nothing.`);
+                } else {
+                    // Ensure the concept has an id even if the API didn't set one.
+                    data.id = data.id || key;
+
+                    // Calculate mood vector based on the fetched genres/themes.
+                    data.moodWeights = calculateMood(data);
+
+                    const confidence = data.metadata?.confidence || 0;
+                    if (confidence >= CONFIDENCE_THRESHOLD) {
+                        harvestedRules[key] = data;
+                        autoPublishedCount++;
+                        console.log(`[Auto-Published] ${tag} (Conf: ${confidence})`);
+                    } else {
+                        reviewQueue.push(data);
+                        queuedForReviewCount++;
+                        console.log(`[Queued for Review] ${tag} (Conf: ${confidence})`);
+                    }
+                }
+            } catch (err) {
+                console.log(`[Error] Failed to process ${tag}: ${err.message}`);
             }
 
-            // Ensure the concept has an id even if the API didn't set one.
-            data.id = data.id || key;
-
-            // Calculate mood vector based on the fetched genres/themes.
-            data.moodWeights = calculateMood(data);
-
-            const confidence = data.metadata?.confidence || 0;
-            if (confidence >= CONFIDENCE_THRESHOLD) {
-                harvestedRules[key] = data;
-                autoPublishedCount++;
-                console.log(`[Auto-Published] ${tag} (Conf: ${confidence})`);
-            } else {
-                reviewQueue.push(data);
-                queuedForReviewCount++;
-                console.log(`[Queued for Review] ${tag} (Conf: ${confidence})`);
+            // Small delay between individual calls, skip after the very last tag.
+            const isLastTagOverall = (b === totalBatches - 1) && (i === batch.length - 1);
+            if (!isLastTagOverall) {
+                await sleep(DELAY_BETWEEN_CALLS_MS);
             }
-        } catch (err) {
-            console.log(`[Error] Failed to process ${tag}: ${err.message}`);
+        }
+
+        // Longer breather between batches so we don't hammer Jikan/Datamuse.
+        if (b < totalBatches - 1) {
+            console.log(`[Cooldown] Waiting ${DELAY_BETWEEN_BATCHES_MS / 1000}s before next batch...`);
+            await sleep(DELAY_BETWEEN_BATCHES_MS);
         }
     }
 
