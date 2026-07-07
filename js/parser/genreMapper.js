@@ -30,15 +30,17 @@ export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
     });
 
     // 2. Universal helper to sort and apply confidence
-    const extractWithConfidence = (scoreObj) => {
-        return Object.entries(scoreObj)
-            .sort((a, b) => b[1] - a[1]) // Sort by highest score
-            .map(([name, score]) => ({
-                name,
-                confidence: Math.min(Number(score.toFixed(2)), 1.0)
-            }))
-            .slice(0, maxResults);
-    };
+    
+const extractWithConfidence = (scoreObj) => {
+    return Object.entries(scoreObj)
+        .filter(([_, score]) => score > 0) // 👈 Filter out zero-score items
+        .sort((a, b) => b[1] - a[1])
+        .map(([name, score]) => ({
+            name,
+            confidence: Math.min(Number(score.toFixed(2)), 1.0)
+        }))
+        .slice(0, maxResults);
+};
 
     // 3. Return the unified object
     return {
