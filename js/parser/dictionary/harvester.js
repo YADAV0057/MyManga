@@ -1,24 +1,31 @@
-const fs = require('fs');
-const path = require('path');
-const HarvesterAPI = require('./HarvesterAPI');
-const { calculateMood } = require('./upgrade'); // upgrade.js must export calculateMood (see note below)
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Resolve paths relative to THIS file's location, not the process cwd.
-// This makes the script safe to run from repo root (as the Action does)
-// or directly from inside js/parser/dictionary/ during local testing.
+// Import your modules using ESM syntax
+import { HarvesterAPI } from './HarvesterAPI.js';
+import { calculateMood } from './upgrade.js'; 
+import { CONCEPT_PROPERTIES } from './properties.js'; 
+
+// Reconstruct __dirname for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Resolve paths correctly
 const PROPERTIES_PATH = path.join(__dirname, 'properties.js');
-const QUEUE_PATH = path.join(__dirname, 'queue.txt');
+// queue.txt is at the root of the repo (3 folders up from js/parser/dictionary)
+const QUEUE_PATH = path.join(__dirname, '../../../queue.txt');
 
 async function run() {
-    // 1. Read existing dictionary as a real object, not via regex-scraping the file text.
-    delete require.cache[require.resolve(PROPERTIES_PATH)];
-    const { CONCEPT_PROPERTIES } = require(PROPERTIES_PATH);
+    // 1. Create a mutable copy of the dictionary from the ESM import
+    const propertiesData = { ...CONCEPT_PROPERTIES };
 
     // 2. Read requested queue
     if (!fs.existsSync(QUEUE_PATH)) {
         console.log(`[Skip] No queue.txt found at ${QUEUE_PATH}`);
         return;
     }
+    
     const queue = fs.readFileSync(QUEUE_PATH, 'utf8')
         .split('\n')
         .map(t => t.trim())
@@ -32,7 +39,7 @@ async function run() {
     // 3. Filter out duplicates from the queue (Gatekeeper)
     const uniqueToProcess = queue.filter(tag => {
         const key = tag.toLowerCase();
-        if (CONCEPT_PROPERTIES[key]) {
+        if (propertiesData[key]) {
             console.log(`[Duplicate Skip] ${tag} already exists.`);
             return false;
         }
@@ -64,7 +71,7 @@ async function run() {
             // Calculate mood vector based on the fetched genres/themes.
             data.moodWeights = calculateMood(data);
 
-            CONCEPT_PROPERTIES[key] = data;
+            propertiesData[key] = data;
             addedCount++;
         } catch (err) {
             console.log(`[Error] Failed to process ${tag}: ${err.message}`);
@@ -77,8 +84,7 @@ async function run() {
     }
 
     // 5. Write the updated dictionary back to disk as a real JS module.
-    const fileBody =
-        `export const CONCEPT_PROPERTIES = ${JSON.stringify(CONCEPT_PROPERTIES, null, 4)};\n`;
+    const fileBody = `export const CONCEPT_PROPERTIES = ${JSON.stringify(propertiesData, null, 4)};\n`;
     fs.writeFileSync(PROPERTIES_PATH, fileBody);
     console.log(`[Saved] Added ${addedCount} new concept(s) to properties.js`);
 
