@@ -1,6 +1,10 @@
 // ==========================================
 // MANGADEX ENGINE (js/mangadex.js)
 // ==========================================
+// CHANGED: fetchFromMangaDexFallback now consumes a SearchPlan
+// (js/parser/searchPlanner.js) instead of the simple parser's parsedData.
+// resolveReadLinks() and suggestTitlesFromMangaDex() are untouched — they
+// only ever took a raw title/query string, not a parsed object.
 import { CONFIG } from './config.js';
 
 // MangaDex requires specific UUIDs for genres
@@ -35,30 +39,56 @@ const REVERSE_MD_STATUS = {
     'cancelled': 'CANCELLED'
 };
 
+function toTagKey(name) {
+    return name.trim().toLowerCase().replace(/[^a-z]/g, '');
+}
+
 // 1. THE FALLBACK ENGINE (Tier 4 Database)
-export async function fetchFromMangaDexFallback(parsedData, page = 1, limit = 10) {
+/**
+ * @param {import('./parser/searchPlanner.js').SearchPlan} plan
+ * @param {number} page
+ * @param {number} limit
+ */
+export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
     const params = new URLSearchParams();
     params.set('limit', limit);
     params.set('offset', (page - 1) * limit);
     params.append('includes[]', 'cover_art');
     params.set('availableTranslatedLanguage[]', 'en'); 
 
-    if (parsedData.isVibeOrTag) {
-        const tagIds = parsedData.cleanQuery
-            .split(',')
-            .map(g => g.trim().toLowerCase().replace(/[^a-z]/g, ''))
+    const genreList = [...(plan.primaryGenres || []), ...(plan.secondaryThemes || [])];
+    const isGenreSearch = genreList.length > 0;
+    const freeText = (plan.cleanQuery || '').trim();
+
+    if (isGenreSearch) {
+        const tagIds = genreList
+            .map(toTagKey)
             .map(g => MD_TAG_MAP[g])
             .filter(Boolean);
-            
+
         tagIds.forEach(id => params.append('includedTags[]', id));
-        params.set('order[followedCount]', 'desc'); // Sort by most popular
-    } else if (parsedData.cleanQuery && parsedData.cleanQuery.length > 0) {
-        params.set('title', parsedData.cleanQuery);
+
+        if (plan.filters?.sort === 'rating') {
+            params.set('order[rating]', 'desc');
+        } else {
+            params.set('order[followedCount]', 'desc'); // Sort by most popular
+        }
+    } else if (freeText.length > 0) {
+        params.set('title', freeText);
         params.set('order[relevance]', 'desc');
     }
 
-    if (parsedData.statusFilter && MD_STATUS_MAP[parsedData.statusFilter]) {
-        params.append('status[]', MD_STATUS_MAP[parsedData.statusFilter]);
+    // NEW: exclude genres the planner flagged as avoids, where MangaDex has a tag UUID for them
+    if (plan.excludedGenres && plan.excludedGenres.length > 0) {
+        const excludeIds = plan.excludedGenres
+            .map(toTagKey)
+            .map(g => MD_TAG_MAP[g])
+            .filter(Boolean);
+        excludeIds.forEach(id => params.append('excludedTags[]', id));
+    }
+
+    if (plan.filters?.statusFilter && MD_STATUS_MAP[plan.filters.statusFilter]) {
+        params.append('status[]', MD_STATUS_MAP[plan.filters.statusFilter]);
     }
 
     const controller = new AbortController();
@@ -117,7 +147,7 @@ export async function fetchFromMangaDexFallback(parsedData, page = 1, limit = 10
     }
 }
 
-// 2. THE READ LINK RESOLVER 
+// 2. THE READ LINK RESOLVER  (unchanged — takes a plain title string)
 export async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
@@ -162,7 +192,7 @@ export async function resolveReadLinks(title) {
     return validLinks;
 }
 
-// 3. THE SUGGESTION ENGINE
+// 3. THE SUGGESTION ENGINE (unchanged — takes a plain query string)
 export async function suggestTitlesFromMangaDex(query, limit = 5) {
     if (!query || query.length < 2) return [];
 
