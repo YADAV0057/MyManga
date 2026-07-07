@@ -1,3 +1,5 @@
+
+
 // js/parser/pipeline.js
 
 import { MangaIntent } from './intentSchema.js'; 
@@ -7,7 +9,6 @@ import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
 import { mapMoodsToCategories } from './genreMapper.js';
 import { applyReasoningRules } from './ruleEngine.js'; 
-import { logMissedSearch } from './telemetry.js'; // Added for Step 4
 
 /**
  * Strips negation terms from the input and tracks excluded intent.
@@ -81,12 +82,15 @@ export function buildIntent(rawUserInput) {
         intent.avoids.genres = [...new Set([...intent.avoids.genres, ...intent.excluded])];
     }
 
-    // 7. Deduplicate and Clean
+    // 7. Deduplicate and Clean (The "Hardening" step)
     const filterSuggested = (primary, suggested) => {
         const map = new Map();
         
         [...suggested].forEach(item => {
+            // Check if this item is already a primary requirement
             const isPrimary = primary.some(p => p.name === item.name);
+            
+            // If it is NOT primary, add it to suggestions
             if (!isPrimary) {
                 const existing = map.get(item.name)?.score || 0;
                 const current = item.confidence ?? item.score ?? 0.5;
@@ -105,17 +109,13 @@ export function buildIntent(rawUserInput) {
         return Array.from(map.values()).sort((a, b) => b.score - a.score);
     };
 
+    // Apply strict filtering (removes anything already in primary intent)
     intent.boosts.genres = filterSuggested(intent.genres, [...(intent.boosts?.genres || []), ...suggestedGenres]);
     intent.boosts.themes = filterSuggested(intent.themes, [...(intent.boosts?.themes || []), ...suggestedThemes]);
 
     // 8. Final Confidence Check
     if (!intent.moods || intent.moods.length === 0) {
         intent.confidence = 0.2;
-        
-        // --- STEP 4: TRIGGER TELEMETRY ---
-        logMissedSearch(rawUserInput);
-    } else {
-        intent.confidence = 0.9;
     }
 
     return intent;
