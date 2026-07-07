@@ -73,11 +73,13 @@ const RULES = [
         confidenceModifier: 0.92
     }
 ];
+// js/parser/ruleEngine.js
+
+// ... (KEEP YOUR RULES ARRAY EXACTLY AS IT IS ABOVE) ...
 
 export function applyReasoningRules(intent) {
     if (!intent.moods || intent.moods.length === 0) return intent;
 
-    // Use Maps to store the highest score if multiple rules boost the same tag
     const boostMaps = {
         genres: new Map(),
         themes: new Map(),
@@ -85,21 +87,22 @@ export function applyReasoningRules(intent) {
     };
     const avoids = { genres: new Set(), themes: new Set() };
     
+    // 🌟 NEW: Initialize the log array
+    const ruleLogs = []; 
     let appliedPriorities = [];
     let lowestConfidence = 1.0;
 
-    // 1. Evaluate all rules
     RULES.forEach(rule => {
         const isMatch = rule.when.some(trigger => intent.moods.includes(trigger));
         
         if (isMatch) {
-            // Merge Boosts (Keep the highest score)
+            // 🌟 NEW: Log the triggered rule
+            ruleLogs.push(`✓ Triggered: ${rule.name}`);
+
             ['genres', 'themes', 'demographics'].forEach(category => {
                 if (rule.boosts[category]) {
                     rule.boosts[category].forEach(item => {
-                        // STRICT SEPARATION: Only add as a suggestion if it wasn't explicitly requested (Primary)
                         const isAlreadyPrimary = intent[category] && (
-                            // Handle flat strings (genres/themes) or objects (demographics)
                             intent[category].includes(item.name) || 
                             intent[category].some(primaryItem => primaryItem.name === item.name)
                         );
@@ -114,17 +117,14 @@ export function applyReasoningRules(intent) {
                 }
             });
 
-            // Merge Avoids
             if (rule.avoids.genres) rule.avoids.genres.forEach(g => avoids.genres.add(g));
             if (rule.avoids.themes) rule.avoids.themes.forEach(t => avoids.themes.add(t));
 
-            // Track Priority and Confidence
             if (appliedPriorities.length === 0) appliedPriorities = rule.priority;
             if (rule.confidenceModifier < lowestConfidence) lowestConfidence = rule.confidenceModifier;
         }
     });
 
-    // 2. Convert Maps back to sorted arrays of objects { name, score }
     const mapToArray = (map) => Array.from(map.entries())
                                     .map(([name, score]) => ({ name, score }))
                                     .sort((a, b) => b.score - a.score);
@@ -140,6 +140,9 @@ export function applyReasoningRules(intent) {
         themes: [...avoids.themes]
     };
 
+    // 🌟 NEW: Attach the logs to the intent for the UI to display
+    intent.ruleLogs = ruleLogs;
+    
     if (appliedPriorities.length > 0) intent.searchPriority = appliedPriorities;
     intent.confidence = lowestConfidence;
 
