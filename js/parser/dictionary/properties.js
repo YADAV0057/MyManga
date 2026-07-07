@@ -12378,41 +12378,6 @@ export const CONCEPT_PROPERTIES = {
         },
         "tone": "positive",
         "intensity": 0.3
-    },
-    "cyberpunk": {
-        "id": "cyberpunk",
-        "aliases": [
-            "cyberpunk"
-        ],
-        "genres": [],
-        "themes": [],
-        "moodWeights": {}
-    },
-    "​necromancer": {
-        "id": "​necromancer",
-        "aliases": [
-            "​necromancer"
-        ],
-        "genres": [],
-        "themes": [],
-        "moodWeights": {}
-    },
-    "​time_loop": {
-        "id": "​time_loop",
-        "aliases": [
-            "​time_loop"
-        ],
-        "genres": [],
-        "themes": [],
-        "moodWeights": {}
-    },
-    "​space_bounty_hunter": {
-        "id": "​space_bounty_hunter",
-        "aliases": [
-            "​space_bounty_hunter"
-        ],
-        "genres": [],
-        "themes": [],
-        "moodWeights": {}
     }
+    
 };
