@@ -1,159 +1,194 @@
+ 
 // ==========================================
-// SEARCH PLANNER (js/parser/searchPlanner.js)
+// SEARCH / AGGREGATION ENGINE (js/search.js)
 // ==========================================
-// Translates a MangaIntent (the object returned by js/parser/pipeline.js's
-// buildIntent()) into a flat, API-agnostic SearchPlan that the API adapters
-// (anilist.js, jikan.js, kitsu.js, mangadex.js) can consume without knowing
-// anything about moods, confidence scores, or the reasoning rules that
-// produced them.
-//
-// This does NOT replace anything ruleEngine.js already computed — it just
-// flattens/normalizes the final intent object. apiOrder, avoids, and boosts
-// are all read from `intent`, not recalculated here.
+// CHANGED: now runs the advanced NLU pipeline (js/parser/pipeline.js ->
+// js/parser/searchPlanner.js) instead of the simple parseSmartQuery()
+// (js/parser.js). All four fetchers now receive a SearchPlan. The old
+// isVibeOrTag branching is replaced by "does the plan have any
+// primaryGenres/secondaryThemes" — same concept, new source of truth.
+import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
+import { buildIntent } from './parser/pipeline.js';
+import { buildSearchPlan } from './parser/searchPlanner.js';
+import { fetchFromAniListUnified } from './anilist.js';
+import { fetchFromJikanFallback } from './jikan.js';
+import { fetchFromKitsuFallback } from './kitsu.js';
+import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
+import { renderMangaCard, renderDidYouMean } from './renderer.js';  
+import { normalizeResult } from './resultNormalizer.js';
 
-// AniList is Tier 1 and the source of truth for genre spelling — the other
-// adapters (jikan.js's GENRE_ID_MAP, kitsu.js's filter[categories]) key off
-// these exact strings. ruleEngine.js's RULES currently emit a few genre
-// names without the AniList spelling (e.g. "SliceOfLife"), so we normalize
-// here rather than touching ruleEngine.js's hardcoded rule data.
-const GENRE_NORMALIZE = {
-    SliceOfLife: "Slice of Life",
-    Scifi: "Sci-Fi",
-    SciFi: "Sci-Fi",
-    MahouShoujo: "Mahou Shoujo"
+let isSearching = false;
+
+// Maps the internal dataSource tag search.js already tracked into the
+// human-readable UnifiedResult.source label (see resultNormalizer.js).
+const SOURCE_LABELS = {
+    anilist: 'AniList',
+    jikan: 'Jikan',
+    kitsu: 'Kitsu',
+    mangadex: 'MangaDex',
+    // Cache only ever stores Tier-1 (AniList) results — see the CACHE SAVE
+    // block below — so a cache hit is always AniList data underneath.
+    cache: 'AniList (cached)'
 };
 
-function normalizeGenreName(name) {
-    return GENRE_NORMALIZE[name] || name;
+export async function triggerSearch(rawQuery, page = 1) {
+    if (rawQuery === undefined || rawQuery === null) return;
+    if (isSearching) return;
+    isSearching = true;
+
+    window.currentActiveQuery = rawQuery;
+    window.currentActivePage = page;
+
+    const grid = document.getElementById('community-grid');
+    const loadingBar = document.getElementById('loading-bar');
+    const refreshBtn = document.getElementById('refresh-btn');
+
+    loadingBar.classList.add('is-loading');
+    refreshBtn.style.display = 'none';
+    
+    // NEW: Instantly inject 15 shimmering skeleton cards while we wait!
+    renderSkeletonLoaders(15);
+    document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
+
+    try {
+        // CHANGED: run the full NLU pipeline instead of the simple parser.
+        const intent = buildIntent(rawQuery);
+        const plan = buildSearchPlan(intent);
+        const isGenreSearch = (plan.primaryGenres.length + plan.secondaryThemes.length) > 0;
+
+        const cacheKey = generateCacheKey(rawQuery, page);
+        let finalResults = [];
+        let dataSource = "cache"; 
+
+        let docSnap = null;
+        if (db) {
+            try {
+                const docRef = doc(db, "searches", cacheKey);
+                docSnap = await getDoc(docRef);
+            } catch (e) {
+                console.warn("Firestore read failed, falling back to live API:", e);
+            }
+        }
+
+        if (docSnap && docSnap.exists()) {
+            console.log("Loaded from Firebase cache.");
+            finalResults = docSnap.data().results;
+        } else {
+            console.log("Not in cache. Beginning API Waterfall...");
+
+            // TIER 1: AniList
+            dataSource = "anilist";
+            if (isGenreSearch) {
+                const [koreanResults, globalResults] = await Promise.all([
+                    fetchFromAniListUnified(plan, page, true, 5),
+                    fetchFromAniListUnified(plan, page, false, 5)
+                ]);
+                finalResults = [...koreanResults, ...globalResults];
+                finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
+            } else {
+                finalResults = await fetchFromAniListUnified(plan, page, false, 10);
+            }
+
+            // TIER 2: Jikan (MAL) Fallback
+            if (!finalResults || finalResults.length === 0) {
+                console.log("AniList failed. Trying Jikan...");
+                dataSource = "jikan";
+                try { finalResults = await fetchFromJikanFallback(plan, page, 10); } 
+                catch (e) { console.warn("Jikan failed:", e); }
+            }
+
+            // TIER 3: Kitsu Fallback
+            if (!finalResults || finalResults.length === 0) {
+                console.log("Jikan failed. Trying Kitsu...");
+                dataSource = "kitsu";
+                try { finalResults = await fetchFromKitsuFallback(plan, page, 10); } 
+                catch (e) { console.warn("Kitsu failed:", e); }
+            }
+
+            // TIER 4: MangaDex Fallback 
+            if (!finalResults || finalResults.length === 0) {
+                console.log("Kitsu failed. Trying MangaDex...");
+                dataSource = "mangadex";
+                try { finalResults = await fetchFromMangaDexFallback(plan, page, 10); } 
+                catch (e) { console.warn("MangaDex failed:", e); }
+            }
+
+            // CACHE SAVE: Only save Tier 1 (AniList) data to Firebase to keep cache clean
+            if (db && finalResults && finalResults.length > 0 && dataSource === "anilist") {
+                try {
+                    const docRef = doc(db, "searches", cacheKey);
+                    await setDoc(docRef, { results: finalResults });
+                } catch (e) { console.warn("Firestore write failed:", e); }
+            }
+        }
+
+        // NEW: hard chapter-count constraint from the plan (e.g. "under 50
+        // chapters"), applied once across whichever tier produced results —
+        // including the cache-hit path. Unknown chapter counts are kept
+        // rather than dropped, since we can't confirm they violate the cap.
+        if (plan.filters?.maxChapters) {
+            finalResults = (finalResults || []).filter(m => {
+                const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
+                return !ch || isNaN(ch) || ch <= plan.filters.maxChapters;
+            });
+        }
+
+        if (!finalResults || finalResults.length === 0) {
+            let suggestions = [];
+            if (plan.cleanQuery && plan.cleanQuery.length > 0) {
+                try { suggestions = await suggestTitlesFromMangaDex(plan.cleanQuery, 5); } 
+                catch (e) { console.warn("Did-you-mean lookup failed:", e); }
+            }
+
+            grid.innerHTML = '';
+            if (suggestions.length > 0) {
+                renderDidYouMean(rawQuery, suggestions);
+            } else {
+                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. All fallbacks exhausted!</p>';
+            }
+            return;
+        }
+
+        const factSheets = await Promise.all(finalResults.map(async (aniManga) => {
+            const unified = normalizeResult(aniManga, SOURCE_LABELS[dataSource] || dataSource);
+            const generatedLinks = await resolveReadLinks(unified.title);
+            return { ...unified, readLinks: generatedLinks };
+        }));
+
+        grid.innerHTML = ''; // Clears the skeletons before rendering real cards
+        refreshBtn.style.display = 'block';
+        factSheets.forEach(renderMangaCard);
+
+    } catch (error) {
+        console.error("Aggregation Error:", error);
+        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the databases.</p>';
+    } finally {
+        loadingBar.classList.remove('is-loading');
+        isSearching = false;
+    }
 }
 
-// Matches the confidence threshold pipeline.js already uses to split
-// "primary" (intent.genres/themes) from "suggested" (intent.boosts) —
-// keep these in sync if that threshold ever changes in pipeline.js.
-const DEFAULT_INCLUSION_THRESHOLD = 0.80;
-
-// Matches search.js's actual hardcoded waterfall order (Tier 1-4).
-// Only used if the intent has no rule-derived searchPriority.
-const DEFAULT_API_ORDER = ["AniList", "Jikan", "Kitsu", "MangaDex"];
-
-// rules.js (extractRules) produces lowercase "completed"/"ongoing", but the
-// existing fetchers (anilist.js's mediaArgs, jikan.js's STATUS_TO_JIKAN,
-// kitsu.js's STATUS_TO_KITSU) all key off AniList's MediaStatus enum. We
-// normalize here so those three files don't need to know about the parser's
-// vocabulary at all.
-const STATUS_TO_ANILIST_ENUM = {
-    completed: "FINISHED",
-    ongoing: "RELEASING"
-};
-
-/**
- * @typedef {Object} SearchPlan
- * @property {string} cleanQuery
- * @property {string[]} primaryGenres
- * @property {string[]} secondaryThemes
- * @property {string[]} excludedGenres
- * @property {string[]} excludedThemes
- * @property {string[]} apiOrder
- * @property {{status: string|null, sort: string, maxChapters: number|null}} filters
- * @property {number} confidence
- */
-
-/**
- * Build a SearchPlan from a MangaIntent.
- *
- * @param {object} intent - return value of buildIntent() from pipeline.js
- * @param {object} [options]
- * @param {number} [options.threshold=0.80] - min confidence (0-1) to count as "primary"
- * @param {boolean} [options.includeBoosts=true] - promote strong intent.boosts entries into the plan
- * @returns {SearchPlan}
- */
-export function buildSearchPlan(intent, options = {}) {
-    if (!intent) {
-        throw new Error("buildSearchPlan: intent is required");
+// ==========================================
+// SKELETON LOADER UI
+// ==========================================
+export function renderSkeletonLoaders(count = 15) {
+    const grid = document.getElementById('community-grid');
+    if (!grid) return;
+    
+    let skeletonHTML = '';
+    for (let i = 0; i < count; i++) {
+        skeletonHTML += `
+            <div class="skeleton-card">
+                <div class="skeleton-cover"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-meta" style="margin-top: 5px; margin-bottom: 12px;"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                    <div class="skeleton-line skeleton-text-short"></div>
+                </div>
+            </div>
+        `;
     }
-
-    const threshold = options.threshold ?? DEFAULT_INCLUSION_THRESHOLD;
-    const includeBoosts = options.includeBoosts ?? true;
-
-    const plan = {
-        cleanQuery: intent.originalQuery || "",
-        primaryGenres: [],
-        secondaryThemes: [],
-        excludedGenres: [],
-        excludedThemes: [],
-        apiOrder: (intent.searchPriority && intent.searchPriority.length > 0)
-            ? intent.searchPriority
-            : DEFAULT_API_ORDER,
-        filters: {
-            // Kept as-is for display/debugging (matches rules.js's own vocabulary)
-            status: intent.status || null,          // "completed" | "ongoing" | null
-            // What the API adapters actually consume — same enum shape the
-            // old parseSmartQuery()/parser.js used to emit as statusFilter.
-            statusFilter: STATUS_TO_ANILIST_ENUM[intent.status] || null,
-            sort: intent.sort || "relevance",         // "relevance" | "popularity" | "rating"
-            maxChapters: intent.maxChapters ?? null
-        },
-        confidence: typeof intent.confidence === "number" ? intent.confidence : 0.5
-    };
-
-    // 1. Primary genres/themes: pipeline.js already filtered these to >= 0.80
-    //    confidence (step 5), so this loop is mostly a normalize+extract pass —
-    //    it re-applies `threshold` too in case a caller passes a stricter one.
-    (intent.genres || []).forEach(g => {
-        if (g.confidence >= threshold) {
-            plan.primaryGenres.push(normalizeGenreName(g.name));
-        }
-    });
-
-    (intent.themes || []).forEach(t => {
-        if (t.confidence >= threshold) {
-            plan.secondaryThemes.push(normalizeGenreName(t.name));
-        }
-    });
-
-    // 2. Optionally promote strong "suggested" boosts (below pipeline.js's
-    //    primary threshold, but still confident) so a thin primary intent
-    //    still gives adapters useful genre coverage. Never duplicates a
-    //    genre/theme that's already primary.
-    if (includeBoosts) {
-        (intent.boosts?.genres || []).forEach(g => {
-            const name = normalizeGenreName(g.name);
-            if (g.score >= threshold && !plan.primaryGenres.includes(name)) {
-                plan.primaryGenres.push(name);
-            }
-        });
-        (intent.boosts?.themes || []).forEach(t => {
-            const name = normalizeGenreName(t.name);
-            if (t.score >= threshold && !plan.secondaryThemes.includes(name)) {
-                plan.secondaryThemes.push(name);
-            }
-        });
-    }
-
-    // 3. Exclusions: intent.avoids.genres/themes already merges manual
-    //    negations ("no romance") with mood-based avoids from ruleEngine.js.
-    //    A primary requirement always wins over an avoid (e.g. if the user's
-    //    mood strongly implies Drama, don't let a rule's avoid list drop it).
-    plan.excludedGenres = [...new Set((intent.avoids?.genres || []).map(normalizeGenreName))]
-        .filter(g => !plan.primaryGenres.includes(g));
-
-    plan.excludedThemes = [...new Set((intent.avoids?.themes || []).map(normalizeGenreName))]
-        .filter(t => !plan.secondaryThemes.includes(t));
-
-    return plan;
-}
-
-/**
- * Incremental-adoption helper: collapses a SearchPlan's genres/themes back
- * into the single comma-separated string that parseSmartQuery() (js/parser.js)
- * and fetchFromAniListUnified() (anilist.js) expect today via
- * parsedData.cleanQuery + isVibeOrTag. Lets search.js start consuming plans
- * from the advanced pipeline without every adapter being rewritten in the
- * same change.
- *
- * @param {SearchPlan} plan
- * @returns {string}
- */
-export function planToLegacyQuery(plan) {
-    return [...plan.primaryGenres, ...plan.secondaryThemes].join(", ");
+    grid.innerHTML = skeletonHTML;
 }
