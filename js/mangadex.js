@@ -113,10 +113,15 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
             const coverFile = coverRel?.attributes?.fileName;
             const coverUrl = coverFile ? `${CONFIG.MANGADEX_COVER}/${m.id}/${coverFile}` : null;
 
-            // Extract genres safely
+            // Extract genres and themes separately — MangaDex already tags each
+            // one by `group`, we were just merging them into one array before.
             const tags = attr.tags || [];
             const genres = tags
-                .filter(t => t?.attributes?.group === 'genre' || t?.attributes?.group === 'theme')
+                .filter(t => t?.attributes?.group === 'genre')
+                .map(t => t?.attributes?.name?.en)
+                .filter(Boolean);
+            const themes = tags
+                .filter(t => t?.attributes?.group === 'theme')
                 .map(t => t?.attributes?.name?.en)
                 .filter(Boolean);
 
@@ -133,7 +138,15 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
                     romaji: titleObj['ja-ro'] || null
                 },
                 averageScore: null, // Skipped for speed (requires secondary API call)
+                // popularity: intentionally omitted — MangaDex has no cheap
+                // popularity field on this endpoint (follower count requires
+                // a separate /statistics call per title). normalizeResult()
+                // defaults this to null, which is accurate here, not a bug.
                 genres: genres,
+                themes: themes,
+                // NEW: publicationDemographic is a single value (e.g. "shounen"),
+                // wrapped in an array to match the other adapters' shape.
+                demographics: attr.publicationDemographic ? [attr.publicationDemographic] : [],
                 description: descObj.en || "No synopsis available.",
                 coverImage: { large: coverUrl },
                 chapters: attr.lastChapter || null,
