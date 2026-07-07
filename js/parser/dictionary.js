@@ -1,6 +1,6 @@
 // Import your auto-harvested AI dictionary
 import { CONCEPT_PROPERTIES } from './dictionary/properties.js';
-
+ 
 // --- YOUR EXISTING HARDCODED DATA ---
 
 export const URGENCY_MODIFIERS = {
