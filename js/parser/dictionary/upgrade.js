@@ -1,8 +1,8 @@
-const fs = require('fs'); 
-const { GENRE_WEIGHTS, THEME_WEIGHTS, SOURCE_MULTIPLIERS } = require('./MoodConfig');
-const dictionary = require('./properties.js'); // Assuming your properties.js exports the object
+import fs from 'fs'; 
+import { GENRE_WEIGHTS, THEME_WEIGHTS, SOURCE_MULTIPLIERS } from './MoodConfig.js';
+import { CONCEPT_PROPERTIES } from './properties.js'; 
 
-function calculateMood(concept) {
+export function calculateMood(concept) {
     let scores = {};
     const process = (items = [], map, mult) => {
         items.forEach(item => {
@@ -14,8 +14,10 @@ function calculateMood(concept) {
             }
         });
     };
-    process(concept.genres, GENRE_WEIGHTS, SOURCE_MULTIPLIERS.Genre);
-    process(concept.themes, THEME_WEIGHTS, SOURCE_MULTIPLIERS.Theme);
+    
+    // Added fallback to empty arrays to prevent crashes if genres/themes are missing
+    process(concept.genres || [], GENRE_WEIGHTS, SOURCE_MULTIPLIERS.Genre);
+    process(concept.themes || [], THEME_WEIGHTS, SOURCE_MULTIPLIERS.Theme);
     
     // Normalize
     const max = Math.max(...Object.values(scores), 1);
@@ -23,8 +25,15 @@ function calculateMood(concept) {
     return scores;
 }
 
-// Update the dictionary
-for (let key in dictionary) {
-    dictionary[key].moodWeights = calculateMood(dictionary[key]);
+// Check if this script is being run directly (e.g., node upgrade.js) 
+// rather than being imported by harvester.js
+if (process.argv[1] && process.argv[1].endsWith('upgrade.js')) {
+    for (let key in CONCEPT_PROPERTIES) {
+        CONCEPT_PROPERTIES[key].moodWeights = calculateMood(CONCEPT_PROPERTIES[key]);
+    }
+    console.log("Calculated mood vectors for all concepts.");
+    
+    // Optional: Write it back to the file if you run this manually
+    // const fileBody = `export const CONCEPT_PROPERTIES = ${JSON.stringify(CONCEPT_PROPERTIES, null, 4)};\n`;
+    // fs.writeFileSync('./properties.js', fileBody);
 }
-console.log("Calculated mood vectors for all concepts.");
