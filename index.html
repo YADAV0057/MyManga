@@ -16,13 +16,7 @@
 
 <body>
 
-<!-- BUGFIX: style.css already defines #loading-bar / .is-loading (the thin
-     progress bar during search), and search.js's triggerSearch() calls
-     document.getElementById('loading-bar').classList.add('is-loading')
-     BEFORE its own try/catch even starts — this element was missing from
-     the page, so that line threw a TypeError on every single call and
-     killed triggerSearch() instantly, before it did anything else. That's
-     why search, mood/vibe buttons, and refresh all appeared totally dead. -->
+<!-- Loading Bar Indicator -->
 <div id="loading-bar"></div>
 
 <!-- =========================
@@ -37,7 +31,7 @@
 </nav>
 
 <!-- =========================
-    HEADER SEARCH
+    HEADER SEARCH + AI PANEL
 ========================= -->
 <header>
 
@@ -48,42 +42,44 @@
         <input
             id="manga-search-input"
             type="text"
-            placeholder="e.g. Cyberpunk romance, Dark revenge, Wholesome vibe..."
+            placeholder="e.g. I want something that will make me cry..."
         >
 
-        <button id="search-submit-btn" class="vibe-btn" style="margin-top:10px;width:100%;">
+        <button id="search-submit-btn" class="vibe-btn full-width">
             Find My Vibe
         </button>
 
     </div>
 
+    <!-- =========================
+        🧠 AI SEARCH INTELLIGENCE
+        Integrated directly into the search flow (was previously a
+        separate "Mood Intelligence Preview" section above the app).
+        Hidden until the first search runs; see js/aiPanel.js.
+    ========================= -->
+    <section id="ai-panel" class="ai-panel hidden">
+
+        <!-- shown only while a search is actively running -->
+        <div id="ai-panel-live" class="ai-panel-live hidden"></div>
+
+        <!-- compact bar shown once a search has completed -->
+        <div id="ai-panel-summary" class="ai-panel-summary hidden">
+            <div class="ai-panel-summary-left">
+                <span class="ai-panel-icon">🧠</span>
+                <span class="ai-panel-title">AI Search Intelligence</span>
+            </div>
+            <div class="ai-panel-summary-right">
+                <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
+                <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
+            </div>
+        </div>
+
+        <!-- full breakdown, collapsed by default -->
+        <div id="ai-panel-details" class="ai-panel-details hidden"></div>
+
+    </section>
+
 </header>
-
-<!-- =========================
-    🔮 MOOD ANALYZER
-========================= -->
-
-<section id="mood-preview-board" class="mood-analyzer container">
-
-    <div class="mood-analyzer-header">
-        <h2>🔮 Mood Analyzer</h2>
-        <p>See exactly how MangaMood reads your search — moods, genres, and the API route it'll take.</p>
-    </div>
-
-    <input
-        id="parser-input"
-        class="mood-analyzer-input"
-        type="text"
-        placeholder="Try: Make me cry, dark revenge, wholesome romance..."
-    >
-
-    <button id="parser-test-btn" class="mood-analyzer-btn">
-        Analyze Mood
-    </button>
-
-    <div id="parser-output" class="mood-analyzer-output"></div>
-
-</section>
 
 <!-- =========================
     MAIN APP
