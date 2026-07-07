@@ -29,23 +29,24 @@ export function setupParserTester() {
             const pipelineModule = await import("./parser/pipeline.js");
             const intent = pipelineModule.buildIntent(raw);
 
-            // 2. Build Visual Bars for Mood Profile
+            
+                       // 2. Build Visual Bars for Mood Profile
             let profileHTML = "<div style='opacity: 0.5;'>No specific moods detected. Try different words!</div>";
             
             if (intent && intent.moodProfile && intent.moodProfile.length > 0) {
                 profileHTML = intent.moodProfile.map(m => `
                     <div style="margin-bottom: 12px;">
                         <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; font-weight: 600;">
-                            <span style="text-transform: capitalize;">${m.category}</span>
-                            <span style="color: #00ff9d;">${m.score}%</span>
+                            <span style="text-transform: capitalize;">${m.name}</span>
+                            <span style="color: #00ff9d;">${m.percent}%</span>
                         </div>
                         <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 6px; overflow: hidden; height: 8px;">
-                            <div style="width: ${m.score}%; background: #00ff9d; height: 100%; border-radius: 6px; transition: width 0.4s ease-out;"></div>
+                            <div style="width: ${m.percent}%; background: #00ff9d; height: 100%; border-radius: 6px; transition: width 0.4s ease-out;"></div>
                         </div>
                     </div>
                 `).join('');
             }
-
+ 
             // 5. Render Output Dashboard
             output.innerHTML = `
                 <div style="line-height:1.7; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
