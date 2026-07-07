@@ -37,6 +37,17 @@ export const SYNONYM_MAP = {
     "brain": "mindfuck",
     "complex": "mindfuck",
     "trippy": "mindfuck"
+"educational": "academic",
+"learning": "academic",
+"nostalgic": "sentimental",
+"memories": "sentimental",
+"intense": "serious",
+"gritty": "dark",
+"brutal": "gory",
+"heartwarming": "wholesome",
+"comfort": "healing",
+"chill": "healing"
+
 };
 
 /**
