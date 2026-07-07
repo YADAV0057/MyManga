@@ -227,7 +227,14 @@ function setupRefreshButton() {
 
     btn.addEventListener("click", () => {
         if (window.triggerSearch) {
-            window.triggerSearch("", 1);
+            // CHANGED: was always triggerSearch("", 1) — a blank query on a
+            // fixed page 1 produces the exact same cache key (generateCacheKey
+            // hashes query+page) AND the exact same AniList POPULARITY_DESC
+            // page every time, so "Reroll" just reloaded the same cached
+            // manga forever. Picking a random page each click both busts the
+            // cache key and pulls a genuinely different slice of results.
+            const randomPage = Math.floor(Math.random() * 10) + 1;
+            window.triggerSearch("", randomPage);
         }
     });
 }
