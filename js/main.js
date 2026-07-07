@@ -108,6 +108,10 @@ async function initializeApp() {
             const renderer = await import("./renderer.js");
             window.renderMangaCard = renderer.renderMangaCard;
             window.getCachedFactSheet = renderer.getCachedFactSheet;
+            // BUGFIX: handleFavoriteClick was called via onclick in renderer.js's
+            // card markup but never attached to window anywhere — the ♥ button
+            // threw a silent ReferenceError. renderer.js now exports it.
+            window.handleFavoriteClick = renderer.handleFavoriteClick;
             window.AppDiagnostics.log("Renderer", true, "Loaded");
         } catch (e) {
             window.AppDiagnostics.log("Renderer", false, e.message);
