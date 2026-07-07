@@ -1,3 +1,5 @@
+// js/parser/ruleEngine.js
+
 const RULES = [
     {
         name: "Dark & Gritty",
@@ -71,7 +73,9 @@ export function applyReasoningRules(intent) {
                         const isAlreadyPrimary = intent[category] && intent[category].some(primaryItem => primaryItem.name === item.name);
                         
                         if (!isAlreadyPrimary && !boostMaps[category].has(item.name)) {
-                            boostMaps[category].set(item.name, item.score);
+                            // FORCE DEFAULT: If item.score is missing or NaN, set to 0.5
+                            const validScore = (typeof item.score === 'number' && !isNaN(item.score)) ? item.score : 0.5;
+                            boostMaps[category].set(item.name, validScore);
                         }
                     });
                 }
