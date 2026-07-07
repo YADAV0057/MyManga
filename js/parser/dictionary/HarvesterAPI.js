@@ -1,5 +1,5 @@
-const axios = require('axios');
-const xml2js = require('xml2js');
+import axios from 'axios';
+import xml2js from 'xml2js';
 
 // These weights will be applied automatically to any genres found 
 const WEIGHT_MAP = {
@@ -7,7 +7,7 @@ const WEIGHT_MAP = {
     "SliceOfLife": 1.0, "Fantasy": 0.80, "Romance": 0.75
 };
 
-class HarvesterAPI {
+export class HarvesterAPI {
     static async getNormalizedConcept(tag) {
         try {
             console.log(`[Automated] Harvesting: ${tag}`);
@@ -49,10 +49,20 @@ class HarvesterAPI {
     static async fetchFromANN(tag) {
         const url = `https://cdn.animenewsnetwork.com/encyclopedia/api.xml?title=~${encodeURIComponent(tag)}`;
         const response = await axios.get(url);
+        
+        // xml2js has slightly different import behavior in ESM sometimes, 
+        // using xml2js.Parser is usually safe, but if it throws an error, 
+        // we can adjust it to import { Parser } from 'xml2js'.
         const parser = new xml2js.Parser({ explicitArray: false });
         const result = await parser.parseStringPromise(response.data);
 
         const info = result.ann.anime;
+        
+        // Handle cases where ANN returns nothing or malformed data
+        if (!info || !info.info) {
+            return { genres: [], themes: [] };
+        }
+
         const infoList = Array.isArray(info.info) ? info.info : [info.info];
 
         return {
@@ -61,5 +71,3 @@ class HarvesterAPI {
         };
     }
 }
-
-module.exports = HarvesterAPI;
