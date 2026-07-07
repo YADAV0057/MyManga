@@ -7,6 +7,16 @@
 // (js/parser.js). All four fetchers now receive a SearchPlan. The old
 // isVibeOrTag branching is replaced by "does the plan have any
 // primaryGenres/secondaryThemes" — same concept, new source of truth.
+//
+// NEW: wired to js/aiPanel.js. The parser's output is no longer just a
+// debug readout — it's shown live, tied to the actual query, in three
+// stages: (1) runIntentAnimation() plays the "reading your request" reveal
+// while intent/plan are already known, (2) setApiTierStatus() is called at
+// each tier of the waterfall below as it happens, (3) finishAnimation() +
+// settlePanel() collapse the live view into the compact summary/details
+// panel once results are scored. All aiPanel calls are skipped for a blank
+// query (e.g. the refresh button's triggerSearch("", 1)) — there's no real
+// "request" to explain in that case.
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
 import { buildIntent } from './parser/pipeline.js';
 import { buildSearchPlan } from './parser/searchPlanner.js';
@@ -17,6 +27,7 @@ import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex 
 import { renderMangaCard, renderDidYouMean } from './renderer.js';  
 import { normalizeResult } from './resultNormalizer.js';
 import { scoreResults } from './parser/recommendationScorer.js';
+import { runIntentAnimation, setApiTierStatus, finishAnimation, settlePanel, hideAIPanel } from './aiPanel.js';
 
 let isSearching = false;
 
@@ -51,11 +62,22 @@ export async function triggerSearch(rawQuery, page = 1) {
     renderSkeletonLoaders(15);
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
+    // Whether there's an actual user request to explain in the AI panel.
+    // A blank query (the reroll button calls triggerSearch("", 1)) has no
+    // intent worth animating, so the panel just stays hidden for that run.
+    const hasQuery = typeof rawQuery === 'string' && rawQuery.trim().length > 0;
+
     try {
         // CHANGED: run the full NLU pipeline instead of the simple parser.
         const intent = buildIntent(rawQuery);
         const plan = buildSearchPlan(intent);
         const isGenreSearch = (plan.primaryGenres.length + plan.secondaryThemes.length) > 0;
+
+        if (hasQuery) {
+            await runIntentAnimation(intent);
+        } else {
+            hideAIPanel();
+        }
 
         const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
@@ -74,11 +96,13 @@ export async function triggerSearch(rawQuery, page = 1) {
         if (docSnap && docSnap.exists()) {
             console.log("Loaded from Firebase cache.");
             finalResults = docSnap.data().results;
+            if (hasQuery) setApiTierStatus('cache', 'success');
         } else {
             console.log("Not in cache. Beginning API Waterfall...");
 
             // TIER 1: AniList
             dataSource = "anilist";
+            if (hasQuery) setApiTierStatus('anilist', 'pending');
             if (isGenreSearch) {
                 const [koreanResults, globalResults] = await Promise.all([
                     fetchFromAniListUnified(plan, page, true, 5),
@@ -89,29 +113,54 @@ export async function triggerSearch(rawQuery, page = 1) {
             } else {
                 finalResults = await fetchFromAniListUnified(plan, page, false, 10);
             }
+            if (hasQuery) setApiTierStatus('anilist', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
 
             // TIER 2: Jikan (MAL) Fallback
             if (!finalResults || finalResults.length === 0) {
                 console.log("AniList failed. Trying Jikan...");
                 dataSource = "jikan";
-                try { finalResults = await fetchFromJikanFallback(plan, page, 10); } 
-                catch (e) { console.warn("Jikan failed:", e); }
+                if (hasQuery) setApiTierStatus('jikan', 'pending');
+                try {
+                    finalResults = await fetchFromJikanFallback(plan, page, 10);
+                    if (hasQuery) setApiTierStatus('jikan', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
+                } catch (e) {
+                    console.warn("Jikan failed:", e);
+                    if (hasQuery) setApiTierStatus('jikan', 'fail');
+                }
+            } else if (hasQuery) {
+                setApiTierStatus('jikan', 'skip');
             }
 
             // TIER 3: Kitsu Fallback
             if (!finalResults || finalResults.length === 0) {
                 console.log("Jikan failed. Trying Kitsu...");
                 dataSource = "kitsu";
-                try { finalResults = await fetchFromKitsuFallback(plan, page, 10); } 
-                catch (e) { console.warn("Kitsu failed:", e); }
+                if (hasQuery) setApiTierStatus('kitsu', 'pending');
+                try {
+                    finalResults = await fetchFromKitsuFallback(plan, page, 10);
+                    if (hasQuery) setApiTierStatus('kitsu', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
+                } catch (e) {
+                    console.warn("Kitsu failed:", e);
+                    if (hasQuery) setApiTierStatus('kitsu', 'fail');
+                }
+            } else if (hasQuery) {
+                setApiTierStatus('kitsu', 'skip');
             }
 
             // TIER 4: MangaDex Fallback 
             if (!finalResults || finalResults.length === 0) {
                 console.log("Kitsu failed. Trying MangaDex...");
                 dataSource = "mangadex";
-                try { finalResults = await fetchFromMangaDexFallback(plan, page, 10); } 
-                catch (e) { console.warn("MangaDex failed:", e); }
+                if (hasQuery) setApiTierStatus('mangadex', 'pending');
+                try {
+                    finalResults = await fetchFromMangaDexFallback(plan, page, 10);
+                    if (hasQuery) setApiTierStatus('mangadex', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
+                } catch (e) {
+                    console.warn("MangaDex failed:", e);
+                    if (hasQuery) setApiTierStatus('mangadex', 'fail');
+                }
+            } else if (hasQuery) {
+                setApiTierStatus('mangadex', 'skip');
             }
 
             // CACHE SAVE: Only save Tier 1 (AniList) data to Firebase to keep cache clean
@@ -135,6 +184,11 @@ export async function triggerSearch(rawQuery, page = 1) {
         }
 
         if (!finalResults || finalResults.length === 0) {
+            if (hasQuery) {
+                await finishAnimation(0);
+                settlePanel(intent);
+            }
+
             let suggestions = [];
             if (plan.cleanQuery && plan.cleanQuery.length > 0) {
                 try { suggestions = await suggestTitlesFromMangaDex(plan.cleanQuery, 5); } 
@@ -166,6 +220,11 @@ export async function triggerSearch(rawQuery, page = 1) {
             const generatedLinks = await resolveReadLinks(unified.title);
             return { ...unified, readLinks: generatedLinks };
         }));
+
+        if (hasQuery) {
+            await finishAnimation(factSheets.length);
+            settlePanel(intent);
+        }
 
         grid.innerHTML = ''; // Clears the skeletons before rendering real cards
         refreshBtn.style.display = 'block';
