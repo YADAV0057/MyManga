@@ -127,12 +127,15 @@ export function setupParserTester() {
                             <span style="font-size: 13px;">${intent.searchPriority ? intent.searchPriority.join(" → ") : "Default"}</span>
                         </div>
                         
-                        <div>
+                                              <div>
                             <strong style="color: #b388ff;">🤖 AI Confidence: ${(intent.confidence * 100).toFixed(0)}%</strong> 
-                            <ul style="margin: 4px 0 0 0; padding-left: 16px; font-size: 12px; opacity: 0.8; list-style-type: '✓ ';">
-                                ${intent.confidenceReasons?.length ? intent.confidenceReasons.map(r => `<li>${r}</li>`).join('') : "<li>Strong mood match</li><li>Intent safely parsed</li>"}
+                            <ul style="margin: 4px 0 0 0; padding-left: 16px; font-size: 12px; opacity: 0.8; list-style-type: '• ';">
+                                ${intent.ruleLogs?.length 
+                                    ? intent.ruleLogs.map(log => `<li>${log}</li>`).join('') 
+                                    : "<li>No specific rules triggered</li>"}
                             </ul>
                         </div>
+  
                     </div>
                 </div>
             `;
