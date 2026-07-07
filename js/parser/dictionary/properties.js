@@ -12565,6 +12565,43 @@ export const CONCEPT_PROPERTIES = {
             "emotional": 0.77,
             "tragic": 0.51
         }
+    },
+    "space_bounty_hunter": {
+        "id": "space_bounty_hunter",
+        "aliases": [
+            "space_bounty_hunter",
+            "space bounty hunter",
+            "reward",
+            "dog",
+            "captor"
+        ],
+        "genres": [
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Space",
+                "weight": 0.8
+            },
+            {
+                "name": "Martial Arts",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
     }
-
 };
