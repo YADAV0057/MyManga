@@ -1,7 +1,7 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
 
-// Define your weight preferences here
+// These weights will be applied automatically to any genres found
 const WEIGHT_MAP = {
     "Action": 0.95, "Psychological": 0.90, "Drama": 0.85, 
     "SliceOfLife": 1.0, "Fantasy": 0.80, "Romance": 0.75
@@ -10,20 +10,20 @@ const WEIGHT_MAP = {
 class HarvesterAPI {
     static async getNormalizedConcept(tag) {
         try {
-            console.log(`[Harvester] Fetching data for: ${tag}`);
+            console.log(`[Automated] Harvesting: ${tag}`);
             
-            // 1. Get foundation from ANN
+            // 1. Fetch data from ANN
             const annData = await this.fetchFromANN(tag);
             
-            // 2. Get aliases from Datamuse API
-            const aliases = await this.fetchAliases(tag);
+            // 2. Fetch synonyms from Datamuse (FULL AUTOMATION)
+            const synonyms = await this.fetchAliases(tag);
 
             return {
                 id: tag,
-                aliases: aliases,
+                aliases: [tag, ...synonyms],
                 genres: annData.genres.map(g => ({
                     name: g.name,
-                    weight: WEIGHT_MAP[g.name] || 0.70 // Fallback to 0.70
+                    weight: WEIGHT_MAP[g.name] || 0.70
                 })),
                 themes: annData.themes.map(t => ({
                     name: t.name,
@@ -31,18 +31,18 @@ class HarvesterAPI {
                 }))
             };
         } catch (err) {
-            console.error(`[Harvester Error] Failed for ${tag}:`, err.message);
+            console.error(`[Error] Pipeline failed for ${tag}:`, err.message);
             return null;
         }
     }
 
     static async fetchAliases(tag) {
         try {
+            // Automatically grab the top 5 synonyms
             const res = await axios.get(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(tag)}&max=5`);
-            const synonyms = res.data.map(item => item.word);
-            return [tag, ...synonyms]; // Always include the original tag first
+            return res.data.map(item => item.word);
         } catch (e) {
-            return [tag]; // Fallback to just the tag
+            return []; // Return empty if API fails, so we at least keep the original tag
         }
     }
 
@@ -56,12 +56,8 @@ class HarvesterAPI {
         const infoList = Array.isArray(info.info) ? info.info : [info.info];
 
         return {
-            genres: infoList
-                .filter(i => i.$.type === "Genres")
-                .map(g => ({ name: g._.replace(/\s+/g, '') })),
-            themes: infoList
-                .filter(i => i.$.type === "Themes")
-                .map(t => ({ name: t._.replace(/\s+/g, '') }))
+            genres: infoList.filter(i => i.$.type === "Genres").map(g => ({ name: g._.replace(/\s+/g, '') })),
+            themes: infoList.filter(i => i.$.type === "Themes").map(t => ({ name: t._.replace(/\s+/g, '') }))
         };
     }
 }
