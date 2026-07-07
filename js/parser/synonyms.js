@@ -1,53 +1,5 @@
 // js/parser/synonyms.js
-
-export const SYNONYM_MAP = {
-    // Maps to "cry"
-    "crying": "cry",
-    "tearjerker": "cry",
-    "tears": "cry",
-    "sob": "cry",
-    "heartbreaking": "cry",
-    
-    // Maps to "funny"
-    "lmao": "funny",
-    "lol": "funny",
-    "comedy": "funny",
-    "laugh": "funny",
-    
-    // Maps to "fluff"
-    "cute": "fluff",
-    "adorable": "fluff",
-    "sweet": "fluff",
-    
-    // Maps to "hype"
-    "epic": "hype",
-    "awesome": "hype",
-    "cool": "hype",
-    "fights": "hype",
-
-    // Maps to "gory"
-    "blood": "gory",
-    "violent": "gory",
-    "gore": "gory",
-    "splatter": "gory",
-
-    // Maps to "mindfuck"
-    "confusing": "mindfuck",
-    "brain": "mindfuck",
-    "complex": "mindfuck",
-    "trippy": "mindfuck", // Comma added here
-
-    "educational": "academic",
-    "learning": "academic",
-    "nostalgic": "sentimental",
-    "memories": "sentimental",
-    "intense": "serious",
-    "gritty": "dark",
-    "brutal": "gory",
-    "heartwarming": "wholesome",
-    "comfort": "healing",
-    "chill": "healing"
-};
+import { SYNONYM_MAP } from './dictionary.js';
 
 /**
  * Replaces synonyms in the normalized text with their core dictionary equivalents.
@@ -56,6 +8,7 @@ export function applySynonyms(normalizedText) {
     const words = normalizedText.split(" ");
     
     const translatedWords = words.map(word => {
+        // Look up the word, fallback to the original word if not found
         return SYNONYM_MAP[word] || word;
     });
 
