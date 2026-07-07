@@ -1,4 +1,4 @@
-// js/parser/dictionary/properties.js
+ // js/parser/dictionary/properties.js
 
 export const CONCEPT_PROPERTIES = {
     // 💀 DARK & EDGY CONCEPTS
