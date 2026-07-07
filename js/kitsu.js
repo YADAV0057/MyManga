@@ -90,6 +90,8 @@ export async function fetchFromKitsuFallback(plan, page = 1, limit = 10) {
                     english: attr.titles.en || attr.titles.en_us || attr.canonicalTitle 
                 },
                 averageScore: attr.averageRating ? Math.round(parseFloat(attr.averageRating)) : null,
+                // NEW: userCount is Kitsu's own "higher is more popular" count.
+                popularity: typeof attr.userCount === 'number' ? attr.userCount : null,
                 genres: ["Check MangaDex"], 
                 description: attr.synopsis || null,
                 coverImage: { large: attr.posterImage?.large || attr.posterImage?.original || null },
