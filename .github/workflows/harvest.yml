@@ -29,11 +29,12 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           
-          # Add the updated files
-          git add js/parser/dictionary/properties.js
+          # Add the files the harvester actually writes to
+          git add js/parser/dictionary/harvested_knowledge.js
+          git add js/parser/dictionary/review_queue.json
           
           # Clear the queue file after processing to prevent re-harvesting
-          echo "" > queue.txt
+          printf "" > queue.txt
           git add queue.txt
           
           # Commit and push if there are changes
