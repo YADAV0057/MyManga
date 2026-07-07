@@ -74,8 +74,18 @@ export function buildIntent(rawUserInput) {
     const suggestedGenres = allMapped.genres.filter(g => g.confidence < 0.80);
     const suggestedThemes = allMapped.themes.filter(t => t.confidence < 0.80);
 
-    // 6. Apply Reasoning Rules
+        // 6. Apply Reasoning Rules
     intent = applyReasoningRules(intent);
+
+    // [ADD THIS BLOCK] 6.5 Merge Manual Exclusions
+    // Ensure the manual negations (like "no comedy") aren't overwritten by the rules
+    if (intent.excluded && intent.excluded.length > 0) {
+        if (!intent.avoids) intent.avoids = { genres: [], themes: [] };
+        
+        // Merge and remove duplicates
+        intent.avoids.genres = [...new Set([...intent.avoids.genres, ...intent.excluded])];
+    }
+
 
     // 7. Deduplicate and Clean (The "Hardening" step)
     const mergeUnique = (primary, suggested) => {
