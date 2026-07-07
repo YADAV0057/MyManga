@@ -87,27 +87,33 @@ export function buildIntent(rawUserInput) {
     }
 
 
-    // 7. Deduplicate and Clean (The "Hardening" step)
+      // 7. Deduplicate and Clean (The "Hardening" step)
     const mergeUnique = (primary, suggested) => {
         const map = new Map();
         
-        // Add existing primary items
-        primary.forEach(item => map.set(item.name, item.confidence || 0.5));
+        // Extract value using either property name to be safe
+        primary.forEach(item => {
+            const val = item.confidence ?? item.score ?? 0.5;
+            map.set(item.name, val);
+        });
         
-        // Merge suggested/boosted items, keeping the highest confidence
+        // Merge suggested items, keeping the highest value
         [...suggested].forEach(item => {
             const existing = map.get(item.name) || 0;
-            const current = item.confidence || 0.5;
+            const current = item.confidence ?? item.score ?? 0.5;
             if (current > existing) {
                 map.set(item.name, current);
             }
         });
         
-        return Array.from(map.entries()).map(([name, confidence]) => ({ 
+        // Output BOTH confidence and score so the UI never prints NaN%
+        return Array.from(map.entries()).map(([name, val]) => ({ 
             name, 
-            confidence: Math.min(confidence, 1.0) 
+            confidence: Math.min(Number(val), 1.0),
+            score: Math.min(Number(val), 1.0)
         }));
     };
+  
 
     intent.boosts.genres = mergeUnique(intent.genres, [...intent.boosts.genres, ...suggestedGenres]);
     intent.boosts.themes = mergeUnique(intent.themes, [...intent.boosts.themes, ...suggestedThemes]);
