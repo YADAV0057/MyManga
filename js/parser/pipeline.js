@@ -1,6 +1,6 @@
 // js/parser/pipeline.js
 
-import { MangaIntent } from './intentSchema.js'; // Fixed capitalization
+import { MangaIntent } from './intentSchema.js'; 
 import { normalize } from './normalize.js';  
 import { extractRules } from './rules.js';
 import { applySynonyms } from './synonyms.js';
@@ -14,20 +14,17 @@ import { applyReasoningRules } from './ruleEngine.js';
 function handleNegations(text) {
     const negations = ["no", "not", "without", "avoid", "except", "don't"];
     let excluded = [];
-    let cleanText = " " + text + " "; // Pad for easier boundary matching
+    let cleanText = " " + text + " "; 
 
     negations.forEach(neg => {
-        // Use Regex with word boundaries to prevent "no" from matching "novel"
         const regex = new RegExp(`\\b${neg}\\b`, 'i');
         
         if (regex.test(cleanText)) {
             const parts = cleanText.split(regex);
             if (parts.length > 1) {
-                // Grab the word immediately following the negation
                 const term = parts[1].trim().split(" ")[0];
                 if (term) {
                     excluded.push(term.charAt(0).toUpperCase() + term.slice(1));
-                    // Replace only the specific negation and the targeted word
                     cleanText = cleanText.replace(new RegExp(`\\b${neg}\\s+${term}\\b`, 'i'), "").trim();
                 }
             }
@@ -49,7 +46,7 @@ export function buildIntent(rawUserInput) {
     const { cleanText, excluded } = handleNegations(normalized);
     intent.excluded = excluded;
     
-    // 2. Extract Hard Filters (Status, Sort, etc.)
+    // 2. Extract Hard Filters 
     const filterData = extractRules(cleanText); 
     intent.status = filterData.status;
     intent.sort = filterData.sort;
@@ -74,15 +71,12 @@ export function buildIntent(rawUserInput) {
     const suggestedGenres = allMapped.genres.filter(g => g.confidence < 0.80);
     const suggestedThemes = allMapped.themes.filter(t => t.confidence < 0.80);
 
-        // 6. Apply Reasoning Rules
+    // 6. Apply Reasoning Rules
     intent = applyReasoningRules(intent);
 
-    // [ADD THIS BLOCK] 6.5 Merge Manual Exclusions
-    // Ensure the manual negations (like "no comedy") aren't overwritten by the rules
+    // 6.5 Merge Manual Exclusions
     if (intent.excluded && intent.excluded.length > 0) {
         if (!intent.avoids) intent.avoids = { genres: [], themes: [] };
-        
-        // Merge and remove duplicates
         intent.avoids.genres = [...new Set([...intent.avoids.genres, ...intent.excluded])];
     }
 
@@ -94,6 +88,7 @@ export function buildIntent(rawUserInput) {
             // Check if this item is already a primary requirement
             const isPrimary = primary.some(p => p.name === item.name);
             
+            // If it is NOT primary, add it to suggestions
             if (!isPrimary) {
                 const existing = map.get(item.name)?.score || 0;
                 const current = item.confidence ?? item.score ?? 0.5;
@@ -103,7 +98,7 @@ export function buildIntent(rawUserInput) {
                         name: item.name,
                         confidence: Math.min(Number(current), 1.0),
                         score: Math.min(Number(current), 1.0),
-                        reason: item.reason || null // Pass the reasoning string through
+                        reason: item.reason || null 
                     });
                 }
             }
@@ -112,23 +107,9 @@ export function buildIntent(rawUserInput) {
         return Array.from(map.values()).sort((a, b) => b.score - a.score);
     };
 
-    // Apply strict filtering
-    intent.boosts.genres = filterSuggested(intent.genres, [...intent.boosts.genres, ...suggestedGenres]);
-    intent.boosts.themes = filterSuggested(intent.themes, [...intent.boosts.themes, ...suggestedThemes]);
-
-      
-        
-        // Output BOTH confidence and score so the UI never prints NaN%
-        return Array.from(map.entries()).map(([name, val]) => ({ 
-            name, 
-            confidence: Math.min(Number(val), 1.0),
-            score: Math.min(Number(val), 1.0)
-        }));
-    };
-  
-
-    intent.boosts.genres = mergeUnique(intent.genres, [...intent.boosts.genres, ...suggestedGenres]);
-    intent.boosts.themes = mergeUnique(intent.themes, [...intent.boosts.themes, ...suggestedThemes]);
+    // Apply strict filtering (removes anything already in primary intent)
+    intent.boosts.genres = filterSuggested(intent.genres, [...(intent.boosts?.genres || []), ...suggestedGenres]);
+    intent.boosts.themes = filterSuggested(intent.themes, [...(intent.boosts?.themes || []), ...suggestedThemes]);
 
     // 8. Final Confidence Check
     if (!intent.moods || intent.moods.length === 0) {
