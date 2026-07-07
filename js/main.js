@@ -170,24 +170,21 @@ function setupSearchBar() {
 // ===============================
 // VIEW TOGGLE
 // ===============================
+// CHANGED: the redundant "Discover" button was removed from index.html —
+// Discover is just the default state. This is now a single toggle button
+// that flips window.currentView between "discover"/"favorites" and swaps
+// its own label, instead of two buttons fighting over an active-view class.
 function setupViewToggle() {
-    const discoverBtn = document.getElementById("nav-discover-btn");
     const favBtn = document.getElementById("nav-favorites-btn");
-
-    if (!discoverBtn || !favBtn) return;
+    if (!favBtn) return;
 
     window.currentView = "discover";
 
-    discoverBtn.addEventListener("click", () => {
-        window.currentView = "discover";
-        discoverBtn.classList.add("active-view");
-        favBtn.classList.remove("active-view");
-    });
-
     favBtn.addEventListener("click", () => {
-        window.currentView = "favorites";
-        favBtn.classList.add("active-view");
-        discoverBtn.classList.remove("active-view");
+        const goingToFavorites = window.currentView !== "favorites";
+        window.currentView = goingToFavorites ? "favorites" : "discover";
+        favBtn.classList.toggle("active-view", goingToFavorites);
+        favBtn.textContent = goingToFavorites ? "🔍 Back to Discover" : "❤️ My List";
     });
 }
 
