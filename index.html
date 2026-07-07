@@ -32,7 +32,6 @@
     <span class="topbar-brand">MangaMood 🔮</span>
 
     <div class="view-toggle">
-        <button id="nav-discover-btn" class="tab-btn active-view">🔍 Discover</button>
         <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
     </div>
 </nav>
@@ -61,48 +60,28 @@
 </header>
 
 <!-- =========================
-    🧠 AI MOOD PREVIEW BOARD
+    🔮 MOOD ANALYZER
 ========================= -->
 
-<section id="mood-preview-board" class="container" style="margin-top:20px;">
+<section id="mood-preview-board" class="mood-analyzer container">
 
-    <h2 style="margin-bottom:10px;">🧠 Mood Intelligence Preview</h2>
+    <div class="mood-analyzer-header">
+        <h2>🔮 Mood Analyzer</h2>
+        <p>See exactly how MangaMood reads your search — moods, genres, and the API route it'll take.</p>
+    </div>
 
-    <p style="opacity:0.7;margin-bottom:15px;">
-        Live breakdown of how your search is understood
-    </p>
-
-    <!-- INPUT -->
     <input
         id="parser-input"
+        class="mood-analyzer-input"
         type="text"
         placeholder="Try: Make me cry, dark revenge, wholesome romance..."
-        style="
-            width:100%;
-            padding:12px;
-            border-radius:10px;
-            border:none;
-            outline:none;
-            margin-bottom:10px;
-        "
     >
 
-    <button
-        id="parser-test-btn"
-        style="
-            width:100%;
-            padding:12px;
-            border-radius:10px;
-            border:none;
-            cursor:pointer;
-            background:#00ff9d;
-            font-weight:bold;
-        ">
+    <button id="parser-test-btn" class="mood-analyzer-btn">
         Analyze Mood
     </button>
 
-    <!-- OUTPUT DASHBOARD -->
-    <div id="parser-output" style="margin-top:20px;"></div>
+    <div id="parser-output" class="mood-analyzer-output"></div>
 
 </section>
 
