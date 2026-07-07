@@ -105,6 +105,12 @@ export async function fetchFromJikanFallback(plan, page = 1, limit = 10) {
             title: { romaji: m.title, english: m.title_english || m.title },
             averageScore: m.score ? Math.round(m.score * 10) : null,
             genres: (m.genres || []).map(g => g.name),
+            // NEW: Jikan's `members` = count of users who list this manga — a
+            // "higher is more popular" count, same direction as AniList's
+            // `popularity` field (unlike Jikan's own `popularity` rank field,
+            // which is lower-is-better and would need inverting to compare).
+            popularity: typeof m.members === 'number' ? m.members : null,
+            demographics: (m.demographics || []).map(d => d.name),
             description: m.synopsis || null,
             coverImage: { large: m.images?.jpg?.large_image_url || m.images?.jpg?.image_url || null },
             chapters: m.chapters || null,
