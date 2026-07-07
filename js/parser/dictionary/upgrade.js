@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs'); 
 const { GENRE_WEIGHTS, THEME_WEIGHTS, SOURCE_MULTIPLIERS } = require('./MoodConfig');
 const dictionary = require('./properties.js'); // Assuming your properties.js exports the object
 
