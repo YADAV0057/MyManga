@@ -7,15 +7,15 @@ const RULES = [
         when: ["dark", "revenge", "gory", "despair", "creepy"],
         boosts: {
             genres: [
-                { name: "Psychological", score: 0.90 }, 
-                { name: "Action", score: 0.85 }, 
-                { name: "Horror", score: 0.40 }
+                { name: "Psychological", score: 0.90, reason: "Dark narratives rely on heavy psychological tension." }, 
+                { name: "Action", score: 0.85, reason: "Common in gritty, revenge-driven stories." }, 
+                { name: "Horror", score: 0.40, reason: "Often accompanies gory or creepy elements." }
             ],
             themes: [
-                { name: "Survival", score: 0.80 }, 
-                { name: "Monsters", score: 0.50 }
+                { name: "Survival", score: 0.80, reason: "Despair and dark themes often involve fighting to survive." }, 
+                { name: "Monsters", score: 0.50, reason: "Associated with creepy and scary scenarios." }
             ],
-            demographics: [{ name: "Seinen", score: 0.90 }]
+            demographics: [{ name: "Seinen", score: 0.90, reason: "Targeted toward older audiences due to mature themes." }]
         },
         avoids: { genres: ["Comedy", "SliceOfLife"], themes: ["Iyashikei", "Fluff"] },
         priority: ["MangaDex", "AniList", "Kitsu", "Jikan"],
@@ -26,8 +26,15 @@ const RULES = [
         rulePriority: 70,
         when: ["healing", "wholesome", "fluff", "happy", "cozy", "relaxing", "soft"],
         boosts: { 
-            genres: [{ name: "SliceOfLife", score: 0.95 }, { name: "Comedy", score: 0.70 }],
-            themes: [{ name: "Iyashikei", score: 0.90 }, { name: "FoundFamily", score: 0.85 }, { name: "SchoolLife", score: 0.60 }],
+            genres: [
+                { name: "SliceOfLife", score: 0.95, reason: "The core genre for relaxing, everyday stories." }, 
+                { name: "Comedy", score: 0.70, reason: "Keeps the mood light and happy." }
+            ],
+            themes: [
+                { name: "Iyashikei", score: 0.90, reason: "Directly translates to 'healing' in manga terminology." }, 
+                { name: "FoundFamily", score: 0.85, reason: "A very common trope in cozy, wholesome stories." }, 
+                { name: "SchoolLife", score: 0.60, reason: "A frequent setting for lighthearted fluff." }
+            ],
             demographics: []
         },
         avoids: { genres: ["Horror", "Psychological", "Action", "Tragedy", "Mature"], themes: ["Gore", "Survival"] },
@@ -39,8 +46,14 @@ const RULES = [
         rulePriority: 90,
         when: ["cry", "sad", "depressing", "tragedy", "angst", "bittersweet"],
         boosts: {
-            genres: [{ name: "Drama", score: 0.95 }, { name: "Tragedy", score: 0.90 }],
-            themes: [{ name: "Loss", score: 0.85 }, { name: "CharacterGrowth", score: 0.70 }],
+            genres: [
+                { name: "Drama", score: 0.95, reason: "Essential for emotional, character-driven narratives." }, 
+                { name: "Tragedy", score: 0.90, reason: "Direct match for sad and depressing requests." }
+            ],
+            themes: [
+                { name: "Loss", score: 0.85, reason: "A core theme in tragic stories." }, 
+                { name: "CharacterGrowth", score: 0.70, reason: "Frequently associated with emotional drama." }
+            ],
             demographics: []
         },
         avoids: { genres: ["Comedy", "Parody", "Ecchi"], themes: ["Gag"] },
@@ -73,9 +86,13 @@ export function applyReasoningRules(intent) {
                         const isAlreadyPrimary = intent[category] && intent[category].some(primaryItem => primaryItem.name === item.name);
                         
                         if (!isAlreadyPrimary && !boostMaps[category].has(item.name)) {
-                            // FORCE DEFAULT: If item.score is missing or NaN, set to 0.5
                             const validScore = (typeof item.score === 'number' && !isNaN(item.score)) ? item.score : 0.5;
-                            boostMaps[category].set(item.name, validScore);
+                            
+                            // Map score and reason as an object
+                            boostMaps[category].set(item.name, {
+                                score: validScore,
+                                reason: item.reason || `Associated with the ${rule.name} mood profile.`
+                            });
                         }
                     });
                 }
@@ -83,20 +100,24 @@ export function applyReasoningRules(intent) {
 
             if (rule.avoids.genres) rule.avoids.genres.forEach(g => avoids.genres.add(g));
             if (rule.avoids.themes) rule.avoids.themes.forEach(t => avoids.themes.add(t));
-            // ... inside sortedRules.forEach ...
+            
             if (apiPriority.length === 0) apiPriority = rule.priority;
             if (rule.confidenceModifier < lowestConfidence) lowestConfidence = rule.confidenceModifier;
         }
     });
 
-    // [ADD THIS]: Provide a default API fallback if no specific rules were triggered
     if (apiPriority.length === 0) {
         apiPriority = ["AniList", "MangaDex", "Jikan", "Kitsu"];
     }
 
-    // Ensure mapToArray provides both 'score' and 'confidence' to match the pipeline
+    // Extract name, score, confidence, and reason for the UI
     const mapToArray = (map) => Array.from(map.entries())
-                                    .map(([name, score]) => ({ name, score, confidence: score }))
+                                    .map(([name, data]) => ({ 
+                                        name, 
+                                        score: data.score, 
+                                        confidence: data.score,
+                                        reason: data.reason
+                                    }))
                                     .sort((a, b) => b.score - a.score);
 
     intent.boosts = {
@@ -107,10 +128,8 @@ export function applyReasoningRules(intent) {
     
     intent.avoids = { genres: [...avoids.genres], themes: [...avoids.themes] };
     intent.ruleLogs = ruleLogs;
-    intent.searchPriority = apiPriority; // Now guaranteed to have a route!
+    intent.searchPriority = apiPriority; 
     intent.confidence = lowestConfidence;
 
     return intent;
 }
-
-            
