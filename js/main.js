@@ -1,8 +1,11 @@
 // ==========================================
 // APP ENTRY POINT (js/main.js)
 // ==========================================
-
-import { setupParserTester } from './setupParserTester.js';
+// CHANGED: setupParserTester() / #parser-input / #parser-output are gone —
+// the standalone "Mood Intelligence Preview" box has been replaced by the
+// AI Search Intelligence panel (js/aiPanel.js), which is now driven by the
+// real search bar instead of a separate manual tester. setupParserTester.js
+// is no longer imported anywhere and can be deleted from the repo.
 
 // ===============================
 // DIAGNOSTICS SYSTEM
@@ -30,7 +33,7 @@ window.AppDiagnostics = {
             { name: "Search", fn: () => typeof window.triggerSearch === "function" },
             { name: "Theme", fn: () => typeof window.applyMoodTheme === "function" },
             { name: "Moods", fn: () => typeof window.populateAllVibes === "function" },
-            { name: "Parser UI", fn: () => document.getElementById("parser-test-btn") }
+            { name: "AI Panel", fn: () => document.getElementById("ai-panel") }
         ];
 
         let allGood = true;
@@ -100,15 +103,23 @@ async function initializeApp() {
             window.attachMoodButtonListeners = moods.attachMoodButtonListeners;
             window.AppDiagnostics.log("Moods", true, "Loaded");
 
-            // BUGFIX: the functions above were only ever assigned to window,
-            // never actually invoked, so the 50-mood grid was never populated,
-            // the 3-button rotation never started, and mood buttons had no
-            // click handler. Start the mood system here.
+            // BUGFIX: these were only ever assigned to window, never invoked,
+            // so the 50-mood grid was never populated, the 3-button rotation
+            // never started, and mood buttons had no click handler.
             moods.populateAllVibes();          // fills #extra-tags with all 50 mood buttons
             moods.attachMoodButtonListeners(); // delegated click handler for every .vibe-btn
             moods.startVibeRotation(30000);    // starts the 3-button rotation, every 30s
         } catch (e) {
             window.AppDiagnostics.log("Moods", false, e.message);
+        }
+
+        // Load AI Panel (replaces the old standalone parser tester)
+        try {
+            const aiPanel = await import("./aiPanel.js");
+            aiPanel.initAIPanel();
+            window.AppDiagnostics.log("AIPanel", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("AIPanel", false, e.message);
         }
 
         // Load Renderer
@@ -120,6 +131,8 @@ async function initializeApp() {
             // card markup but never attached to window anywhere — the ♥ button
             // threw a silent ReferenceError. renderer.js now exports it.
             window.handleFavoriteClick = renderer.handleFavoriteClick;
+            // NEW: same pattern for the "Why?" match-breakdown toggle.
+            window.toggleWhyPanel = renderer.toggleWhyPanel;
             window.AppDiagnostics.log("Renderer", true, "Loaded");
         } catch (e) {
             window.AppDiagnostics.log("Renderer", false, e.message);
@@ -141,9 +154,6 @@ async function initializeApp() {
         setupViewToggle();
         setupRefreshButton();
         setupMoodPanel();
-
-        // Setup Parser Tester (Imported from external file)
-        setupParserTester();
 
         window.AppDiagnostics.log("App", true, "Initialized");
 
@@ -179,10 +189,9 @@ function setupSearchBar() {
 // ===============================
 // VIEW TOGGLE
 // ===============================
-// CHANGED: the redundant "Discover" button was removed from index.html —
-// Discover is just the default state. This is now a single toggle button
-// that flips window.currentView between "discover"/"favorites" and swaps
-// its own label, instead of two buttons fighting over an active-view class.
+// Single toggle button flips window.currentView between "discover"/
+// "favorites" and swaps its own label, instead of two buttons fighting
+// over an active-view class.
 function setupViewToggle() {
     const favBtn = document.getElementById("nav-favorites-btn");
     if (!favBtn) return;
@@ -200,10 +209,6 @@ function setupViewToggle() {
 // ===============================
 // MOOD PANEL ("+ Show All Moods" toggle)
 // ===============================
-// BUGFIX: #more-btn's inline onclick="toggleTags()" was removed from
-// index.html at some point (likely during the discover-button cleanup)
-// and never replaced with an addEventListener here, so the button did
-// nothing. window.toggleTags itself was fine — it just had no caller.
 function setupMoodPanel() {
     const moreBtn = document.getElementById("more-btn");
     if (!moreBtn) return;
