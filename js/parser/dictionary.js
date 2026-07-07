@@ -1,10 +1,6 @@
-// js/parser/dictionary.js
-
-
 /**
  * MOOD_MAPPINGS
  * Maps internal moods to Genres, Themes, and Demographics.
- * Weights determine how strongly a mood correlates to a specific tag.
  */
 export const MOOD_MAPPINGS = {
     // 😭 SAD & EMOTIONAL
@@ -128,50 +124,55 @@ export const MOOD_MAPPINGS = {
         genres: { Sports: 1.0, Drama: 0.6, Action: 0.5 },
         themes: { SchoolLife: 0.7 },
         demographics: { Shounen: 0.9 }
+    },
+
+    // 🌌 EXPANDED MOODS
+    supernatural: { 
+        genres: { Fantasy: 1.0, Supernatural: 1.0, Mystery: 0.5 },
+        themes: { Isekai: 0.9, Magic: 0.8 },
+        demographics: { Shounen: 0.7 }
+    },
+    academic: {
+        genres: { Drama: 0.6, Psychological: 0.5 },
+        themes: { SchoolLife: 0.9 },
+        demographics: { Seinen: 0.4 }
+    },
+    sentimental: {
+        genres: { Drama: 0.7, SliceOfLife: 0.6 },
+        themes: { CharacterGrowth: 0.8 },
+        demographics: { Shoujo: 0.5, Josei: 0.6 }
+    },
+    philosophical: {
+        genres: { Psychological: 1.0, Seinen: 0.8 },
+        themes: { Existential: 1.0 },
+        demographics: { Seinen: 0.9 }
     }
 };
 
-
-// 1. Add Urgency Modifiers
 export const URGENCY_MODIFIERS = {
-    // Amplifiers
-    "devastating": 1.5,
-    "destroy": 1.5,
-    "need": 1.3,
-    "extremely": 1.4,
-    "really": 1.2,
-    "very": 1.2,
-    "super": 1.2,
-    
-    // Dampeners
-    "mild": 0.6,
-    "chill": 0.7,
-    "little": 0.8,
-    "somewhat": 0.8
+    "devastating": 1.5, "destroy": 1.5, "need": 1.3, "extremely": 1.4, 
+    "insanely": 1.5, "really": 1.2, "very": 1.2, "super": 1.2,
+    "mild": 0.6, "chill": 0.7, "little": 0.8, "somewhat": 0.8, "slightly": 0.5, "a bit": 0.7
 };
 
-// 2. Add Tone to Core Dictionary (Positive, Negative, Neutral)
 export const MOOD_DICTIONARY = {
-    // 😭 SAD & EMOTIONAL (Negative Tone, High Base Intensity)
     "cry": { moods: ["sad", "emotional", "tragedy"], intensity: 0.9, tone: "negative" },
     "depressing": { moods: ["sad", "dark", "psychological"], intensity: 1.0, tone: "negative" },
     "bittersweet": { moods: ["sad", "romance", "emotional"], intensity: 0.7, tone: "neutral" },
-
-    // 🥰 ROMANCE & FLUFF (Positive Tone, Lower Base Intensity)
     "romance": { moods: ["romance", "emotional"], intensity: 0.6, tone: "positive" },
     "fluff": { moods: ["wholesome", "romance", "happy"], intensity: 0.4, tone: "positive" },
     "healing": { moods: ["wholesome", "sliceoflife", "soft"], intensity: 0.3, tone: "positive" },
-
-    // 💀 DARK & EDGY (Negative Tone, High Base Intensity)
     "dark": { moods: ["dark", "serious", "psychological"], intensity: 0.8, tone: "negative" },
     "revenge": { moods: ["dark", "revenge", "action"], intensity: 0.9, tone: "negative" },
     "gory": { moods: ["horror", "dark", "action"], intensity: 1.0, tone: "negative" },
-    "scary": { moods: ["horror"], intensity: 0.8, tone: "negative" }, // Fixed placement
-
-    // 😂 COMEDY (Positive Tone, Medium Intensity)
+    "scary": { moods: ["horror"], intensity: 0.8, tone: "negative" },
     "funny": { moods: ["comedy"], intensity: 0.6, tone: "positive" },
     "hilarious": { moods: ["comedy", "parody"], intensity: 0.9, tone: "positive" },
-    
-    // 🤯 MIND-BENDING (Neutral Tone, High Intensity)
-    "mindfuck": { moods: ["psychological", "mystery", "thriller"], intensity: 1.0, tone: "neutral" }
+    "mindfuck": { moods: ["psychological", "mystery", "thriller"], intensity: 1.0, tone: "neutral" },
+    "supernatural": { moods: ["supernatural"], intensity: 0.7, tone: "neutral" },
+    "isekai": { moods: ["supernatural"], intensity: 0.8, tone: "positive" },
+    "nostalgic": { moods: ["sentimental"], intensity: 0.6, tone: "positive" },
+    "educational": { moods: ["academic"], intensity: 0.4, tone: "positive" },
+    "philosophical": { moods: ["philosophical"], intensity: 0.9, tone: "neutral" },
+    "deep": { moods: ["philosophical", "psychological"], intensity: 0.8, tone: "neutral" }
 };
