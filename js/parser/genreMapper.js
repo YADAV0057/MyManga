@@ -138,9 +138,13 @@ export const MOOD_MAPPINGS = {
 // js/parser/genreMapper.js
 // (Keep MOOD_MAPPINGS the exact same as before)
 
+// js/parser/genreMapper.js
+import { MOOD_MAPPINGS } from './dictionary.js';
+
 export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
     const scores = { genres: {}, themes: {}, demographics: {} };
 
+    // 1. Calculate weighted scores from all detected moods
     (detectedMoods || []).forEach(mood => {
         const map = MOOD_MAPPINGS[mood.toLowerCase()];
         if (map) {
@@ -153,10 +157,10 @@ export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
         }
     });
 
-    // Universal extractor that attaches confidence to everything
+    // 2. Universal helper to sort and apply confidence
     const extractWithConfidence = (scoreObj) => {
         return Object.entries(scoreObj)
-            .sort((a, b) => b[1] - a[1])
+            .sort((a, b) => b[1] - a[1]) // Sort by highest score
             .map(([name, score]) => ({
                 name,
                 confidence: Math.min(Number(score.toFixed(2)), 1.0)
@@ -164,36 +168,10 @@ export function mapMoodsToCategories(detectedMoods, maxResults = 3) {
             .slice(0, maxResults);
     };
 
+    // 3. Return the unified object
     return {
         genres: extractWithConfidence(scores.genres),
         themes: extractWithConfidence(scores.themes),
         demographics: extractWithConfidence(scores.demographics)
-    };
-}
-
-    // Flat array for Genres and Themes
-    const extractFlat = (scoreObj) => {
-        return Object.entries(scoreObj)
-            .sort((a, b) => b[1] - a[1])
-            .map(entry => entry[0])
-            .slice(0, maxResults);
-    };
-
-    // Object array for Demographics with Confidence
-    const extractDemographics = (scoreObj) => {
-        return Object.entries(scoreObj)
-            .sort((a, b) => b[1] - a[1])
-            .map(entry => ({
-                name: entry[0],
-                // Cap confidence at 1.0 (100%) and format to 2 decimals
-                confidence: Math.min(Number(entry[1].toFixed(2)), 1.0)
-            }))
-            .slice(0, maxResults);
-    };
-
-    return {
-        genres: extractFlat(scores.genres),
-        themes: extractFlat(scores.themes),
-        demographics: extractDemographics(scores.demographics) // UPGRADED
     };
 }
