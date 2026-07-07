@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs'); 
 const HarvesterAPI = require('./HarvesterAPI');
 const path = 'js/parser/dictionary/properties.js';
 
