@@ -2,8 +2,15 @@
 // ==========================================
 // SEARCH / AGGREGATION ENGINE (js/search.js)
 // ==========================================
+// CHANGED: now runs the advanced NLU pipeline (js/parser/pipeline.js ->
+// js/parser/searchPlanner.js) instead of the simple parseSmartQuery()
+// (js/parser.js). All four fetchers now receive a SearchPlan. The old
+// isVibeOrTag branching is replaced by "does the plan have any
+// primaryGenres/secondaryThemes" — same concept, new source of truth.
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
-import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
+import { buildIntent } from './parser/pipeline.js';
+import { buildSearchPlan } from './parser/searchPlanner.js';
+import { fetchFromAniListUnified } from './anilist.js';
 import { fetchFromJikanFallback } from './jikan.js';
 import { fetchFromKitsuFallback } from './kitsu.js';
 import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
@@ -32,7 +39,11 @@ export async function triggerSearch(rawQuery, page = 1) {
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const parsedQuery = parseSmartQuery(rawQuery);
+        // CHANGED: run the full NLU pipeline instead of the simple parser.
+        const intent = buildIntent(rawQuery);
+        const plan = buildSearchPlan(intent);
+        const isGenreSearch = (plan.primaryGenres.length + plan.secondaryThemes.length) > 0;
+
         const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
         let dataSource = "cache"; 
@@ -55,22 +66,22 @@ export async function triggerSearch(rawQuery, page = 1) {
 
             // TIER 1: AniList
             dataSource = "anilist";
-            if (parsedQuery.isVibeOrTag) {
+            if (isGenreSearch) {
                 const [koreanResults, globalResults] = await Promise.all([
-                    fetchFromAniListUnified(parsedQuery, page, true, 5),
-                    fetchFromAniListUnified(parsedQuery, page, false, 5)
+                    fetchFromAniListUnified(plan, page, true, 5),
+                    fetchFromAniListUnified(plan, page, false, 5)
                 ]);
                 finalResults = [...koreanResults, ...globalResults];
                 finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
             } else {
-                finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
+                finalResults = await fetchFromAniListUnified(plan, page, false, 10);
             }
 
             // TIER 2: Jikan (MAL) Fallback
             if (!finalResults || finalResults.length === 0) {
                 console.log("AniList failed. Trying Jikan...");
                 dataSource = "jikan";
-                try { finalResults = await fetchFromJikanFallback(parsedQuery, page, 10); } 
+                try { finalResults = await fetchFromJikanFallback(plan, page, 10); } 
                 catch (e) { console.warn("Jikan failed:", e); }
             }
 
@@ -78,7 +89,7 @@ export async function triggerSearch(rawQuery, page = 1) {
             if (!finalResults || finalResults.length === 0) {
                 console.log("Jikan failed. Trying Kitsu...");
                 dataSource = "kitsu";
-                try { finalResults = await fetchFromKitsuFallback(parsedQuery, page, 10); } 
+                try { finalResults = await fetchFromKitsuFallback(plan, page, 10); } 
                 catch (e) { console.warn("Kitsu failed:", e); }
             }
 
@@ -86,7 +97,7 @@ export async function triggerSearch(rawQuery, page = 1) {
             if (!finalResults || finalResults.length === 0) {
                 console.log("Kitsu failed. Trying MangaDex...");
                 dataSource = "mangadex";
-                try { finalResults = await fetchFromMangaDexFallback(parsedQuery, page, 10); } 
+                try { finalResults = await fetchFromMangaDexFallback(plan, page, 10); } 
                 catch (e) { console.warn("MangaDex failed:", e); }
             }
 
@@ -99,10 +110,21 @@ export async function triggerSearch(rawQuery, page = 1) {
             }
         }
 
+        // NEW: hard chapter-count constraint from the plan (e.g. "under 50
+        // chapters"), applied once across whichever tier produced results —
+        // including the cache-hit path. Unknown chapter counts are kept
+        // rather than dropped, since we can't confirm they violate the cap.
+        if (plan.filters?.maxChapters) {
+            finalResults = (finalResults || []).filter(m => {
+                const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
+                return !ch || isNaN(ch) || ch <= plan.filters.maxChapters;
+            });
+        }
+
         if (!finalResults || finalResults.length === 0) {
             let suggestions = [];
-            if (parsedQuery.cleanQuery && parsedQuery.cleanQuery.length > 0) {
-                try { suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery, 5); } 
+            if (plan.cleanQuery && plan.cleanQuery.length > 0) {
+                try { suggestions = await suggestTitlesFromMangaDex(plan.cleanQuery, 5); } 
                 catch (e) { console.warn("Did-you-mean lookup failed:", e); }
             }
 
