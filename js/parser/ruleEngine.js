@@ -34,7 +34,7 @@ const RULES = [
         name: "Wholesome Healing",
         rulePriority: 70, // Priority level
         when: ["healing", "wholesome", "fluff", "happy", "cozy", "relaxing", "soft"],
-        boosts: {
+        boosts: { 
             genres: [
                 { name: "SliceOfLife", score: 0.95 }, 
                 { name: "Comedy", score: 0.70 }
