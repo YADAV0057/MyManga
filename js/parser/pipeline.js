@@ -1,7 +1,7 @@
 // js/parser/pipeline.js
 
 import { MangaIntent } from './intentSchema.js'; // Fixed capitalization
-import { normalize } from './normalize.js'; 
+import { normalize } from './normalize.js';  
 import { extractRules } from './rules.js';
 import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
