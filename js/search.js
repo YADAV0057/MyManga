@@ -16,6 +16,7 @@ import { fetchFromKitsuFallback } from './kitsu.js';
 import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
 import { renderMangaCard, renderDidYouMean } from './renderer.js';  
 import { normalizeResult } from './resultNormalizer.js';
+import { scoreResults } from './parser/recommendationScorer.js';
 
 let isSearching = false;
 
@@ -149,8 +150,19 @@ export async function triggerSearch(rawQuery, page = 1) {
             return;
         }
 
-        const factSheets = await Promise.all(finalResults.map(async (aniManga) => {
-            const unified = normalizeResult(aniManga, SOURCE_LABELS[dataSource] || dataSource);
+        const unifiedResults = finalResults.map(aniManga =>
+            normalizeResult(aniManga, SOURCE_LABELS[dataSource] || dataSource)
+        );
+
+        // NEW: score every result against the original intent/plan and re-sort
+        // by matchScore instead of whatever order the API tier returned them
+        // in. Falls back to unscored/API order only for a cache hit, since a
+        // cached result set has no intent/plan attached to this query run —
+        // actually a cache hit DOES have the current query's intent/plan
+        // (built above from rawQuery), so it's scored too.
+        const scored = scoreResults(unifiedResults, intent, plan);
+
+        const factSheets = await Promise.all(scored.map(async (unified) => {
             const generatedLinks = await resolveReadLinks(unified.title);
             return { ...unified, readLinks: generatedLinks };
         }));
