@@ -1,4 +1,3 @@
-
 // js/parser/synonyms.js
 
 export const SYNONYM_MAP = {
@@ -36,18 +35,18 @@ export const SYNONYM_MAP = {
     "confusing": "mindfuck",
     "brain": "mindfuck",
     "complex": "mindfuck",
-    "trippy": "mindfuck"
-"educational": "academic",
-"learning": "academic",
-"nostalgic": "sentimental",
-"memories": "sentimental",
-"intense": "serious",
-"gritty": "dark",
-"brutal": "gory",
-"heartwarming": "wholesome",
-"comfort": "healing",
-"chill": "healing"
- 
+    "trippy": "mindfuck", // Comma added here
+
+    "educational": "academic",
+    "learning": "academic",
+    "nostalgic": "sentimental",
+    "memories": "sentimental",
+    "intense": "serious",
+    "gritty": "dark",
+    "brutal": "gory",
+    "heartwarming": "wholesome",
+    "comfort": "healing",
+    "chill": "healing"
 };
 
 /**
@@ -57,8 +56,6 @@ export function applySynonyms(normalizedText) {
     const words = normalizedText.split(" ");
     
     const translatedWords = words.map(word => {
-        // If the word exists in our synonym map, return the core word. 
-        // Otherwise, keep the original word.
         return SYNONYM_MAP[word] || word;
     });
 
