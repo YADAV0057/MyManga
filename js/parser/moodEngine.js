@@ -1,108 +1,82 @@
-// js/parser/ruleEngine.js
+// js/parser/moodEngine.js
 
-const RULES = [
-    {
-        name: "Dark & Gritty",
-        rulePriority: 80,
-        when: ["dark", "revenge", "gory", "despair", "creepy"],
-        boosts: {
-            genres: [
-                { name: "Psychological", score: 0.90 }, 
-                { name: "Action", score: 0.85 }, 
-                { name: "Horror", score: 0.40 }
-            ],
-            themes: [
-                { name: "Survival", score: 0.80 }, 
-                { name: "Monsters", score: 0.50 }
-            ],
-            demographics: [{ name: "Seinen", score: 0.90 }]
-        },
-        avoids: { genres: ["Comedy", "SliceOfLife"], themes: ["Iyashikei", "Fluff"] },
-        priority: ["MangaDex", "AniList", "Kitsu", "Jikan"],
-        confidenceModifier: 0.95
-    },
-    {
-        name: "Wholesome Healing",
-        rulePriority: 70,
-        when: ["healing", "wholesome", "fluff", "happy", "cozy", "relaxing", "soft"],
-        boosts: { 
-            genres: [{ name: "SliceOfLife", score: 0.95 }, { name: "Comedy", score: 0.70 }],
-            themes: [{ name: "Iyashikei", score: 0.90 }, { name: "FoundFamily", score: 0.85 }, { name: "SchoolLife", score: 0.60 }],
-            demographics: []
-        },
-        avoids: { genres: ["Horror", "Psychological", "Action", "Tragedy", "Mature"], themes: ["Gore", "Survival"] },
-        priority: ["AniList", "MangaDex", "Jikan", "Kitsu"],
-        confidenceModifier: 0.90
-    },
-    {
-        name: "Tearjerker",
-        rulePriority: 90,
-        when: ["cry", "sad", "depressing", "tragedy", "angst", "bittersweet"],
-        boosts: {
-            genres: [{ name: "Drama", score: 0.95 }, { name: "Tragedy", score: 0.90 }],
-            themes: [{ name: "Loss", score: 0.85 }, { name: "CharacterGrowth", score: 0.70 }],
-            demographics: []
-        },
-        avoids: { genres: ["Comedy", "Parody", "Ecchi"], themes: ["Gag"] },
-        priority: ["AniList", "MangaDex", "Jikan", "Kitsu"],
-        confidenceModifier: 0.92
+import { MOOD_DICTIONARY, URGENCY_MODIFIERS } from './dictionary.js';
+
+/**
+ * Analyzes normalized text to extract moods, calculate intensity, and determine tone.
+ * @param {string} text - The normalized and synonym-replaced user input.
+ * @returns {object} - Contains moods (array), intensity (float), moodProfile (object), and tone (string).
+ */
+export function analyzeMood(text) {
+    if (!text) {
+        return { moods: [], intensity: 0.5, moodProfile: {}, tone: "neutral" };
     }
-];
 
-export function applyReasoningRules(intent) {
-    if (!intent.moods || intent.moods.length === 0) return intent;
-
-    const boostMaps = { genres: new Map(), themes: new Map(), demographics: new Map() };
-    const avoids = { genres: new Set(), themes: new Set() };
-    const ruleLogs = [];
+    const words = text.split(/\s+/);
+    const detectedMoods = new Set();
+    const moodProfile = {};
+    const toneScores = { positive: 0, negative: 0, neutral: 0 };
     
-    const sortedRules = [...RULES].sort((a, b) => b.rulePriority - a.rulePriority);
+    let totalIntensity = 0;
+    let matchCount = 0;
+    let currentModifier = 1.0;
 
-    let apiPriority = []; 
-    let lowestConfidence = 1.0;
+    words.forEach(word => {
+        // 1. Check for urgency modifiers (e.g., "extremely", "slightly")
+        if (URGENCY_MODIFIERS[word]) {
+            currentModifier = URGENCY_MODIFIERS[word];
+            return; // Move to the next word, holding this modifier in memory
+        }
 
-    sortedRules.forEach(rule => {
-        const isMatch = rule.when.some(trigger => intent.moods.includes(trigger));
-        
-        if (isMatch) {
-            ruleLogs.push(`✓ Triggered: ${rule.name} (Priority: ${rule.rulePriority})`);
+        // 2. Check for mood dictionary matches
+        const dictEntry = MOOD_DICTIONARY[word];
+        if (dictEntry) {
+            // Apply current modifier to this word's base intensity
+            const adjustedIntensity = dictEntry.intensity * currentModifier;
 
-            ['genres', 'themes', 'demographics'].forEach(category => {
-                if (rule.boosts[category]) {
-                    rule.boosts[category].forEach(item => {
-                        const isAlreadyPrimary = intent[category] && intent[category].some(primaryItem => primaryItem.name === item.name);
-                        
-                        if (!isAlreadyPrimary && !boostMaps[category].has(item.name)) {
-                            // FORCE DEFAULT: If item.score is missing or NaN, set to 0.5
-                            const validScore = (typeof item.score === 'number' && !isNaN(item.score)) ? item.score : 0.5;
-                            boostMaps[category].set(item.name, validScore);
-                        }
-                    });
-                }
+            // Track each associated internal mood
+            dictEntry.moods.forEach(mood => {
+                detectedMoods.add(mood);
+                // Accumulate score for the mood profile
+                moodProfile[mood] = (moodProfile[mood] || 0) + adjustedIntensity;
             });
 
-            if (rule.avoids.genres) rule.avoids.genres.forEach(g => avoids.genres.add(g));
-            if (rule.avoids.themes) rule.avoids.themes.forEach(t => avoids.themes.add(t));
+            // Track global metrics
+            totalIntensity += adjustedIntensity;
+            toneScores[dictEntry.tone] += 1;
+            matchCount++;
 
-            if (apiPriority.length === 0) apiPriority = rule.priority;
-            if (rule.confidenceModifier < lowestConfidence) lowestConfidence = rule.confidenceModifier;
+            // Reset the modifier after it has been applied to a dictionary word
+            currentModifier = 1.0;
         }
     });
 
-    const mapToArray = (map) => Array.from(map.entries())
-                                    .map(([name, score]) => ({ name, score }))
-                                    .sort((a, b) => b.score - a.score);
+    // 3. Calculate Global Intensity
+    let globalIntensity = 0.5; // Default safe value
+    if (matchCount > 0) {
+        // Average the intensity of all matched words, capped at a maximum of 1.0
+        globalIntensity = Math.min(totalIntensity / matchCount, 1.0);
+    }
 
-    intent.boosts = {
-        genres: mapToArray(boostMaps.genres),
-        themes: mapToArray(boostMaps.themes),
-        demographics: mapToArray(boostMaps.demographics)
+    // 4. Determine Dominant Tone
+    let dominantTone = "neutral";
+    if (toneScores.negative > toneScores.positive && toneScores.negative >= toneScores.neutral) {
+        dominantTone = "negative";
+    } else if (toneScores.positive > toneScores.negative && toneScores.positive >= toneScores.neutral) {
+        dominantTone = "positive";
+    }
+
+    // 5. Normalize Mood Profile Scores
+    const normalizedProfile = {};
+    Object.keys(moodProfile).forEach(mood => {
+        // Cap individual mood profile scores at 1.0 and format to 2 decimal places
+        normalizedProfile[mood] = Number(Math.min(moodProfile[mood], 1.0).toFixed(2));
+    });
+
+    return {
+        moods: Array.from(detectedMoods),
+        intensity: Number(globalIntensity.toFixed(2)),
+        moodProfile: normalizedProfile,
+        tone: dominantTone
     };
-    
-    intent.avoids = { genres: [...avoids.genres], themes: [...avoids.themes] };
-    intent.ruleLogs = ruleLogs;
-    intent.searchPriority = apiPriority;
-    intent.confidence = lowestConfidence;
-
-    return intent;
 }
