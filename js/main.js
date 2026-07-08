@@ -66,7 +66,7 @@ async function initializeApp() {
             const fb = await import("./firebase.js");
             window.db = fb.db;
             window.AppDiagnostics.log("Firebase", true, "Loaded");
-        
+        } catch (e) {
             window.AppDiagnostics.log("Firebase", false, e.message);
         }
 
@@ -168,10 +168,10 @@ async function initializeApp() {
 
         window.AppDiagnostics.log("App", true, "Initialized");
 
-    } // Change your current catch block in js/main.js to this:
-} catch (e) {
-    console.error("DEBUG - Search Load Failure:", e); // THIS IS THE KEY
-    window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
+    } catch (e) {
+        console.error("DEBUG - App Init Failure:", e);
+        window.AppDiagnostics.log("App", false, "Load Failed - Check Console");
+    }
 }
 
 
