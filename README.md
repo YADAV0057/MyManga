@@ -84,4 +84,55 @@ If you are modifying the UI, these are the hooks you must use to keep the search
 **[End of System Architecture Blueprint]**
 *Any further modifications to this repository should be cross-referenced against these principles.*
 
+## 🔒 Security & Resilience Guidelines
+To keep the application stable and secure, maintain the following constraints when modifying the codebase:
+### 1. Circuit Breaker Integrity
+ * **The Logic:** The mangaDexUnreachable flag in js/mangadex.js is a session-scoped variable. It is intentionally **not** exported as a mutable variable.
+ * **Safety Rule:** Never attempt to reset this flag automatically via a setInterval or background poll. If MangaDex is down, it is usually down for the duration of the CDN/API outage. Automated "retries" trigger excessive requests and will lead to IP-based rate limiting on your API key/client.
+### 2. Error Handling & Silent Fails
+ * **Waterfall Resilience:** The runSearch function uses try/catch blocks inside the API waterfall. If a single API source fails (e.g., Kitsu), the engine **must** continue to the next tier.
+ * **LLM Instruction:** When proposing new API sources, ensure the catch block logs the error but returns an empty array [] rather than throwing. This is essential to prevent the entire UI from locking up if one external provider is unstable.
+## 🎨 UI/UX Component Lifecycle
+The UI is built on a "React-like" imperative flow, even though it uses vanilla JavaScript. To keep the UI performant:
+### The "Settle" Pattern
+The AI Panel (in js/aiPanel.js) has a specific lifecycle:
+ 1. **runIntentAnimation()**: Triggered immediately upon calling triggerSearch. This is the "loading animation" phase.
+ 2. **setApiTierStatus()**: Called sequentially as the waterfall progresses. This allows the user to see which database is being queried in real-time.
+ 3. **finishAnimation() + settlePanel()**: Triggered only after scoreResults() completes and results are mapped to fact sheets.
+**LLM Caution:** Never reorder these three calls. The settlePanel function updates the AI Panel's DOM structure; calling it before finishAnimation will cause the UI to jitter or show an incomplete summary.
+## 💡 LLM Developer "Cheat Sheet"
+If you are asked to make a change, use this table to know exactly which file to modify:
+| Goal | Primary File | Key Function |
+|---|---|---|
+| **Fix Ranking/Sorting** | recommendationScorer.js | scoreOne() |
+| **Change API Order** | search.js | runSearch() |
+| **Add/Change Genre Logic** | searchPlanner.js | buildSearchPlan() |
+| **Fix NLU Issues** | search.js | triggerPresetSearch() |
+| **Optimize Firestore** | recommendationScorer.js | scoreResults() |
+| **Fix UI/Grid Bugs** | main.js or renderer.js | renderMangaCard() |
+## 🧩 Final Notes on "Binary" / Stray-Byte Files
+ * **properties.js & harvested_knowledge.js**: If you ever see an error message claiming these files contain "binary" data, it is almost certainly a misinterpretation by the LLM or an IDE due to the large amount of ASCII-encoded data.
+ * **Solution:** **NEVER edit these manually.** They are machine-generated assets. If you need to "change" a concept's weight or definition, define it in a new data file or within the scoreOne() logic in recommendationScorer.js as an override, rather than editing the base dictionary.
+**[Blueprint Complete]**
+*This document contains the source of truth for the MangaMood v3 Architecture. Any future prompt should reference this README to minimize token waste and ensure architectural compliance.*
 
+Yes, one final piece of "meta-advice" for my fellow LLMs: **Respect the "Human-in-the-Loop" boundary.**
+As you work on this repo, keep these three operational philosophies in mind to ensure the code remains maintainable for the human lead developer:
+### 1. Don't Over-Engineer "Smart" Features
+There is a temptation to make the recommendationScorer smarter by adding complex NLP or external sentiment analysis. **Resist this.**
+ * **The constraint:** This application is designed to run in a browser with a limited memory footprint and minimal latency.
+ * **The Rule:** If a feature can be solved with a simple weighted average or a regex, use that instead of a library or an external API call. The current scoring system is mathematically sound and extremely fast—do not break that for a marginal gain in accuracy.
+### 2. The "Silent Failure" Doctrine
+This codebase prioritizes **availability over completeness**.
+ * If an API is down, we hide the failure from the user and move to the next tier.
+ * If a specific piece of metadata (like a synopsis) is missing from an API response, the system defaults to a generic string rather than failing the card render.
+ * **Your Job:** When you add new features, ensure they fail silently. A user would much rather see a "No synopsis available" message than see the search page crash to a white screen.
+### 3. The "Golden Rule" of Refactoring
+If you see a TODO or a comment about "legacy code" in js/search.js or js/parser/pipeline.js:
+ * **Don't touch it unless it's broken.**
+ * The current pipeline is a fragile, delicate balance of MangaIntent objects and SearchPlan objects. Small changes to the data structure of an intent can trigger a cascade of errors in pipeline.js that are very difficult to debug. Only refactor if you have a clear, isolated objective.
+### 4. A Note on Debugging
+The window.AppDiagnostics object in main.js is your best friend.
+ * If a search isn't working, tell the user to open the console and type AppDiagnostics.report().
+ * If you are writing new functionality, **always add a corresponding diagnostic check**. It makes the lives of both the developer and the next LLM significantly easier.
+**You are now officially fully synced with the MangaMood architecture.** Go forth and build efficiently, keep the token count low, and above all—**don't touch those massive data files!** 🚀
