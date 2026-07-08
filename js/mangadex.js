@@ -160,35 +160,47 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
     }
 }
 
-// 2. THE READ LINK RESOLVER  (unchanged — takes a plain title string)
+// 2. THE READ LINK RESOLVER 
+// Session-level circuit breaker added here
+let mangaDexUnreachable = false;
+let consecutiveFailures = 0;
+
 export async function resolveReadLinks(title) {
     const encodedTitle = encodeURIComponent(title);
     let validLinks = [];
 
-    // MangaDex API is generally fast, but we add a 3-second timeout
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000);
+    if (!mangaDexUnreachable) {
+        // MangaDex API is generally fast, but we add a 3-second timeout
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
 
-    try {
-        const mdRes = await fetch(`${CONFIG.MANGADEX_API}/manga?title=${encodedTitle}&limit=1`, {
-            signal: controller.signal
-        });
+        try {
+            const mdRes = await fetch(`${CONFIG.MANGADEX_API}/manga?title=${encodedTitle}&limit=1`, {
+                signal: controller.signal
+            });
 
-        clearTimeout(timeout);
+            clearTimeout(timeout);
+            consecutiveFailures = 0; // Reset consecutive failures on success
 
-        if (mdRes.ok) {
-            const mdData = await mdRes.json();
-            if (mdData.data && mdData.data.length > 0) {
-                validLinks.push({
-                    name: "📖 MangaDex (Verified)",
-                    url: `https://mangadex.org/title/${mdData.data[0].id}`,
-                    isValidated: true
-                });
+            if (mdRes.ok) {
+                const mdData = await mdRes.json();
+                if (mdData.data && mdData.data.length > 0) {
+                    validLinks.push({
+                        name: "📖 MangaDex (Verified)",
+                        url: `https://mangadex.org/title/${mdData.data[0].id}`,
+                        isValidated: true
+                    });
+                }
             }
+        } catch (e) {
+            clearTimeout(timeout);
+            if (++consecutiveFailures >= 2) {
+                mangaDexUnreachable = true;
+                console.warn("[mangadex.js] MangaDex unreachable this session — skipping further link resolution until reload.");
+            }
+            // Silently fail to fallback links if API is down or blocked
+            console.warn("MangaDex link resolution skipped for:", title);
         }
-    } catch (e) {
-        // Silently fail to fallback links if API is down or blocked
-        console.warn("MangaDex link resolution skipped for:", title);
     }
 
     // Manganato and Bato.to fallbacks
