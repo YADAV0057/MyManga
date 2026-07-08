@@ -14,7 +14,7 @@ try {
 }
 
 // 3. Merge Layers: Base (properties) overrides Harvested if keys conflict
-const CONCEPT_PROPERTIES = { 
+export const CONCEPT_PROPERTIES = { 
     ...HARVESTED_RULES, 
     ...BASE_PROPERTIES 
 };
@@ -68,9 +68,20 @@ Object.values(CONCEPT_PROPERTIES).forEach(concept => {
     if (concept.themes) {
         concept.themes.forEach(t => { MOOD_MAPPINGS[id].themes[t.name] = t.weight; });
     }
+    if (concept.demographics) {
+        concept.demographics.forEach(d => { MOOD_MAPPINGS[id].demographics[d.name] = d.weight; });
+    }
 
-    // 3. Inject into MOOD_DICTIONARY
+    // 3. Inject into MOOD_DICTIONARY. Use the concept's own tone/intensity
+    // (from properties.js's curation, or harvester.js's synopsis analysis)
+    // when present, instead of a flat neutral/0.8 default — this is what
+    // moodEngine.js actually reads for intent.tone/intent.intensity when a
+    // user's query matches this concept's id/aliases.
     if (!MOOD_DICTIONARY[id]) {
-        MOOD_DICTIONARY[id] = { moods: [id], intensity: 0.8, tone: "neutral" };
+        MOOD_DICTIONARY[id] = {
+            moods: [id],
+            intensity: (typeof concept.intensity === 'number') ? concept.intensity : 0.8,
+            tone: concept.tone || "neutral"
+        };
     }
 });
