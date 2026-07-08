@@ -137,12 +137,25 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
     // --- Constraint match (10%) — excluded genres/themes should NOT be present;
     // status/maxChapters are already enforced upstream (API query + search.js
     // filter), so this is mostly a defensive re-check plus positive framing.
+    // ASYMMETRIC PENALTY (confirmed via manual mood-engine diagnostic): a
+    // genre is a broad category, so brushing an avoided genre is a weaker
+    // true-mismatch signal than a theme actually being present — themes are
+    // specific, defining characteristics (e.g. "Iyashikei", "Revenge"). The
+    // diagnostic used -2.0 genre / -2.5 theme (ratio 4:5); same ratio here,
+    // rescaled to this function's 0-1 constraint scale.
     let constraintScore = 1.0;
-    const allExcluded = [...(plan.excludedGenres || []), ...(plan.excludedThemes || [])];
     const itemHas = new Set([...itemGenres, ...itemThemes].map(g => g.toLowerCase()));
-    allExcluded.forEach(ex => {
+    (plan.excludedGenres || []).forEach(ex => {
         if (itemHas.has(ex.toLowerCase())) {
-            constraintScore -= 0.5; // present when it shouldn't be — hard penalty
+            constraintScore -= 0.4; // present when it shouldn't be — moderate penalty
+            reasons.push({ ok: false, text: `Contains ${ex}` });
+        } else {
+            reasons.push({ ok: true, text: `No ${ex}` });
+        }
+    });
+    (plan.excludedThemes || []).forEach(ex => {
+        if (itemHas.has(ex.toLowerCase())) {
+            constraintScore -= 0.5; // present when it shouldn't be — harder penalty than an excluded genre
             reasons.push({ ok: false, text: `Contains ${ex}` });
         } else {
             reasons.push({ ok: true, text: `No ${ex}` });
