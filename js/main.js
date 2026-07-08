@@ -194,16 +194,49 @@ function setupSearchBar() {
 // over an active-view class.
 function setupViewToggle() {
     const favBtn = document.getElementById("nav-favorites-btn");
-    if (!favBtn) return;
+    const grid = document.getElementById("community-grid");
+    if (!favBtn || !grid) return;
 
     window.currentView = "discover";
+    let discoverSnapshot = null; // last-rendered discover grid HTML, restored on "Back to Discover"
 
     favBtn.addEventListener("click", () => {
         const goingToFavorites = window.currentView !== "favorites";
         window.currentView = goingToFavorites ? "favorites" : "discover";
         favBtn.classList.toggle("active-view", goingToFavorites);
         favBtn.textContent = goingToFavorites ? "🔍 Back to Discover" : "❤️ My List";
+
+        // BUGFIX: this used to only flip currentView/the label and never
+        // touched the grid at all. Clicking "My List" left whatever discover
+        // results were already on screen sitting there untouched (looked like
+        // nothing happened), and clicking it again just flipped the label
+        // back to "❤️ My List" with no visible change — read exactly as "the
+        // button does nothing except switch back to Discover."
+        if (goingToFavorites) {
+            discoverSnapshot = grid.innerHTML;
+            renderFavoritesView(grid);
+        } else if (discoverSnapshot !== null) {
+            grid.innerHTML = discoverSnapshot;
+        }
     });
+}
+
+// Renders window.getAllFavorites() into the grid, same as a normal search
+// result set. Relies on favorites.js storing the full factSheet (renderer.js
+// hands toggleFavorite() the complete cached factSheet, not just an id), so
+// window.renderMangaCard can consume each entry directly.
+function renderFavoritesView(grid) {
+    const favorites = window.getAllFavorites ? window.getAllFavorites() : [];
+    grid.innerHTML = '';
+
+    if (!favorites || favorites.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Nothing saved yet — tap ♡ on any card to add it here.</p>';
+        return;
+    }
+
+    if (window.renderMangaCard) {
+        favorites.forEach(window.renderMangaCard);
+    }
 }
 
 // ===============================
