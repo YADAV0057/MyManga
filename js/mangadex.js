@@ -3,7 +3,7 @@
 // ==========================================
 // CHANGED: fetchFromMangaDexFallback now consumes a SearchPlan
 // (js/parser/searchPlanner.js) instead of the simple parser's parsedData.
-// resolveReadLinks() and suggestTitlesFromMangaDex() are untouched — they
+// resolveReadLinks() and suggestTitlesFromMangaDex() are untouched â€” they
 // only ever took a raw title/query string, not a parsed object.
 import { CONFIG } from './config.js';
 
@@ -113,7 +113,7 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
             const coverFile = coverRel?.attributes?.fileName;
             const coverUrl = coverFile ? `${CONFIG.MANGADEX_COVER}/${m.id}/${coverFile}` : null;
 
-            // Extract genres and themes separately — MangaDex already tags each
+            // Extract genres and themes separately â€” MangaDex already tags each
             // one by `group`, we were just merging them into one array before.
             const tags = attr.tags || [];
             const genres = tags
@@ -138,7 +138,7 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
                     romaji: titleObj['ja-ro'] || null
                 },
                 averageScore: null, // Skipped for speed (requires secondary API call)
-                // popularity: intentionally omitted — MangaDex has no cheap
+                // popularity: intentionally omitted â€” MangaDex has no cheap
                 // popularity field on this endpoint (follower count requires
                 // a separate /statistics call per title). normalizeResult()
                 // defaults this to null, which is accurate here, not a bug.
@@ -186,7 +186,7 @@ export async function resolveReadLinks(title) {
                 const mdData = await mdRes.json();
                 if (mdData.data && mdData.data.length > 0) {
                     validLinks.push({
-                        name: "📖 MangaDex (Verified)",
+                        name: "ðŸ“– MangaDex (Verified)",
                         url: `https://mangadex.org/title/${mdData.data[0].id}`,
                         isValidated: true
                     });
@@ -196,7 +196,7 @@ export async function resolveReadLinks(title) {
             clearTimeout(timeout);
             if (++consecutiveFailures >= 2) {
                 mangaDexUnreachable = true;
-                console.warn("[mangadex.js] MangaDex unreachable this session — skipping further link resolution until reload.");
+                console.warn("[mangadex.js] MangaDex unreachable this session â€” skipping further link resolution until reload.");
             }
             // Silently fail to fallback links if API is down or blocked
             console.warn("MangaDex link resolution skipped for:", title);
@@ -204,12 +204,12 @@ export async function resolveReadLinks(title) {
     }
 
     // Manganato and Bato.to fallbacks
-    validLinks.push({ name: "🔍 Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
-    validLinks.push({ name: "🔍 Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
+    validLinks.push({ name: "ðŸ” Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false });
+    validLinks.push({ name: "ðŸ” Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false });
 
     // Mandatory Search Fallback
     validLinks.push({
-        name: "🌐 Google Search",
+        name: "ðŸŒ Google Search",
         url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`,
         isValidated: false
     });
@@ -217,7 +217,7 @@ export async function resolveReadLinks(title) {
     return validLinks;
 }
 
-// 3. THE SUGGESTION ENGINE (unchanged — takes a plain query string)
+// 3. THE SUGGESTION ENGINE (unchanged â€” takes a plain query string)
 export async function suggestTitlesFromMangaDex(query, limit = 5) {
     if (!query || query.length < 2) return [];
 
