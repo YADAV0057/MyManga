@@ -69,9 +69,11 @@ export function buildIntent(rawUserInput) {
     
     intent.genres = allMapped.genres.filter(g => g.confidence >= 0.80);
     intent.themes = allMapped.themes.filter(t => t.confidence >= 0.80);
-    
+    intent.demographics = allMapped.demographics.filter(d => d.confidence >= 0.80);
+
     const suggestedGenres = allMapped.genres.filter(g => g.confidence < 0.80);
     const suggestedThemes = allMapped.themes.filter(t => t.confidence < 0.80);
+    const suggestedDemographics = allMapped.demographics.filter(d => d.confidence < 0.80);
 
     // 6. Apply Reasoning Rules
     intent = applyReasoningRules(intent);
@@ -112,6 +114,7 @@ export function buildIntent(rawUserInput) {
     // Apply strict filtering (removes anything already in primary intent)
     intent.boosts.genres = filterSuggested(intent.genres, [...(intent.boosts?.genres || []), ...suggestedGenres]);
     intent.boosts.themes = filterSuggested(intent.themes, [...(intent.boosts?.themes || []), ...suggestedThemes]);
+    intent.boosts.demographics = filterSuggested(intent.demographics, [...(intent.boosts?.demographics || []), ...suggestedDemographics]);
 
     // 8. Final Confidence Check
     if (!intent.moods || intent.moods.length === 0) {
