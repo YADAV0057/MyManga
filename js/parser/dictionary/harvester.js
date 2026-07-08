@@ -113,6 +113,17 @@ async function run() {
     const harvestedRules = await loadHarvestedRules();
     const knownKeys = { ...CONCEPT_PROPERTIES, ...harvestedRules };
 
+    // Also index every known concept's aliases, not just its id — otherwise
+    // "vengeance" would sail through as "new" even though it's already
+    // covered as an alias of the curated "revenge" concept, producing a
+    // separate, possibly differently-weighted entry for the same idea.
+    const aliasToId = {};
+    Object.values(knownKeys).forEach(concept => {
+        (concept.aliases || []).forEach(alias => {
+            aliasToId[alias.toLowerCase()] = concept.id;
+        });
+    });
+
     // 2. Read requested queue
     if (!fs.existsSync(QUEUE_PATH)) {
         console.log(`[Skip] No queue.txt found at ${QUEUE_PATH}`);
@@ -134,6 +145,10 @@ async function run() {
         const key = tag.toLowerCase();
         if (knownKeys[key]) {
             console.log(`[Duplicate Skip] ${tag} already exists.`);
+            return false;
+        }
+        if (aliasToId[key]) {
+            console.log(`[Duplicate Skip] ${tag} is already an alias of "${aliasToId[key]}".`);
             return false;
         }
         return true;
