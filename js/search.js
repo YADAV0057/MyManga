@@ -8,7 +8,7 @@ import { buildSearchPlan, buildPlanFromGenreList } from './parser/searchPlanner.
 import { fetchFromAniListUnified } from './anilist.js';
 import { fetchFromJikanFallback } from './jikan.js';
 import { fetchFromKitsuFallback } from './kitsu.js';
-import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
+import { fetchFromMangaDexFallback, resolveReadLinks, getFallbackLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
 import { renderMangaCard, renderDidYouMean } from './renderer.js';  
 import { normalizeResult } from './resultNormalizer.js';
 import { scoreResults } from './parser/recommendationScorer.js';
@@ -182,7 +182,10 @@ async function runSearch(rawQuery, page, intent, plan) {
         const scored = await scoreResults(unifiedResults, intent, plan, CONCEPT_DICTIONARY);
 
         const factSheets = await Promise.all(scored.map(async (unified) => {
-            const generatedLinks = await resolveReadLinks(unified.title);
+            const generatedLinks = await Promise.race([
+                resolveReadLinks(unified.title),
+                new Promise(resolve => setTimeout(() => resolve(getFallbackLinks(unified.title)), 700))
+            ]);
             return { ...unified, readLinks: generatedLinks };
         }));
 
