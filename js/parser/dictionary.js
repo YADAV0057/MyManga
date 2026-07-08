@@ -1,5 +1,3 @@
-// js/parser/dictionary.js
-
 // 1. Import your curated Base Knowledge
 import { CONCEPT_PROPERTIES as BASE_PROPERTIES } from './dictionary/properties.js';
 
@@ -40,7 +38,7 @@ export const MOOD_DICTIONARY = {
 
 export const SYNONYM_MAP = {
     "crying": "cry", "tearjerker": "cry", "tears": "cry", "sob": "cry",
-    "cute": "fluff", "adorable": "fluff", "sweet": "fluff"
+    "cute": "fluff", "adorable": "fluff", "sweet": "fluff",
     "lmao": "funny", "lol": "funny", "laugh": "funny",
 };
 
@@ -85,3 +83,6 @@ Object.values(CONCEPT_PROPERTIES).forEach(concept => {
         };
     }
 });
+
+
+
