@@ -41,6 +41,7 @@ export const MOOD_DICTIONARY = {
 export const SYNONYM_MAP = {
     "crying": "cry", "tearjerker": "cry", "tears": "cry", "sob": "cry",
     "cute": "fluff", "adorable": "fluff", "sweet": "fluff"
+    "lmao": "funny", "lol": "funny", "laugh": "funny",
 };
 
 // --- THE AI INJECTION SCRIPT ---
