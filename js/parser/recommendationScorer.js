@@ -26,8 +26,29 @@ const WEIGHTS = {
     demographic: 0.05,
     constraint: 0.10,
     popularity: 0.05,
-    rating: 0.05
+    rating: 0.05,
+    // NEW — entity/opposite data from the concept dictionary (see
+    // properties.js schema + harvester's entityRelations.js). Small weight
+    // and null when there's no signal (see components.filter below), so
+    // this is purely additive: a concept with no entities/opposite data
+    // yet scores byte-identical to before this change.
+    entity: 0.05
 };
+
+// A query word matches MOOD_DICTIONARY by the concept's own id (see
+// dictionary.js's injection step: `MOOD_DICTIONARY[id] = {moods:[id],...}`),
+// so intent.moods already doubles as "which concept ids fired for this
+// query" whenever a match came from an injected concept rather than the
+// hand-authored "cry"/"depressing" entries. This is what lets entity/
+// opposite scoring below work without any pipeline.js/intentSchema.js
+// changes — it just reads concept data straight off the ids already
+// sitting in intent.moods.
+function matchedConcepts(intent, conceptDictionary) {
+    if (!intent?.moods || !conceptDictionary) return [];
+    return intent.moods
+        .map(id => conceptDictionary[id])
+        .filter(Boolean);
+}
 
 const NEUTRAL = 0.6; // score used when a signal has nothing to compare against
 
@@ -93,8 +114,9 @@ function normalizeTitle(s) {
  * @param {import('./searchPlanner.js').SearchPlan} plan
  * @param {(v:number)=>number} normPopularity
  * @param {object|null} mangaProfile - this item's stored mood-atom profile, or null/{} if none yet
+ * @param {object} [conceptDictionary] - merged CONCEPT_PROPERTIES + HARVESTED_RULES, for entity/opposite lookups
  */
-function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
+function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDictionary) {
     const itemGenres = item.rawGenres || [];
     const itemThemes = (item.themes && item.themes.length > 0) ? item.themes : itemGenres;
     const reasons = [];
@@ -109,7 +131,7 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
         reasons.push({ ok: true, text: 'Exact title match' });
         return {
             matchScore: 100,
-            matchBreakdown: { mood: 100, genre: 100, theme: 100, demographic: 100, constraint: 100, popularity: 100, rating: 100 },
+            matchBreakdown: { mood: 100, genre: 100, theme: 100, demographic: 100, constraint: 100, popularity: 100, rating: 100, entity: 100 },
             matchReasons: dedupeReasons(reasons).slice(0, 6)
         };
     }
@@ -193,7 +215,43 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
         const ch = typeof item.chapters === 'string' ? parseInt(item.chapters, 10) : item.chapters;
         if (!isNaN(ch) && ch > plan.filters.maxChapters) constraintScore -= 0.5;
     }
+
+    // --- Opposite-concept penalty (NEW) — mirrors the excludedGenres/
+    // excludedThemes pattern above, but the "what to avoid" list comes from
+    // the matched concept's own `opposite` field (entityRelations.js's
+    // computeOppositeConcepts) instead of the plan's authored excludes.
+    // Smaller penalty than a direct exclude (-0.15 vs -0.4/-0.5) since this
+    // is a derived heuristic, not an authored exclusion — and it only fires
+    // when conceptDictionary/opposite data actually exists, so a concept
+    // without this field yet behaves exactly as before.
+    matchedConcepts(intent, conceptDictionary).forEach(concept => {
+        (concept.opposite || []).forEach(oppositeId => {
+            const oppositeConcept = conceptDictionary?.[oppositeId];
+            const topOppositeGenre = oppositeConcept?.genres?.[0]?.name;
+            if (topOppositeGenre && itemHas.has(topOppositeGenre.toLowerCase())) {
+                constraintScore -= 0.15;
+                reasons.push({ ok: false, text: `Leans ${oppositeId} instead of ${concept.id}` });
+            }
+        });
+    });
     constraintScore = Math.max(0, constraintScore);
+
+    // --- Entity match (5%, NEW) — is this item one of the specific manga
+    // curated for the matched concept (entityRelations.js, 2+ independent
+    // sources agreeing)? A stronger, catalog-verified signal than genre/
+    // theme overlap alone. Null (no signal, not 0) when there's no
+    // entities data to check against, so it never drags down concepts
+    // that haven't been entity-harvested yet.
+    let entityScore = null;
+    const itemTitleNorm = normalizeTitle(item.title);
+    for (const concept of matchedConcepts(intent, conceptDictionary)) {
+        const hit = (concept.entities || []).some(name => normalizeTitle(name) === itemTitleNorm);
+        if (hit) {
+            entityScore = 1;
+            reasons.push({ ok: true, text: `Known ${concept.id} pick` });
+            break;
+        }
+    }
 
     // --- Popularity (5%) — normalized within THIS result batch only, per
     // resultNormalizer.js's warning that raw popularity isn't cross-source comparable.
@@ -221,7 +279,8 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
         { score: demographicScore, weight: WEIGHTS.demographic },
         { score: constraintScore, weight: WEIGHTS.constraint },
         { score: popularityScore, weight: WEIGHTS.popularity },
-        { score: ratingScore, weight: WEIGHTS.rating }
+        { score: ratingScore, weight: WEIGHTS.rating },
+        { score: entityScore, weight: WEIGHTS.entity }
     ].filter(c => c.score !== null && c.score !== undefined);
 
     const weightSum = components.reduce((sum, c) => sum + c.weight, 0);
@@ -238,7 +297,8 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
             demographic: demographicScore !== null ? Math.round(demographicScore * 100) : null,
             constraint: Math.round(constraintScore * 100),
             popularity: Math.round(popularityScore * 100),
-            rating: Math.round(ratingScore * 100)
+            rating: Math.round(ratingScore * 100),
+            entity: entityScore !== null ? Math.round(entityScore * 100) : null
         },
         // De-duped, ✓ first then ✗, capped so cards don't get a wall of text.
         matchReasons: dedupeReasons(reasons).slice(0, 6)
@@ -289,7 +349,7 @@ export async function scoreResults(unifiedResults, intent, plan, conceptDictiona
 
     const scored = unifiedResults.map(item => ({
         ...item,
-        ...scoreOne(item, intent, plan, normPopularity, profileMap.get(profileKey(item)))
+        ...scoreOne(item, intent, plan, normPopularity, profileMap.get(profileKey(item)), conceptDictionary)
     }));
 
     scored.sort((a, b) => b.matchScore - a.matchScore);
