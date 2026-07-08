@@ -1,6 +1,6 @@
 // js/parser/dictionary/upgrade.js
 import fs from 'fs';
-import { GENRE_WEIGHTS, THEME_WEIGHTS, SOURCE_MULTIPLIERS } from './MoodConfig.js';
+import { GENRE_WEIGHTS, THEME_WEIGHTS, DEMOGRAPHIC_WEIGHTS, SOURCE_MULTIPLIERS } from './MoodConfig.js';
 import { CONCEPT_PROPERTIES } from './properties.js';
 
 /**
@@ -22,6 +22,7 @@ export function calculateMood(concept) {
 
     process(concept.genres || [], GENRE_WEIGHTS, SOURCE_MULTIPLIERS.Genre);
     process(concept.themes || [], THEME_WEIGHTS, SOURCE_MULTIPLIERS.Theme);
+    process(concept.demographics || [], DEMOGRAPHIC_WEIGHTS, SOURCE_MULTIPLIERS.Demographic);
     
     const max = Math.max(...Object.values(scores), 1);
     Object.keys(scores).forEach(m => scores[m] = parseFloat((scores[m] / max).toFixed(2)));
