@@ -25,17 +25,18 @@ jobs:
         run: node js/parser/dictionary/harvester.js
       
       - name: Commit changes
+        if: always()
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           
-          # Add the file the harvester actually writes to
+          # Add whatever the harvester wrote — it checkpoints
+          # harvested_knowledge.js and shrinks queue.txt after every batch,
+          # so even a mid-run failure/timeout/cancellation (this step runs
+          # via if: always()) still commits everything processed so far.
           git add js/parser/dictionary/harvested_knowledge.js
-          
-          # Clear the queue file after processing to prevent re-harvesting
-          printf "" > queue.txt
           git add queue.txt
           
           # Commit and push if there are changes
-          git commit -m "Auto-harvested new concepts and cleared queue" || echo "No changes to commit"
+          git commit -m "Auto-harvested concepts (checkpointed progress)" || echo "No changes to commit"
           git push
