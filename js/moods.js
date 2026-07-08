@@ -1,4 +1,3 @@
-
 // ========================================== 
 // MOOD ROTATION ENGINE (js/moods.js)
 // ==========================================
@@ -21,7 +20,7 @@ export const allMoods = [
     { label: "⚔️ Epic", query: "Action, Adventure" },
     { label: "🎀 Cute", query: "Mahou Shoujo, Comedy" },
     { label: "🖤 Edgy", query: "Action, Horror" },
-    { label: "��� Inspiring", query: "Music, Drama" },
+    { label: "✨ Inspiring", query: "Music, Drama" },
     { label: "🕵️ Mysterious", query: "Mystery, Supernatural" },
     { label: "🏚️ Lonely", query: "Sci-Fi, Drama" },
     { label: "🎸 Rebellious", query: "Action, Music" },
@@ -60,7 +59,6 @@ let currentIndex = 0;
 export let rotationInterval;
 
 export function createVibeButton(moodObj) {
-    // Use template literals safely with data attributes
     const label = moodObj.label.replace(/"/g, '&quot;');
     const query = moodObj.query.replace(/"/g, '&quot;');
     return `<button class="vibe-btn" data-mood='${JSON.stringify(moodObj)}'>${moodObj.label}</button>`;
@@ -77,7 +75,6 @@ export function updateRotatingVibes() {
     currentIndex = (currentIndex + 3) % allMoods.length;
 }
 
-// Owns the single rotation timer for the whole app
 export function startVibeRotation(intervalMs) {
     clearInterval(rotationInterval);
     updateRotatingVibes();
@@ -92,14 +89,19 @@ export function populateAllVibes() {
     hiddenContainer.innerHTML = html;
 }
 
-// Attach mood button listeners - FIXED
 export function attachMoodButtonListeners() {
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('vibe-btn') && e.target.hasAttribute('data-mood')) {
             try {
                 const mood = JSON.parse(e.target.getAttribute('data-mood'));
                 if (window.applyMoodTheme) window.applyMoodTheme(mood.label);
-                if (window.triggerSearch) window.triggerSearch(mood.query, 1);
+                
+                // Route to preset search if available to bypass the NLU parser[span_1](start_span)[span_1](end_span)
+                if (window.triggerPresetSearch) {
+                    window.triggerPresetSearch(mood.query, 1);
+                } else if (window.triggerSearch) {
+                    window.triggerSearch(mood.query, 1);
+                }
             } catch (err) {
                 console.error("Error parsing mood data:", err);
             }
@@ -107,7 +109,6 @@ export function attachMoodButtonListeners() {
     });
 }
 
-// Export toggleTags
 export function toggleTags() {
     const extra = document.getElementById('extra-tags');
     const btn = document.getElementById('more-btn');
@@ -118,20 +119,16 @@ export function toggleTags() {
         return;
     }
 
-    console.log("Toggling tags. Current state:", extra.classList.contains('show'));
-
     if (extra.classList.contains('show')) {
         extra.classList.remove('show');
         rotatingContainer.style.display = "flex";
         btn.innerText = "+ Show All 50 Moods";
         startVibeRotation(30000);
-        console.log("Hidden all moods, showing rotation");
     } else {
         extra.classList.add('show');
         rotatingContainer.style.display = "none";
         btn.innerText = "- Hide Moods";
         clearInterval(rotationInterval);
-        console.log("Showing all 50 moods");
     }
 }
 
