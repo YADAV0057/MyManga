@@ -63,7 +63,7 @@ async function initializeApp() {
             const fb = await import("./firebase.js");
             window.db = fb.db;
             window.AppDiagnostics.log("Firebase", true, "Loaded");
-        } catch (e) {
+        
             window.AppDiagnostics.log("Firebase", false, e.message);
         }
 
@@ -76,18 +76,19 @@ async function initializeApp() {
             window.AppDiagnostics.log("Config", false, e.message);
         }
 
-        // Load Search
-        // ... inside initializeApp()
+        
 
-// Load Search
-try {
-    const search = await import("./search.js");
-    window.triggerSearch = search.triggerSearch;
-    window.triggerPresetSearch = search.triggerPresetSearch; // <--- ADD THIS LINE
-    window.AppDiagnostics.log("Search", true, "Loaded");
-} catch (e) {
-    window.AppDiagnostics.log("Search", false, e.message);
-}
+        // Load Search
+        try {
+            const search = await import("./js/search.js");
+            window.triggerSearch = search.triggerSearch;
+            window.triggerPresetSearch = search.triggerPresetSearch;
+            window.AppDiagnostics.log("Search", true, "Loaded");
+        } catch (e) {
+            console.error("DEBUG - Search Load Failure:", e);
+            window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
+        }
+
 
 // ... rest of the file
 
