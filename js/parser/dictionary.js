@@ -40,7 +40,6 @@ export const MOOD_DICTIONARY = {
 
 export const SYNONYM_MAP = {
     "crying": "cry", "tearjerker": "cry", "tears": "cry", "sob": "cry",
-    "lmao": "funny", "lol": "funny", "comedy": "funny", "laugh": "funny",
     "cute": "fluff", "adorable": "fluff", "sweet": "fluff"
 };
 
