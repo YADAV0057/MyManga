@@ -163,10 +163,13 @@ try {
 
         window.AppDiagnostics.log("App", true, "Initialized");
 
-    } catch (err) {
-        window.AppDiagnostics.log("Fatal", false, err.message);
-    }
+    } // Change your current catch block in js/main.js to this:
+} catch (e) {
+    console.error("DEBUG - Search Load Failure:", e); // THIS IS THE KEY
+    window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
 }
+
+
 
 // ===============================
 // SEARCH BAR
