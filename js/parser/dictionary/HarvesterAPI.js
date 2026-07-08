@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { parseString } from 'xml2js';
+import { analyzeSynopsis } from './synopsisAnalyzer.js';
 
 const WEIGHT_MAP = {
     "Action": 0.95, "Psychological": 0.90, "Drama": 0.85,
@@ -42,6 +43,21 @@ export class HarvesterAPI {
                 }
             });
 
+            const mergedDemographics = new Map();
+            (jikanData.demographics || []).forEach(d => {
+                if (!mergedDemographics.has(d.name)) {
+                    mergedDemographics.set(d.name, { name: d.name, weight: 0.80 });
+                }
+            });
+
+            // Tone/intensity/boosts/excludes come from the actual plot text, not
+            // the tag lists — AniList/Jikan/ANN can't tell us those. Runs
+            // entirely locally (AFINN-165 + manga trope routing), no LLM calls.
+            const synopsisText = [jikanData.synopsis, aniListData.description]
+                .filter(Boolean)
+                .join(' ');
+            const textAnalysis = analyzeSynopsis(synopsisText);
+
             return {
                 id: tag,
                 metadata: {
@@ -52,7 +68,9 @@ export class HarvesterAPI {
                 },
                 aliases: [...new Set([tag, cleanTag, ...synonyms])],
                 genres: Array.from(mergedGenres.values()),
-                themes: Array.from(mergedThemes.values())
+                themes: Array.from(mergedThemes.values()),
+                demographics: Array.from(mergedDemographics.values()),
+                textAnalysis
             };
         } catch (err) {
             console.error(`[Error] Pipeline failed for ${tag}:`, err.message);
@@ -72,26 +90,47 @@ export class HarvesterAPI {
             const res = await axios.get(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(tag)}&limit=3`);
             const genres = new Set();
             const themes = new Set();
+            const demographics = new Set();
+            let synopsis = '';
             res.data?.data?.forEach(m => {
                 m.genres?.forEach(g => genres.add(g.name));
                 m.themes?.forEach(t => themes.add(t.name));
+                // Jikan exposes demographics (Shounen/Shoujo/Seinen/Josei/Kids) as its
+                // own field, so we don't have to guess which "theme" is really a
+                // demographic later on.
+                m.demographics?.forEach(d => demographics.add(d.name));
+                // Use the first non-empty synopsis we find (results are sorted by
+                // relevance, so the top hit's synopsis is the most representative).
+                if (!synopsis && m.synopsis) synopsis = m.synopsis;
             });
-            return { genres: Array.from(genres).map(name => ({ name })), themes: Array.from(themes).map(name => ({ name })) };
-        } catch (e) { return { genres: [], themes: [] }; }
+            return {
+                genres: Array.from(genres).map(name => ({ name })),
+                themes: Array.from(themes).map(name => ({ name })),
+                demographics: Array.from(demographics).map(name => ({ name })),
+                synopsis
+            };
+        } catch (e) { return { genres: [], themes: [], demographics: [], synopsis: '' }; }
     }
 
     static async fetchFromAniList(tag) {
-        const query = `query ($search: String) { Page(page: 1, perPage: 3) { media(search: $search, type: MANGA) { genres tags { name } } } }`;
+        // description(asHtml: false) gets us plain text directly, no HTML stripping needed.
+        const query = `query ($search: String) { Page(page: 1, perPage: 3) { media(search: $search, type: MANGA) { genres tags { name } description(asHtml: false) } } }`;
         try {
             const res = await axios.post('https://graphql.anilist.co', { query, variables: { search: tag } });
             const genres = new Set();
             const themes = new Set();
+            let description = '';
             res.data?.data?.Page.media.forEach(m => {
                 m.genres?.forEach(g => genres.add(g));
                 m.tags?.forEach(t => themes.add(t.name));
+                if (!description && m.description) description = m.description;
             });
-            return { genres: Array.from(genres).map(name => ({ name })), themes: Array.from(themes).slice(0, 5).map(name => ({ name })) };
-        } catch (e) { return { genres: [], themes: [] }; }
+            return {
+                genres: Array.from(genres).map(name => ({ name })),
+                themes: Array.from(themes).slice(0, 5).map(name => ({ name })),
+                description
+            };
+        } catch (e) { return { genres: [], themes: [], description: '' }; }
     }
 
     static async fetchFromANN(tag) {
