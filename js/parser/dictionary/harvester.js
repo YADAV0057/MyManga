@@ -51,15 +51,15 @@ function extractDemographics(list, existing = []) {
  * hand-curated entries in properties.js (id, aliases, genres, themes,
  * demographics, boosts, excludes, tone, intensity).
  *
- * IMPORTANT: boosts / excludes / tone / intensity are NOT derivable from
- * ANN/AniList/Jikan/Datamuse data — nothing in this codebase computes them
- * automatically (see reweightProperties.js's header, which explicitly
- * declines to invent them). Rather than fake plausible-looking values,
- * this fills them with neutral, inert placeholders ([], {genres:[],
- * themes:[]}, "neutral", 0.5) that are safe defaults and won't skew
- * scoring, and leaves them for you to hand-tune later if a concept
- * deserves them. moodWeights is appended at the end since
- * recommendationScorer.js actually reads it at runtime.
+ * boosts / excludes / tone / intensity now come from HarvesterAPI's
+ * textAnalysis (local AFINN-165 + manga-trope routing over the plot
+ * synopsis/description — see lexicon.js / synopsisAnalyzer.js), not from
+ * ANN/AniList/Jikan/Datamuse's tag data directly, since tags alone can't
+ * tell you how intense or tonally positive/negative a concept is. If a
+ * concept had no synopsis text to analyze, textAnalysis itself already
+ * falls back to neutral/0.5/[] — buildEntry just passes that through.
+ * moodWeights is appended at the end since recommendationScorer.js
+ * actually reads it at runtime.
  */
 function buildEntry(data) {
     const { demographics: genreDemos, rest: genres } = extractDemographics(data.genres);
@@ -69,16 +69,18 @@ function buildEntry(data) {
 
     const round = (arr) => arr.map(x => ({ name: x.name, weight: round2(x.weight) }));
 
+    const analysis = data.textAnalysis || { tone: "neutral", intensity: 0.5, boosts: [], excludes: { genres: [], themes: [] } };
+
     return {
         id: data.id,
         aliases: data.aliases,
         genres: round(genres),
         themes: round(themes),
         demographics: round(demographics),
-        boosts: [],
-        excludes: { genres: [], themes: [] },
-        tone: "neutral",
-        intensity: 0.5,
+        boosts: analysis.boosts,
+        excludes: analysis.excludes,
+        tone: analysis.tone,
+        intensity: analysis.intensity,
         moodWeights: data.moodWeights
     };
 }
@@ -145,7 +147,8 @@ async function run() {
 
     // 4. Process only unique tags. Every tag that comes back with data gets
     //    written straight to harvested_knowledge.js, properly arranged —
-    //    no more review_queue.json / manual move step.
+    //    no more review_queue.json / manual move step. Progress is
+    //    checkpointed to disk after every batch (see below the inner loop).
     let publishedCount = 0;
     let lowConfidenceCount = 0;
 
@@ -172,13 +175,17 @@ async function run() {
                     data.moodWeights = calculateMood(data);
 
                     const confidence = data.metadata?.confidence || 0;
+                    const noSynopsis = (data.textAnalysis?.sampleSize || 0) === 0;
                     harvestedRules[key] = buildEntry(data);
                     publishedCount++;
-                    if (confidence >= LOW_CONFIDENCE_WARNING) {
+                    if (confidence >= LOW_CONFIDENCE_WARNING && !noSynopsis) {
                         console.log(`[Published] ${tag} (Conf: ${confidence})`);
                     } else {
                         lowConfidenceCount++;
-                        console.log(`[Published, low confidence] ${tag} (Conf: ${confidence}) — worth a manual spot-check.`);
+                        const reason = noSynopsis
+                            ? 'no synopsis found — tone/intensity/boosts/excludes fell back to neutral defaults'
+                            : `Conf: ${confidence}`;
+                        console.log(`[Published, worth a look] ${tag} — ${reason}`);
                     }
                 }
             } catch (err) {
@@ -192,6 +199,26 @@ async function run() {
             }
         }
 
+        // Checkpoint after every batch (not just at the very end): persist
+        // whatever's been published so far and shrink queue.txt to only the
+        // still-unprocessed tags. On a big run (e.g. 1000 tags, ~1-2 hours),
+        // this means a mid-run crash, timeout, or cancellation only loses
+        // the current batch (≤ BATCH_SIZE tags), not everything done so
+        // far — pairs with harvest.yml's `if: always()` commit step, which
+        // commits whatever's on disk even if this process exits non-zero.
+        //
+        // Note: a tag that errored/returned no data still counts as
+        // "processed" and drops out of queue.txt along with successful
+        // ones — it won't auto-retry next run. Re-add it to queue.txt by
+        // hand if you want it attempted again.
+        if (publishedCount > 0) {
+            const fileBody = `export const HARVESTED_RULES = ${JSON.stringify(harvestedRules, null, 4)};\n`;
+            fs.writeFileSync(HARVESTED_PATH, fileBody);
+        }
+        const remaining = uniqueToProcess.slice((b + 1) * BATCH_SIZE);
+        fs.writeFileSync(QUEUE_PATH, remaining.length > 0 ? remaining.join('\n') + '\n' : '');
+        console.log(`[Checkpoint] After batch ${b + 1}/${totalBatches}: ${publishedCount} concept(s) saved, ${remaining.length} tag(s) left in queue.txt.`);
+
         // Longer breather between batches so we don't hammer Jikan/Datamuse.
         if (b < totalBatches - 1) {
             console.log(`[Cooldown] Waiting ${DELAY_BETWEEN_BATCHES_MS / 1000}s before next batch...`);
@@ -199,21 +226,12 @@ async function run() {
         }
     }
 
-    // 5. Write results back out. properties.js (the human-curated base) is
-    //    never touched by the harvester.
     if (publishedCount > 0) {
-        const fileBody = `export const HARVESTED_RULES = ${JSON.stringify(harvestedRules, null, 4)};\n`;
-        fs.writeFileSync(HARVESTED_PATH, fileBody);
-        console.log(`[Saved] Added ${publishedCount} new concept(s) to harvested_knowledge.js` +
-            (lowConfidenceCount > 0 ? ` (${lowConfidenceCount} low-confidence — worth a look, but not blocking).` : '.'));
+        console.log(`[Done] Harvest complete — ${publishedCount} concept(s) published to harvested_knowledge.js` +
+            (lowConfidenceCount > 0 ? ` (${lowConfidenceCount} worth a manual look, not blocking).` : '.'));
     } else {
         console.log('[Done] No concepts were added.');
-        return;
     }
-
-    // 6. Clear the queue now that everything in it has been handled.
-    fs.writeFileSync(QUEUE_PATH, '');
-    console.log('[Cleared] queue.txt reset.');
 }
 
 run().catch(err => {
