@@ -1,6 +1,17 @@
 import axios from 'axios';
 import { parseString } from 'xml2js';
 import { analyzeSynopsis } from './synopsisAnalyzer.js';
+import { buildEntityVotes, computeOppositeConcepts, computeRelatedConcepts } from './entityRelations.js';
+import { fetchShikimoriRelatedTitles } from './shikimoriClient.js';
+import { fetchMangaUpdatesRelatedTitles } from './mangaUpdatesClient.js';
+
+// Entity/opposite/related-concept harvesting is title-granularity (4 extra
+// API calls per concept vs. the tag-granularity genre/theme harvest above),
+// so it's opt-in via env var rather than always-on — run a small batch with
+// it enabled first to see real call volume before pointing it at a big
+// queue.txt. Set ENTITY_HARVEST=1 in the environment (or the harvest.yml
+// workflow's `env:`) to turn it on.
+const ENTITY_HARVEST_ENABLED = process.env.ENTITY_HARVEST === '1';
 
 const WEIGHT_MAP = {
     "Action": 0.95, "Psychological": 0.90, "Drama": 0.85,
@@ -9,7 +20,14 @@ const WEIGHT_MAP = {
 };
 
 export class HarvesterAPI {
-    static async getNormalizedConcept(tag) {
+    /**
+     * @param {string} tag
+     * @param {object} [knownConcepts] - merged CONCEPT_PROPERTIES + HARVESTED_RULES,
+     *   passed in by harvester.js's already-loaded `knownKeys` — needed for
+     *   opposite/related-concept detection (entityRelations.js). Optional:
+     *   omitting it just skips those two fields, same as before this change.
+     */
+    static async getNormalizedConcept(tag, knownConcepts = {}) {
         try {
             const cleanTag = tag.replace(/_/g, ' ');
             console.log(`[Automated] Harvesting: ${cleanTag} (ID: ${tag})`);
@@ -58,6 +76,25 @@ export class HarvesterAPI {
                 .join(' ');
             const textAnalysis = analyzeSynopsis(synopsisText);
 
+            const finalGenres = Array.from(mergedGenres.values());
+            const finalThemes = Array.from(mergedThemes.values());
+
+            // Opposite/related-concept detection only needs the genre/theme
+            // vectors we already have in memory — no extra API calls, so
+            // this always runs regardless of ENTITY_HARVEST_ENABLED.
+            const opposite = computeOppositeConcepts(finalGenres, finalThemes, knownConcepts, tag);
+            const relatedConcepts = computeRelatedConcepts(finalGenres, finalThemes, knownConcepts, tag);
+
+            // Entity harvesting (specific manga titles) is the expensive,
+            // opt-in part — 4 extra network round-trips per concept.
+            let entities = [];
+            if (ENTITY_HARVEST_ENABLED) {
+                entities = await buildEntityVotes(cleanTag, {
+                    fetchShikimoriRelatedTitles,
+                    fetchMangaUpdatesRelatedTitles
+                });
+            }
+
             return {
                 id: tag,
                 metadata: {
@@ -67,10 +104,13 @@ export class HarvesterAPI {
                     version: "1.0.0"
                 },
                 aliases: [...new Set([tag, cleanTag, ...synonyms])],
-                genres: Array.from(mergedGenres.values()),
-                themes: Array.from(mergedThemes.values()),
+                genres: finalGenres,
+                themes: finalThemes,
                 demographics: Array.from(mergedDemographics.values()),
-                textAnalysis
+                textAnalysis,
+                entities,
+                opposite,
+                relatedConcepts
             };
         } catch (err) {
             console.error(`[Error] Pipeline failed for ${tag}:`, err.message);
@@ -142,3 +182,5 @@ export class HarvesterAPI {
         } catch (e) { return { genres: [], themes: [] }; }
     }
 }
+
+
