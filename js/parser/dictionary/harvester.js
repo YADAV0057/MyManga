@@ -13,11 +13,75 @@ const __dirname = path.dirname(__filename);
 
 // Resolve paths correctly
 const HARVESTED_PATH = path.join(__dirname, 'harvested_knowledge.js');
-const REVIEW_QUEUE_PATH = path.join(__dirname, 'review_queue.json');
 // queue.txt is at the root of the repo (3 folders up from js/parser/dictionary)
 const QUEUE_PATH = path.join(__dirname, '../../../queue.txt');
 
-const CONFIDENCE_THRESHOLD = 0.75;
+// Below this confidence, a tag still gets written straight to
+// harvested_knowledge.js (no more review_queue.json / manual move step) —
+// it's just flagged in the console output as worth a human glance.
+const LOW_CONFIDENCE_WARNING = 0.75;
+
+// AniList/ANN don't expose "demographic" as its own filterable field, so
+// Shounen/Shoujo/Seinen/Josei/Kids can come back mixed into genres/themes.
+// Jikan gives us demographics directly (see HarvesterAPI.fetchFromJikan), but
+// this catches the rest as a fallback. Same set reweightProperties.js uses.
+const DEMOGRAPHIC_TAGS = new Set(['Shounen', 'Shoujo', 'Seinen', 'Josei', 'Kids']);
+
+/** Matches the 2-decimal-place style used elsewhere (properties.js, reweightProperties.js). */
+function round2(n) {
+    return Math.round(n * 100) / 100;
+}
+
+/** Pulls any stray demographic tags out of genres/themes and merges them with `existing`. */
+function extractDemographics(list, existing = []) {
+    const demographics = new Map(existing.map(d => [d.name, d]));
+    const rest = [];
+    (list || []).forEach(item => {
+        if (DEMOGRAPHIC_TAGS.has(item.name)) {
+            if (!demographics.has(item.name)) demographics.set(item.name, item);
+        } else {
+            rest.push(item);
+        }
+    });
+    return { demographics: Array.from(demographics.values()), rest };
+}
+
+/**
+ * Builds the final harvested_knowledge.js entry in the same shape as the
+ * hand-curated entries in properties.js (id, aliases, genres, themes,
+ * demographics, boosts, excludes, tone, intensity).
+ *
+ * IMPORTANT: boosts / excludes / tone / intensity are NOT derivable from
+ * ANN/AniList/Jikan/Datamuse data — nothing in this codebase computes them
+ * automatically (see reweightProperties.js's header, which explicitly
+ * declines to invent them). Rather than fake plausible-looking values,
+ * this fills them with neutral, inert placeholders ([], {genres:[],
+ * themes:[]}, "neutral", 0.5) that are safe defaults and won't skew
+ * scoring, and leaves them for you to hand-tune later if a concept
+ * deserves them. moodWeights is appended at the end since
+ * recommendationScorer.js actually reads it at runtime.
+ */
+function buildEntry(data) {
+    const { demographics: genreDemos, rest: genres } = extractDemographics(data.genres);
+    const { demographics: allDemos, rest: themes } = extractDemographics(data.themes, genreDemos);
+    const demographics = [...allDemos, ...(data.demographics || [])]
+        .filter((d, i, arr) => arr.findIndex(x => x.name === d.name) === i);
+
+    const round = (arr) => arr.map(x => ({ name: x.name, weight: round2(x.weight) }));
+
+    return {
+        id: data.id,
+        aliases: data.aliases,
+        genres: round(genres),
+        themes: round(themes),
+        demographics: round(demographics),
+        boosts: [],
+        excludes: { genres: [], themes: [] },
+        tone: "neutral",
+        intensity: 0.5,
+        moodWeights: data.moodWeights
+    };
+}
 
 // --- Rate-limit protection ---
 // How many tags to process before taking a longer breather, and how long to
@@ -38,14 +102,6 @@ async function loadHarvestedRules() {
     } catch (e) {
         console.warn('[System] No existing harvested_knowledge.js, starting fresh.');
         return {};
-    }
-}
-
-function loadReviewQueue() {
-    try {
-        return JSON.parse(fs.readFileSync(REVIEW_QUEUE_PATH, 'utf8'));
-    } catch (e) {
-        return [];
     }
 }
 
@@ -87,11 +143,11 @@ async function run() {
         return;
     }
 
-    // 4. Process only unique tags, then gate by confidence instead of
-    //    writing straight to properties.js.
-    const reviewQueue = loadReviewQueue();
-    let autoPublishedCount = 0;
-    let queuedForReviewCount = 0;
+    // 4. Process only unique tags. Every tag that comes back with data gets
+    //    written straight to harvested_knowledge.js, properly arranged —
+    //    no more review_queue.json / manual move step.
+    let publishedCount = 0;
+    let lowConfidenceCount = 0;
 
     const totalBatches = Math.ceil(uniqueToProcess.length / BATCH_SIZE);
 
@@ -116,14 +172,13 @@ async function run() {
                     data.moodWeights = calculateMood(data);
 
                     const confidence = data.metadata?.confidence || 0;
-                    if (confidence >= CONFIDENCE_THRESHOLD) {
-                        harvestedRules[key] = data;
-                        autoPublishedCount++;
-                        console.log(`[Auto-Published] ${tag} (Conf: ${confidence})`);
+                    harvestedRules[key] = buildEntry(data);
+                    publishedCount++;
+                    if (confidence >= LOW_CONFIDENCE_WARNING) {
+                        console.log(`[Published] ${tag} (Conf: ${confidence})`);
                     } else {
-                        reviewQueue.push(data);
-                        queuedForReviewCount++;
-                        console.log(`[Queued for Review] ${tag} (Conf: ${confidence})`);
+                        lowConfidenceCount++;
+                        console.log(`[Published, low confidence] ${tag} (Conf: ${confidence}) — worth a manual spot-check.`);
                     }
                 }
             } catch (err) {
@@ -146,18 +201,12 @@ async function run() {
 
     // 5. Write results back out. properties.js (the human-curated base) is
     //    never touched by the harvester.
-    if (autoPublishedCount > 0) {
+    if (publishedCount > 0) {
         const fileBody = `export const HARVESTED_RULES = ${JSON.stringify(harvestedRules, null, 4)};\n`;
         fs.writeFileSync(HARVESTED_PATH, fileBody);
-        console.log(`[Saved] Added ${autoPublishedCount} new concept(s) to harvested_knowledge.js`);
-    }
-
-    if (queuedForReviewCount > 0) {
-        fs.writeFileSync(REVIEW_QUEUE_PATH, JSON.stringify(reviewQueue, null, 4));
-        console.log(`[Saved] Added ${queuedForReviewCount} concept(s) to review_queue.json`);
-    }
-
-    if (autoPublishedCount === 0 && queuedForReviewCount === 0) {
+        console.log(`[Saved] Added ${publishedCount} new concept(s) to harvested_knowledge.js` +
+            (lowConfidenceCount > 0 ? ` (${lowConfidenceCount} low-confidence — worth a look, but not blocking).` : '.'));
+    } else {
         console.log('[Done] No concepts were added.');
         return;
     }
