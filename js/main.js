@@ -10,7 +10,16 @@
 // ===============================
 // DIAGNOSTICS SYSTEM
 // ===============================
+window.addEventListener('error', (e) => {
+    alert('JS ERROR: ' + e.message + '\nFile: ' + e.filename + '\nLine: ' + e.lineno);
+});
+window.addEventListener('unhandledrejection', (e) => {
+    alert('PROMISE ERROR: ' + (e.reason?.message || e.reason));
+});
+
 console.log("🚀 main.js is executing!");
+
+
 
 
 window.AppDiagnostics = {
