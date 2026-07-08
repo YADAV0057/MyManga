@@ -71,16 +71,28 @@ function buildEntry(data) {
 
     const analysis = data.textAnalysis || { tone: "neutral", intensity: 0.5, boosts: [], excludes: { genres: [], themes: [] } };
 
+    // Catalog-corroborated boosts (entityRelations.js's computeRelatedConcepts,
+    // genre/theme vector overlap against already-known concepts) are MERGED
+    // into the synopsis-text-derived boosts, never replace them — a concept
+    // never loses a boost it already had from this change.
+    const mergedBoosts = [...new Set([...(analysis.boosts || []), ...(data.relatedConcepts || [])])];
+
     return {
         id: data.id,
         aliases: data.aliases,
         genres: round(genres),
         themes: round(themes),
         demographics: round(demographics),
-        boosts: analysis.boosts,
+        boosts: mergedBoosts,
         excludes: analysis.excludes,
         tone: analysis.tone,
         intensity: analysis.intensity,
+        // NEW — see entityRelations.js. entities: specific manga tied to
+        // this concept (2-of-4-source corroborated, empty unless
+        // ENTITY_HARVEST=1). opposite: concept ids with near-zero shared
+        // genre/theme signature (always computed, no extra API cost).
+        entities: data.entities || [],
+        opposite: data.opposite || [],
         moodWeights: data.moodWeights
     };
 }
@@ -179,7 +191,11 @@ async function run() {
             console.log(`[Processing] ${tag}`);
 
             try {
-                const data = await HarvesterAPI.getNormalizedConcept(tag);
+                // knownKeys (curated + already-harvested concepts) is passed
+                // through so opposite/related-concept detection has
+                // something to compare this concept's genre/theme vector
+                // against — see entityRelations.js.
+                const data = await HarvesterAPI.getNormalizedConcept(tag, knownKeys);
                 if (!data) {
                     console.log(`[No Data] Skipping ${tag}, harvester returned nothing.`);
                 } else {
@@ -253,3 +269,5 @@ run().catch(err => {
     console.error('[Fatal]', err);
     process.exit(1);
 });
+
+
