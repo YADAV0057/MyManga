@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '18'
       
-      - run: npm install axios xml2js
+      - run: npm install
       
       - name: Run Harvester
         run: node js/parser/dictionary/harvester.js
@@ -29,9 +29,8 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           
-          # Add the files the harvester actually writes to
+          # Add the file the harvester actually writes to
           git add js/parser/dictionary/harvested_knowledge.js
-          git add js/parser/dictionary/review_queue.json
           
           # Clear the queue file after processing to prevent re-harvesting
           printf "" > queue.txt
