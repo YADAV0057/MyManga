@@ -77,13 +77,19 @@ async function initializeApp() {
         }
 
         // Load Search
-        try {
-            const search = await import("./search.js");
-            window.triggerSearch = search.triggerSearch;
-            window.AppDiagnostics.log("Search", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Search", false, e.message);
-        }
+        // ... inside initializeApp()
+
+// Load Search
+try {
+    const search = await import("./search.js");
+    window.triggerSearch = search.triggerSearch;
+    window.triggerPresetSearch = search.triggerPresetSearch; // <--- ADD THIS LINE
+    window.AppDiagnostics.log("Search", true, "Loaded");
+} catch (e) {
+    window.AppDiagnostics.log("Search", false, e.message);
+}
+
+// ... rest of the file
 
         // Load Theme
         try {
