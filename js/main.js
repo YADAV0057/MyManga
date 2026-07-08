@@ -77,10 +77,9 @@ async function initializeApp() {
         }
 
         
-
         // Load Search
         try {
-            const search = await import("./js/search.js");
+            const search = await import("./search.js"); // <--- Corrected Path
             window.triggerSearch = search.triggerSearch;
             window.triggerPresetSearch = search.triggerPresetSearch;
             window.AppDiagnostics.log("Search", true, "Loaded");
@@ -89,8 +88,10 @@ async function initializeApp() {
             window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
         }
 
+        
 
-// ... rest of the file
+
+
 
         // Load Theme
         try {
