@@ -16,7 +16,7 @@ import { runIntentAnimation, setApiTierStatus, finishAnimation, settlePanel, hid
 import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
 
 let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
-(async () => {
+const dictionaryLoadPromise = (async () => {
     try {
         const mod = await import('./parser/dictionary/harvested_knowledge.js');
         CONCEPT_DICTIONARY = { ...mod.HARVESTED_RULES, ...CONCEPT_PROPERTIES }; 
@@ -147,7 +147,7 @@ async function runSearch(rawQuery, page, intent, plan) {
                 }
             } else if (hasQuery) setApiTierStatus('mangadex', 'skip');
 
-            if (db && finalResults && finalResults.length > 0 && dataSource === "anilist") {
+            if (db && finalResults && finalResults.length > 0 && dataSource !== "cache") {
                 try {
                     const docRef = doc(db, "searches", cacheKey);
                     await setDoc(docRef, { results: finalResults });
@@ -179,11 +179,12 @@ async function runSearch(rawQuery, page, intent, plan) {
             normalizeResult(aniManga, SOURCE_LABELS[dataSource] || dataSource)
         );
 
+        await dictionaryLoadPromise;
         const scored = await scoreResults(unifiedResults, intent, plan, CONCEPT_DICTIONARY);
 
         const factSheets = await Promise.all(scored.map(async (unified) => {
             const generatedLinks = await Promise.race([
-                resolveReadLinks(unified.title),
+                resolveReadLinks(unified.title).catch(() => getFallbackLinks(unified.title)),
                 new Promise(resolve => setTimeout(() => resolve(getFallbackLinks(unified.title)), 700))
             ]);
             return { ...unified, readLinks: generatedLinks };
