@@ -10,6 +10,9 @@
 // ===============================
 // DIAGNOSTICS SYSTEM
 // ===============================
+console.log("🚀 main.js is executing!");
+
+
 window.AppDiagnostics = {
     status: {},
     log: function (module, success, message) {
