@@ -28,6 +28,27 @@ import { renderMangaCard, renderDidYouMean } from './renderer.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { scoreResults } from './parser/recommendationScorer.js';
 import { runIntentAnimation, setApiTierStatus, finishAnimation, settlePanel, hideAIPanel } from './aiPanel.js';
+// Phase 3: merged concept dictionary, passed through to scoreResults() so it
+// can build/cache a per-manga mood-atom profile on a cache miss (see
+// mangaProfiles.js). Curated wins on key conflicts — same convention
+// dictionary.js/harvester.js already use elsewhere in this codebase.
+import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
+
+// harvested_knowledge.js is written by the out-of-band Node harvester and
+// may not exist yet (fresh repo) or could be regenerating between harvest
+// runs — a static import would hard-fail this ENTIRE module (and therefore
+// every button that calls triggerSearch) if the file is ever missing.
+// Dynamic import + fallback to {} mirrors harvester.js's own
+// loadHarvestedRules() try/catch for exactly that reason.
+let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
+(async () => {
+    try {
+        const mod = await import('./parser/dictionary/harvested_knowledge.js');
+        CONCEPT_DICTIONARY = { ...mod.HARVESTED_RULES, ...CONCEPT_PROPERTIES }; // curated wins on conflicts
+    } catch (e) {
+        console.warn('[search.js] harvested_knowledge.js not available yet, scoring with curated properties.js only:', e.message);
+    }
+})();
 
 let isSearching = false;
 
@@ -214,7 +235,10 @@ export async function triggerSearch(rawQuery, page = 1) {
         // cached result set has no intent/plan attached to this query run —
         // actually a cache hit DOES have the current query's intent/plan
         // (built above from rawQuery), so it's scored too.
-        const scored = scoreResults(unifiedResults, intent, plan);
+        // CHANGED: now awaited — Phase 3's mood-atom scoring warms/reads each
+        // item's manga profile from Firestore (mangaProfiles.js) in parallel
+        // before scoring, so this is no longer a synchronous call.
+        const scored = await scoreResults(unifiedResults, intent, plan, CONCEPT_DICTIONARY);
 
         const factSheets = await Promise.all(scored.map(async (unified) => {
             const generatedLinks = await resolveReadLinks(unified.title);
