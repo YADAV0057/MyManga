@@ -21,8 +21,9 @@ import { cosineSimilarity, getOrBuildProfile, profileKey } from '../mangaProfile
 
 const WEIGHTS = {
     mood: 0.40,
-    genre: 0.25,
+    genre: 0.20,
     theme: 0.15,
+    demographic: 0.05,
     constraint: 0.10,
     popularity: 0.05,
     rating: 0.05
@@ -36,12 +37,24 @@ function namesOf(list) {
 
 /**
  * Weighted-recall overlap: of the total confidence/weight in `weighted`,
- * how much is present in `haveNames`? Returns 0-1.
+ * how much is present in `haveNames`? Returns 0-1, or null when there's no
+ * signal to score at all.
  * @param {Array<{name:string, confidence?:number, score?:number}>} weighted
  * @param {string[]} haveNames
+ * @param {boolean} [treatEmptyHaveAsNoSignal=false] - when true, an empty
+ *   `haveNames` returns null instead of 0. Use this for fields a source API
+ *   might simply not report (e.g. demographics — resultNormalizer.js
+ *   defaults that to [] for AniList/MangaDex/Kitsu, which don't expose it,
+ *   not just when a title genuinely has none). Without this, "the API
+ *   didn't tell us" and "definitely not Seinen" score identically, which
+ *   falsely penalizes the majority of results from sources that don't
+ *   report that field at all. Left off by default (genres in particular
+ *   are essentially always present, so an empty list there really is a
+ *   mismatch, not a reporting gap).
  */
-function weightedOverlap(weighted, haveNames) {
+function weightedOverlap(weighted, haveNames, treatEmptyHaveAsNoSignal = false) {
     if (!weighted || weighted.length === 0) return null; // no signal
+    if (treatEmptyHaveAsNoSignal && (!haveNames || haveNames.length === 0)) return null;
     const have = new Set(haveNames.map(n => n.toLowerCase()));
     let total = 0, matched = 0;
     weighted.forEach(w => {
@@ -96,7 +109,7 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
         reasons.push({ ok: true, text: 'Exact title match' });
         return {
             matchScore: 100,
-            matchBreakdown: { mood: 100, genre: 100, theme: 100, constraint: 100, popularity: 100, rating: 100 },
+            matchBreakdown: { mood: 100, genre: 100, theme: 100, demographic: 100, constraint: 100, popularity: 100, rating: 100 },
             matchReasons: dedupeReasons(reasons).slice(0, 6)
         };
     }
@@ -133,6 +146,21 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
     const themeResult = listOverlap(plan.secondaryThemes, itemThemes);
     const themeScore = themeResult ? themeResult.fraction : null;
     (themeResult?.matched || []).forEach(t => reasons.push({ ok: true, text: t }));
+
+    // --- Demographic match (5%) — Shounen/Shoujo/Seinen/Josei/Kids. Not
+    // every source API exposes this (resultNormalizer.js defaults to []
+    // where it's missing), and not every query implies one, so this uses
+    // the same weighted-recall approach as mood rather than a hard
+    // plan-level requirement — null (no signal) when either side is empty,
+    // which correctly drops out of the weighted average below instead of
+    // being scored as a mismatch.
+    const demographicSignal = [...(intent.demographics || []), ...(intent.boosts?.demographics || [])];
+    const demographicScore = weightedOverlap(demographicSignal, item.demographics || [], true);
+    if (demographicScore !== null && demographicScore >= 0.5) {
+        const itemDemos = new Set((item.demographics || []).map(d => d.toLowerCase()));
+        const matchedDemo = demographicSignal.find(d => itemDemos.has((d.name || '').toLowerCase()));
+        if (matchedDemo) reasons.push({ ok: true, text: `${matchedDemo.name} demographic match` });
+    }
 
     // --- Constraint match (10%) — excluded genres/themes should NOT be present;
     // status/maxChapters are already enforced upstream (API query + search.js
@@ -190,6 +218,7 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
         { score: moodScore, weight: WEIGHTS.mood },
         { score: genreScore, weight: WEIGHTS.genre },
         { score: themeScore, weight: WEIGHTS.theme },
+        { score: demographicScore, weight: WEIGHTS.demographic },
         { score: constraintScore, weight: WEIGHTS.constraint },
         { score: popularityScore, weight: WEIGHTS.popularity },
         { score: ratingScore, weight: WEIGHTS.rating }
@@ -206,6 +235,7 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile) {
             mood: moodScore !== null ? Math.round(moodScore * 100) : null,
             genre: genreScore !== null ? Math.round(genreScore * 100) : null,
             theme: themeScore !== null ? Math.round(themeScore * 100) : null,
+            demographic: demographicScore !== null ? Math.round(demographicScore * 100) : null,
             constraint: Math.round(constraintScore * 100),
             popularity: Math.round(popularityScore * 100),
             rating: Math.round(ratingScore * 100)
