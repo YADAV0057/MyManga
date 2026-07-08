@@ -339,11 +339,15 @@ export async function scoreResults(unifiedResults, intent, plan, conceptDictiona
     const normPopularity = minMaxNormalize(unifiedResults.map(r => r.popularity));
 
     const profileEntries = await Promise.all(
-        unifiedResults.map(item =>
-            getOrBuildProfile(item, conceptDictionary)
+        unifiedResults.map(item => {
+            // OPTIMIZATION: Skip the Firestore round-trip entirely if there is no mood profile vector to score against[span_1](start_span)[span_1](end_span)
+            if (!intent.moodProfile || intent.moodProfile.length === 0) {
+                return Promise.resolve([profileKey(item), {}]);
+            }
+            return getOrBuildProfile(item, conceptDictionary)
                 .then(profile => [profileKey(item), profile])
-                .catch(() => [profileKey(item), {}]) // a profile failure degrades to the fallback score, never breaks the search
-        )
+                .catch(() => [profileKey(item), {}]);
+        })
     );
     const profileMap = new Map(profileEntries);
 
