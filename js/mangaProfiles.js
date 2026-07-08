@@ -25,11 +25,12 @@
 // `analyzeMood()` produces as `intent.moodProfile`, so the two are directly
 // cosine-comparable with no translation layer.
 //
-// ADJUST BEFORE USE: the `db`/Firestore import below is a placeholder —
-// wire it to match firebase.js's existing CDN import style exactly (see
-// PROJECT_CONTEXT §6.10 — firebase.js loads Firestore via CDN URL, not npm).
-import { db } from './firebase.js';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+// Wired to match firebase.js's existing export style exactly — it already
+// initializes Firestore and re-exports doc/getDoc/setDoc itself, so this
+// file pulls everything from there rather than importing firebase-firestore
+// a second time (a bare 'firebase/firestore' specifier can't resolve in a
+// browser without an import map — that was the bug that broke search).
+import { db, doc, getDoc, setDoc } from './firebase.js';
 
 const COLLECTION = 'mangaProfiles';
 const PROFILE_VERSION = 1;
@@ -130,6 +131,7 @@ export function cosineSimilarity(vecA, vecB) {
 
 /** Reads a cached profile doc, treating wrong-version or stale docs as a miss. */
 async function getCachedProfile(key) {
+    if (!db) return null; // matches search.js's own `if (db)` guard — init failure degrades to no cache, not a crash
     try {
         const snap = await getDoc(doc(db, COLLECTION, key));
         if (!snap.exists()) return null;
@@ -146,6 +148,7 @@ async function getCachedProfile(key) {
 
 /** Writes a freshly-computed profile. Deliberately NOT awaited by callers — a slow or failed write must never delay search results rendering. */
 function saveProfileFireAndForget(key, item, computed) {
+    if (!db) return;
     const docBody = {
         title: item.title,
         source: item.source,
