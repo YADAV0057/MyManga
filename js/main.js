@@ -77,17 +77,19 @@ async function initializeApp() {
         }
 
         // Load Search
-        try {
-            const search = await import("./search.js");
-            window.triggerSearch = search.triggerSearch;
-            // BUGFIX: triggerPresetSearch was exported by search.js but never
-            // bound to window, so moods.js's `if (window.triggerPresetSearch)`
-            // check silently failed and mood/preset buttons did nothing.
-            window.triggerPresetSearch = search.triggerPresetSearch;
-            window.AppDiagnostics.log("Search", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Search", false, e.message);
-        }
+        // ... inside initializeApp()
+
+// Load Search
+try {
+    const search = await import("./search.js");
+    window.triggerSearch = search.triggerSearch;
+    window.triggerPresetSearch = search.triggerPresetSearch; // <--- ADD THIS LINE
+    window.AppDiagnostics.log("Search", true, "Loaded");
+} catch (e) {
+    window.AppDiagnostics.log("Search", false, e.message);
+}
+
+// ... rest of the file
 
         // Load Theme
         try {
