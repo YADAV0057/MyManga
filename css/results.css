@@ -1,0 +1,111 @@
+/* ==========================================
+   css/results.css
+   ==========================================
+   Full-screen "Search Results" page (js/searchResultsPage.js). Same
+   fixed-overlay-toggled-by-.open-class pattern as detail.css/.detail-view,
+   mixer.css/.mixer-view, and mylist.css/.mylist-view — scoped entirely to
+   .results-page-* classes so it can't collide with the rest of the site's
+   CSS. z-index sits below the Mood Mixer (998) and Manga Detail (999)
+   overlays so tapping a card here still opens the detail page on top,
+   same as it does from the homepage grid.
+*/
+
+body.search-results-open {
+    overflow: hidden;
+}
+
+.results-page-view {
+    position: fixed;
+    inset: 0;
+    z-index: 996;
+    background: var(--bg-dark, #0c0a16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+}
+
+.results-page-view.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .28s ease, transform .28s ease;
+}
+
+.results-page-scroll {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.results-page-back-btn {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(10,14,28,.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 100px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.results-page-header {
+    text-align: center;
+    padding: 12px 8px 28px;
+}
+
+.results-page-header h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.5rem;
+    color: var(--text-title, #eef4ff);
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+
+.results-page-count {
+    color: var(--text-muted, #8b93a7);
+    font-size: .92rem;
+    min-height: 1.2em; /* avoids a layout jump between "Searching…" and "N results" */
+}
+
+.results-page-pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding-bottom: 10px;
+}
+
+.results-page-nextpage-btn {
+    min-width: 180px;
+}
+
+.results-page-nextpage-btn:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.results-page-end-msg {
+    color: var(--text-muted, #8b93a7);
+    font-size: .88rem;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .results-page-header h1 { font-size: 1.3rem; }
+}
