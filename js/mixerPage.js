@@ -1,5 +1,5 @@
 // ==========================================
-// MOOD MIXER PAGE (js/mixerPage.js)
+// MOOD MIXER PAGE (js/mixerPage.js) 
 // ==========================================
 // STEP 2: the homepage "Mood Mixer" panel now only decides which 1-2 moods
 // are actively being blended for an *instant* search (see moods.js, Step 1).
