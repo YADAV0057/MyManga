@@ -400,6 +400,37 @@
     outline-offset:3px;
 }
 
+
+/* ==========================
+   SCANNABILITY BADGES
+========================== */
+.reading-badge {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.mood-tag-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.mood-tag {
+    background: rgba(139, 124, 246, 0.15);
+    color: var(--purple-bright);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    border: 1px solid rgba(139, 124, 246, 0.2);
+}
+
+
 @media (prefers-reduced-motion:reduce){
     *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
 }
