@@ -4,7 +4,7 @@
 // CHANGED (bug fixes):
 //   1. handleFavoriteClick was referenced by onclick but never defined
 //      anywhere — now exported here and must be wired to window in main.js
-//      (see bottom of this file for the exact line to add there), matching
+//      (see bottom of this file for the exact line to add there), matching 
 //      this codebase's "only main.js touches window" convention.
 //   2. fav-btn now calls event.stopPropagation() so favoriting no longer
 //      also triggers the parent cover's toggleOptions() overlay.
