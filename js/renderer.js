@@ -24,6 +24,7 @@
 
 import { isFavorite, toggleFavorite } from './favorites.js';
 import { escapeHTML } from './utils.js';
+import { cacheMangaForDetail } from './mangaDetail.js';
 
 // Keeps the full data for every card ever rendered so the ♡ button
 // can hand the complete manga object off to favorites.js by id alone.
@@ -185,6 +186,7 @@ function renderMatchBreakdown(factSheet) {
 // without needing a real #community-grid to append into.
 export function getMangaCardHTML(factSheet) {
     factSheetCache[String(factSheet.id)] = factSheet;
+    cacheMangaForDetail(factSheet);
 
     const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     // BUGFIX #3: was `factSheet.globalScore && ...`, which hid a legitimate
@@ -195,31 +197,21 @@ export function getMangaCardHTML(factSheet) {
     const saved = isFavorite(factSheet.id);
     const safeTitle = escapeHTML(factSheet.title);
 
-    let linksHtml = '';
-    (factSheet.readLinks || []).forEach((link) => {
-        const linkBg = link.isValidated
-            ? '#22c55e'
-            : (link.name === "🌐 Google Search" ? '#ef4444' : '#64748b');
-
-        linksHtml += `
-            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="read-link-btn"
-               style="background: ${linkBg}; color: #ffffff;" onclick="event.stopPropagation()">
-               ${escapeHTML(link.name)}
-            </a>`;
-    });
-
+    // NOTE: this card used to build its own "Available Sources" overlay
+    // (readLinks rendered inline, shown via toggleOptions()) directly here.
+    // That's now the manga detail page's job (js/mangaDetail.js) — tapping
+    // the cover opens a full page with the cover, synopsis, stats, and
+    // those same readLinks as real buttons, instead of a cramped in-card
+    // popover. readLinks still travels with factSheet via cacheMangaForDetail
+    // above, so the detail page has them instantly with no re-fetch.
     return `
         <div class="manga-card">
-            <div class="manga-cover-container" onclick="window.toggleOptions('${factSheet.id}')">
+            <div class="manga-cover-container" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
                 <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
                 <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                         onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
                         title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
                 ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
-                <div class="read-options" id="overlay-${factSheet.id}">
-                    <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
-                    ${linksHtml}
-                </div>
             </div>
             <div class="manga-info">
                 <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
@@ -247,3 +239,5 @@ export function renderMangaCard(factSheet) {
     const card = temp.firstElementChild;
     if (card) grid.appendChild(card);
 }
+
+
