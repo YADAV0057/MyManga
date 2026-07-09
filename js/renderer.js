@@ -1,5 +1,5 @@
 // ==========================================
-// RENDERING ENGINE (js/renderer.js)
+// RENDERING ENGINE (js/renderer.js) 
 // ==========================================
 // CHANGED (bug fixes):
 //   1. handleFavoriteClick was referenced by onclick but never defined
