@@ -181,12 +181,46 @@ body.detail-open {
     margin: 0 0 10px;
 }
 
+/* ==========================
+   DETAIL SYNOPSIS
+========================== */
 .detail-synopsis {
+    position: relative;
     font-size: 14px;
     line-height: 1.6;
     color: var(--text-main, #a2afc0);
     margin: 0 0 26px;
+    
+    /* Truncate to 4 lines initially */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    cursor: pointer;
 }
+
+/* Gradient fade at the bottom to indicate more text */
+.detail-synopsis::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1.6rem;
+    background: linear-gradient(transparent, var(--bg-dark, #0b1622));
+    pointer-events: none;
+}
+
+/* Expanded state */
+.detail-synopsis.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
+/* Hide the gradient when fully expanded */
+.detail-synopsis.expanded::after {
+    display: none;
+}
+
 
 .detail-links-row {
     display: flex;
