@@ -235,7 +235,6 @@ async function initializeApp() {
         setupSearchBar();
         setupMyListButton();
         setupRefreshButton();
-        setupMixerPageButton();
         setupQuickFilters();
 
         window.AppDiagnostics.log("App", true, "Initialized");
@@ -301,14 +300,7 @@ function setupMyListButton() {
 // ===============================
 // MOOD MIXER PAGE ("Open Full Mixer" button)
 // ===============================
-function setupMixerPageButton() {
-    const btn = document.getElementById("open-mixer-btn");
-    if (!btn) return;
 
-    btn.addEventListener("click", () => {
-        if (window.openMixerPage) window.openMixerPage();
-    });
-}
 
 // ===============================
 // QUICK FILTER CHIPS (Finish tonight / Long binge / Completed)
