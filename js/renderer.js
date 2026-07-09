@@ -238,42 +238,29 @@ export function getMangaCardHTML(factSheet) {
         <div class="manga-card" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
             <div class="manga-cover-container">
                 <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
+                
+                <!-- Favorite and Score moved to Right Side -->
                 <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                         onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
-                        title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
-                ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
+                        title="${saved ? 'Remove from My List' : 'Save to My List'}">
+                    ${saved ? '♥' : '♡'}
+                </button>
+                ${hasScore ? `<div class="score-badge" style="top: 50px;">⭐ ${factSheet.globalScore}%</div>` : ''}
             </div>
             <div class="manga-info">
                 <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
-                ${renderMatchBadge(factSheet)}
-                
-                <!-- NEW: Mood Tags added below title/match -->
-                ${renderMoodTags(factSheet.themes || [])}
-
                 <p class="manga-meta">${escapeHTML(genresText)}</p>
                 <div class="manga-facts">
-                    <!-- NEW: Reading Badge -->
-                    ${renderReadingBadge(factSheet.chapters)}
+                    <span>📚 ${escapeHTML(factSheet.chapters || 'N/A')}</span>
                     <span>${statusIcon} ${escapeHTML(statusText)}</span>
                 </div>
-                ${renderMatchBreakdown(factSheet)}
                 <p class="manga-synopsis">
                     ${escapeHTML(factSheet.synopsis || 'No description available.')}
                 </p>
             </div>
-
-
-            <div class="quick-action-row">
-                    <button class="action-btn" onclick="window.triggerSearch('${factSheet.title.replace(/'/g, "\\'")}', 1)">
-                        🔎 Similar
-                    </button>
-                    <button class="action-btn" onclick="handleShare(event, '${safeTitle.replace(/'/g, "\\'")}')">
-                        🔗 Share
-                    </button>
-                </div>
         </div>
     `;
-} 
+}
 
 
 export function renderMangaCard(factSheet) {
