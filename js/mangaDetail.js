@@ -104,6 +104,26 @@ function renderDetailMatchBreakdown(item) {
 }
 
 
+function renderDetailMatchBreakdown(item) {
+    if (typeof item.matchScore !== 'number' || !item.matchReasons || item.matchReasons.length === 0) return '';
+    const items = item.matchReasons.map(r => `
+        <div class="detail-match-item ${r.ok ? 'is-match' : ''}">
+            <span class="detail-match-icon">${r.ok ? '✓' : '✗'}</span>
+            <span>${escapeHTML(r.text)}</span>
+        </div>
+    `).join('');
+
+    return `
+        <div class="detail-match-container">
+            <div class="detail-match-header">
+                <span class="detail-match-score">✨ ${item.matchScore}% Match</span>
+                <span class="detail-match-title">Why we picked this</span>
+            </div>
+            <div class="detail-match-list">${items}</div>
+        </div>
+    `;
+}
+
 
 
 function buildMarkup(item) {
@@ -138,7 +158,7 @@ function buildMarkup(item) {
                     ${saved ? '♥ Saved to My List' : '♡ Save to My List'}
                 </button>
 
-
+${renderDetailMatchBreakdown(item)}
 <h3 class="detail-section-heading">Synopsis</h3>
 <p class="detail-synopsis" onclick="window.toggleSynopsis(this)" title="Tap to expand/collapse">
     ${synopsis}
