@@ -9,26 +9,37 @@
 //
 // STEP 2 FIX (too-few-results bug): AniList's genre_in is an AND filter
 // across the whole array, not "any of these" — see PROJECT_BRIEF Section 1.
-// Approach (c) from the brief: only each selected mood's own genre pair
-// goes into the AniList genre_in query (so usually 2, rarely 4 genres).
-// Manually-picked genre chips are no longer sent to AniList at all — they're
-// used client-side after fetching, to sort results by how many of those
-// chips they overlap with (rawGenres/themes), rather than hard-filtering
-// them out. This avoids the 0-result problem for chip combos that don't
-// exist in the same title, while still surfacing better matches first.
+// Approach (c): only each selected mood's own genre pair goes into the
+// AniList genre_in query (so usually 2, rarely 4 genres). Manually-picked
+// genre chips are never sent to AniList as a hard filter — see STEP 3 below
+// for how they're used instead.
+//
+// STEP 3: Mixer results now run through the same recommendationScorer.js
+// used by the main search flow, exactly like search.js does — this also
+// replaces Step 2's hand-rolled client-side overlap sort with the real
+// weighted scorer (manual genre chips go in as intent.boosts.genres, which
+// the scorer already treats as "extra signal, not a hard filter" — same
+// idea as before, just using the shared, better-tested implementation).
+// Cards now get the same ⭐ match % badge and "Why?" panel as normal search
+// results.
 //
 // Isolation note: self-contained like landing/, using the same "fixed
 // overlay toggled by a .open class" pattern as mangaDetail.js (no router
-// needed). Only imports from outside this file: allMoods (moods.js, pure
-// data), buildPlanFromGenreList (searchPlanner.js), fetchFromAniListUnified
-// (anilist.js), normalizeResult (resultNormalizer.js), and getMangaCardHTML
-// (renderer.js, pure string builder — doesn't touch #community-grid).
+// needed). Imports from outside this file: allMoods (moods.js, pure data),
+// buildPlanFromGenreList (searchPlanner.js), fetchFromAniListUnified
+// (anilist.js), normalizeResult (resultNormalizer.js), getMangaCardHTML
+// (renderer.js, pure string builder — doesn't touch #community-grid),
+// scoreResults + CONCEPT_PROPERTIES (same scorer + dictionary search.js
+// uses), and MangaIntent (intentSchema.js).
 
 import { allMoods } from './moods.js';
 import { buildPlanFromGenreList } from './parser/searchPlanner.js';
 import { fetchFromAniListUnified } from './anilist.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { getMangaCardHTML } from './renderer.js';
+import { scoreResults } from './parser/recommendationScorer.js';
+import { MangaIntent } from './parser/intentSchema.js';
+import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
 
 const VIEW_ID = 'mixer-view';
 
@@ -52,6 +63,21 @@ const LENGTH_OPTIONS = [
     { value: 'medium', label: 'Medium (50–200 chapters)' },
     { value: 'long', label: 'Long (200+ chapters)' }
 ];
+
+// STEP 3: same pattern as search.js — base CONCEPT_PROPERTIES loads
+// synchronously (bundled), harvested_knowledge.js loads async and merges on
+// top when available. dictionaryLoadPromise is awaited right before scoring
+// so a slow/failed harvested-knowledge fetch never blocks the AniList
+// fetch/render, only the scoring step.
+let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
+const dictionaryLoadPromise = (async () => {
+    try {
+        const mod = await import('./parser/dictionary/harvested_knowledge.js');
+        CONCEPT_DICTIONARY = { ...mod.HARVESTED_RULES, ...CONCEPT_PROPERTIES };
+    } catch (e) {
+        console.warn('[mixerPage.js] harvested_knowledge.js not available, using base properties.', e.message);
+    }
+})();
 
 // This page's own selection state — deliberately separate from moods.js's
 // homepage selection (Step 1), since picking a mood here should NOT fire
@@ -163,9 +189,9 @@ function wireEvents(root) {
         });
     });
 
-    // Genre chips — unlimited multi-select. STEP 2 FIX: these no longer feed
-    // the AniList genre_in filter directly — see collectMoodGenres/
-    // runMixerSearch below. They're used only for client-side overlap sort.
+    // Genre chips — unlimited multi-select. Not sent to AniList's genre_in
+    // (that's mood-only, see collectMoodGenres) — these feed the scorer as
+    // extra boost signal instead (see buildMixerIntent).
     root.querySelectorAll('.mixer-chip[data-genre]').forEach(chip => {
         chip.addEventListener('click', () => {
             const genre = chip.dataset.genre;
@@ -183,9 +209,8 @@ function wireEvents(root) {
 }
 
 // STEP 2 FIX: genres pulled from the selected mood(s) only — this is what
-// actually gets sent to AniList as the hard genre_in filter. Usually 2
-// genres (1 mood), rarely 4 (2 moods), instead of potentially 5-8 when
-// manual genre chips were also being AND-ed in.
+// actually gets sent to AniList as the hard genre_in filter (via
+// plan.primaryGenres). Usually 2 genres (1 mood), rarely 4 (2 moods).
 function collectMoodGenres() {
     const fromMoods = selectedMoodIndexes.flatMap(i =>
         allMoods[i].query.split(',').map(s => s.trim())
@@ -193,23 +218,23 @@ function collectMoodGenres() {
     return Array.from(new Set(fromMoods)).filter(Boolean);
 }
 
-// STEP 2 FIX: how many of the manually-picked genre chips a result overlaps
-// with, checked against both rawGenres and themes (some concepts like
-// "Psychological" show up as a theme rather than a genre on AniList).
-// Used only to sort, never to exclude — so an off-mix chip pick can't zero
-// out the results the way hard-AND-ing it into genre_in used to.
-function overlapScore(result, wantedGenres) {
-    if (wantedGenres.size === 0) return 0;
-    const have = new Set([
-        ...(result.rawGenres || []),
-        ...(result.themes || [])
-    ].map(g => String(g).toLowerCase()));
-
-    let score = 0;
-    wantedGenres.forEach(g => {
-        if (have.has(g.toLowerCase())) score++;
-    });
-    return score;
+// STEP 3: builds a minimal MangaIntent-shaped object for scoreResults(),
+// the same way search.js's buildPresetIntent() does for mood-button
+// searches. moodGenres go on intent.genres (required-ish, drives the 20%
+// genre-score component via plan.primaryGenres too); the manually-picked
+// genre chips go on intent.boosts.genres — additional signal the scorer
+// folds into the 40% mood-score component, without ever being able to
+// zero out results the way a hard AniList AND-filter did.
+function buildMixerIntent(moodGenres, extraGenres) {
+    const intent = new MangaIntent();
+    intent.originalQuery = [...moodGenres, ...extraGenres].join(', ');
+    intent.confidence = 1.0;
+    intent.genres = moodGenres.map(name => ({ name, confidence: 1.0 }));
+    intent.moods = selectedMoodIndexes.map(i => allMoods[i].label);
+    if (extraGenres.length > 0) {
+        intent.boosts.genres = extraGenres.map(name => ({ name, confidence: 1.0 }));
+    }
+    return intent;
 }
 
 function chapterRangeFor(lengthValue) {
@@ -226,10 +251,8 @@ async function runMixerSearch() {
     const submitBtn = document.getElementById('mixer-submit-btn');
     if (!grid || !section) return;
 
-    // STEP 2 FIX: only mood genres go to AniList now. Manual genre chips
-    // are kept aside in `selectedGenres` for client-side overlap sorting
-    // after the fetch, instead of being AND-ed into the same genre_in call.
     const moodGenres = collectMoodGenres();
+    const extraGenres = Array.from(selectedGenres);
     const statusValue = document.getElementById('mixer-status-select')?.value || '';
     const lengthValue = document.getElementById('mixer-length-select')?.value || '';
     const { min: minChapters, max: maxChapters } = chapterRangeFor(lengthValue);
@@ -256,14 +279,13 @@ async function runMixerSearch() {
             return true;
         });
 
-        // STEP 2 FIX: sort by overlap with manually-picked genre chips
-        // (higher overlap first), stable otherwise — this is the "closer
-        // matches float up" behavior replacing the old hard AND-filter.
-        if (selectedGenres.size > 0) {
-            results = results
-                .map((r, i) => ({ r, i, score: overlapScore(r, selectedGenres) }))
-                .sort((a, b) => b.score - a.score || a.i - b.i)
-                .map(x => x.r);
+        // STEP 3: score against the same weighted engine normal search
+        // results use, so Mixer cards get a real ⭐ match % and "Why?"
+        // breakdown instead of rendering with no score at all.
+        if (results.length > 0) {
+            const intent = buildMixerIntent(moodGenres, extraGenres);
+            await dictionaryLoadPromise;
+            results = await scoreResults(results, intent, plan, CONCEPT_DICTIONARY);
         }
 
         grid.innerHTML = '';
