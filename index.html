@@ -1,134 +1,746 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaMood 🔮 - Discovery Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MangaMood — Redesign Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0a0e1c;
+    --bg-deep-2:#0d1226;
+    --bg-card:#141a33;
+    --bg-card-hi:#1a2140;
+    --border-subtle:rgba(157,140,255,0.14);
+    --border-hi:rgba(157,140,255,0.32);
+    --text-primary:#f3f4fa;
+    --text-muted:#8a93b2;
+    --text-faint:#5c6584;
+    --mystic:#a08bff;
+    --mystic-dim:#6f5fc9;
+    --gold:#f5b942;
+    --mint:#5eead4;
+    --pink:#ff7fa8;
+    --ember:#ff8a5c;
+    --radius-lg:22px;
+    --radius-md:16px;
+    --radius-sm:11px;
+  }
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/cards.css">
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 600px 400px at 15% -5%, rgba(160,139,255,0.18), transparent 60%),
+      radial-gradient(ellipse 500px 400px at 90% 10%, rgba(255,127,168,0.10), transparent 55%),
+      var(--bg-deep);
+    color:var(--text-primary);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  .device{
+    width:100%;
+    max-width:430px;
+    min-height:100vh;
+    position:relative;
+    padding-bottom:96px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    padding:22px 20px 8px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:22px;
+    letter-spacing:-0.01em;
+  }
+  .logo .orb-mini{
+    width:22px; height:22px; border-radius:50%;
+    background:conic-gradient(from 200deg, var(--mystic), var(--pink), var(--ember), var(--mystic));
+    box-shadow:0 0 14px rgba(160,139,255,0.55);
+    flex-shrink:0;
+  }
+  .header-icons{display:flex; align-items:center; gap:14px;}
+  .icon-btn{
+    width:36px; height:36px; border-radius:50%;
+    background:var(--bg-card);
+    border:1px solid var(--border-subtle);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text-muted);
+    font-size:15px;
+  }
+
+  /* ---------- SIGNATURE: MOOD ORB + MIXER ---------- */
+  .orb-section{
+    padding:6px 20px 18px;
+    text-align:center;
+  }
+  .orb-wrap{
+    position:relative;
+    width:132px; height:132px;
+    margin:6px auto 14px;
+  }
+  .orb{
+    width:100%; height:100%;
+    border-radius:50%;
+    background:conic-gradient(from 210deg,
+      var(--mystic-a, #a08bff),
+      var(--mystic-b, #ff7fa8) 45%,
+      var(--mystic-c, #6f5fc9) 75%,
+      var(--mystic-a, #a08bff) 100%);
+    filter:blur(0.3px);
+    box-shadow:
+      0 0 40px 6px var(--glow-a, rgba(160,139,255,0.35)),
+      inset 0 0 30px rgba(255,255,255,0.12);
+    animation:orbit 9s linear infinite;
+    transition:background 0.7s ease, box-shadow 0.7s ease;
+  }
+  .orb::after{
+    content:'';
+    position:absolute; inset:0;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 28%, rgba(255,255,255,0.55), transparent 45%);
+  }
+  @keyframes orbit{
+    0%{ transform:rotate(0deg) scale(1); }
+    50%{ transform:rotate(180deg) scale(1.02); }
+    100%{ transform:rotate(360deg) scale(1); }
+  }
+  .orb-stand{
+    width:46px; height:8px; margin:-6px auto 0;
+    background:linear-gradient(180deg, #2a2f4a, #171b30);
+    border-radius:0 0 10px 10px;
+  }
+
+  .headline{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:26px;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    margin:0 0 4px;
+  }
+  .subline{
+    color:var(--text-muted);
+    font-size:14px;
+    margin:0 0 18px;
+  }
+
+  .vibe-input{
+    display:flex; align-items:center; gap:10px;
+    background:var(--bg-card);
+    border:1px solid var(--border-subtle);
+    border-radius:100px;
+    padding:14px 18px;
+    margin-bottom:12px;
+  }
+  .vibe-input input{
+    flex:1; background:none; border:none; outline:none;
+    color:var(--text-primary); font-family:'Inter'; font-size:14.5px;
+  }
+  .vibe-input input::placeholder{color:var(--text-faint);}
+  .vibe-input .mic{color:var(--text-faint); font-size:16px;}
+
+  .find-btn{
+    width:100%;
+    padding:15px;
+    border:none; border-radius:100px;
+    background:linear-gradient(135deg, var(--mystic), #7b6bd9);
+    color:#0a0e1c;
+    font-family:'Inter'; font-weight:700; font-size:15px;
+    letter-spacing:0.01em;
+    box-shadow:0 8px 20px -6px rgba(160,139,255,0.55);
+  }
+
+  /* ---------- MOOD MIXER CHIPS ---------- */
+  .mixer-block{ padding:22px 20px 4px; }
+  .mixer-heading{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:12px;
+  }
+  .mixer-heading h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:17px; margin:0;
+  }
+  .mixer-hint{
+    font-size:11.5px; color:var(--text-faint);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .mood-row{
+    display:flex; gap:9px; overflow-x:auto; padding-bottom:6px;
+    scrollbar-width:none;
+  }
+  .mood-row::-webkit-scrollbar{display:none;}
+  .mood-chip{
+    flex-shrink:0;
+    display:flex; align-items:center; gap:7px;
+    padding:10px 16px;
+    border-radius:100px;
+    background:var(--bg-card);
+    border:1px solid var(--border-subtle);
+    font-size:13.5px; font-weight:600;
+    color:var(--text-muted);
+    position:relative;
+  }
+  .mood-chip.active{
+    color:var(--text-primary);
+    border-color:var(--chip-color, var(--mystic));
+    background:linear-gradient(0deg, rgba(160,139,255,0.14), rgba(160,139,255,0.14)), var(--bg-card);
+    box-shadow:0 0 0 1px var(--chip-color, var(--mystic)) inset, 0 0 16px -4px var(--chip-color, var(--mystic));
+  }
+  .mood-chip .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--chip-color, var(--mystic));
+    display:none;
+  }
+  .mood-chip.active .dot{display:block;}
+
+  .mix-banner{
+    margin-top:12px;
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px;
+    border-radius:var(--radius-sm);
+    background:rgba(160,139,255,0.08);
+    border:1px dashed var(--border-hi);
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  .mix-banner b{color:var(--text-primary); font-weight:600;}
+  .mix-banner .clear{
+    margin-left:auto; color:var(--mystic); font-weight:600; font-size:12px; flex-shrink:0;
+  }
+
+  /* ---------- SECTION LABELS ---------- */
+  .section{ padding:26px 0 4px; }
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:0 20px; margin-bottom:14px;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:18px; margin:0;
+    display:flex; align-items:center; gap:8px;
+  }
+  .section-head .see-all{
+    font-size:12.5px; color:var(--mystic); font-weight:600;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--text-faint); display:block; margin-bottom:3px;
+  }
+
+  /* ---------- CAROUSEL: TRENDING ---------- */
+  .hcarousel{
+    display:flex; gap:12px; overflow-x:auto; padding:0 20px 6px;
+    scrollbar-width:none;
+  }
+  .hcarousel::-webkit-scrollbar{display:none;}
+
+  .trend-card{
+    flex-shrink:0; width:118px;
+    position:relative;
+  }
+  .trend-cover{
+    width:118px; height:158px; border-radius:var(--radius-md);
+    background:linear-gradient(160deg, var(--c1), var(--c2));
+    position:relative; overflow:hidden;
+    border:1px solid var(--border-subtle);
+  }
+  .trend-cover .glyph{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:38px; opacity:0.35; filter:saturate(0) brightness(1.6);
+  }
+  .rank-badge{
+    position:absolute; top:8px; left:8px;
+    width:26px; height:26px; border-radius:50%;
+    background:rgba(10,14,28,0.75); backdrop-filter:blur(4px);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono'; font-weight:600; font-size:12px;
+  }
+  .trend-move{
+    position:absolute; top:8px; right:8px;
+    font-family:'JetBrains Mono'; font-size:10px; font-weight:600;
+    color:var(--mint);
+    background:rgba(10,14,28,0.75); backdrop-filter:blur(4px);
+    padding:2px 6px; border-radius:100px;
+  }
+  .trend-title{
+    font-size:12.5px; font-weight:600; margin-top:8px; line-height:1.3;
+  }
+  .trend-genre{
+    font-size:10.5px; color:var(--text-faint); margin-top:2px;
+  }
+
+  /* ---------- CURATED RESULT CARDS (main redesign focus) ---------- */
+  .result-list{ padding:0 20px; display:flex; flex-direction:column; gap:16px; }
+
+  .result-card{
+    background:var(--bg-card);
+    border:1px solid var(--border-subtle);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    display:flex;
+    border-left:3px solid var(--mood-color, var(--mystic));
+  }
+  .result-cover{
+    width:100px; flex-shrink:0;
+    background:linear-gradient(165deg, var(--c1), var(--c2));
+    position:relative;
+    min-height:150px;
+  }
+  .result-cover .glyph{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:34px; opacity:0.32; filter:saturate(0) brightness(1.6);
+  }
+  .match-badge{
+    position:absolute; top:8px; left:8px;
+    background:rgba(10,14,28,0.8); backdrop-filter:blur(4px);
+    border:1px solid rgba(245,185,66,0.4);
+    color:var(--gold);
+    font-family:'JetBrains Mono'; font-size:10.5px; font-weight:600;
+    padding:3px 7px; border-radius:100px;
+  }
+
+  .result-body{
+    flex:1; padding:12px 14px 12px 12px;
+    display:flex; flex-direction:column;
+    min-width:0;
+  }
+  .result-top{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:6px;
+  }
+  .result-title{
+    font-family:'Fraunces', serif; font-weight:600; font-size:15.5px;
+    line-height:1.22; margin:0;
+  }
+  .heart-btn{
+    flex-shrink:0; color:var(--text-faint); font-size:16px; margin-top:1px;
+  }
+
+  .tag-row{
+    display:flex; gap:5px; flex-wrap:wrap; margin:6px 0 7px;
+  }
+  .tag{
+    font-size:10px; font-weight:600; letter-spacing:0.02em;
+    padding:3px 8px; border-radius:100px;
+    background:rgba(160,139,255,0.10);
+    color:var(--mystic);
+    border:1px solid rgba(160,139,255,0.22);
+  }
+
+  .why-line{
+    font-size:12px; color:var(--text-muted); line-height:1.4;
+    margin:0 0 8px;
+  }
+  .why-line b{ color:var(--text-primary); font-weight:600; }
+
+  .meta-row{
+    margin-top:auto;
+    display:flex; align-items:center; gap:10px;
+    font-size:11px; color:var(--text-faint);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .meta-row .status-dot{
+    width:6px; height:6px; border-radius:50%; background:var(--mint); flex-shrink:0;
+  }
+  .meta-row .divider{color:var(--border-hi);}
+  .source-badge{
+    display:flex; align-items:center; gap:4px;
+    font-family:'Inter'; font-size:10.5px; font-weight:600; color:var(--text-faint);
+  }
+  .source-badge .sdot{width:5px; height:5px; border-radius:50%; background:var(--mystic-dim);}
+
+  /* ---------- QUICK-FILTER BAR ---------- */
+  .filter-bar{
+    display:flex; gap:8px; overflow-x:auto; padding:14px 20px 0;
+    scrollbar-width:none;
+  }
+  .filter-bar::-webkit-scrollbar{display:none;}
+  .filter-pill{
+    flex-shrink:0;
+    font-size:12px; font-weight:600; color:var(--text-muted);
+    padding:8px 13px; border-radius:100px;
+    background:var(--bg-deep-2);
+    border:1px solid var(--border-subtle);
+    display:flex; align-items:center; gap:5px;
+    white-space:nowrap;
+  }
+  .filter-pill.on{ color:var(--text-primary); border-color:var(--border-hi); background:var(--bg-card-hi); }
+
+  /* ---------- BOTTOM NAV ---------- */
+  .bottom-nav{
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:430px;
+    background:rgba(13,18,38,0.88);
+    backdrop-filter:blur(18px);
+    border-top:1px solid var(--border-subtle);
+    display:flex; justify-content:space-around;
+    padding:11px 6px calc(11px + env(safe-area-inset-bottom));
+  }
+  .nav-item{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    color:var(--text-faint); font-size:10px; font-weight:600;
+  }
+  .nav-item.active{ color:var(--mystic); }
+  .nav-icon{ font-size:19px; line-height:1; }
+
+  /* section divider */
+  .soft-divider{ height:1px; background:linear-gradient(90deg, transparent, var(--border-subtle), transparent); margin:8px 20px 0; }
+
+  footer.credit{
+    text-align:center; color:var(--text-faint); font-size:10.5px;
+    padding:26px 20px 10px; font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.03em;
+  }
+</style>
 </head>
-
 <body>
+<div class="device">
 
-<!-- Loading Bar Indicator -->
-<div id="loading-bar"></div>
-
-<!-- =========================
-    TOP BAR
-========================= -->
-<nav class="topbar">
-    <span class="topbar-brand">MangaMood 🔮</span>
-
-    <div class="view-toggle">
-        <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
+  <header>
+    <div class="logo"><span class="orb-mini"></span>MangaMood</div>
+    <div class="header-icons">
+      <div class="icon-btn">♡</div>
+      <div class="icon-btn">☰</div>
     </div>
-</nav>
+  </header>
 
-<!-- =========================
-    HEADER SEARCH + AI PANEL
-========================= -->
-<header>
+  <!-- SIGNATURE: mood orb that blends colors as moods are mixed -->
+  <div class="orb-section">
+    <div class="orb-wrap">
+      <div class="orb" id="moodOrb"></div>
+    </div>
+    <div class="orb-stand"></div>
+    <h1 class="headline">What's the vibe today?</h1>
+    <p class="subline">Stack up to 2 moods and we'll blend your match</p>
 
-    <h2 class="tagline">What are you in the mood for today?</h2>
+    <div class="vibe-input">
+      <span class="mic">⌕</span>
+      <input type="text" placeholder="e.g. something slow-burn and heartbreaking" />
+    </div>
+    <button class="find-btn">Find My Vibe</button>
+  </div>
 
-    <div class="search-container">
+  <!-- MOOD MIXER -->
+  <div class="mixer-block">
+    <div class="mixer-heading">
+      <h2>Mood Mixer</h2>
+      <span class="mixer-hint">TAP UP TO 2</span>
+    </div>
+    <div class="mood-row" id="moodRow">
+      <div class="mood-chip" data-color="#f5b942" style="--chip-color:#f5b942;"><span class="dot"></span>😊 Happy</div>
+      <div class="mood-chip" data-color="#7fa4ff" style="--chip-color:#7fa4ff;"><span class="dot"></span>😭 Sad</div>
+      <div class="mood-chip" data-color="#ff8a5c" style="--chip-color:#ff8a5c;"><span class="dot"></span>🔥 Hype</div>
+      <div class="mood-chip" data-color="#5eead4" style="--chip-color:#5eead4;"><span class="dot"></span>🍵 Chill</div>
+      <div class="mood-chip" data-color="#c084fc" style="--chip-color:#c084fc;"><span class="dot"></span>👻 Spooky</div>
+      <div class="mood-chip" data-color="#ff7fa8" style="--chip-color:#ff7fa8;"><span class="dot"></span>💕 Romantic</div>
+    </div>
+    <div class="mix-banner" style="display:none;">
+      🔮 Mixing <b>Happy</b> + <b>Hype</b> — expect underdog wins, loud friend groups, high energy<span class="clear">Clear</span>
+    </div>
+  </div>
 
-        <input
-            id="manga-search-input"
-            type="text"
-            placeholder="e.g. I want something that will make me cry..."
-        >
+  <div class="soft-divider"></div>
 
-        <button id="search-submit-btn" class="vibe-btn full-width">
-            Find My Vibe
-        </button>
+  <!-- TRENDING CAROUSEL (borrowed pattern, adapted) -->
+  <div class="section">
+    <div class="section-head">
+      <h2 id="trendHeading">🔺 Trending Today</h2>
+      <span class="see-all">See all</span>
+    </div>
+    <div class="hcarousel">
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#3a2f6b; --c2:#1a1330;">
+          <div class="rank-badge">1</div>
+          <div class="trend-move">▲12</div>
+          <div class="glyph">⚔️</div>
+        </div>
+        <div class="trend-title">The Reborn Blade</div>
+        <div class="trend-genre">Action · Reincarnation</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#6b3f2f; --c2:#2c1712;">
+          <div class="rank-badge">2</div>
+          <div class="trend-move">▲4</div>
+          <div class="glyph">🏆</div>
+        </div>
+        <div class="trend-title">Underdog Kingdom</div>
+        <div class="trend-genre">Sports · Comedy</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#2f5f6b; --c2:#122a2c;">
+          <div class="rank-badge">3</div>
+          <div class="trend-move">▲21</div>
+          <div class="glyph">🌊</div>
+        </div>
+        <div class="trend-title">Wavebreak Academy</div>
+        <div class="trend-genre">Slice of Life</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#6b2f4f; --c2:#2c1220;">
+          <div class="rank-badge">4</div>
+          <div class="trend-move">▲2</div>
+          <div class="glyph">🎭</div>
+        </div>
+        <div class="trend-title">Loudmouth Prince</div>
+        <div class="trend-genre">Comedy · Drama</div>
+      </div>
+    </div>
+  </div>
 
+  <!-- QUICK FILTERS: new feature -->
+  <div class="filter-bar">
+    <div class="filter-pill on">⏱ Finish tonight</div>
+    <div class="filter-pill">📚 Long binge</div>
+    <div class="filter-pill">✅ Completed only</div>
+    <div class="filter-pill">🆕 New this week</div>
+  </div>
+
+  <!-- CURATED PICKS: the main redesigned card -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" id="picksEyebrow">Editor's Selection · Updated Daily</span>
+        <h2 id="picksHeading">✨ Today's Top Picks</h2>
+      </div>
+      <span class="see-all">🎲 Reroll</span>
     </div>
 
-    <!-- =========================
-        🧠 AI SEARCH INTELLIGENCE
-        Integrated directly into the search flow (was previously a
-        separate "Mood Intelligence Preview" section above the app).
-        Hidden until the first search runs; see js/aiPanel.js.
-    ========================= -->
-    <section id="ai-panel" class="ai-panel hidden">
+    <div class="result-list">
 
-        <!-- shown only while a search is actively running -->
-        <div id="ai-panel-live" class="ai-panel-live hidden"></div>
-
-        <!-- compact bar shown once a search has completed -->
-        <div id="ai-panel-summary" class="ai-panel-summary hidden">
-            <div class="ai-panel-summary-left">
-                <span class="ai-panel-icon">🧠</span>
-                <span class="ai-panel-title">AI Search Intelligence</span>
-            </div>
-            <div class="ai-panel-summary-right">
-                <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
-                <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
-            </div>
+      <div class="result-card" style="--mood-color:#f5b942;">
+        <div class="result-cover" style="--c1:#5b4a8a; --c2:#241c40;">
+          <div class="match-badge">★ 97%</div>
+          <div class="glyph">🌅</div>
         </div>
-
-        <!-- full breakdown, collapsed by default -->
-        <div id="ai-panel-details" class="ai-panel-details hidden"></div>
-
-    </section>
-
-</header>
-
-<!-- =========================
-    MAIN APP
-========================= -->
-<main class="container">
-
-    <!-- MOOD TAGS -->
-    <section class="vibe-panel-container">
-
-        <div id="rotating-vibes" class="vibe-panel"></div>
-
-        <button class="vibe-btn" id="more-btn" style="margin-top:20px;">
-            + Show All Moods
-        </button>
-
-        <div id="extra-tags" class="hidden-tags"></div>
-
-    </section>
-
-    <!-- RESULTS -->
-    <section id="results-area">
-
-        <div class="results-header">
-
-            <h2 id="results-title">✨ Your Curated Picks</h2>
-
-            <button id="refresh-btn" class="vibe-btn refresh-btn" style="display:none;">
-                🎲 Reroll
-            </button>
-
+        <div class="result-body">
+          <div class="result-top">
+            <p class="result-title">The Horizon</p>
+            <span class="heart-btn">♡</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag">Adventure</span>
+            <span class="tag">Drama</span>
+            <span class="tag">Psychological</span>
+          </div>
+          <p class="why-line why-text" data-default="Reader favorite: <b>97% match rate</b> this week · completed, no cliffhangers" data-mood="Matches your mix: <b>underdog resolve</b>, <b>bittersweet hope</b>, slow-burn payoff">Reader favorite: <b>97% match rate</b> this week · completed, no cliffhangers</p>
+          <div class="meta-row">
+            <span class="status-dot"></span> Completed
+            <span class="divider">|</span> 21 chp
+            <span class="divider">|</span>
+            <span class="source-badge"><span class="sdot"></span>AniList</span>
+          </div>
         </div>
+      </div>
 
-        <div class="grid" id="community-grid"></div>
+      <div class="result-card" style="--mood-color:#ff8a5c;">
+        <div class="result-cover" style="--c1:#8a3a4a; --c2:#3a1420;">
+          <div class="match-badge">★ 94%</div>
+          <div class="glyph">🗡️</div>
+        </div>
+        <div class="result-body">
+          <div class="result-top">
+            <p class="result-title">Villains Are Destined to Die</p>
+            <span class="heart-btn">♥</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag">Fantasy</span>
+            <span class="tag">Romance</span>
+          </div>
+          <p class="why-line why-text" data-default="Trending up <b>+22 spots</b> this week on AniList" data-mood="Matches your mix: <b>high-stakes rivalry</b>, sharp banter, triumphant arcs">Trending up <b>+22 spots</b> this week on AniList</p>
+          <div class="meta-row">
+            <span class="status-dot" style="background:var(--gold);"></span> Ongoing
+            <span class="divider">|</span> 88 chp
+            <span class="divider">|</span>
+            <span class="source-badge"><span class="sdot"></span>MangaDex</span>
+          </div>
+        </div>
+      </div>
 
-    </section>
+      <div class="result-card" style="--mood-color:#f5b942;">
+        <div class="result-cover" style="--c1:#3a6b4f; --c2:#142a1f;">
+          <div class="match-badge">★ 88%</div>
+          <div class="glyph">🎤</div>
+        </div>
+        <div class="result-body">
+          <div class="result-top">
+            <p class="result-title">Loudmouth Prince</p>
+            <span class="heart-btn">♡</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag">Comedy</span>
+            <span class="tag">Drama</span>
+          </div>
+          <p class="why-line why-text" data-default="New readers loved this: <b>4.8★</b> average across 12k ratings" data-mood="Matches your mix: <b>chaotic friend group</b>, loud energy, feel-good wins">New readers loved this: <b>4.8★</b> average across 12k ratings</p>
+          <div class="meta-row">
+            <span class="status-dot"></span> Completed
+            <span class="divider">|</span> 40 chp
+            <span class="divider">|</span>
+            <span class="source-badge"><span class="sdot"></span>Kitsu</span>
+          </div>
+        </div>
+      </div>
 
-</main>
+    </div>
+  </div>
 
-<!-- =========================
-    FOOTER
-========================= -->
-<footer>
-    <p>Data powered by AniList, MangaDex & Kitsu APIs</p>
-</footer>
+  <div class="soft-divider"></div>
 
-<!-- =========================
-    SCRIPT
-========================= -->
-<script type="module" src="./js/main.js"></script>
+  <!-- HIDDEN GEMS: new feature — high rating, low popularity -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">High rated · Under the radar</span>
+        <h2>💎 Hidden Gems</h2>
+      </div>
+      <span class="see-all">See all</span>
+    </div>
+    <div class="hcarousel">
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#3f5f3a; --c2:#172a14;">
+          <div class="trend-move" style="color:var(--gold);">★ 96%</div>
+          <div class="glyph">🌿</div>
+        </div>
+        <div class="trend-title">The Quiet Garden</div>
+        <div class="trend-genre">2.1k readers</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#5a3f6b; --c2:#221530;">
+          <div class="trend-move" style="color:var(--gold);">★ 94%</div>
+          <div class="glyph">🕯️</div>
+        </div>
+        <div class="trend-title">Candlewick Lane</div>
+        <div class="trend-genre">3.4k readers</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#3a4f6b; --c2:#141f30;">
+          <div class="trend-move" style="color:var(--gold);">★ 95%</div>
+          <div class="glyph">🧵</div>
+        </div>
+        <div class="trend-title">Thread & Bone</div>
+        <div class="trend-genre">1.8k readers</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-cover" style="--c1:#6b5a3a; --c2:#302214;">
+          <div class="trend-move" style="color:var(--gold);">★ 93%</div>
+          <div class="glyph">🪶</div>
+        </div>
+        <div class="trend-title">Featherlight</div>
+        <div class="trend-genre">2.6k readers</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="credit">DATA POWERED BY ANILIST · MANGADEX · KITSU</footer>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active"><span class="nav-icon">⌂</span>Home</div>
+    <div class="nav-item"><span class="nav-icon">🔮</span>Mixer</div>
+    <div class="nav-item"><span class="nav-icon">⌕</span>Search</div>
+    <div class="nav-item"><span class="nav-icon">♡</span>My List</div>
+    <div class="nav-item"><span class="nav-icon">☺</span>Profile</div>
+  </nav>
+
+</div>
+
+<script>
+  // Signature interaction: tapping mood chips blends the orb's gradient + banner text.
+  const moods = {
+    'Happy':   {color:'#f5b942', copy:'sunny arcs, comic relief, feel-good payoffs'},
+    'Sad':     {color:'#7fa4ff', copy:'quiet grief, bittersweet endings, catharsis'},
+    'Hype':    {color:'#ff8a5c', copy:'underdog wins, loud friend groups, high energy'},
+    'Chill':   {color:'#5eead4', copy:'slow mornings, low stakes, easy company'},
+    'Spooky':  {color:'#c084fc', copy:'dread, twisted reveals, things in the dark'},
+    'Romantic':{color:'#ff7fa8', copy:'longing glances, slow burn, aching devotion'}
+  };
+
+  const chips = document.querySelectorAll('.mood-chip');
+  const orb = document.getElementById('moodOrb');
+
+  function currentActive(){
+    return Array.from(chips).filter(c => c.classList.contains('active'))
+      .map(c => c.textContent.trim().replace(/^\S+\s/, ''));
+  }
+
+  function updateOrbAndBanner(){
+    const active = currentActive();
+    const banner = document.querySelector('.mix-banner');
+    const trendHeading = document.getElementById('trendHeading');
+    const picksHeading = document.getElementById('picksHeading');
+    const picksEyebrow = document.getElementById('picksEyebrow');
+    const whyEls = document.querySelectorAll('.why-text');
+
+    if(active.length === 0){
+      orb.style.setProperty('--mystic-a', '#a08bff');
+      orb.style.setProperty('--mystic-b', '#ff7fa8');
+      orb.style.setProperty('--mystic-c', '#6f5fc9');
+      orb.style.setProperty('--glow-a', 'rgba(160,139,255,0.35)');
+      banner.style.display = 'none';
+      trendHeading.textContent = '🔺 Trending Today';
+      picksHeading.textContent = "✨ Today's Top Picks";
+      picksEyebrow.textContent = "Editor's Selection · Updated Daily";
+      whyEls.forEach(el => el.innerHTML = el.dataset.default);
+      return;
+    }
+    banner.style.display = 'flex';
+    const c1 = moods[active[0]].color;
+    const c2 = active[1] ? moods[active[1]].color : moods[active[0]].color;
+    orb.style.setProperty('--mystic-a', c1);
+    orb.style.setProperty('--mystic-b', c2);
+    orb.style.setProperty('--mystic-c', c1);
+    orb.style.setProperty('--glow-a', c1 + '59');
+
+    const label = active.length === 2 ? `${active[0]} + ${active[1]}` : active[0];
+    trendHeading.textContent = `🔺 Trending in ${label}`;
+    picksHeading.textContent = '✨ Your Curated Picks';
+    picksEyebrow.textContent = `Blended for ${label}`;
+    whyEls.forEach(el => el.innerHTML = el.dataset.mood);
+
+    if(active.length === 1){
+      banner.innerHTML = `🔮 Feeling <b>${active[0]}</b> — ${moods[active[0]].copy}<span class="clear">Clear</span>`;
+    } else {
+      banner.innerHTML = `🔮 Mixing <b>${active[0]}</b> + <b>${active[1]}</b> — expect ${moods[active[1]].copy.split(',')[0]}, ${moods[active[0]].copy.split(',')[1] || moods[active[0]].copy}<span class="clear">Clear</span>`;
+    }
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const activeCount = document.querySelectorAll('.mood-chip.active').length;
+      if(chip.classList.contains('active')){
+        chip.classList.remove('active');
+      } else {
+        if(activeCount >= 2){
+          // bump the oldest active one out
+          const first = document.querySelector('.mood-chip.active');
+          if(first) first.classList.remove('active');
+        }
+        chip.classList.add('active');
+      }
+      updateOrbAndBanner();
+    });
+  });
+
+  document.querySelector('.mix-banner .clear').addEventListener('click', () => {
+    chips.forEach(c => c.classList.remove('active'));
+    updateOrbAndBanner();
+  });
+
+  updateOrbAndBanner();
+</script>
 
 </body>
 </html>
