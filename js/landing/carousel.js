@@ -2,7 +2,7 @@
 // landing/carousel.js
 // ==========================================
 // Makes a .hcarousel row drift slowly side to side on its own, instead of
-// sitting still until the user manually swipes it. Ping-pongs between the
+// sitting still until the user manually swipes it. Ping-pongs between the 
 // start and end of the row (scrolls right, then back left, on repeat)
 // rather than a one-way loop, so the motion reads as "gently drifting"
 // instead of "jumping back to the start."
