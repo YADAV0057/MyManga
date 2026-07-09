@@ -1,944 +1,403 @@
 /* ===================================================
    MangaMood - cards.css
-   Part 1
-   Grid • Cards • Cover • Favorite • Score
+   Horizontal "Top Picks" list cards
 =================================================== */
 
 /* ==========================
    RESULTS GRID
 ========================== */
-
 .grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(auto-fit,minmax(260px,1fr));
-
-    gap:26px;
-
+    display:flex;
+    flex-direction:column;
+    gap:20px;
     width:100%;
 }
 
 /* ==========================
-   MANGA CARD
+   MANGA CARD  (horizontal list card)
 ========================== */
-
 .manga-card{
-
     position:relative;
-
     display:flex;
-
-    flex-direction:column;
-
+    flex-direction:row;
+    align-items:stretch;
     overflow:hidden;
-
-    border-radius:20px;
-
-    background:
-        rgba(21,31,46,.72);
-
+    border-radius:18px;
+    background:rgba(255,255,255,.03);
     backdrop-filter:blur(14px);
-
     -webkit-backdrop-filter:blur(14px);
-
     border:1px solid rgba(255,255,255,.06);
-
-    box-shadow:
-        0 12px 28px rgba(0,0,0,.28);
-
-    transition:
-        transform .35s ease,
-        box-shadow .35s ease,
-        border-color .35s ease;
+    border-left:4px solid var(--gold);
+    box-shadow:0 12px 28px rgba(0,0,0,.28);
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    cursor:pointer; /* ADD THIS: Make the whole card show a pointer */
 }
-
 .manga-card:hover{
-
-    transform:
-        translateY(-8px);
-
-    border-color:
-        rgba(61,180,242,.35);
-
-    box-shadow:
-        0 18px 40px rgba(0,0,0,.45);
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px rgba(0,0,0,.4);
 }
+
+/* cycle accent colors so the list doesn't look monotone, echoing the
+   gold / red / green rank-card treatment in the design mockup */
+.grid .manga-card:nth-of-type(3n+2){ border-left-color:var(--red); }
+.grid .manga-card:nth-of-type(3n+3){ border-left-color:var(--green); }
 
 /* ==========================
    COVER IMAGE
 ========================== */
-
 .manga-cover-container{
-
     position:relative;
-
-    width:100%;
-
-    aspect-ratio:2/3;
-
+    flex-shrink:0;
+    width:110px;
+    align-self:stretch;
     overflow:hidden;
-
-    cursor:pointer;
+    background:rgba(255,255,255,.03);
 }
 
 .manga-cover{
-
     width:100%;
-
     height:100%;
-
     object-fit:cover;
-
-    transition:
-        transform .5s ease,
-        filter .5s ease;
+    transition:transform .5s ease, filter .5s ease;
 }
 
 .manga-card:hover .manga-cover{
-
-    transform:scale(1.08);
-
-    filter:brightness(1.08);
+    transform:scale(1.06);
+    filter:brightness(1.05);
 }
 
 /* ==========================
-   SCORE BADGE
+   SCORE BADGE (gold match %)
 ========================== */
-
 .score-badge{
-
     position:absolute;
-
-    top:12px;
-
-    right:12px;
-
+    top:10px;
+    left:10px;
     z-index:3;
-
-    padding:6px 12px;
-
+    display:flex;
+    align-items:center;
+    gap:3px;
+    padding:4px 9px;
     border-radius:30px;
-
-    background:
-        rgba(0,0,0,.65);
-
-    backdrop-filter:blur(6px);
-
-    color:var(--text-bright);
-
-    font-size:.85rem;
-
+    background:rgba(10,8,20,.8);
+    color:var(--gold);
+    font-size:.72rem;
     font-weight:700;
-
-    letter-spacing:.4px;
-
-    box-shadow:
-        0 6px 14px rgba(0,0,0,.35);
+    letter-spacing:.2px;
+    box-shadow:0 6px 14px rgba(0,0,0,.35);
 }
 
 /* ==========================
-   FAVORITE BUTTON
+   FAVORITE BUTTON — top-right of the whole card
 ========================== */
-
 .fav-btn{
-
     position:absolute;
-
-    top:12px;
-
-    left:12px;
-
+    top:14px;
+    right:14px;
     z-index:4;
-
-    width:40px;
-
-    height:40px;
-
+    width:32px;
+    height:32px;
     border:none;
-
     border-radius:50%;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     cursor:pointer;
-
-    font-size:1.15rem;
-
-    color:white;
-
-    background:
-        rgba(0,0,0,.55);
-
-    backdrop-filter:blur(8px);
-
-    transition:
-        transform .25s ease,
-        background .25s ease,
-        color .25s ease;
+    font-size:1.05rem;
+    color:var(--text-muted);
+    background:transparent;
+    transition:transform .25s ease, color .25s ease;
 }
 
-.fav-btn:hover{
-
-    transform:scale(1.15);
-
-    background:
-        rgba(0,0,0,.82);
-}
-
-.fav-btn.active{
-
-    color:#ff5b73;
-}
+.fav-btn:hover{ transform:scale(1.15); color:var(--pink); }
+.fav-btn.active{ color:var(--pink); }
 
 /* ==========================
    EMPTY FAVORITES
 ========================== */
-
 .empty-favorites{
-
     grid-column:1/-1;
-
     padding:80px 20px;
-
     text-align:center;
-
     color:var(--text-muted);
-
     font-size:1rem;
-
     line-height:1.8;
 }
 
 /* ===================================================
-   MangaMood - cards.css
-   Part 2
-   Read Overlay • Card Info • Synopsis
+   Part 2 — Read Overlay • Card Info • Synopsis
 =================================================== */
 
-
-/* ==========================
-   READ OVERLAY
-========================== */
-
 .read-options{
-
     position:absolute;
-
     inset:0;
-
     z-index:5;
-
     display:flex;
-
     flex-direction:column;
-
     justify-content:center;
-
     align-items:center;
-
     gap:14px;
-
     padding:20px;
-
-    background:
-        rgba(11,22,34,.88);
-
+    background:rgba(12,10,22,.92);
     backdrop-filter:blur(8px);
-
     opacity:0;
-
     pointer-events:none;
-
     transition:opacity .35s ease;
 }
-
-.read-options.active{
-
-    opacity:1;
-
-    pointer-events:auto;
-}
-
-
-/* ==========================
-   READ BUTTONS
-========================== */
+.read-options.active{ opacity:1; pointer-events:auto; }
 
 .read-link-btn{
-
     width:100%;
-
     max-width:220px;
-
     text-align:center;
-
     text-decoration:none;
-
     padding:12px 18px;
-
     border-radius:12px;
-
     font-size:.9rem;
-
     font-weight:600;
-
     color:var(--text-bright);
-
-    background:
-        rgba(255,255,255,.08);
-
+    background:rgba(255,255,255,.08);
     border:1px solid rgba(255,255,255,.10);
-
-    transition:
-        background .25s ease,
-        transform .25s ease,
-        border-color .25s ease;
+    transition:background .25s ease, transform .25s ease, border-color .25s ease;
 }
-
-.read-link-btn:hover{
-
-    background:var(--accent);
-
-    border-color:var(--accent);
-
-    transform:translateY(-2px);
-}
-
+.read-link-btn:hover{ background:var(--purple); border-color:var(--purple); transform:translateY(-2px); }
 
 /* ==========================
    CARD INFO
 ========================== */
-
 .manga-info{
-
     display:flex;
-
     flex-direction:column;
-
-    gap:12px;
-
-    padding:18px;
-
+    gap:8px;
+    padding:14px 40px 14px 16px;
     flex:1;
+    min-width:0;
 }
-
-
-/* ==========================
-   TITLE
-========================== */
 
 .manga-title{
-
     color:var(--text-title);
-
-    font-size:1.08rem;
-
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:1.05rem;
     font-weight:700;
-
-    line-height:1.45;
-
+    line-height:1.3;
     display:-webkit-box;
-
     -webkit-box-orient:vertical;
-
     -webkit-line-clamp:2;
-
     overflow:hidden;
 }
-
-
-/* ==========================
-   META
-========================== */
 
 .manga-meta{
-
-    color:var(--accent);
-
-    font-size:.8rem;
-
-    font-weight:600;
-
-    text-transform:uppercase;
-
-    letter-spacing:.6px;
+    color:var(--purple-bright);
+    font-size:.76rem;
+    font-weight:700;
+    letter-spacing:.3px;
 }
-
-
-/* ==========================
-   FACTS
-========================== */
 
 .manga-facts{
-
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
     flex-wrap:wrap;
-
-    gap:8px;
-
+    gap:6px;
     color:var(--text-muted);
-
-    font-size:.82rem;
-
+    font-size:.76rem;
     font-weight:500;
+    margin-top:2px;
 }
 
-
-/* ==========================
-   SYNOPSIS
-========================== */
+.manga-facts span:not(:last-child)::after{
+    content:"•";
+    margin-left:6px;
+    color:var(--text-muted);
+    opacity:.6;
+}
 
 .manga-synopsis{
-
     position:relative;
-
     color:var(--text-main);
-
-    font-size:.9rem;
-
-    line-height:1.65;
-
+    font-size:.82rem;
+    line-height:1.5;
     display:-webkit-box;
-
     -webkit-box-orient:vertical;
-
-    -webkit-line-clamp:4;
-
+    -webkit-line-clamp:2;
     overflow:hidden;
-
     cursor:pointer;
-
     transition:max-height .35s ease;
 }
 
 .manga-synopsis::after{
-
     content:"";
-
     position:absolute;
-
-    left:0;
-
-    right:0;
-
-    bottom:0;
-
-    height:2rem;
-
-    background:
-        linear-gradient(
-            transparent,
-            rgba(21,31,46,.95)
-        );
-
+    left:0; right:0; bottom:0;
+    height:1.4rem;
+    background:linear-gradient(transparent, rgba(23,20,42,.9));
     pointer-events:none;
 }
 
-.manga-synopsis.expanded{
+.manga-synopsis.expanded{ display:block; -webkit-line-clamp:unset; overflow:visible; }
+.manga-synopsis.expanded::after{ display:none; }
 
-    display:block;
-
-    -webkit-line-clamp:unset;
-
-    overflow:visible;
-}
-
-.manga-synopsis.expanded::after{
-
-    display:none;
-}
 /* ===================================================
-   MangaMood - cards.css
-   Part 3
-   Skeleton • Responsive • Animations
+   Part 3 — Skeleton • Responsive • Animations
 =================================================== */
 
-
-/* ==========================
-   SKELETON CARD
-========================== */
-
 .skeleton-card{
-
+    display:flex;
     overflow:hidden;
-
-    border-radius:20px;
-
-    background:
-        rgba(21,31,46,.65);
-
+    border-radius:18px;
+    background:rgba(255,255,255,.03);
     border:1px solid rgba(255,255,255,.05);
-
     backdrop-filter:blur(10px);
+    height:130px;
 }
 
 .skeleton-cover{
-
-    aspect-ratio:2/3;
-
-    width:100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.03) 20%,
-            rgba(255,255,255,.08) 50%,
-            rgba(255,255,255,.03) 80%
-        );
-
+    width:110px;
+    height:100%;
+    flex-shrink:0;
+    background:linear-gradient(90deg, rgba(255,255,255,.03) 20%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.03) 80%);
     background-size:400% 100%;
-
     animation:shimmer 1.4s infinite;
 }
 
-.skeleton-info{
-
-    padding:18px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
-}
+.skeleton-info{ padding:16px; display:flex; flex-direction:column; gap:12px; flex:1; }
 
 .skeleton-line{
-
     height:12px;
-
     border-radius:8px;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.03) 20%,
-            rgba(255,255,255,.08) 50%,
-            rgba(255,255,255,.03) 80%
-        );
-
+    background:linear-gradient(90deg, rgba(255,255,255,.03) 20%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.03) 80%);
     background-size:400% 100%;
-
     animation:shimmer 1.4s infinite;
 }
 
-.skeleton-title{
-
-    width:78%;
-
-    height:20px;
-}
-
-.skeleton-meta{
-
-    width:45%;
-
-    height:10px;
-}
-
-.skeleton-text{
-
-    width:100%;
-}
-
-.skeleton-text-short{
-
-    width:70%;
-}
-
-
-/* ==========================
-   SHIMMER
-========================== */
+.skeleton-title{ width:78%; height:18px; }
+.skeleton-meta{ width:45%; height:10px; }
+.skeleton-text{ width:100%; }
+.skeleton-text-short{ width:70%; }
 
 @keyframes shimmer{
-
-    0%{
-
-        background-position:100% 0;
-    }
-
-    100%{
-
-        background-position:-100% 0;
-    }
-
+    0%{ background-position:100% 0; }
+    100%{ background-position:-100% 0; }
 }
-
-
-/* ==========================
-   CARD ENTRANCE
-========================== */
 
 @keyframes cardFade{
-
-    from{
-
-        opacity:0;
-
-        transform:
-            translateY(18px)
-            scale(.98);
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
+    from{ opacity:0; transform:translateY(18px) scale(.98); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
 }
 
-.manga-card{
-
-    animation:
-        cardFade .45s ease;
-}
-
+.manga-card{ animation:cardFade .45s ease; }
 
 /* ==========================
    MOBILE
 ========================== */
-
 @media (max-width:768px){
 
-    .grid{
+    .manga-cover-container{ width:92px; }
 
-        grid-template-columns:1fr;
+    .manga-info{ padding:12px 38px 12px 14px; }
 
-        gap:22px;
-    }
+    .manga-title{ font-size:1rem; }
 
-    .manga-card{
+    .manga-synopsis{ display:none; }
 
-        max-width:360px;
-
-        width:100%;
-
-        margin:auto;
-    }
-
-    .manga-info{
-
-        padding:16px;
-    }
-
-    .manga-title{
-
-        font-size:1.15rem;
-    }
-
-    .manga-meta{
-
-        font-size:.82rem;
-    }
-
-    .manga-synopsis{
-
-        font-size:.92rem;
-
-        -webkit-line-clamp:5;
-    }
-
-    .read-link-btn{
-
-        max-width:240px;
-    }
-
-    .fav-btn{
-
-        width:42px;
-
-        height:42px;
-
-        font-size:1.2rem;
-    }
-
-    .score-badge{
-
-        font-size:.85rem;
-    }
-
+    .fav-btn{ top:10px; right:10px; }
 }
 
-
 /* ==========================
-   TABLET
+   TABLET / DESKTOP — two columns
 ========================== */
-
-@media (min-width:769px) and (max-width:1100px){
-
+@media (min-width:900px){
     .grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:20px;
     }
-
 }
-
-
-/* ==========================
-   LARGE DESKTOP
-========================== */
 
 @media (min-width:1400px){
-
-    .grid{
-
-        grid-template-columns:
-            repeat(auto-fit,minmax(280px,1fr));
-    }
-
+    .grid{ grid-template-columns:repeat(2,1fr); }
 }
 
-
 /* ===================================================
-   MangaMood - cards.css
-   Part 4
-   Match Score Badge • "Why?" Match Breakdown
+   Part 4 — Match Score Badge • "Why?" Match Breakdown
 =================================================== */
 
-/* ==========================
-   MATCH BADGE
-========================== */
-/* Reuses .score-badge's position slot conceptually, but this is the
-   RECOMMENDATION match %, not the raw API rating (globalScore already
-   shows via .score-badge elsewhere in the card). Placed as a pill inside
-   .manga-info so it doesn't collide with .score-badge/.fav-btn, which are
-   both absolutely positioned over the cover. */
-
 .match-badge{
-
     display:inline-flex;
-
     align-items:center;
-
     gap:6px;
-
     align-self:flex-start;
-
-    padding:4px 12px;
-
+    padding:3px 11px;
     border-radius:30px;
-
-    font-size:.78rem;
-
+    font-size:.72rem;
     font-weight:700;
-
-    letter-spacing:.3px;
-
+    letter-spacing:.2px;
     color:var(--text-bright);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(61,180,242,.35),
-            rgba(61,180,242,.12)
-        );
-
-    border:1px solid rgba(61,180,242,.4);
+    background:linear-gradient(135deg, rgba(139,124,246,.35), rgba(139,124,246,.12));
+    border:1px solid rgba(139,124,246,.4);
 }
 
 .match-badge.match-high{
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(72,199,142,.35),
-            rgba(72,199,142,.12)
-        );
-
-    border-color:rgba(72,199,142,.45);
+    background:linear-gradient(135deg, rgba(52,211,153,.35), rgba(52,211,153,.12));
+    border-color:rgba(52,211,153,.45);
+    color:var(--green);
 }
 
 .match-badge.match-low{
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.08),
-            rgba(255,255,255,.03)
-        );
-
+    background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
     border-color:rgba(255,255,255,.12);
-
     color:var(--text-muted);
 }
 
-/* ==========================
-   "WHY?" TRIGGER BUTTON
-========================== */
-/* NEW: match-reasons used to render as an always-visible block under every
-   card's facts row. That's now collapsed behind this button by default, so
-   compact cards are the norm and the full explanation is opt-in. */
-
 .why-btn{
-
     align-self:flex-start;
-
     border:none;
-
     cursor:pointer;
-
-    padding:4px 10px;
-
+    padding:3px 10px;
     border-radius:14px;
-
-    font-size:.76rem;
-
+    font-size:.72rem;
     font-weight:700;
-
-    color:var(--accent);
-
-    background:rgba(61,180,242,.1);
-
-    border:1px solid rgba(61,180,242,.25);
-
+    color:var(--purple-bright);
+    background:rgba(139,124,246,.1);
+    border:1px solid rgba(139,124,246,.25);
     transition:var(--transition);
 }
+.why-btn:hover{ background:rgba(139,124,246,.2); color:var(--text-bright); }
 
-.why-btn:hover{
-
-    background:rgba(61,180,242,.2);
-
-    color:var(--text-bright);
-}
-
-/* ==========================
-   WHY PANEL (collapsible)
-========================== */
-
-.why-panel{
-
-    display:none;
-
-    flex-direction:column;
-
-    gap:10px;
-}
-
-.why-panel.open{
-
-    display:flex;
-}
+.why-panel{ display:none; flex-direction:column; gap:10px; }
+.why-panel.open{ display:flex; }
 
 .why-panel-score{
-
     align-self:flex-start;
-
     padding:4px 12px;
-
     border-radius:20px;
-
     font-size:.8rem;
-
     font-weight:700;
-
-    color:#48c78e;
-
-    background:rgba(72,199,142,.1);
-
-    border:1px solid rgba(72,199,142,.3);
+    color:var(--green);
+    background:rgba(52,211,153,.1);
+    border:1px solid rgba(52,211,153,.3);
 }
 
-/* ==========================
-   MATCH REASONS
-========================== */
-
 .match-reasons{
-
     display:flex;
-
     flex-direction:column;
-
     gap:4px;
-
     padding:10px 12px;
-
     border-radius:12px;
-
     background:rgba(255,255,255,.03);
-
     border:1px solid rgba(255,255,255,.05);
 }
 
-.match-reason{
+.match-reason{ display:flex; align-items:center; gap:8px; font-size:.8rem; line-height:1.4; color:var(--text-muted); }
+.match-reason.is-match{ color:var(--text-main); }
+.match-reason-icon{ flex-shrink:0; font-weight:700; }
+.match-reason.is-match .match-reason-icon{ color:var(--green); }
+.match-reason:not(.is-match) .match-reason-icon{ color:var(--red); }
 
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    font-size:.8rem;
-
-    line-height:1.4;
-
-    color:var(--text-muted);
-}
-
-.match-reason.is-match{
-
-    color:var(--text-main);
-}
-
-.match-reason-icon{
-
-    flex-shrink:0;
-
-    font-weight:700;
-}
-
-.match-reason.is-match .match-reason-icon{
-
-    color:#48c78e;
-}
-
-.match-reason:not(.is-match) .match-reason-icon{
-
-    color:#ef4444;
-}
-
-/* ==========================
-   ACCESSIBILITY
-========================== */
-
-.fav-btn:focus,
-.read-link-btn:focus,
-.why-btn:focus{
-
-    outline:2px solid var(--accent);
-
+.fav-btn:focus, .read-link-btn:focus, .why-btn:focus{
+    outline:2px solid var(--purple);
     outline-offset:3px;
 }
 
-
-/* ==========================
-   REDUCED MOTION
-========================== */
-
 @media (prefers-reduced-motion:reduce){
-
-    *{
-
-        animation:none !important;
-
-        transition:none !important;
-
-        scroll-behavior:auto !important;
-    }
-
+    *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
 }

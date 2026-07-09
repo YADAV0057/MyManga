@@ -1,7 +1,7 @@
-// ==========================================
+// ========================================== 
 // APP ENTRY POINT (js/main.js)
 // ==========================================
-// CHANGED: setupParserTester() / #parser-input / #parser-output are gone —
+// CHANGED: setupParserTester() / #parser-input / #parser-output are gone — 
 // the standalone "Mood Intelligence Preview" box has been replaced by the
 // AI Search Intelligence panel (js/aiPanel.js), which is now driven by the
 // real search bar instead of a separate manual tester. setupParserTester.js
@@ -94,10 +94,23 @@ async function initializeApp() {
             const search = await import("./search.js"); // <--- Corrected Path
             window.triggerSearch = search.triggerSearch;
             window.triggerPresetSearch = search.triggerPresetSearch;
+            window.triggerQuickFilter = search.triggerQuickFilter;
             window.AppDiagnostics.log("Search", true, "Loaded");
         } catch (e) {
             console.error("DEBUG - Search Load Failure:", e);
             window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
+        }
+
+
+        //Load Slide-out Menu Drawer
+        try {
+            const menuDrawer = await import("./menuDrawer.js");
+            window.openMenu = menuDrawer.openMenu;
+            window.closeMenu = menuDrawer.closeMenu;
+            window.cycleTheme = menuDrawer.cycleTheme;
+            window.AppDiagnostics.log("MenuDrawer", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("MenuDrawer", false, e.message);
         }
 
         
@@ -169,11 +182,78 @@ async function initializeApp() {
             window.AppDiagnostics.log("Favorites", false, e.message);
         }
 
+        // Load Manga Detail Page (full-page cover/synopsis/read-links view,
+        // opened when any card — search grid, Trending Today, Hidden Gems —
+        // is tapped).
+        try {
+            const detail = await import("./mangaDetail.js");
+            window.openMangaDetail = detail.openMangaDetail;
+            window.closeMangaDetail = detail.closeMangaDetail;
+            window.AppDiagnostics.log("MangaDetail", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("MangaDetail", false, e.message);
+        }
+
+        // Load Today's Top Picks (Step 4 — auto-fills the homepage grid on
+        // load with a small rotating set of well-rated manga, instead of
+        // leaving #community-grid empty until the user searches. Loaded
+        // after MangaDetail/Renderer/Favorites above so the cards it
+        // renders are immediately clickable/favoritable.)
+        try {
+            const topPicks = await import("./topPicks.js");
+            await topPicks.loadTodaysTopPicks();
+            window.AppDiagnostics.log("TopPicks", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("TopPicks", false, e.message);
+        }
+
+        // Load Mood Mixer Page (Step 2 — dedicated 2-mood + genre + filter
+        // page, opened from the homepage Mood Mixer panel's "Open Full
+        // Mixer" button instead of mixing being limited to instant-search
+        // chip taps).
+        try {
+            const mixer = await import("./mixerPage.js");
+            window.openMixerPage = mixer.openMixerPage;
+            window.closeMixerPage = mixer.closeMixerPage;
+            window.AppDiagnostics.log("MixerPage", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("MixerPage", false, e.message);
+        }
+
+        // Load My List Page (Step 5 — dedicated saved-favorites + hourly
+        // rotating recommendations page, replacing the old in-place grid
+        // toggle entirely; see setupMyListButton below).
+        try {
+            const myList = await import("./myListPage.js");
+            window.openMyListPage = myList.openMyListPage;
+            window.closeMyListPage = myList.closeMyListPage;
+            window.AppDiagnostics.log("MyListPage", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("MyListPage", false, e.message);
+        }
+
+        // Load Search Results Page (Step 7 — dedicated paginated results
+        // page for typed searches, replacing the old behavior of rendering
+        // straight into the homepage's #community-grid; see setupSearchBar
+        // below. Uses window.triggerSearch internally, so it must load
+        // after Search above, though import order here doesn't actually
+        // matter since it's only called on a later user action.)
+        try {
+            const resultsPage = await import("./searchResultsPage.js");
+            window.openSearchResultsPage = resultsPage.openSearchResultsPage;
+            window.closeSearchResultsPage = resultsPage.closeSearchResultsPage;
+            window.AppDiagnostics.log("SearchResultsPage", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("SearchResultsPage", false, e.message);
+        }
+
         // Setup UI
         setupSearchBar();
-        setupViewToggle();
+        setupMyListButton();
         setupRefreshButton();
         setupMoodPanel();
+        setupMixerPageButton();
+        setupQuickFilters();
 
         window.AppDiagnostics.log("App", true, "Initialized");
 
@@ -188,78 +268,46 @@ async function initializeApp() {
 // ===============================
 // SEARCH BAR
 // ===============================
+// STEP 7d: was calling window.triggerSearch() directly, which rendered
+// straight into the homepage's #community-grid. Now opens the dedicated
+// Search Results page (js/searchResultsPage.js) instead — that module
+// calls triggerSearch() itself (page 1) once it's open, so the homepage
+// grid is never touched by a typed search anymore.
 function setupSearchBar() {
     const input = document.getElementById("manga-search-input");
     const btn = document.getElementById("search-submit-btn");
 
     if (!input || !btn) return;
 
-    btn.addEventListener("click", () => {
-        if (window.triggerSearch) {
-            window.triggerSearch(input.value.trim(), 1);
+    const submit = () => {
+        if (window.openSearchResultsPage) {
+            window.openSearchResultsPage(input.value.trim());
         }
-    });
+    };
+
+    btn.addEventListener("click", submit);
 
     input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            if (window.triggerSearch) {
-                window.triggerSearch(input.value.trim(), 1);
-            }
-        }
+        if (e.key === "Enter") submit();
     });
 }
 
 // ===============================
-// VIEW TOGGLE
+// MY LIST PAGE (♡ button)
 // ===============================
-// Single toggle button flips window.currentView between "discover"/
-// "favorites" and swaps its own label, instead of two buttons fighting
-// over an active-view class.
-function setupViewToggle() {
+// STEP 5/6: this used to swap #community-grid's contents in place and
+// relabel the button "🔍 Back to Discover" while toggled — that whole
+// in-place-toggle behavior has been removed entirely (Step 6). The ♡
+// button now just opens js/myListPage.js's overlay directly, same as the
+// detail page and Mood Mixer page do, with its own back button for
+// returning — there's no "discover" state to toggle back to anymore.
+function setupMyListButton() {
     const favBtn = document.getElementById("nav-favorites-btn");
-    const grid = document.getElementById("community-grid");
-    if (!favBtn || !grid) return;
-
-    window.currentView = "discover";
-    let discoverSnapshot = null; // last-rendered discover grid HTML, restored on "Back to Discover"
+    if (!favBtn) return;
 
     favBtn.addEventListener("click", () => {
-        const goingToFavorites = window.currentView !== "favorites";
-        window.currentView = goingToFavorites ? "favorites" : "discover";
-        favBtn.classList.toggle("active-view", goingToFavorites);
-        favBtn.textContent = goingToFavorites ? "🔍 Back to Discover" : "❤️ My List";
-
-        // BUGFIX: this used to only flip currentView/the label and never
-        // touched the grid at all. Clicking "My List" left whatever discover
-        // results were already on screen sitting there untouched (looked like
-        // nothing happened), and clicking it again just flipped the label
-        // back to "❤️ My List" with no visible change — read exactly as "the
-        // button does nothing except switch back to Discover."
-        if (goingToFavorites) {
-            discoverSnapshot = grid.innerHTML;
-            renderFavoritesView(grid);
-        } else if (discoverSnapshot !== null) {
-            grid.innerHTML = discoverSnapshot;
-        }
+        if (window.openMyListPage) window.openMyListPage();
     });
-}
-
-// Renders window.getAllFavorites() into the grid, same as a normal search
-// result set. Relies on favorites.js storing the full factSheet (renderer.js
-// hands toggleFavorite() the complete cached factSheet, not just an id), so
-// window.renderMangaCard can consume each entry directly.
-function renderFavoritesView(grid) {
-    const favorites = window.getAllFavorites ? window.getAllFavorites() : [];
-    grid.innerHTML = '';
-
-    if (!favorites || favorites.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Nothing saved yet — tap ♡ on any card to add it here.</p>';
-        return;
-    }
-
-    if (window.renderMangaCard) {
-        favorites.forEach(window.renderMangaCard);
-    }
 }
 
 // ===============================
@@ -271,6 +319,36 @@ function setupMoodPanel() {
 
     moreBtn.addEventListener("click", () => {
         if (window.toggleTags) window.toggleTags();
+    });
+}
+
+// ===============================
+// MOOD MIXER PAGE ("Open Full Mixer" button)
+// ===============================
+function setupMixerPageButton() {
+    const btn = document.getElementById("open-mixer-btn");
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+        if (window.openMixerPage) window.openMixerPage();
+    });
+}
+
+// ===============================
+// QUICK FILTER CHIPS (Finish tonight / Long binge / Completed)
+// ===============================
+// BUGFIX: these three chips had no click handler at all — tapping them did
+// nothing. Each now runs a real filtered browse via search.js's
+// triggerQuickFilter (chapter-count bounds or an AniList status filter).
+function setupQuickFilters() {
+    const chips = document.querySelectorAll('[data-quick-filter]');
+    if (!chips.length) return;
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const type = chip.dataset.quickFilter;
+            if (window.triggerQuickFilter) window.triggerQuickFilter(type);
+        });
     });
 }
 
@@ -303,3 +381,11 @@ if (document.readyState === "loading") {
 } else {
     initializeApp();
 }
+
+
+
+
+
+
+
+
