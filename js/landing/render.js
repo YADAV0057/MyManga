@@ -16,23 +16,32 @@
 // a real search for its title instead (same window.triggerSearch used by
 // the mood chips elsewhere), which is a better fit for a discovery row.
 //
-// Isolation note: the only external import is escapeHTML from ../utils.js
-// (a pure string helper — no DOM/app coupling). Everything else here is
-// local to landing/.
+// Isolation note: the only external imports are escapeHTML from ../utils.js
+// (a pure string helper — no DOM/app coupling) and cacheMangaForDetail from
+// ../mangaDetail.js (a plain in-memory cache keyed by id — no DOM coupling
+// either). Everything else here is local to landing/.
+//
+// Tapping a card now opens the full manga detail page (cover, synopsis,
+// stats, and read-links from external sites) instead of re-running a
+// title search — a better fit for a discovery row, and consistent with
+// how the main search-result grid's cards behave (see renderer.js).
 
 import { escapeHTML } from '../utils.js';
+import { cacheMangaForDetail } from '../mangaDetail.js';
 
 function renderCompactCard(item) {
+    cacheMangaForDetail(item);
+
     const hasScore = typeof item.globalScore === 'number';
     const safeTitle = escapeHTML(item.title || 'Untitled');
-    const titleForClick = String(item.title || '').replace(/'/g, "\\'");
+    const safeId = escapeHTML(String(item.id));
     const genresText = (item.rawGenres && item.rawGenres.length > 0)
         ? item.rawGenres.slice(0, 2).join(' • ')
         : 'Manga';
 
     return `
         <div class="mm-trend-card" title="${safeTitle}"
-             onclick="window.triggerSearch && window.triggerSearch('${titleForClick}', 1)">
+             onclick="window.openMangaDetail && window.openMangaDetail('${safeId}')">
             <div class="mm-trend-cover">
                 <img src="${item.coverUrl}" alt="${safeTitle}" class="mm-trend-img" loading="lazy">
                 ${hasScore ? `<div class="mm-trend-badge">⭐ ${item.globalScore}%</div>` : ''}
@@ -84,3 +93,5 @@ export function renderHiddenGemsRow(el, hiddenGems) {
         ? renderCards(hiddenGems)
         : renderEmptyState('No hidden gems surfaced yet — check back in a bit.');
 }
+
+
