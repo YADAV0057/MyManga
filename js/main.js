@@ -169,6 +169,18 @@ async function initializeApp() {
             window.AppDiagnostics.log("Favorites", false, e.message);
         }
 
+        // Load Manga Detail Page (full-page cover/synopsis/read-links view,
+        // opened when any card — search grid, Trending Today, Hidden Gems —
+        // is tapped).
+        try {
+            const detail = await import("./mangaDetail.js");
+            window.openMangaDetail = detail.openMangaDetail;
+            window.closeMangaDetail = detail.closeMangaDetail;
+            window.AppDiagnostics.log("MangaDetail", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("MangaDetail", false, e.message);
+        }
+
         // Setup UI
         setupSearchBar();
         setupViewToggle();
@@ -303,3 +315,5 @@ if (document.readyState === "loading") {
 } else {
     initializeApp();
 }
+
+
