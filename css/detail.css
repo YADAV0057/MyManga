@@ -1,0 +1,253 @@
+/* ==========================================
+   css/detail.css
+   ==========================================
+   Full-screen "manga detail" page shown when any card (search grid,
+   Trending Today, Hidden Gems) is tapped. Lives as a fixed overlay so it
+   never needs real routing — js/mangaDetail.js just toggles the .open
+   class. Scoped entirely to .detail-* classes so it can't collide with
+   the rest of the site's CSS.
+*/
+
+body.detail-open {
+    overflow: hidden;
+}
+
+.detail-view {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: var(--bg-dark, #0b1622);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+}
+
+.detail-view.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .28s ease, transform .28s ease;
+}
+
+.detail-scroll {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.detail-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 340px;
+    background-size: cover;
+    background-position: center 25%;
+    filter: blur(28px) brightness(0.55) saturate(1.2);
+    transform: scale(1.15);
+    opacity: .8;
+}
+
+.detail-back-btn {
+    position: sticky;
+    top: 16px;
+    left: 16px;
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    margin: 16px 0 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(10,14,28,.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.detail-cover-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 8px 20px 0;
+}
+
+.detail-cover {
+    width: 168px;
+    height: 236px;
+    object-fit: cover;
+    border-radius: var(--radius, 20px);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    box-shadow: var(--shadow, 0 12px 30px rgba(0,0,0,.28));
+}
+
+.detail-body {
+    position: relative;
+    padding: 20px 20px 48px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.detail-title {
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--text-title, #eef4ff);
+    text-align: center;
+    margin: 4px 0 12px;
+}
+
+.detail-genre-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.detail-genre-chip {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent, #3db4f2);
+    background: rgba(61,180,242,.12);
+    border: 1px solid rgba(61,180,242,.25);
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+
+.detail-stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border, rgba(255,255,255,.08));
+    border-bottom: 1px solid var(--border, rgba(255,255,255,.08));
+    margin-bottom: 18px;
+}
+
+.detail-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.detail-stat-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-title, #eef4ff);
+}
+
+.detail-stat-label {
+    font-size: 11px;
+    color: var(--text-muted, #6f7d8c);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.detail-bookmark-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 26px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent, #3db4f2);
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: var(--transition, .3s ease);
+}
+
+.detail-bookmark-btn:hover {
+    background: var(--accent-hover, #1184be);
+}
+
+.detail-bookmark-btn.active {
+    background: #ef4444;
+}
+
+.detail-section-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-title, #eef4ff);
+    margin: 0 0 10px;
+}
+
+.detail-synopsis {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-main, #a2afc0);
+    margin: 0 0 26px;
+}
+
+.detail-links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.detail-link-btn {
+    flex: 1 1 auto;
+    min-width: 140px;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: var(--transition, .3s ease);
+}
+
+.detail-link-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.detail-links-empty {
+    font-size: 13px;
+    color: var(--text-muted, #6f7d8c);
+}
+
+.detail-links-skeleton {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.skel-pill {
+    flex: 1 1 auto;
+    min-width: 140px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #1a2140 25%, #232b52 37%, #1a2140 63%);
+    background-size: 400% 100%;
+    animation: detail-skeleton-shimmer 1.4s ease infinite;
+}
+
+@keyframes detail-skeleton-shimmer {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-view,
+    .skel-pill {
+        transition: none;
+        animation: none;
+    }
+}
+
+@media (min-width: 520px) {
+    .detail-stats-row {
+        gap: 40px;
+    }
+}
