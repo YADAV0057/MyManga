@@ -1,5 +1,5 @@
 // ==========================================
-// MANGA DETAIL PAGE (js/mangaDetail.js)
+// MANGA DETAIL PAGE (js/mangaDetail.js) 
 // ==========================================
 // Full-page "detail view" shown when a manga card is tapped anywhere in the
 // app (search grid, Trending Today, Hidden Gems). Replaces the old inline
