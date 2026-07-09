@@ -7,6 +7,16 @@
 // extra genre chips, set status/length filters, and submit once to see a
 // full grid of matches — instead of every tap re-searching immediately.
 //
+// STEP 2 FIX (too-few-results bug): AniList's genre_in is an AND filter
+// across the whole array, not "any of these" — see PROJECT_BRIEF Section 1.
+// Approach (c) from the brief: only each selected mood's own genre pair
+// goes into the AniList genre_in query (so usually 2, rarely 4 genres).
+// Manually-picked genre chips are no longer sent to AniList at all — they're
+// used client-side after fetching, to sort results by how many of those
+// chips they overlap with (rawGenres/themes), rather than hard-filtering
+// them out. This avoids the 0-result problem for chip combos that don't
+// exist in the same title, while still surfacing better matches first.
+//
 // Isolation note: self-contained like landing/, using the same "fixed
 // overlay toggled by a .open class" pattern as mangaDetail.js (no router
 // needed). Only imports from outside this file: allMoods (moods.js, pure
@@ -89,7 +99,7 @@ function buildMarkup() {
             </section>
 
             <section class="mixer-section">
-                <h3>2. Add genres <span class="mixer-hint" id="mixer-genre-hint">Optional</span></h3>
+                <h3>2. Add genres <span class="mixer-hint" id="mixer-genre-hint">Boosts matches, optional</span></h3>
                 <div class="mixer-chip-grid">${genreChips}</div>
             </section>
 
@@ -153,7 +163,9 @@ function wireEvents(root) {
         });
     });
 
-    // Genre chips — unlimited multi-select.
+    // Genre chips — unlimited multi-select. STEP 2 FIX: these no longer feed
+    // the AniList genre_in filter directly — see collectMoodGenres/
+    // runMixerSearch below. They're used only for client-side overlap sort.
     root.querySelectorAll('.mixer-chip[data-genre]').forEach(chip => {
         chip.addEventListener('click', () => {
             const genre = chip.dataset.genre;
@@ -170,12 +182,34 @@ function wireEvents(root) {
     root.querySelector('#mixer-submit-btn')?.addEventListener('click', runMixerSearch);
 }
 
-function collectGenreQuery() {
+// STEP 2 FIX: genres pulled from the selected mood(s) only — this is what
+// actually gets sent to AniList as the hard genre_in filter. Usually 2
+// genres (1 mood), rarely 4 (2 moods), instead of potentially 5-8 when
+// manual genre chips were also being AND-ed in.
+function collectMoodGenres() {
     const fromMoods = selectedMoodIndexes.flatMap(i =>
         allMoods[i].query.split(',').map(s => s.trim())
     );
-    const fromGenres = Array.from(selectedGenres);
-    return Array.from(new Set([...fromMoods, ...fromGenres])).filter(Boolean);
+    return Array.from(new Set(fromMoods)).filter(Boolean);
+}
+
+// STEP 2 FIX: how many of the manually-picked genre chips a result overlaps
+// with, checked against both rawGenres and themes (some concepts like
+// "Psychological" show up as a theme rather than a genre on AniList).
+// Used only to sort, never to exclude — so an off-mix chip pick can't zero
+// out the results the way hard-AND-ing it into genre_in used to.
+function overlapScore(result, wantedGenres) {
+    if (wantedGenres.size === 0) return 0;
+    const have = new Set([
+        ...(result.rawGenres || []),
+        ...(result.themes || [])
+    ].map(g => String(g).toLowerCase()));
+
+    let score = 0;
+    wantedGenres.forEach(g => {
+        if (have.has(g.toLowerCase())) score++;
+    });
+    return score;
 }
 
 function chapterRangeFor(lengthValue) {
@@ -192,7 +226,10 @@ async function runMixerSearch() {
     const submitBtn = document.getElementById('mixer-submit-btn');
     if (!grid || !section) return;
 
-    const genres = collectGenreQuery();
+    // STEP 2 FIX: only mood genres go to AniList now. Manual genre chips
+    // are kept aside in `selectedGenres` for client-side overlap sorting
+    // after the fetch, instead of being AND-ed into the same genre_in call.
+    const moodGenres = collectMoodGenres();
     const statusValue = document.getElementById('mixer-status-select')?.value || '';
     const lengthValue = document.getElementById('mixer-length-select')?.value || '';
     const { min: minChapters, max: maxChapters } = chapterRangeFor(lengthValue);
@@ -205,7 +242,7 @@ async function runMixerSearch() {
     section.scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const plan = buildPlanFromGenreList(genres.length ? genres : ['']);
+        const plan = buildPlanFromGenreList(moodGenres.length ? moodGenres : ['']);
         if (statusValue) plan.filters.statusFilter = statusValue;
 
         const raw = await fetchFromAniListUnified(plan, 1, false, 30);
@@ -218,6 +255,16 @@ async function runMixerSearch() {
             if (typeof maxChapters === 'number' && ch > maxChapters) return false;
             return true;
         });
+
+        // STEP 2 FIX: sort by overlap with manually-picked genre chips
+        // (higher overlap first), stable otherwise — this is the "closer
+        // matches float up" behavior replacing the old hard AND-filter.
+        if (selectedGenres.size > 0) {
+            results = results
+                .map((r, i) => ({ r, i, score: overlapScore(r, selectedGenres) }))
+                .sort((a, b) => b.score - a.score || a.i - b.i)
+                .map(x => x.r);
+        }
 
         grid.innerHTML = '';
         if (results.length === 0) {
