@@ -24,6 +24,7 @@
 
 import { fetchLandingFeeds } from './fetch.js';
 import { showSkeletons, renderTrendingRow, renderHiddenGemsRow } from './render.js';
+import { autoScrollCarousel } from './carousel.js';
 
 const STYLE_ID = 'landing-styles';
 const STYLE_HREF = new URL('./styles.css', import.meta.url).href;
@@ -73,6 +74,13 @@ async function init() {
 
         renderTrendingRow(trendingEl, trending);
         renderHiddenGemsRow(gemsEl, hiddenGems);
+
+        // Rows start empty (skeletons) at layout time, so wait a tick for
+        // real cards to be in the DOM before measuring scrollWidth.
+        requestAnimationFrame(() => {
+            autoScrollCarousel(trendingEl);
+            autoScrollCarousel(gemsEl);
+        });
     } catch (e) {
         // Contained failure: the rest of the page (search, mood mixer, etc.)
         // must never break because this feature had a bad day.
@@ -86,4 +94,6 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+
 
