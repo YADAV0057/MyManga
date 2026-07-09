@@ -48,6 +48,38 @@ export async function triggerPresetSearch(genreQuery, page = 1) {
     return runSearch(genreQuery, page, buildPresetIntent(genreQuery, plan), plan);
 }
 
+// STEP 3: powers the "Finish tonight / Long binge / Completed" quick filter
+// chips, which previously had no click handler at all. These aren't genre
+// searches — they're a plain popularity browse (buildPlanFromGenreList with
+// no genres) with either a chapter-count bound or an AniList status filter
+// layered on top. rawQuery is left blank so this reuses the exact same
+// runSearch pipeline (grid render, loading bar, refresh button) without
+// triggering the AI Search Intelligence panel, which is reserved for real
+// typed/mood queries.
+const QUICK_FILTER_LABELS = {
+    'finish-tonight': '🔁 Finish Tonight',
+    'long-binge': '📚 Long Binge',
+    'completed': '✅ Completed Series'
+};
+
+export async function triggerQuickFilter(type) {
+    const plan = buildPlanFromGenreList([]);
+
+    if (type === 'finish-tonight') {
+        plan.filters.maxChapters = 40;
+    } else if (type === 'long-binge') {
+        plan.filters.minChapters = 200;
+    } else if (type === 'completed') {
+        plan.filters.statusFilter = 'FINISHED';
+    }
+
+    const title = document.getElementById('results-title');
+    if (title) title.textContent = `✨ ${QUICK_FILTER_LABELS[type] || 'Results'}`;
+
+    const intent = buildPresetIntent('', plan);
+    return runSearch('', 1, intent, plan);
+}
+
 export async function triggerSearch(rawQuery, page = 1) {
     if (rawQuery === undefined || rawQuery === null) return;
     const intent = buildIntent(rawQuery);
@@ -155,10 +187,16 @@ async function runSearch(rawQuery, page, intent, plan) {
             }
         }
 
-        if (plan.filters?.maxChapters) {
+        // STEP 3: was maxChapters-only (used by the NLU parser's "short"
+        // detection). Quick filter chips need a minChapters side too (for
+        // "Long binge"), so this now checks both bounds in one pass.
+        if (plan.filters?.maxChapters || plan.filters?.minChapters) {
             finalResults = (finalResults || []).filter(m => {
                 const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
-                return !ch || isNaN(ch) || ch <= plan.filters.maxChapters;
+                if (ch === undefined || ch === null || isNaN(ch)) return true; // unknown count — don't hide it
+                if (plan.filters.maxChapters && ch > plan.filters.maxChapters) return false;
+                if (plan.filters.minChapters && ch < plan.filters.minChapters) return false;
+                return true;
             });
         }
 
@@ -236,4 +274,7 @@ export function renderSkeletonLoaders(count = 15) {
 // and DOM wiring all live there. See landing/README.md for how to
 // diagnose or disable this feature without touching anything else here.
 import './landing/index.js';
+
+
+
 
