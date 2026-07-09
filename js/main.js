@@ -220,6 +220,21 @@ async function initializeApp() {
             window.AppDiagnostics.log("MyListPage", false, e.message);
         }
 
+        // Load Search Results Page (Step 7 — dedicated paginated results
+        // page for typed searches, replacing the old behavior of rendering
+        // straight into the homepage's #community-grid; see setupSearchBar
+        // below. Uses window.triggerSearch internally, so it must load
+        // after Search above, though import order here doesn't actually
+        // matter since it's only called on a later user action.)
+        try {
+            const resultsPage = await import("./searchResultsPage.js");
+            window.openSearchResultsPage = resultsPage.openSearchResultsPage;
+            window.closeSearchResultsPage = resultsPage.closeSearchResultsPage;
+            window.AppDiagnostics.log("SearchResultsPage", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("SearchResultsPage", false, e.message);
+        }
+
         // Setup UI
         setupSearchBar();
         setupMyListButton();
@@ -241,24 +256,27 @@ async function initializeApp() {
 // ===============================
 // SEARCH BAR
 // ===============================
+// STEP 7d: was calling window.triggerSearch() directly, which rendered
+// straight into the homepage's #community-grid. Now opens the dedicated
+// Search Results page (js/searchResultsPage.js) instead — that module
+// calls triggerSearch() itself (page 1) once it's open, so the homepage
+// grid is never touched by a typed search anymore.
 function setupSearchBar() {
     const input = document.getElementById("manga-search-input");
     const btn = document.getElementById("search-submit-btn");
 
     if (!input || !btn) return;
 
-    btn.addEventListener("click", () => {
-        if (window.triggerSearch) {
-            window.triggerSearch(input.value.trim(), 1);
+    const submit = () => {
+        if (window.openSearchResultsPage) {
+            window.openSearchResultsPage(input.value.trim());
         }
-    });
+    };
+
+    btn.addEventListener("click", submit);
 
     input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            if (window.triggerSearch) {
-                window.triggerSearch(input.value.trim(), 1);
-            }
-        }
+        if (e.key === "Enter") submit();
     });
 }
 
@@ -351,6 +369,9 @@ if (document.readyState === "loading") {
 } else {
     initializeApp();
 }
+
+
+
 
 
 
