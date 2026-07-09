@@ -228,3 +228,12 @@ export function renderSkeletonLoaders(count = 15) {
     }
     grid.innerHTML = skeletonHTML;
 }
+
+// ==========================================
+// LANDING PAGE (Trending Today + Hidden Gems)
+// ==========================================
+// Fully isolated in ./landing/ — fetching, caching, rendering, styling,
+// and DOM wiring all live there. See landing/README.md for how to
+// diagnose or disable this feature without touching anything else here.
+import './landing/index.js';
+
