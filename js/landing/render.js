@@ -4,23 +4,44 @@
 // DOM layer for the landing page's always-visible rows. Takes normalized
 // manga data (from fetch.js) and renders it into the two containers.
 //
-// Isolation note: the only external import is getMangaCardHTML from
-// ../renderer.js (the shared card template, exposed as a pure
-// string-returning function). Everything else here is local to landing/.
-// If a card renders wrong, the bug is either here or in ../renderer.js —
-// never in fetch.js or search.js.
+// VISUAL NOTE: earlier versions of this file reused ../renderer.js's full
+// search-result card (getMangaCardHTML) inside the 118px carousel slot.
+// That card's design — cover + title + genres + facts row + synopsis +
+// favorite button — is built for a ~260px grid card, so squeezed into a
+// carousel it rendered cramped and cut off. These rows are meant to look
+// like the compact "Trending Today" cards in the design mockup (image,
+// score badge, title, one-line genre), so this file now builds that
+// simpler card directly from the normalized data instead. No favorite
+// button or read-options overlay here by design — tapping a card triggers
+// a real search for its title instead (same window.triggerSearch used by
+// the mood chips elsewhere), which is a better fit for a discovery row.
+//
+// Isolation note: the only external import is escapeHTML from ../utils.js
+// (a pure string helper — no DOM/app coupling). Everything else here is
+// local to landing/.
 
-import { getMangaCardHTML } from '../renderer.js';
+import { escapeHTML } from '../utils.js';
 
-// STEP 1 FINDING (verified against the real renderer.js): renderMangaCard's
-// signature was NOT `renderMangaCard(unified) -> HTML string` — it appended
-// straight into a real #community-grid and returned undefined. Fixed at the
-// source: renderer.js now also exports getMangaCardHTML(factSheet), a pure
-// function that returns the same markup as a string (and still caches the
-// factSheet for the favorite/why-panel handlers) without touching the DOM.
-// renderMangaCard() itself is now a thin wrapper around it. That keeps
-// landing cards byte-for-byte identical to search-results cards without
-// duplicating the template here.
+function renderCompactCard(item) {
+    const hasScore = typeof item.globalScore === 'number';
+    const safeTitle = escapeHTML(item.title || 'Untitled');
+    const titleForClick = String(item.title || '').replace(/'/g, "\\'");
+    const genresText = (item.rawGenres && item.rawGenres.length > 0)
+        ? item.rawGenres.slice(0, 2).join(' • ')
+        : 'Manga';
+
+    return `
+        <div class="mm-trend-card" title="${safeTitle}"
+             onclick="window.triggerSearch && window.triggerSearch('${titleForClick}', 1)">
+            <div class="mm-trend-cover">
+                <img src="${item.coverUrl}" alt="${safeTitle}" class="mm-trend-img" loading="lazy">
+                ${hasScore ? `<div class="mm-trend-badge">⭐ ${item.globalScore}%</div>` : ''}
+            </div>
+            <div class="mm-trend-title">${safeTitle}</div>
+            <div class="mm-trend-genre">${escapeHTML(genresText)}</div>
+        </div>
+    `;
+}
 
 function renderSkeletonRow(count) {
     let html = '';
@@ -42,7 +63,7 @@ function renderEmptyState(message) {
 }
 
 function renderCards(items) {
-    return items.map(unified => `<div class="carousel-card-wrap">${getMangaCardHTML(unified)}</div>`).join('');
+    return items.map(item => `<div class="carousel-card-wrap">${renderCompactCard(item)}</div>`).join('');
 }
 
 export function showSkeletons(trendingEl, gemsEl, count = 6) {
