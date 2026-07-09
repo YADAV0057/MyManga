@@ -24,10 +24,11 @@
     TOP BAR
 ========================= -->
 <nav class="topbar">
-    <span class="topbar-brand">MangaMood 🔮</span>
+    <span class="topbar-brand">MangaMood</span>
 
     <div class="view-toggle">
-        <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
+        <button id="nav-favorites-btn" class="tab-btn" title="My List">♡</button>
+        <button id="more-btn-icon" class="tab-btn" title="Show all moods" onclick="window.toggleTags && window.toggleTags()">☰</button>
     </div>
 </nav>
 
@@ -36,14 +37,20 @@
 ========================= -->
 <header>
 
-    <h2 class="tagline">What are you in the mood for today?</h2>
+    <div class="mood-orb-wrap">
+        <div class="mood-orb"></div>
+        <div class="mood-orb-stem"></div>
+    </div>
+
+    <h2 class="tagline">What's the vibe today?</h2>
+    <p class="tagline-sub">Stack up to 2 moods and we'll blend your match</p>
 
     <div class="search-container">
 
         <input
             id="manga-search-input"
             type="text"
-            placeholder="e.g. I want something that will make me cry..."
+            placeholder="e.g. something slow-burn and heartbreaking..."
         >
 
         <button id="search-submit-btn" class="vibe-btn full-width">
@@ -90,6 +97,11 @@
     <!-- MOOD TAGS -->
     <section class="vibe-panel-container">
 
+        <div class="mixer-heading">
+            <h3>Mood Mixer</h3>
+            <span>Tap up to 2</span>
+        </div>
+
         <div id="rotating-vibes" class="vibe-panel"></div>
 
         <button class="vibe-btn" id="more-btn" style="margin-top:20px;">
@@ -105,12 +117,23 @@
          stylesheet, and renders both carousels here. -->
     <div data-landing-mount></div>
 
+    <!-- Quick filter chips (decorative, matches design mockup) -->
+    <div class="quick-filters">
+        <button class="qf-chip">🔁 Finish tonight</button>
+        <button class="qf-chip">📚 Long binge</button>
+        <button class="qf-chip qf-done">✅ Completed</button>
+    </div>
+
     <!-- RESULTS -->
     <section id="results-area">
 
+        <div class="section-eyebrow">
+            <span class="eyebrow-label">Editor's selection · Updated daily</span>
+        </div>
+
         <div class="results-header">
 
-            <h2 id="results-title">✨ Your Curated Picks</h2>
+            <h2 id="results-title">✨ Today's Top Picks</h2>
 
             <button id="refresh-btn" class="vibe-btn refresh-btn" style="display:none;">
                 🎲 Reroll
@@ -128,8 +151,29 @@
     FOOTER
 ========================= -->
 <footer>
-    <p>Data powered by AniList, MangaDex & Kitsu APIs</p>
+    <p>Data powered by AniList · MangaDex · Kitsu</p>
 </footer>
+
+<!-- =========================
+    BOTTOM NAV (mobile-style)
+========================= -->
+<nav class="bottom-nav">
+    <button class="bn-item active" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <span class="bn-icon">🏠</span>Home
+    </button>
+    <button class="bn-item" onclick="document.getElementById('rotating-vibes')?.scrollIntoView({behavior:'smooth'})">
+        <span class="bn-icon">🔮</span>Mixer
+    </button>
+    <button class="bn-item" onclick="document.getElementById('manga-search-input')?.focus()">
+        <span class="bn-icon">🔍</span>Search
+    </button>
+    <button class="bn-item" onclick="document.getElementById('nav-favorites-btn')?.click()">
+        <span class="bn-icon">♡</span>My List
+    </button>
+    <button class="bn-item">
+        <span class="bn-icon">😊</span>Profile
+    </button>
+</nav>
 
 <!-- =========================
     SCRIPT
@@ -138,5 +182,8 @@
 
 </body>
 </html>
+
+
+
 
 
