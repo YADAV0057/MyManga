@@ -15,20 +15,26 @@ body.mixer-open {
     position: fixed;
     inset: 0;
     z-index: 998;
-    background: var(--bg-dark, #0c0a16);
+    background: var(--mixer-blend, var(--bg-dark, #0c0a16));
+    background-size: 200% 200%;
+    animation: mixerBgDrift 18s ease-in-out infinite;
     opacity: 0;
     visibility: hidden;
     transform: translateY(24px);
-    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s, background 1s ease;
 }
 
 .mixer-view.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-    transition: opacity .28s ease, transform .28s ease;
+    transition: opacity .28s ease, transform .28s ease, background 1s ease;
 }
 
+@keyframes mixerBgDrift {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+}
 .mixer-scroll {
     position: relative;
     height: 100%;
@@ -155,9 +161,21 @@ body.mixer-open {
 
 .mixer-chip.selected {
     background: linear-gradient(135deg, var(--purple-bright), var(--purple), var(--pink));
+    background-size: 200% 200%;
     color: #161225;
     border-color: transparent;
-    box-shadow: 0 10px 22px rgba(139,124,246,.4);
+    animation: mixerChipShift 6s ease infinite, mixerChipGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes mixerChipShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes mixerChipGlow {
+    0%, 100% { box-shadow: 0 10px 22px rgba(139,124,246,.4); }
+    50% { box-shadow: 0 10px 30px rgba(236,72,153,.55); }
 }
 
 .mixer-filter-row {
@@ -195,11 +213,7 @@ body.mixer-open {
 }
 
 .mixer-footer {
-    position: sticky;
-    bottom: 0;
-    padding: 16px 0 10px;
-    background: linear-gradient(to top, var(--bg-dark, #0c0a16) 65%, transparent);
-    z-index: 4;
+    padding: 4px 0 16px;
 }
 
 .mixer-submit-btn {
