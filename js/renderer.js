@@ -184,6 +184,32 @@ function renderMatchBreakdown(factSheet) {
 // but never touches the DOM itself. Exported so other rendering contexts
 // (e.g. landing/render.js's carousel rows) can produce byte-identical cards
 // without needing a real #community-grid to append into.
+
+function renderReadingBadge(chapters) {
+    // If chapters is not a number or N/A, we show generic info
+    if (chapters === 'N/A' || !chapters) return '📚 Series';
+    
+    // Extract number
+    const count = parseInt(chapters);
+    if (isNaN(count)) return '📚 Series';
+    
+    // Logic for "Quick read"
+    const label = count < 50 ? '⚡ Quick read' : `📚 ${count} Chp.`;
+    return `<span class="reading-badge">${label}</span>`;
+}
+
+function renderMoodTags(themes) {
+    if (!themes || themes.length === 0) return '';
+    return `
+        <div class="mood-tag-row">
+            ${themes.slice(0, 3).map(t => `<span class="mood-tag">${escapeHTML(t)}</span>`).join('')}
+        </div>
+    `;
+}
+
+
+
+
 export function getMangaCardHTML(factSheet) {
     factSheetCache[String(factSheet.id)] = factSheet;
     cacheMangaForDetail(factSheet);
@@ -197,26 +223,24 @@ export function getMangaCardHTML(factSheet) {
 
     return `
         <div class="manga-card" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
-                        <div class="manga-cover-container">
+            <div class="manga-cover-container">
                 <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
-                
-                <!-- Favorite button added back -->
                 <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                         onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
-                        title="${saved ? 'Remove from My List' : 'Save to My List'}">
-                    ${saved ? '♥' : '♡'}
-                </button>
-
-                <!-- Rating badge moved -->
+                        title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
                 ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
             </div>
-            
             <div class="manga-info">
                 <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
                 ${renderMatchBadge(factSheet)}
+                
+                <!-- NEW: Mood Tags added below title/match -->
+                ${renderMoodTags(factSheet.themes || [])}
+
                 <p class="manga-meta">${escapeHTML(genresText)}</p>
                 <div class="manga-facts">
-                    <span>📚 ${escapeHTML(factSheet.chapters || 'N/A')}</span>
+                    <!-- NEW: Reading Badge -->
+                    ${renderReadingBadge(factSheet.chapters)}
                     <span>${statusIcon} ${escapeHTML(statusText)}</span>
                 </div>
                 ${renderMatchBreakdown(factSheet)}
