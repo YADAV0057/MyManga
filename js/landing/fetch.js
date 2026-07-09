@@ -23,27 +23,62 @@ function todayCacheKey(name) {
 }
 
 async function readCache(key) {
+    // Tier 0: Instantaneous local browser cache check
+    try {
+        const localData = localStorage.getItem(`local_${key}`);
+        if (localData) {
+            const parsed = JSON.parse(localData);
+            if (Date.now() - parsed.cachedAt < CACHE_TTL_MS) {
+                console.log(`[Cache Hit] Tier 0 LocalStorage for: ${key}`);
+                return parsed.results;
+            }
+        }
+    } catch (e) {
+        console.warn('[landing/fetch.js] LocalStorage read failed:', e.message);
+    }
+
+    // Tier 1: Fallback to Firestore cloud cache if local missed or expired
     if (!db) return null;
     try {
         const snap = await getDoc(doc(db, 'cache', key));
         if (!snap.exists()) return null;
         const data = snap.data();
         if (Date.now() - data.cachedAt > CACHE_TTL_MS) return null;
+        
+        // Backfill into LocalStorage so the next load is immediate
+        try {
+            localStorage.setItem(`local_${key}`, JSON.stringify({ results: data.results, cachedAt: data.cachedAt }));
+        } catch (localErr) { 
+            /* Silently catch if storage is full or in private browsing mode */ 
+        }
+
+        console.log(`[Cache Hit] Tier 1 Firestore for: ${key}`);
         return data.results;
     } catch (e) {
-        console.warn('[landing/fetch.js] cache read failed:', e.message);
+        console.warn('[landing/fetch.js] Firestore cache read failed:', e.message);
         return null;
     }
 }
 
 async function writeCache(key, results) {
+    const now = Date.now();
+    
+    // Save to LocalStorage instantly
+    try {
+        localStorage.setItem(`local_${key}`, JSON.stringify({ results, cachedAt: now }));
+    } catch (e) {
+        console.warn('[landing/fetch.js] LocalStorage write failed:', e.message);
+    }
+
+    // Mirror to Firestore cloud cache asynchronously
     if (!db) return;
     try {
-        await setDoc(doc(db, 'cache', key), { results, cachedAt: Date.now() });
+        await setDoc(doc(db, 'cache', key), { results, cachedAt: now });
     } catch (e) {
-        console.warn('[landing/fetch.js] cache write failed:', e.message);
+        console.warn('[landing/fetch.js] Firestore cache write failed:', e.message);
     }
 }
+
 
 async function queryAniList(query, variables, timeoutMs = 4000) {
     const controller = new AbortController();
