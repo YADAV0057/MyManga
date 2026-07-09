@@ -337,6 +337,7 @@ function renderSkeletons(count) {
 
 export function openMixerPage() {
     const view = ensureViewEl();
+    updateMixerBlend();   // ← add this line
     void view.offsetWidth; // force reflow so the transition plays
     view.classList.add('open');
     document.body.classList.add('mixer-open');
