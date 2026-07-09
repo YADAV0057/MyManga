@@ -1,147 +1,146 @@
 /* ==========================================
    landing/styles.css
-   ==========================================
-   Scoped styling for the landing page's always-visible rows
-   (Trending Today + Hidden Gems carousels).
+   Trending Today + Hidden Gems rows
+   ========================================== */
 
-   Isolation note: class names below are prefixed or specific enough
-   (.landing-row, .carousel-card-wrap, .row-empty-state,
-   .skeleton-card--carousel) that they shouldn't collide with the rest
-   of the site's CSS. If a landing-row style looks wrong, this is the
-   only file to check — nothing outside landing/ should define these
-   classes elsewhere. If it does, that's a naming collision to fix here
-   first (rename), not a reason to edit the other stylesheet.
-*/
+.landing-row{ padding:14px 0 4px; }
 
-.landing-row {
-    padding: 20px 0 4px;
+.landing-row h2{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:700;
+    font-size:19px;
+    margin:0 0 14px;
+    padding:0 2px;
+    color:var(--text-title,#f5f3ff);
 }
 
-.landing-row h2 {
-    font-family: "Inter", system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    margin: 0 0 14px;
-    padding: 0 20px;
-    color: var(--text-title, #eef4ff);
+.hcarousel{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding:2px 2px 10px;
+    scrollbar-width:none;
+}
+.hcarousel::-webkit-scrollbar{ display:none; }
+
+.carousel-card-wrap{
+    flex-shrink:0;
+    width:128px;
+    position:relative;
 }
 
-.hcarousel {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 0 20px 6px;
-    scrollbar-width: none;
-}
-.hcarousel::-webkit-scrollbar {
-    display: none;
-}
-
-.carousel-card-wrap {
-    flex-shrink: 0;
-    width: 118px;
+/* Rank badges for Trending Today only, generated purely with CSS counters
+   so no data model change was needed. */
+#trending-today-row{ counter-reset:trendrank; }
+#trending-today-row .carousel-card-wrap{ counter-increment:trendrank; }
+#trending-today-row .carousel-card-wrap::before{
+    content:counter(trendrank);
+    position:absolute;
+    top:8px;
+    left:8px;
+    z-index:4;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:rgba(10,8,20,.85);
+    color:var(--text-title,#fff);
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(255,255,255,.12);
 }
 
 /* ==========================
    COMPACT TREND CARD
-   ==========================
-   Matches the design mockup's .trend-card look (compact image + score
-   badge + title + genre line) rather than reusing the full search-result
-   card, which is sized for a ~260px grid slot, not a 118px carousel.
-*/
-.mm-trend-card {
-    width: 118px;
-    cursor: pointer;
+========================== */
+.mm-trend-card{ width:128px; cursor:pointer; }
+
+.mm-trend-cover{
+    position:relative;
+    width:128px;
+    height:150px;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--border,rgba(255,255,255,.08));
+    background:linear-gradient(150deg,#4c3a8a,#2a2050);
+    transition:var(--transition,.3s ease);
 }
 
-.mm-trend-cover {
-    position: relative;
-    width: 118px;
-    height: 158px;
-    border-radius: var(--radius, 16px);
-    overflow: hidden;
-    border: 1px solid var(--border, rgba(255,255,255,.08));
-    background: var(--card-bg, #151f2e);
-    transition: var(--transition, .3s ease);
+/* Cycle a few gradient hues across cards so the row reads like the
+   colourful cover-art placeholders in the design mockup */
+.carousel-card-wrap:nth-child(3n+2) .mm-trend-cover{ background:linear-gradient(150deg,#8a4a3a,#502a20); }
+.carousel-card-wrap:nth-child(3n+3) .mm-trend-cover{ background:linear-gradient(150deg,#2f7a72,#183f3b); }
+.carousel-card-wrap:nth-child(4n+4) .mm-trend-cover{ background:linear-gradient(150deg,#3a5a8a,#1c2c50); }
+
+.mm-trend-card:hover .mm-trend-cover{
+    transform:translateY(-4px);
+    border-color:var(--purple,#8b7cf6);
 }
 
-.mm-trend-card:hover .mm-trend-cover {
-    transform: translateY(-4px);
-    border-color: var(--accent, #3db4f2);
+.mm-trend-img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.mm-trend-badge{
+    position:absolute;
+    top:8px;
+    right:8px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--gold,#f4c542);
+    background:rgba(10,8,20,.75);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+    padding:3px 8px;
+    border-radius:100px;
 }
 
-.mm-trend-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.mm-trend-title{
+    font-size:12.5px;
+    font-weight:700;
+    margin-top:8px;
+    line-height:1.3;
+    color:var(--text-title,#f5f3ff);
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    overflow:hidden;
 }
 
-.mm-trend-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-bright, #fff);
-    background: rgba(10,14,28,.75);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    padding: 3px 7px;
-    border-radius: 100px;
+.mm-trend-genre{
+    font-size:10.5px;
+    color:var(--text-muted,#786f95);
+    margin-top:2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.mm-trend-title {
-    font-size: 12.5px;
-    font-weight: 600;
-    margin-top: 8px;
-    line-height: 1.3;
-    color: var(--text-title, #eef4ff);
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
+.row-empty-state{
+    padding:20px;
+    color:var(--text-muted,#786f95);
+    font-size:13px;
+    text-align:center;
+    width:100%;
 }
 
-.mm-trend-genre {
-    font-size: 10.5px;
-    color: var(--text-muted, #6f7d8c);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.skeleton-card--carousel{
+    flex-shrink:0;
+    width:128px;
+    height:150px;
+    border-radius:16px;
+    background:linear-gradient(90deg,#1d1836 25%,#282256 37%,#1d1836 63%);
+    background-size:400% 100%;
+    animation:landing-skeleton-shimmer 1.4s ease infinite;
 }
 
-.row-empty-state {
-    padding: 20px;
-    color: var(--text-faint, #8a93b2);
-    font-size: 13px;
-    text-align: center;
-    width: 100%;
+.skeleton-card--carousel .skeleton-cover{ width:100%; height:100%; }
+
+@keyframes landing-skeleton-shimmer{
+    0%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
 }
 
-.skeleton-card--carousel {
-    flex-shrink: 0;
-    width: 118px;
-    height: 158px;
-    border-radius: 16px;
-    background: linear-gradient(90deg, #1a2140 25%, #232b52 37%, #1a2140 63%);
-    background-size: 400% 100%;
-    animation: landing-skeleton-shimmer 1.4s ease infinite;
-}
-
-.skeleton-card--carousel .skeleton-cover {
-    width: 100%;
-    height: 100%;
-}
-
-@keyframes landing-skeleton-shimmer {
-    0% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .skeleton-card--carousel {
-        animation: none;
-    }
+@media (prefers-reduced-motion:reduce){
+    .skeleton-card--carousel{ animation:none; }
 }
