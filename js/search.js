@@ -1,6 +1,6 @@
 // SEARCH / AGGREGATION ENGINE (js/search.js)
 // ========================================== 
-import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
+import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js'; 
 import { buildIntent } from './parser/pipeline.js';
 import { MangaIntent } from './parser/intentSchema.js';
 import { buildSearchPlan, buildPlanFromGenreList } from './parser/searchPlanner.js';
