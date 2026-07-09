@@ -1,27 +1,33 @@
 // ==========================================
 // SEARCH RESULTS PAGE (js/searchResultsPage.js)
 // ==========================================
-// STEP 7b: dedicated full-page view for search results, same fixed-overlay
-// + .open-class pattern as mangaDetail.js / mixerPage.js / myListPage.js.
-// This step only builds the page shell and gets a single first page of
-// real results rendering on it — no pagination (7c) and no submit-button /
-// index.html routing wiring (7d) yet.
+// STEP 7b built the page shell and a single first page of real results
+// (fixed-overlay pattern, re-parenting cards out of #community-grid).
+//
+// STEP 7c adds pagination on top of that: a "Next Page" button that calls
+// search.js's triggerSearch(query, page+1, appendMode=true) — the plumbing
+// 7a added specifically for this — and moves each newly-rendered batch of
+// cards into this page's own grid too, appending rather than replacing.
+// currentPage/hasMoreResults/isLoadingMore are page-local state that only
+// exists while this view is open; they reset every time openSearchResultsPage()
+// runs. runSearch()'s return value ({ appended, hasMore }) is what drives
+// the button's enabled/disabled state and the "no more results" end case —
+// see search.js STEP 7a for how hasMore is derived (full page ⇒ probably
+// more, partial/empty page ⇒ last page).
 //
 // Deliberately does NOT reimplement any search logic. The NLU intent
 // pipeline, multi-source waterfall, and mood-vector scoring all live in
-// search.js's runSearch(), which STEP 7a already extended (appendMode,
-// bigger PAGE_SIZE) specifically so this page could drive it. That
-// function still renders into the homepage's #community-grid though
-// (search.js itself isn't touched again here) — so once a search
-// resolves, this page re-parents (moves, not clones) the freshly-rendered
-// card elements from #community-grid into its own grid. That's what
-// "moves search results off the homepage grid onto this dedicated page"
-// means concretely at this step. Once 7d rewires the actual submit
-// button / index.html to open this page directly, the homepage grid
-// won't have had anything rendered into it in the first place for a
-// typed search — this move step is what makes that transition safe in
-// the meantime, since nothing gets left behind or duplicated on the
-// homepage grid when the user backs out.
+// search.js's runSearch(). That function still renders into the homepage's
+// #community-grid though (search.js itself isn't touched again here) — so
+// once a search resolves, this page re-parents (moves, not clones) the
+// freshly-rendered card elements from #community-grid into its own grid.
+// That's what "moves search results off the homepage grid onto this
+// dedicated page" means concretely at this step. Once 7d rewires the
+// actual submit button / index.html to open this page directly, the
+// homepage grid won't have had anything rendered into it in the first
+// place for a typed search — this move step is what makes that transition
+// safe in the meantime, since nothing gets left behind or duplicated on
+// the homepage grid when the user backs out.
 //
 // Isolation note: no imports needed. Header text is set via textContent
 // (auto-escaping), and everything else is read off `window.triggerSearch`,
@@ -32,6 +38,10 @@ const SOURCE_GRID_ID = 'community-grid'; // where search.js's runSearch renders
 const OWN_GRID_ID = 'search-results-grid';
 
 let currentQuery = '';
+let currentPage = 1;
+let hasMoreResults = false;
+let isLoadingMore = false;
+let totalLoadedCount = 0;
 
 function ensureViewEl() {
     let el = document.getElementById(VIEW_ID);
@@ -57,12 +67,18 @@ function buildMarkup() {
             </div>
 
             <div class="grid" id="${OWN_GRID_ID}"></div>
+
+            <div class="results-page-pagination">
+                <button class="vibe-btn results-page-nextpage-btn" id="results-page-nextpage-btn" style="display:none;">Next Page</button>
+                <p class="results-page-end-msg" id="results-page-end-msg" style="display:none;">No more results.</p>
+            </div>
         </div>
     `;
 }
 
 function wireStaticEvents(root) {
     root.querySelector('#results-page-back-btn')?.addEventListener('click', closeSearchResultsPage);
+    root.querySelector('#results-page-nextpage-btn')?.addEventListener('click', loadNextPage);
 }
 
 // Same skeleton-card markup as search.js's renderSkeletonLoaders(), just
@@ -96,29 +112,21 @@ function setHeader(query, statusText) {
     if (countEl) countEl.textContent = statusText || '';
 }
 
-async function loadFirstPage(query) {
+// Moves whatever runSearch just rendered into #community-grid onto this
+// page's own grid. `mode: 'replace'` clears the destination first (first
+// page / a fresh search); `mode: 'append'` leaves existing cards alone and
+// adds the new ones after them (Next Page). Returns how many `.manga-card`
+// nodes were moved, which is what driven the "N results" / hasMore logic —
+// deliberately not trusting runSearch's `appended` count on its own, since
+// that number is pre-filter (chapter-count filters can drop items after
+// the fact) and this is the true count of what actually landed on screen.
+function moveResultsIntoOwnGrid(mode) {
     const grid = document.getElementById(OWN_GRID_ID);
-    if (!grid) return;
-
-    setHeader(query, 'Searching…');
-    grid.innerHTML = '';
-    renderSkeletons();
-
-    if (typeof window.triggerSearch !== 'function') {
-        setHeader(query, "Search isn't ready yet — try again in a moment.");
-        grid.innerHTML = '';
-        return;
-    }
-
-    await window.triggerSearch(query, 1);
-
-    // search.js's runSearch (still targeting #community-grid as of this
-    // step) has now rendered the first page of cards, or an empty-state /
-    // did-you-mean block, into the homepage grid. Move every one of those
-    // nodes onto this page's own grid rather than cloning them, so
-    // nothing is left duplicated on the homepage grid underneath.
     const sourceGrid = document.getElementById(SOURCE_GRID_ID);
-    grid.innerHTML = '';
+    if (!grid) return 0;
+
+    if (mode === 'replace') grid.innerHTML = '';
+
     let movedCount = 0;
     if (sourceGrid) {
         Array.from(sourceGrid.children).forEach(child => {
@@ -126,6 +134,66 @@ async function loadFirstPage(query) {
             if (child.classList?.contains('manga-card')) movedCount++;
         });
     }
+    return movedCount;
+}
+
+function updatePaginationUI() {
+    const btn = document.getElementById('results-page-nextpage-btn');
+    const endMsg = document.getElementById('results-page-end-msg');
+    if (!btn || !endMsg) return;
+
+    if (isLoadingMore) {
+        btn.style.display = '';
+        btn.disabled = true;
+        btn.textContent = 'Loading…';
+        endMsg.style.display = 'none';
+        return;
+    }
+
+    if (hasMoreResults) {
+        btn.style.display = '';
+        btn.disabled = false;
+        btn.textContent = 'Next Page';
+        endMsg.style.display = 'none';
+    } else {
+        btn.style.display = 'none';
+        // Only announce "no more results" once there's actually something
+        // on screen — an empty first page already has its own empty-state
+        // message from setHeader(), no need to double up.
+        endMsg.style.display = totalLoadedCount > 0 ? '' : 'none';
+    }
+}
+
+async function loadFirstPage(query) {
+    const grid = document.getElementById(OWN_GRID_ID);
+    if (!grid) return;
+
+    currentPage = 1;
+    hasMoreResults = false;
+    isLoadingMore = false;
+    totalLoadedCount = 0;
+
+    setHeader(query, 'Searching…');
+    grid.innerHTML = '';
+    renderSkeletons();
+    updatePaginationUI();
+
+    if (typeof window.triggerSearch !== 'function') {
+        setHeader(query, "Search isn't ready yet — try again in a moment.");
+        grid.innerHTML = '';
+        return;
+    }
+
+    const result = await window.triggerSearch(query, 1);
+
+    // search.js's runSearch (still targeting #community-grid as of this
+    // step) has now rendered the first page of cards, or an empty-state /
+    // did-you-mean block, into the homepage grid. Move every one of those
+    // nodes onto this page's own grid rather than cloning them, so
+    // nothing is left duplicated on the homepage grid underneath.
+    const movedCount = moveResultsIntoOwnGrid('replace');
+    totalLoadedCount = movedCount;
+    hasMoreResults = Boolean(result?.hasMore) && movedCount > 0;
 
     setHeader(
         query,
@@ -133,6 +201,37 @@ async function loadFirstPage(query) {
             ? `${movedCount} result${movedCount === 1 ? '' : 's'}`
             : (grid.children.length > 0 ? '' : 'No results found.')
     );
+    updatePaginationUI();
+}
+
+async function loadNextPage() {
+    if (isLoadingMore || !hasMoreResults) return;
+    if (typeof window.triggerSearch !== 'function') return;
+
+    isLoadingMore = true;
+    updatePaginationUI();
+
+    const nextPage = currentPage + 1;
+    let result;
+    try {
+        result = await window.triggerSearch(currentQuery, nextPage, true);
+    } catch (e) {
+        console.warn('[searchResultsPage.js] loadNextPage failed:', e?.message);
+        result = { appended: 0, hasMore: false };
+    }
+
+    const movedCount = moveResultsIntoOwnGrid('append');
+    currentPage = nextPage;
+    totalLoadedCount += movedCount;
+    // Trust the grid over the raw appended count (see moveResultsIntoOwnGrid),
+    // but still fall back to runSearch's own hasMore signal so a page that's
+    // fully filtered out by chapter-count filters doesn't get treated as
+    // "definitely no more results ever" on a single empty page.
+    hasMoreResults = movedCount > 0 && Boolean(result?.hasMore);
+
+    setHeader(currentQuery, `${totalLoadedCount} result${totalLoadedCount === 1 ? '' : 's'}`);
+    isLoadingMore = false;
+    updatePaginationUI();
 }
 
 export function openSearchResultsPage(query) {
@@ -154,8 +253,10 @@ export function closeSearchResultsPage() {
     document.body.classList.remove('search-results-open');
 }
 
-// Reserved for 7c: current query needs to survive into the pagination
-// step (the "Next Page" button will call window.triggerSearch(currentQuery, ...)).
+// Exposed for anything outside this module that needs to know what's
+// currently open on the results page (e.g. 7d's wiring, or a future
+// "share this search" affordance). loadNextPage() above uses the
+// module-local currentQuery directly rather than calling this.
 export function getCurrentResultsQuery() {
     return currentQuery;
 }
