@@ -207,6 +207,19 @@ function renderMoodTags(themes) {
     `;
 }
 
+function renderRankingBadge(item) {
+    if (item.trending > 100) return `<div class="ranking-badge">🔥 Hot</div>`;
+    // If it's a "New Release", we check the status
+    if (item.status === 'Releasing') return `<div class="ranking-badge">New</div>`;
+    return '';
+}
+
+function handleShare(event, title) {
+    event.stopPropagation();
+    if (navigator.share) {
+        navigator.share({ title: title, text: `Check out ${title} on MangaMood!`, url: window.location.href });
+    }
+}
 
 
 
@@ -248,9 +261,19 @@ export function getMangaCardHTML(factSheet) {
                     ${escapeHTML(factSheet.synopsis || 'No description available.')}
                 </p>
             </div>
+
+
+            <div class="quick-action-row">
+                    <button class="action-btn" onclick="window.triggerSearch('${factSheet.title.replace(/'/g, "\\'")}', 1)">
+                        🔎 Similar
+                    </button>
+                    <button class="action-btn" onclick="handleShare(event, '${safeTitle.replace(/'/g, "\\'")}')">
+                        🔗 Share
+                    </button>
+                </div>
         </div>
     `;
-}
+} 
 
 
 export function renderMangaCard(factSheet) {
