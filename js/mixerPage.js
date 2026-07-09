@@ -104,7 +104,7 @@ function buildMarkup() {
     ).join('');
 
     const genreChips = GENRE_OPTIONS.map(g =>
-        `<button type="button" class="mixer-chip" data-genre="${g}">${g}</button>`
+        `<button type="button" class="mixer-chip mixer-chip--compact" data-genre="${g}">${g}</button>`
     ).join('');
 
     const statusOpts = STATUS_OPTIONS.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
@@ -119,18 +119,18 @@ function buildMarkup() {
                 <p>Pick up to 2 moods, stack on genres, and dial in filters — we'll find your match.</p>
             </div>
 
-            <section class="mixer-section">
-                <h3>1. Pick your moods <span class="mixer-hint" id="mixer-mood-hint">Tap up to 2</span></h3>
+            <div class="mixer-card">
+                <h3><span class="mixer-step-num">1</span>Pick your moods <span class="mixer-hint" id="mixer-mood-hint">Tap up to 2</span></h3>
                 <div class="mixer-chip-grid">${moodChips}</div>
-            </section>
+            </div>
 
-            <section class="mixer-section">
-                <h3>2. Add genres <span class="mixer-hint" id="mixer-genre-hint">Boosts matches, optional</span></h3>
-                <div class="mixer-chip-grid">${genreChips}</div>
-            </section>
+            <div class="mixer-card">
+                <h3><span class="mixer-step-num">2</span>Add genres <span class="mixer-hint" id="mixer-genre-hint">Boosts matches, optional</span></h3>
+                <div class="mixer-chip-grid mixer-chip-grid--compact">${genreChips}</div>
+            </div>
 
-            <section class="mixer-section">
-                <h3>3. Filters</h3>
+            <div class="mixer-card">
+                <h3><span class="mixer-step-num">3</span>Filters</h3>
                 <div class="mixer-filter-row">
                     <label class="mixer-filter">
                         <span>Status</span>
@@ -141,9 +141,11 @@ function buildMarkup() {
                         <select id="mixer-length-select">${lengthOpts}</select>
                     </label>
                 </div>
-            </section>
+            </div>
 
-            <button class="mixer-submit-btn" id="mixer-submit-btn">Find My Mix</button>
+            <div class="mixer-footer">
+                <button class="mixer-submit-btn" id="mixer-submit-btn">Find My Mix</button>
+            </div>
 
             <section class="mixer-results-section" id="mixer-results-section" style="display:none;">
                 <div class="mixer-results-header">
