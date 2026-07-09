@@ -202,6 +202,15 @@ async function initializeApp() {
             window.AppDiagnostics.log("MixerPage", true, "Loaded");
         } catch (e) {
             window.AppDiagnostics.log("MixerPage", false, e.message);
+        }. 
+
+        try {
+    const advFilter = await import("./advancedFilter/index.js");
+    window.openAdvancedFilter = advFilter.openAdvancedFilter;
+    window.closeAdvancedFilter = advFilter.closeAdvancedFilter;
+    window.AppDiagnostics.log("AdvancedFilter", true, "Loaded");
+} catch (e) {
+    window.AppDiagnostics.log("AdvancedFilter", false, e.message);
         }
 
         // Load My List Page (Step 5 — dedicated saved-favorites + hourly
