@@ -52,19 +52,33 @@ function renderCompactCard(item) {
     `;
 }
 
-function renderSkeletonRow(count) {
-    let html = '';
-    for (let i = 0; i < count; i++) {
-        // NOTE: intentionally NOT combining this with cards.css's shared
-        // .skeleton-card class here. Both .skeleton-card (cards.css) and
-        // .skeleton-card--carousel (landing/styles.css) are single-class
-        // selectors of equal specificity, so applying both to the same
-        // element makes border-radius/background/sizing depend on
-        // stylesheet load order. .skeleton-card--carousel already fully
-        // defines this element's look, so it's used alone.
-        html += `<div class="skeleton-card--carousel"><div class="skeleton-cover"></div></div>`;
-    }
-    return html;
+// Replace your existing showSkeletons function with this:
+export function showSkeletons(...elements) {
+    elements.forEach(el => {
+        if (el) el.innerHTML = renderSkeletonRow(6);
+    });
+}
+
+// Add these to the bottom of the file:
+export function renderNewReleasesRow(el, items) {
+    if (!el) return;
+    el.innerHTML = items.length
+        ? renderCards(items)
+        : renderEmptyState('No new releases found right now.');
+}
+
+export function renderMostAwaitedRow(el, items) {
+    if (!el) return;
+    el.innerHTML = items.length
+        ? renderCards(items)
+        : renderEmptyState('No upcoming manga data available.');
+}
+
+export function renderShortReadsRow(el, items) {
+    if (!el) return;
+    el.innerHTML = items.length
+        ? renderCards(items)
+        : renderEmptyState('Could not find short reads at the moment.');
 }
 
 function renderEmptyState(message) {
@@ -75,10 +89,7 @@ function renderCards(items) {
     return items.map(item => `<div class="carousel-card-wrap">${renderCompactCard(item)}</div>`).join('');
 }
 
-export function showSkeletons(trendingEl, gemsEl, count = 6) {
-    if (trendingEl) trendingEl.innerHTML = renderSkeletonRow(count);
-    if (gemsEl) gemsEl.innerHTML = renderSkeletonRow(count);
-}
+
 
 export function renderTrendingRow(el, trending) {
     if (!el) return;

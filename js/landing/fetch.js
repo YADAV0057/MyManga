@@ -141,10 +141,92 @@ export async function fetchHiddenGems(limit = 10, popularityCeiling = 15000) {
     }
 }
 
+export async function fetchNewReleases(limit = 10) {
+    const cacheKey = todayCacheKey('newReleases');
+    const cached = await readCache(cacheKey);
+    if (cached) return cached;
+
+    const query = `
+        query ($perPage: Int) {
+            Page(perPage: $perPage) {
+                media(type: MANGA, sort: START_DATE_DESC, status: RELEASING, isAdult: false) {
+                    ${MEDIA_FIELDS}
+                }
+            }
+        }
+    `;
+
+    try {
+        const raw = await queryAniList(query, { perPage: limit });
+        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        await writeCache(cacheKey, results);
+        return results;
+    } catch (e) {
+        console.warn('[landing/fetch.js] fetchNewReleases failed:', e.message);
+        return [];
+    }
+}
+
+export async function fetchMostAwaited(limit = 10) {
+    const cacheKey = todayCacheKey('mostAwaited');
+    const cached = await readCache(cacheKey);
+    if (cached) return cached;
+
+    const query = `
+        query ($perPage: Int) {
+            Page(perPage: $perPage) {
+                media(type: MANGA, sort: POPULARITY_DESC, status: NOT_YET_RELEASED, isAdult: false) {
+                    ${MEDIA_FIELDS}
+                }
+            }
+        }
+    `;
+
+    try {
+        const raw = await queryAniList(query, { perPage: limit });
+        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        await writeCache(cacheKey, results);
+        return results;
+    } catch (e) {
+        console.warn('[landing/fetch.js] fetchMostAwaited failed:', e.message);
+        return [];
+    }
+}
+
+export async function fetchShortReads(limit = 10) {
+    const cacheKey = todayCacheKey('shortReads');
+    const cached = await readCache(cacheKey);
+    if (cached) return cached;
+
+    const query = `
+        query ($perPage: Int) {
+            Page(perPage: $perPage) {
+                media(type: MANGA, sort: SCORE_DESC, chapters_lesser: 40, chapters_greater: 1, isAdult: false) {
+                    ${MEDIA_FIELDS}
+                }
+            }
+        }
+    `;
+
+    try {
+        const raw = await queryAniList(query, { perPage: limit });
+        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        await writeCache(cacheKey, results);
+        return results;
+    } catch (e) {
+        console.warn('[landing/fetch.js] fetchShortReads failed:', e.message);
+        return [];
+    }
+}
+
+
 export async function fetchLandingFeeds() {
-    const [trending, hiddenGems] = await Promise.all([
+    const [trending, hiddenGems, newReleases, mostAwaited, shortReads] = await Promise.all([
         fetchTrendingToday(),
-        fetchHiddenGems()
+        fetchHiddenGems(),
+        fetchNewReleases(),
+        fetchMostAwaited(),
+        fetchShortReads()
     ]);
-    return { trending, hiddenGems };
+    return { trending, hiddenGems, newReleases, mostAwaited, shortReads };
 }
