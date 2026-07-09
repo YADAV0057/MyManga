@@ -20,7 +20,7 @@
 import { buildFormMarkup, wireFormEvents, resetForm, readFilterState } from './formUI.js';
 import { fetchAllSources } from './fetchAll.js';
 import { mergeSources, applyPostFilters, sortResults } from './merge.js';
-import { showSkeletons, renderResultsGrid } from './arender.js';
+import { showSkeletons, renderResultsGrid } from './render.js';
 const VIEW_ID = 'advanced-filter-view';
 const GRID_ID = 'adv-results-grid';
 
