@@ -1,0 +1,224 @@
+/* ==========================================
+   css/mixer.css
+   ==========================================
+   Full-screen "Mood Mixer" page (js/mixerPage.js), opened from the
+   homepage's Mood Mixer panel. Same fixed-overlay-toggled-by-.open-class
+   pattern as detail.css/.detail-view, scoped entirely to .mixer-* classes
+   so it can't collide with the rest of the site's CSS.
+*/
+
+body.mixer-open {
+    overflow: hidden;
+}
+
+.mixer-view {
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: var(--bg-dark, #0c0a16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+}
+
+.mixer-view.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .28s ease, transform .28s ease;
+}
+
+.mixer-scroll {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px 60px;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.mixer-back-btn {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(10,14,28,.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 100px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.mixer-header {
+    text-align: center;
+    padding: 12px 8px 28px;
+}
+
+.mixer-header h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.6rem;
+    color: var(--text-title, #eef4ff);
+    margin-bottom: 8px;
+}
+
+.mixer-header p {
+    color: var(--text-muted, #8b93a7);
+    font-size: .92rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.mixer-section {
+    margin-bottom: 28px;
+}
+
+.mixer-section h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text-title, #eef4ff);
+    margin-bottom: 12px;
+}
+
+.mixer-hint {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--text-muted, #8b93a7);
+}
+
+.mixer-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.mixer-chip {
+    border: none;
+    cursor: pointer;
+    padding: 11px 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    color: var(--text-title, #eef4ff);
+    font-size: .88rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.mixer-chip:hover {
+    border-color: rgba(139,124,246,.4);
+    transform: translateY(-1px);
+}
+
+.mixer-chip.selected {
+    background: linear-gradient(135deg, var(--purple-bright), var(--purple), var(--pink));
+    color: #161225;
+    border-color: transparent;
+    box-shadow: 0 10px 22px rgba(139,124,246,.4);
+}
+
+.mixer-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.mixer-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 200px;
+}
+
+.mixer-filter span {
+    font-size: .78rem;
+    color: var(--text-muted, #8b93a7);
+    font-weight: 600;
+}
+
+.mixer-filter select {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    color: var(--text-title, #eef4ff);
+    font-size: .88rem;
+    font-weight: 600;
+}
+
+.mixer-filter select option {
+    background: var(--card-bg, #17142a);
+    color: var(--text-title, #eef4ff);
+}
+
+.mixer-submit-btn {
+    display: block;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    padding: 16px 24px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--purple-bright), var(--purple), var(--pink));
+    color: #161225;
+    font-weight: 700;
+    font-size: 1.02rem;
+    box-shadow: 0 14px 30px rgba(139,124,246,.4);
+    margin-bottom: 12px;
+}
+
+.mixer-submit-btn:disabled {
+    opacity: .7;
+    cursor: default;
+}
+
+.mixer-submit-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+.mixer-results-section {
+    margin-top: 32px;
+}
+
+.mixer-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+}
+
+.mixer-results-header h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.2rem;
+    color: var(--text-title, #eef4ff);
+}
+
+.mixer-results-header span {
+    font-size: .8rem;
+    color: var(--text-muted, #8b93a7);
+}
+
+.mixer-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted, #8b93a7);
+    padding: 30px 10px;
+}
+
+@media (max-width: 640px) {
+    .mixer-header h1 { font-size: 1.35rem; }
+}
