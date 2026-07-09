@@ -295,6 +295,19 @@ header{
 
 .vibe-btn:active{ transform:scale(.98); }
 
+/* STEP 1: highlights a mood chip that's part of the current 1-or-2-mood
+   mix, so it's visually obvious what's actively being blended. */
+.vibe-btn.selected{
+    background:linear-gradient(135deg,var(--purple-bright),var(--purple),var(--pink));
+    color:#161225;
+    border-color:transparent;
+    box-shadow:0 10px 22px rgba(139,124,246,.4);
+}
+
+.vibe-btn.selected:hover{
+    color:#161225;
+}
+
 /* Primary CTA — "Find My Vibe" */
 #search-submit-btn{
     background:linear-gradient(135deg,var(--purple-bright),var(--purple),var(--pink));
@@ -677,4 +690,4 @@ header, .vibe-panel-container, #results-area{ animation:fadeUp .5s ease; }
 @media (max-width:768px){
     .ai-panel{ padding:16px 18px; }
     .ai-tag-columns{ grid-template-columns:1fr; gap:14px; }
-}
+   }
