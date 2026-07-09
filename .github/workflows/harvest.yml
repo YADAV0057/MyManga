@@ -1,0 +1,42 @@
+name: Auto-Harvest Concepts
+on:
+  push:
+    paths:
+      - 'queue.txt'
+
+permissions:
+  contents: write
+
+jobs: 
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - run: npm install
+      
+      - name: Run Harvester
+        run: node js/parser/dictionary/harvester.js
+      
+      - name: Commit changes
+        if: always()
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          
+          # Add whatever the harvester wrote — it checkpoints
+          # harvested_knowledge.js and shrinks queue.txt after every batch,
+          # so even a mid-run failure/timeout/cancellation (this step runs
+          # via if: always()) still commits everything processed so far.
+          git add js/parser/dictionary/harvested_knowledge.js
+          git add queue.txt
+          
+          # Commit and push if there are changes
+          git commit -m "Auto-harvested concepts (checkpointed progress)" || echo "No changes to commit"
+          git push

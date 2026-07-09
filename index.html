@@ -4,178 +4,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>MangaMood 🔮 - Discovery Portal</title>
 
+    <!-- CSS -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/cards.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <!-- Loading Bar -->
-    <div id="loading-bar"></div>
+<!-- Loading Bar Indicator -->
+<div id="loading-bar"></div>
 
-    <!-- Navigation -->
-    <nav class="topbar">
+<!-- =========================
+    TOP BAR
+========================= -->
+<nav class="topbar">
+    <span class="topbar-brand">MangaMood 🔮</span>
 
-        <span class="topbar-brand">
-            MangaMood 🔮
-        </span>
+    <div class="view-toggle">
+        <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
+    </div>
+</nav>
 
-        <div class="view-toggle">
+<!-- =========================
+    HEADER SEARCH + AI PANEL
+========================= -->
+<header>
 
-            <button
-                id="nav-discover-btn"
-                class="tab-btn active-view"
-                aria-label="Discover manga">
+    <h2 class="tagline">What are you in the mood for today?</h2>
 
-                🔍 Discover
+    <div class="search-container">
 
-            </button>
+        <input
+            id="manga-search-input"
+            type="text"
+            placeholder="e.g. I want something that will make me cry..."
+        >
 
-            <button
-                id="nav-favorites-btn"
-                class="tab-btn"
-                aria-label="Open My List">
+        <button id="search-submit-btn" class="vibe-btn full-width">
+            Find My Vibe
+        </button>
 
-                ❤️ My List
+    </div>
 
+    <!-- =========================
+        🧠 AI SEARCH INTELLIGENCE
+        Integrated directly into the search flow (was previously a
+        separate "Mood Intelligence Preview" section above the app).
+        Hidden until the first search runs; see js/aiPanel.js.
+    ========================= -->
+    <section id="ai-panel" class="ai-panel hidden">
+
+        <!-- shown only while a search is actively running -->
+        <div id="ai-panel-live" class="ai-panel-live hidden"></div>
+
+        <!-- compact bar shown once a search has completed -->
+        <div id="ai-panel-summary" class="ai-panel-summary hidden">
+            <div class="ai-panel-summary-left">
+                <span class="ai-panel-icon">🧠</span>
+                <span class="ai-panel-title">AI Search Intelligence</span>
+            </div>
+            <div class="ai-panel-summary-right">
+                <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
+                <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
+            </div>
+        </div>
+
+        <!-- full breakdown, collapsed by default -->
+        <div id="ai-panel-details" class="ai-panel-details hidden"></div>
+
+    </section>
+
+</header>
+
+<!-- =========================
+    MAIN APP
+========================= -->
+<main class="container">
+
+    <!-- MOOD TAGS -->
+    <section class="vibe-panel-container">
+
+        <div id="rotating-vibes" class="vibe-panel"></div>
+
+        <button class="vibe-btn" id="more-btn" style="margin-top:20px;">
+            + Show All Moods
+        </button>
+
+        <div id="extra-tags" class="hidden-tags"></div>
+
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results-area">
+
+        <div class="results-header">
+
+            <h2 id="results-title">✨ Your Curated Picks</h2>
+
+            <button id="refresh-btn" class="vibe-btn refresh-btn" style="display:none;">
+                🎲 Reroll
             </button>
 
         </div>
 
-    </nav>
+        <div class="grid" id="community-grid"></div>
 
-    <!-- Hero -->
+    </section>
 
-    <header class="hero">
+</main>
 
-        <h1 class="tagline">
-            What are you in the mood for today?
-        </h1>
+<!-- =========================
+    FOOTER
+========================= -->
+<footer>
+    <p>Data powered by AniList, MangaDex & Kitsu APIs</p>
+</footer>
 
-        <div class="search-container">
-
-            <input
-                type="text"
-                id="manga-search-input"
-                placeholder="e.g. Cyberpunk, Slow Burn Romance..."
-                autocomplete="off"
-                aria-label="Search manga by mood or tags">
-
-            <button
-                id="search-submit-btn"
-                class="vibe-btn full-width mt-10"
-                aria-label="Search manga">
-
-                Find My Vibe
-
-            </button>
-
-            <p class="pro-tip">
-
-                ✨ <strong>Pro-tip:</strong>
-
-                Mix tags like
-                "Cyberpunk,
-                Romance,
-                status:completed"
-
-            </p>
-
-        </div>
-
-    </header>
-
-    <!-- Main -->
-
-    <main class="container">
-
-        <!-- Mood Selector -->
-
-        <section class="vibe-panel-container">
-
-            <div
-                id="rotating-vibes"
-                class="vibe-panel">
-            </div>
-
-            <button
-                id="more-btn"
-                class="vibe-btn mt-20"
-                onclick="toggleTags()"
-                aria-label="Show more moods">
-
-                + Show All 50 Moods
-
-            </button>
-
-            <div
-                id="extra-tags"
-                class="hidden-tags mt-20">
-            </div>
-
-        </section>
-
-        <!-- Results -->
-
-        <section
-            id="results-area"
-            aria-live="polite">
-
-            <div class="results-header">
-
-                <h2 id="results-title">
-
-                    ✨ Your Curated Picks
-
-                </h2>
-
-                <button
-                    id="refresh-btn"
-                    class="vibe-btn refresh-btn hidden"
-                    aria-label="Reroll recommendations">
-
-                    🎲 Reroll
-
-                </button>
-
-            </div>
-
-            <div
-                class="grid"
-                id="community-grid">
-
-                <!-- Manga Cards -->
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-
-    <footer>
-
-        <p>
-            Built with ❤️ using AniList, MangaDex & Kitsu APIs.
-        </p>
-
-        <p>
-            © 2026 MangaMood
-        </p>
-
-    </footer>
-
-    <!-- Scripts -->
-
-    <script type="module" src="./js/main.js"></script>
+<!-- =========================
+    SCRIPT
+========================= -->
+<script type="module" src="./js/main.js"></script>
 
 </body>
-
 </html>
