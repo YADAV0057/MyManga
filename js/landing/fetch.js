@@ -1,7 +1,7 @@
 // ==========================================
 // landing/fetch.js
 // ==========================================
-// Pure data layer for the landing page's always-visible rows.
+// Pure data layer for the landing page's always-visible rows. 
 // No DOM access here — this file only ever returns arrays of
 // normalized manga objects (or throws/logs and returns []).
 //
