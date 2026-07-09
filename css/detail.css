@@ -251,3 +251,70 @@ body.detail-open {
         gap: 40px;
     }
 }
+
+
+/* ==========================
+   MATCH BREAKDOWN (DETAIL PAGE)
+========================== */
+.detail-match-container {
+    margin: 0 0 26px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.detail-match-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.detail-match-score {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--green);
+    background: rgba(52, 211, 153, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.detail-match-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-title, #eef4ff);
+}
+
+.detail-match-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-match-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--text-muted, #6f7d8c);
+    line-height: 1.4;
+}
+
+.detail-match-item.is-match {
+    color: var(--text-main, #a2afc0);
+}
+
+.detail-match-icon {
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.detail-match-item.is-match .detail-match-icon { 
+    color: var(--green); 
+}
+
+.detail-match-item:not(.is-match) .detail-match-icon { 
+    color: var(--red); 
+}
