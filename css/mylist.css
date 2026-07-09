@@ -1,0 +1,135 @@
+/* ==========================================
+   css/mylist.css
+   ==========================================
+   Full-screen "My List" page (js/myListPage.js). Same fixed-overlay
+   pattern as detail.css/.detail-view and mixer.css/.mixer-view, scoped
+   entirely to .mylist-* classes.
+*/
+
+body.mylist-open {
+    overflow: hidden;
+}
+
+.mylist-view {
+    position: fixed;
+    inset: 0;
+    z-index: 997;
+    background: var(--bg-dark, #0c0a16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+}
+
+.mylist-view.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .28s ease, transform .28s ease;
+}
+
+.mylist-scroll {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.mylist-back-btn {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(10,14,28,.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 100px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.mylist-header {
+    text-align: center;
+    padding: 12px 8px 28px;
+}
+
+.mylist-header h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.6rem;
+    color: var(--text-title, #eef4ff);
+    margin-bottom: 8px;
+}
+
+.mylist-header p {
+    color: var(--text-muted, #8b93a7);
+    font-size: .92rem;
+}
+
+.mylist-section {
+    margin-bottom: 36px;
+}
+
+.mylist-section h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.15rem;
+    color: var(--text-title, #eef4ff);
+    margin-bottom: 14px;
+}
+
+.mylist-rec-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.mylist-rec-header h2 {
+    margin-bottom: 0;
+}
+
+.mylist-recommend-btn {
+    border: none;
+    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    color: var(--text-title, #eef4ff);
+    font-size: .82rem;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.mylist-recommend-btn:hover:not(:disabled) {
+    background: var(--purple-soft, rgba(139,124,246,.16));
+    border-color: rgba(139,124,246,.4);
+    transform: translateY(-1px);
+}
+
+.mylist-recommend-btn:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.mylist-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted, #8b93a7);
+    padding: 26px 10px;
+}
+
+@media (max-width: 640px) {
+    .mylist-header h1 { font-size: 1.35rem; }
+    .mylist-rec-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
