@@ -89,10 +89,7 @@ function renderCards(items) {
     return items.map(item => `<div class="carousel-card-wrap">${renderCompactCard(item)}</div>`).join('');
 }
 
-export function showSkeletons(trendingEl, gemsEl, count = 6) {
-    if (trendingEl) trendingEl.innerHTML = renderSkeletonRow(count);
-    if (gemsEl) gemsEl.innerHTML = renderSkeletonRow(count);
-}
+
 
 export function renderTrendingRow(el, trending) {
     if (!el) return;
