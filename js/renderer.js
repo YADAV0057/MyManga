@@ -239,7 +239,6 @@ export function getMangaCardHTML(factSheet) {
             <div class="manga-cover-container">
                 <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
                 
-                <!-- Favorite and Score moved to Right Side -->
                 <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                         onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
                         title="${saved ? 'Remove from My List' : 'Save to My List'}">
@@ -257,11 +256,20 @@ export function getMangaCardHTML(factSheet) {
                 <p class="manga-synopsis">
                     ${escapeHTML(factSheet.synopsis || 'No description available.')}
                 </p>
+
+                <!-- Buttons added back here -->
+                <div class="quick-action-row">
+                    <button class="action-btn" onclick="window.triggerSearch('${factSheet.title.replace(/'/g, "\\'")}', 1)">
+                        🔍 Similar
+                    </button>
+                    <button class="action-btn" onclick="handleShare(event, '${safeTitle.replace(/'/g, "\\'")}')">
+                        🔗 Share
+                    </button>
+                </div>
             </div>
         </div>
     `;
 }
-
 
 export function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
