@@ -205,16 +205,14 @@ async function initializeApp() {
         }
 
         try {
-            const advFilter = await import("./advancedFilter/index.js"); 
-
-        try {
-    const advFilter = await import("./advancedFilter/index.js");
-    window.openAdvancedFilter = advFilter.openAdvancedFilter;
-    window.closeAdvancedFilter = advFilter.closeAdvancedFilter;
-    window.AppDiagnostics.log("AdvancedFilter", true, "Loaded");
-} catch (e) {
-    window.AppDiagnostics.log("AdvancedFilter", false, e.message);
+            const advFilter = await import("./advancedFilter/index.js");
+            window.openAdvancedFilter = advFilter.openAdvancedFilter;
+            window.closeAdvancedFilter = advFilter.closeAdvancedFilter;
+            window.AppDiagnostics.log("AdvancedFilter", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("AdvancedFilter", false, e.message);
         }
+        
 
         // Load My List Page (Step 5 — dedicated saved-favorites + hourly
         // rotating recommendations page, replacing the old in-place grid
