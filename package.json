@@ -1,0 +1,11 @@
+{
+  "name": "mymanga",
+  "version": "1.0.0",
+  "description": "Manga tracking and parsing",
+  "type": "module",
+  "dependencies": {
+    "afinn-165": "^2.0.2",
+    "axios": "^1.6.0",
+    "xml2js": "^0.6.0"
+  }
+}

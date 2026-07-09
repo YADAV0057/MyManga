@@ -16,6 +16,9 @@
 
 <body>
 
+<!-- Loading Bar Indicator -->
+<div id="loading-bar"></div>
+
 <!-- =========================
     TOP BAR
 ========================= -->
@@ -23,13 +26,12 @@
     <span class="topbar-brand">MangaMood 🔮</span>
 
     <div class="view-toggle">
-        <button id="nav-discover-btn" class="tab-btn active-view">🔍 Discover</button>
         <button id="nav-favorites-btn" class="tab-btn">❤️ My List</button>
     </div>
 </nav>
 
 <!-- =========================
-    HEADER SEARCH
+    HEADER SEARCH + AI PANEL
 ========================= -->
 <header>
 
@@ -40,62 +42,44 @@
         <input
             id="manga-search-input"
             type="text"
-            placeholder="e.g. Cyberpunk romance, Dark revenge, Wholesome vibe..."
+            placeholder="e.g. I want something that will make me cry..."
         >
 
-        <button id="search-submit-btn" class="vibe-btn" style="margin-top:10px;width:100%;">
+        <button id="search-submit-btn" class="vibe-btn full-width">
             Find My Vibe
         </button>
 
     </div>
 
+    <!-- =========================
+        🧠 AI SEARCH INTELLIGENCE
+        Integrated directly into the search flow (was previously a
+        separate "Mood Intelligence Preview" section above the app).
+        Hidden until the first search runs; see js/aiPanel.js.
+    ========================= -->
+    <section id="ai-panel" class="ai-panel hidden">
+
+        <!-- shown only while a search is actively running -->
+        <div id="ai-panel-live" class="ai-panel-live hidden"></div>
+
+        <!-- compact bar shown once a search has completed -->
+        <div id="ai-panel-summary" class="ai-panel-summary hidden">
+            <div class="ai-panel-summary-left">
+                <span class="ai-panel-icon">🧠</span>
+                <span class="ai-panel-title">AI Search Intelligence</span>
+            </div>
+            <div class="ai-panel-summary-right">
+                <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
+                <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
+            </div>
+        </div>
+
+        <!-- full breakdown, collapsed by default -->
+        <div id="ai-panel-details" class="ai-panel-details hidden"></div>
+
+    </section>
+
 </header>
-
-<!-- =========================
-    🧠 AI MOOD PREVIEW BOARD
-========================= -->
-
-<section id="mood-preview-board" class="container" style="margin-top:20px;">
-
-    <h2 style="margin-bottom:10px;">🧠 Mood Intelligence Preview</h2>
-
-    <p style="opacity:0.7;margin-bottom:15px;">
-        Live breakdown of how your search is understood
-    </p>
-
-    <!-- INPUT -->
-    <input
-        id="parser-input"
-        type="text"
-        placeholder="Try: Make me cry, dark revenge, wholesome romance..."
-        style="
-            width:100%;
-            padding:12px;
-            border-radius:10px;
-            border:none;
-            outline:none;
-            margin-bottom:10px;
-        "
-    >
-
-    <button
-        id="parser-test-btn"
-        style="
-            width:100%;
-            padding:12px;
-            border-radius:10px;
-            border:none;
-            cursor:pointer;
-            background:#00ff9d;
-            font-weight:bold;
-        ">
-        Analyze Mood
-    </button>
-
-    <!-- OUTPUT DASHBOARD -->
-    <div id="parser-output" style="margin-top:20px;"></div>
-
-</section>
 
 <!-- =========================
     MAIN APP

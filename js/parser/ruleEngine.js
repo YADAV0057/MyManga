@@ -1,5 +1,7 @@
 // js/parser/ruleEngine.js
 
+import { CONCEPT_PROPERTIES, SYNONYM_MAP } from './dictionary.js';
+
 const RULES = [
     {
         name: "Dark & Gritty",
@@ -104,6 +106,61 @@ export function applyReasoningRules(intent) {
             if (apiPriority.length === 0) apiPriority = rule.priority;
             if (rule.confidenceModifier < lowestConfidence) lowestConfidence = rule.confidenceModifier;
         }
+    });
+
+    // Per-concept excludes/boosts — from properties.js curation or
+    // harvester.js's synopsis analysis — layered on top of the static
+    // RULES table above rather than replacing it.
+    intent.moods.forEach(moodId => {
+        const concept = CONCEPT_PROPERTIES[moodId];
+        if (!concept) return;
+
+        // concept.excludes is already { genres: [], themes: [] } — the same
+        // shape as rule.avoids, so it drops straight into the same bucket.
+        if (concept.excludes) {
+            (concept.excludes.genres || []).forEach(g => avoids.genres.add(g));
+            (concept.excludes.themes || []).forEach(t => avoids.themes.add(t));
+        }
+
+        // concept.boosts is a flat list of trope keywords (e.g.
+        // ["dark","survival","antihero"]), not genre/theme names, so it
+        // can't drop in directly. Where a keyword happens to resolve to
+        // another known concept (by id or alias), pull in *that* concept's
+        // genres/themes as a lower-confidence suggestion — safer than
+        // guessing a genre/theme mapping for an arbitrary trope word.
+        (concept.boosts || []).forEach(boostWord => {
+            const boostId = SYNONYM_MAP[boostWord.toLowerCase()] || boostWord.toLowerCase();
+            const boostConcept = CONCEPT_PROPERTIES[boostId];
+            if (!boostConcept) return;
+
+            (boostConcept.genres || []).forEach(g => {
+                const isAlreadyPrimary = intent.genres && intent.genres.some(p => p.name === g.name);
+                if (!isAlreadyPrimary && !boostMaps.genres.has(g.name)) {
+                    boostMaps.genres.set(g.name, {
+                        score: g.weight * 0.7,
+                        reason: `Related to "${moodId}" via the "${boostWord}" trope.`
+                    });
+                }
+            });
+            (boostConcept.themes || []).forEach(t => {
+                const isAlreadyPrimary = intent.themes && intent.themes.some(p => p.name === t.name);
+                if (!isAlreadyPrimary && !boostMaps.themes.has(t.name)) {
+                    boostMaps.themes.set(t.name, {
+                        score: t.weight * 0.7,
+                        reason: `Related to "${moodId}" via the "${boostWord}" trope.`
+                    });
+                }
+            });
+            (boostConcept.demographics || []).forEach(d => {
+                const isAlreadyPrimary = intent.demographics && intent.demographics.some(p => p.name === d.name);
+                if (!isAlreadyPrimary && !boostMaps.demographics.has(d.name)) {
+                    boostMaps.demographics.set(d.name, {
+                        score: d.weight * 0.7,
+                        reason: `Related to "${moodId}" via the "${boostWord}" trope.`
+                    });
+                }
+            });
+        });
     });
 
     if (apiPriority.length === 0) {

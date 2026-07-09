@@ -4,7 +4,14 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+// NOTE: firebase-analytics.js is loaded dynamically below instead of as a
+// static top-level import. Ad blockers / privacy browsers (Brave Shields,
+// uBlock, Safari content blockers, etc.) commonly block this URL since it's
+// literally Google Analytics. A blocked STATIC import throws before any
+// try/catch can run, which used to fail this whole module — and since
+// search.js imports firebase.js at its top, that cascaded into search.js
+// failing to load too, silently breaking the search button while every
+// other button (which doesn't touch firebase.js) kept working.
 
 const firebaseConfig = {
     apiKey: "AIzaSyCrZAQbMT35SKArRfWnKGt4SS5NlJgN1XM",
@@ -27,10 +34,17 @@ try {
     console.error("CRITICAL: Firebase initialization failed.", e);
 }
 
-try {
-    if (app) analytics = getAnalytics(app);
-} catch (e) {
-    console.warn("Analytics disabled.", e);
+if (app) {
+    // Dynamic import: if this request is blocked or fails, it just rejects
+    // this one promise instead of taking down the entire firebase.js module
+    // (and everything that imports it, like search.js).
+    import("https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js")
+        .then(({ getAnalytics }) => {
+            analytics = getAnalytics(app);
+        })
+        .catch((e) => {
+            console.warn("Analytics disabled (likely blocked by an ad blocker/privacy browser).", e);
+        });
 }
 
 function generateCacheKey(query, page) {
@@ -47,3 +61,5 @@ export {
     setDoc,
     generateCacheKey
 };
+
+

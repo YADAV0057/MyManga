@@ -1,211 +1,88 @@
-/**
- * MOOD_MAPPINGS
- * Maps internal moods to Genres, Themes, and Demographics.
- */
-export const MOOD_MAPPINGS = {
-    // 😭 SAD & EMOTIONAL
-    sad: { 
-        genres: { Drama: 1.0, Tragedy: 0.9 },
-        themes: {},
-        demographics: {}
-    }, 
-    emotional: { 
-        genres: { Drama: 0.8, Romance: 0.5, Psychological: 0.4 },
-        themes: {},
-        demographics: {}
-    },
-    
-    // 💀 DARK & EDGY
-    dark: { 
-        genres: { Psychological: 1.0, Horror: 0.9, Thriller: 0.8, Mystery: 0.5 },
-        themes: { Survival: 0.7, Monsters: 0.5 },
-        demographics: { Seinen: 0.8 } 
-    },
-    serious: { 
-        genres: { Drama: 0.8, Psychological: 0.7, Action: 0.5 },
-        themes: {},
-        demographics: {}
-    },
-    revenge: {
-        genres: { Drama: 1.0, Psychological: 0.9, Action: 0.8, Mystery: 0.4 },
-        themes: { Villainess: 0.7 },
-        demographics: { Seinen: 0.6, Josei: 0.5 }
-    },
-    psychological: { 
-        genres: { Psychological: 1.0, Mystery: 0.8, Thriller: 0.8 },
-        themes: {},
-        demographics: {}
-    },
-    horror: { 
-        genres: { Horror: 1.0, Psychological: 0.9, Thriller: 0.8, Supernatural: 0.5 },
-        themes: { Survival: 0.8, Monsters: 0.7 },
-        demographics: { Seinen: 0.7 }
-    },
-    mystery: { 
-        genres: { Mystery: 1.0, Psychological: 0.8, Thriller: 0.8 },
-        themes: {},
-        demographics: {}
-    },
-    thriller: { 
-        genres: { Thriller: 1.0, Mystery: 0.9, Psychological: 0.9 },
-        themes: { Survival: 0.6 },
-        demographics: { Seinen: 0.6 }
-    },
-    tragedy: { 
-        genres: { Tragedy: 1.0, Drama: 0.9, Psychological: 0.6 },
-        themes: {},
-        demographics: { Seinen: 0.5, Josei: 0.5 }
-    },
+// 1. Import your curated Base Knowledge
+import { CONCEPT_PROPERTIES as BASE_PROPERTIES } from './dictionary/properties.js';
 
-    // 🥰 ROMANCE & FLUFF
-    happy: { 
-        genres: { Comedy: 1.0, SliceOfLife: 0.8, Adventure: 0.5 },
-        themes: {},
-        demographics: {}
-    },
-    uplifting: { 
-        genres: { SliceOfLife: 0.9, Fantasy: 0.6, Comedy: 0.5 },
-        themes: {},
-        demographics: {}
-    },
-    wholesome: { 
-        genres: { SliceOfLife: 1.0, Romance: 0.8, Comedy: 0.6 },
-        themes: { SchoolLife: 0.8, FoundFamily: 0.7 },
-        demographics: { Shoujo: 0.8, Shounen: 0.5 }
-    },
-    soft: { 
-        genres: { SliceOfLife: 0.9, Romance: 0.7 },
-        themes: { Iyashikei: 0.8 },
-        demographics: {}
-    },
-    romance: { 
-        genres: { Romance: 1.0, Drama: 0.6, SliceOfLife: 0.5 },
-        themes: { SchoolLife: 0.6 },
-        demographics: { Shoujo: 0.9, Josei: 0.8 }
-    },
-    spicy: {
-        genres: { Romance: 1.0, Drama: 0.6 },
-        themes: { Harem: 0.5 },
-        demographics: { Josei: 0.9, Seinen: 0.7 }
-    },
-    mature: { 
-        genres: { Mature: 1.0, Romance: 0.6, Drama: 0.6 },
-        themes: {},
-        demographics: { Josei: 1.0, Seinen: 1.0 }
-    },
+// 2. Import your auto-harvested Growth Layer
+// We use a safe check; if the file doesn't exist yet, we default to an empty object
+let HARVESTED_RULES = {};
+try {
+    const harvestedModule = await import('./dictionary/harvested_knowledge.js');
+    HARVESTED_RULES = harvestedModule.HARVESTED_RULES || {};
+} catch (e) {
+    console.warn("[System] Harvested knowledge not found, using base only.");
+}
 
-    // 😂 COMEDY & ACTION
-    comedy: { 
-        genres: { Comedy: 1.0, SliceOfLife: 0.7, Parody: 0.6 },
-        themes: { Gag: 0.9 },
-        demographics: { Shounen: 0.6 }
-    },
-    parody: { 
-        genres: { Comedy: 1.0, Parody: 1.0 },
-        themes: { Gag: 0.8 },
-        demographics: {}
-    },
-    action: { 
-        genres: { Action: 1.0, Adventure: 0.7, Fantasy: 0.5 },
-        themes: {},
-        demographics: { Shounen: 0.9, Seinen: 0.6 }
-    },
-    epic: { 
-        genres: { Action: 1.0, Adventure: 1.0, Fantasy: 0.8 },
-        themes: { Military: 0.6 },
-        demographics: { Shounen: 0.8, Seinen: 0.7 }
-    },
-    cool: { 
-        genres: { Action: 0.8, SciFi: 0.6, Thriller: 0.5 },
-        themes: {},
-        demographics: { Shounen: 0.7 }
-    },
-    sports: { 
-        genres: { Sports: 1.0, Drama: 0.6, Action: 0.5 },
-        themes: { SchoolLife: 0.7 },
-        demographics: { Shounen: 0.9 }
-    },
-
-    // 🌌 EXPANDED MOODS
-    supernatural: { 
-        genres: { Fantasy: 1.0, Supernatural: 1.0, Mystery: 0.5 },
-        themes: { Isekai: 0.9, Magic: 0.8 },
-        demographics: { Shounen: 0.7 }
-    },
-    academic: {
-        genres: { Drama: 0.6, Psychological: 0.5 },
-        themes: { SchoolLife: 0.9 },
-        demographics: { Seinen: 0.4 }
-    },
-    sentimental: {
-        genres: { Drama: 0.7, SliceOfLife: 0.6 },
-        themes: { CharacterGrowth: 0.8 },
-        demographics: { Shoujo: 0.5, Josei: 0.6 }
-    },
-    philosophical: {
-        genres: { Psychological: 1.0, Seinen: 0.8 },
-        themes: { Existential: 1.0 },
-        demographics: { Seinen: 0.9 }
-    }
+// 3. Merge Layers: Base (properties) overrides Harvested if keys conflict
+export const CONCEPT_PROPERTIES = { 
+    ...HARVESTED_RULES, 
+    ...BASE_PROPERTIES 
 };
 
-// 1. Add Urgency Modifiers
+// --- YOUR EXISTING HARDCODED DATA ---
 export const URGENCY_MODIFIERS = {
-    // Amplifiers
-    "devastating": 1.5,
-    "destroy": 1.5,
-    "need": 1.3,
-    "extremely": 1.4,
-    "insanely": 1.5,
-    "really": 1.2,
-    "very": 1.2,
-    "super": 1.2,
-    
-    // Dampeners
-    "mild": 0.6,
-    "chill": 0.7,
-    "little": 0.8,
-    "somewhat": 0.8,
-    "slightly": 0.5,
-     "a bit": 0.7
+    "devastating": 1.5, "destroy": 1.5, "need": 1.3, "extremely": 1.4,
+    "insanely": 1.5, "really": 1.2, "very": 1.2, "super": 1.2,
+    "mild": 0.6, "chill": 0.7, "little": 0.8, "somewhat": 0.8,
+    "slightly": 0.5, "a bit": 0.7
+};
+
+export const MOOD_MAPPINGS = {
+    sad: { genres: { Drama: 1.0, Tragedy: 0.9 }, themes: {}, demographics: {} }, 
+    emotional: { genres: { Drama: 0.8, Romance: 0.5, Psychological: 0.4 }, themes: {}, demographics: {} },
+    dark: { genres: { Psychological: 1.0, Horror: 0.9, Thriller: 0.8, Mystery: 0.5 }, themes: { Survival: 0.7, Monsters: 0.5 }, demographics: { Seinen: 0.8 } }
 };
 
 export const MOOD_DICTIONARY = {
-    // 😭 SAD & EMOTIONAL
     "cry": { moods: ["sad", "emotional", "tragedy"], intensity: 0.9, tone: "negative" },
-    "depressing": { moods: ["sad", "dark", "psychological"], intensity: 1.0, tone: "negative" },
-    "bittersweet": { moods: ["sad", "romance", "emotional"], intensity: 0.7, tone: "neutral" },
-    
-    // 🥰 ROMANCE & FLUFF
-    "romance": { moods: ["romance", "emotional"], intensity: 0.6, tone: "positive" },
-    "fluff": { moods: ["wholesome", "romance", "happy"], intensity: 0.4, tone: "positive" },
-    "healing": { moods: ["wholesome", "sliceoflife", "soft"], intensity: 0.3, tone: "positive" },
-    
-    // 💀 DARK & EDGY
-    "dark": { moods: ["dark", "serious", "psychological"], intensity: 0.8, tone: "negative" },
-    "revenge": { moods: ["dark", "revenge", "action"], intensity: 0.9, tone: "negative" },
-    "gory": { moods: ["horror", "dark", "action"], intensity: 1.0, tone: "negative" },
-    "scary": { moods: ["horror"], intensity: 0.8, tone: "negative" },
-    
-    // 😂 COMEDY
-    "funny": { moods: ["comedy"], intensity: 0.6, tone: "positive" },
-    "hilarious": { moods: ["comedy", "parody"], intensity: 0.9, tone: "positive" },
-    
-    // 🧠 MIND-BENDING & NICHE
-    "mindfuck": { moods: ["psychological", "mystery", "thriller"], intensity: 1.0, tone: "neutral" },
-    "supernatural": { moods: ["supernatural"], intensity: 0.7, tone: "neutral" },
-    "isekai": { moods: ["supernatural"], intensity: 0.8, tone: "positive" },
-    "nostalgic": { moods: ["sentimental"], intensity: 0.6, tone: "positive" },
-    "educational": { moods: ["academic"], intensity: 0.4, tone: "positive" },
-    "philosophical": { moods: ["philosophical"], intensity: 0.9, tone: "neutral" },
-    "deep": { moods: ["philosophical", "psychological"], intensity: 0.8, tone: "neutral" },
-
-    // 🏷️ LITERAL GENRE MAPPINGS (New!)
-    "drama": { moods: ["serious", "emotional"], intensity: 0.7, tone: "neutral" },
-    "action": { moods: ["action", "epic"], intensity: 0.8, tone: "neutral" },
-    "horror": { moods: ["horror", "dark"], intensity: 0.8, tone: "negative" },
-    "comedy": { moods: ["comedy"], intensity: 0.7, tone: "positive" },
-    "thriller": { moods: ["thriller", "psychological"], intensity: 0.8, tone: "negative" },
-    "fantasy": { moods: ["supernatural", "epic"], intensity: 0.7, tone: "positive" },
-    "scifi": { moods: ["cool", "psychological"], intensity: 0.7, tone: "neutral" }
+    "depressing": { moods: ["sad", "dark", "psychological"], intensity: 1.0, tone: "negative" }
 };
+
+export const SYNONYM_MAP = {
+    "crying": "cry", "tearjerker": "cry", "tears": "cry", "sob": "cry",
+    "cute": "fluff", "adorable": "fluff", "sweet": "fluff",
+    "lmao": "funny", "lol": "funny", "laugh": "funny",
+};
+
+// --- THE AI INJECTION SCRIPT ---
+// This automatically merges all concepts into the operational maps above.
+
+Object.values(CONCEPT_PROPERTIES).forEach(concept => {
+    const id = concept.id;
+
+    // 1. Inject Aliases
+    if (concept.aliases && Array.isArray(concept.aliases)) {
+        concept.aliases.forEach(alias => {
+            if (alias !== id) SYNONYM_MAP[alias.toLowerCase()] = id;
+        });
+    }
+
+    // 2. Inject Genres/Themes
+    if (!MOOD_MAPPINGS[id]) {
+        MOOD_MAPPINGS[id] = { genres: {}, themes: {}, demographics: {} };
+    }
+    
+    if (concept.genres) {
+        concept.genres.forEach(g => { MOOD_MAPPINGS[id].genres[g.name] = g.weight; });
+    }
+    if (concept.themes) {
+        concept.themes.forEach(t => { MOOD_MAPPINGS[id].themes[t.name] = t.weight; });
+    }
+    if (concept.demographics) {
+        concept.demographics.forEach(d => { MOOD_MAPPINGS[id].demographics[d.name] = d.weight; });
+    }
+
+    // 3. Inject into MOOD_DICTIONARY. Use the concept's own tone/intensity
+    // (from properties.js's curation, or harvester.js's synopsis analysis)
+    // when present, instead of a flat neutral/0.8 default — this is what
+    // moodEngine.js actually reads for intent.tone/intent.intensity when a
+    // user's query matches this concept's id/aliases.
+    if (!MOOD_DICTIONARY[id]) {
+        MOOD_DICTIONARY[id] = {
+            moods: [id],
+            intensity: (typeof concept.intensity === 'number') ? concept.intensity : 0.8,
+            tone: concept.tone || "neutral"
+        };
+    }
+});
+
+
+

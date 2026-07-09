@@ -1,0 +1,3543 @@
+[
+    {
+        "id": "Iyashikei",
+        "metadata": { 
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:01.851Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Iyashikei"
+        ],
+        "genres": [
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Super Power",
+                "weight": 0.8
+            },
+            {
+                "name": "Josei",
+                "weight": 0.8
+            },
+            {
+                "name": "Teens' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Shounen",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Gekiga",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:03.883Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Gekiga",
+            "manga",
+            "manga iconography",
+            "josei manga"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Horror",
+                "weight": 0.9
+            },
+            {
+                "name": "Mystery",
+                "weight": 0.7
+            },
+            {
+                "name": "Psychological",
+                "weight": 0.9
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Gekiga",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Ero Guro",
+                "weight": 0.8
+            },
+            {
+                "name": "Detective",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "dark": 0.81,
+            "mysterious": 0.63,
+            "emotional": 0.45
+        }
+    },
+    {
+        "id": "Denpa",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:05.905Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Denpa",
+            "social alienation",
+            "introversion",
+            "ikigai"
+        ],
+        "genres": [
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Psychological",
+                "weight": 0.9
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Thriller",
+                "weight": 0.7
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Bondage",
+                "weight": 0.8
+            },
+            {
+                "name": "Anthology",
+                "weight": 0.8
+            },
+            {
+                "name": "Denpa",
+                "weight": 0.8
+            },
+            {
+                "name": "Fugitive",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "dark": 0.81,
+            "mysterious": 0.63,
+            "emotional": 0.45
+        }
+    },
+    {
+        "id": "Utsuge",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:07.928Z",
+            "confidence": 0,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Utsuge"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Nakige",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:09.950Z",
+            "confidence": 0,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Nakige"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Sukeban",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:11.968Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Sukeban"
+        ],
+        "genres": [
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Ecchi",
+                "weight": 0.7
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            },
+            {
+                "name": "Mystery",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Manzai",
+                "weight": 0.8
+            },
+            {
+                "name": "Shounen",
+                "weight": 0.8
+            },
+            {
+                "name": "Crossdressing",
+                "weight": 0.8
+            },
+            {
+                "name": "Nudity",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51,
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Yankii",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:13.995Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Yankii"
+        ],
+        "genres": [
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "School",
+                "weight": 0.8
+            },
+            {
+                "name": "Shounen",
+                "weight": 0.8
+            },
+            {
+                "name": "Delinquents",
+                "weight": 0.8
+            },
+            {
+                "name": "Primarily Teen Cast",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Bosozoku",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:16.017Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Bosozoku",
+            "academically",
+            "antisocial",
+            "bisexual"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Bancho",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:18.039Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Bancho"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Ecchi",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Shounen",
+                "weight": 0.8
+            },
+            {
+                "name": "Delinquents",
+                "weight": 0.8
+            },
+            {
+                "name": "Martial Arts",
+                "weight": 0.8
+            },
+            {
+                "name": "School",
+                "weight": 0.8
+            },
+            {
+                "name": "Conspiracy",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Rakugo",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:20.065Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Rakugo",
+            "renku",
+            "raku",
+            "ryuteki"
+        ],
+        "genres": [
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Slice of Life",
+                "weight": 0.7
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "themes": [
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Female Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Rakugo",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Karuta",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:22.082Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Karuta"
+        ],
+        "genres": [
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            }
+        ],
+        "themes": [
+            {
+                "name": "Josei",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Youkai",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Urban Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Kirara-kei",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:24.108Z",
+            "confidence": 0,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Kirara-kei"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Solarpunk",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:26.131Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Solarpunk",
+            "punk",
+            "anarchotopia",
+            "presocialism"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Biopunk",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:28.852Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Biopunk",
+            "biohacking",
+            "biopatent",
+            "biobanker"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Dieselpunk",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:30.867Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Dieselpunk",
+            "decopunk",
+            "dieseldom",
+            "deutschpunk"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Cyberpunk Noir",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:32.892Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Cyberpunk Noir",
+            "william gibson",
+            "apocalyptic",
+            "absurdist"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Cosmic Horror",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:35.084Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Cosmic Horror",
+            "transcendent",
+            "eon",
+            "logos"
+        ],
+        "genres": [
+            {
+                "name": "Mystery",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Female Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Amnesia",
+                "weight": 0.8
+            },
+            {
+                "name": "Yandere",
+                "weight": 0.8
+            },
+            {
+                "name": "Cosmic Horror",
+                "weight": 0.8
+            },
+            {
+                "name": "Tentacles",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Body Horror",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:37.106Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Body Horror",
+            "ecohorror",
+            "bodyhacking",
+            "necrosadism"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Folk Horror",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:39.123Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Folk Horror",
+            "supernatural horror film",
+            "analog horror",
+            "art horror"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Splatterpunk",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:41.148Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Splatterpunk",
+            "splatter",
+            "splatterfest",
+            "splatterday"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Psychological Warfare",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:56:58.190Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Psychological Warfare",
+            "war of nerves",
+            "emotional blackmail",
+            "brainwash"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Unreliable Narrator",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:00.211Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Unreliable Narrator",
+            "misnarration",
+            "fiction",
+            "misrelation"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Time Loop",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:02.645Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Time Loop",
+            "closed time loop",
+            "closed loop",
+            "looping"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Thriller",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "themes": [
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Time Manipulation",
+                "weight": 0.8
+            },
+            {
+                "name": "Cultivation",
+                "weight": 0.8
+            },
+            {
+                "name": "Family Life",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Alternate History",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:04.666Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Alternate History",
+            "alternative history",
+            "allohistory",
+            "althist"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Post-Apocalyptic",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:06.690Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Post-Apocalyptic",
+            "postapocalyptic",
+            "preapocalyptic",
+            "peri-apocalyptic"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            },
+            {
+                "name": "Martial Arts",
+                "weight": 0.8
+            },
+            {
+                "name": "Alternate Universe",
+                "weight": 0.8
+            },
+            {
+                "name": "Female Harem",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Dystopian Cyberpunk",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:08.711Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Dystopian Cyberpunk",
+            "apocalyptic",
+            "absurdist",
+            "fiction"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Tech Noir",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:10.734Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Tech Noir",
+            "neo-noir",
+            "noir",
+            "technothriller"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Surrealist Absurdism",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:12.758Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Surrealist Absurdism",
+            "absurd",
+            "dada",
+            "albee"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Black Comedy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:14.778Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Black Comedy",
+            "bad humor",
+            "high comedy",
+            "blackout gag"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Metafiction",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:16.799Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Metafiction",
+            "historiographic",
+            "metareference",
+            "mise en abyme"
+        ],
+        "genres": [
+            {
+                "name": "Romance",
+                "weight": 0.75
+            }
+        ],
+        "themes": [
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Masturbation",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Fourth Wall Breaking",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:18.821Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Fourth Wall Breaking",
+            "ligule",
+            "fillet",
+            "quarter"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Death Game",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:22.035Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Death Game",
+            "a friend to die for",
+            "the reincarnation of peter proud",
+            "delusion"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            },
+            {
+                "name": "Horror",
+                "weight": 0.9
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Thriller",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Survival",
+                "weight": 0.8
+            },
+            {
+                "name": "Shoujo",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Twins",
+                "weight": 0.8
+            },
+            {
+                "name": "Time Skip",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "High-Stakes Gambling",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:24.055Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "High-Stakes Gambling",
+            "low-stakes",
+            "low-pressure",
+            "low-risk"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Survival Horror",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:26.073Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Survival Horror",
+            "hack-and-slasher",
+            "terrorsploitation",
+            "jump scare"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Slow Life",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:28.105Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Slow Life",
+            "choke",
+            "decline",
+            "ease"
+        ],
+        "genres": [
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Slice of Life",
+                "weight": 0.7
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "themes": [
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Josei",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Agricultural / Farming",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:30.129Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Agricultural / Farming",
+            "farmland",
+            "land",
+            "rural"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Culinary Arts",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:32.150Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Culinary Arts",
+            "cuisine",
+            "cookery",
+            "cooking"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Maritime / Seafaring",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:34.170Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Maritime / Seafaring",
+            "sea",
+            "seagoing",
+            "pirate"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Aviation / Flight",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:36.192Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Aviation / Flight",
+            "flying",
+            "ace",
+            "aeronautics"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Traditional Crafts",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:38.217Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Traditional Crafts",
+            "technography",
+            "academicism",
+            "classic"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Calligraphy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:55.252Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Calligraphy",
+            "penmanship",
+            "handwriting",
+            "calligrapher"
+        ],
+        "genres": [
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            }
+        ],
+        "themes": [
+            {
+                "name": "School",
+                "weight": 0.8
+            },
+            {
+                "name": "Yuri",
+                "weight": 0.8
+            },
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51,
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Kyudo",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:57.276Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Kyudo",
+            "enteki",
+            "bowmanship",
+            "aikido"
+        ],
+        "genres": [
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Slice of Life",
+                "weight": 0.7
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Shoujo",
+                "weight": 0.8
+            },
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Archery",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Kendo",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:57:59.301Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Kendo",
+            "shinai",
+            "kumdo",
+            "kusarigamajutsu"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Sports",
+                "weight": 0.7
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Swordplay",
+                "weight": 0.8
+            },
+            {
+                "name": "College",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Naginata",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:01.323Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Naginata",
+            "naginatajutsu",
+            "nagamaki",
+            "chain sickle"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Competitive Karuta",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:03.764Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Competitive Karuta",
+            "compete",
+            "competitiveness",
+            "rivalrous"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Shogi",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:05.785Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Shogi",
+            "japanese chess",
+            "chu shogi",
+            "chinese chess"
+        ],
+        "genres": [
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Sports",
+                "weight": 0.7
+            },
+            {
+                "name": "Psychological",
+                "weight": 0.9
+            },
+            {
+                "name": "Slice of Life",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Futanari",
+                "weight": 0.8
+            },
+            {
+                "name": "Shogi",
+                "weight": 0.8
+            },
+            {
+                "name": "Sex Toys",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Board Game",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "dark": 0.81,
+            "mysterious": 0.63,
+            "emotional": 0.45
+        }
+    },
+    {
+        "id": "Go",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:11.035Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Go",
+            "a-ok",
+            "work",
+            "tour"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Sports",
+                "weight": 0.7
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "School",
+                "weight": 0.8
+            },
+            {
+                "name": "Delinquents",
+                "weight": 0.8
+            },
+            {
+                "name": "Shounen",
+                "weight": 0.8
+            },
+            {
+                "name": "Volleyball",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Mahjong",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:15.510Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Mahjong",
+            "mah-jongg",
+            "game",
+            "sparrow"
+        ],
+        "genres": [
+            {
+                "name": "Sports",
+                "weight": 0.7
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Psychological",
+                "weight": 0.9
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Ecchi",
+                "weight": 0.7
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Mahjong",
+                "weight": 0.8
+            },
+            {
+                "name": "Shounen",
+                "weight": 0.8
+            },
+            {
+                "name": "School",
+                "weight": 0.8
+            },
+            {
+                "name": "School Club",
+                "weight": 0.8
+            },
+            {
+                "name": "Board Game",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "dark": 0.81,
+            "mysterious": 0.63,
+            "emotional": 0.45
+        }
+    },
+    {
+        "id": "Antique Shop Setting",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:17.530Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Antique Shop Setting",
+            "curio",
+            "resale",
+            "odd"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Bookstore Setting",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:20.318Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Bookstore Setting",
+            "shelf",
+            "aisle",
+            "cafe"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Cafe Culture",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:22.340Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Cafe Culture",
+            "bistro",
+            "espresso",
+            "aroma"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Izakaya Setting",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:24.374Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Izakaya Setting",
+            "adjustment",
+            "adjustments",
+            "alignment"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Rural Isolation",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:26.399Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Rural Isolation",
+            "apart",
+            "exile",
+            "isolated"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Urban Decay",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:28.419Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Urban Decay",
+            "urbanism",
+            "urbanites",
+            "urbanite"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Steampunk Fantasy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:30.441Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Steampunk Fantasy",
+            "gears",
+            "alice-in-wonderland",
+            "amazing"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Dark Fantasy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:32.462Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Dark Fantasy",
+            "horror fiction",
+            "psychological horror",
+            "grimdark"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Adventure",
+                "weight": 0.7
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Ecchi",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Swordplay",
+                "weight": 0.8
+            },
+            {
+                "name": "Long Strip",
+                "weight": 0.8
+            },
+            {
+                "name": "Magic",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Low Fantasy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:34.485Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Low Fantasy",
+            "literary fiction",
+            "outworld",
+            "brushfire"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Urban Fantasy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:36.518Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Urban Fantasy",
+            "myth",
+            "plaza",
+            "phantasm"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Mythological Retelling",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:38.557Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Mythological Retelling",
+            "remus",
+            "aesop",
+            "dragon"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Shinto Folklore",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:40.581Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Shinto Folklore",
+            "yomi",
+            "amish",
+            "clan"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Buddhist Philosophy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:57.635Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Buddhist Philosophy",
+            "madhyamika",
+            "samsara",
+            "buddhism in the west"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Yokai / Supernatural Spirits",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:58:59.698Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Yokai / Supernatural Spirits",
+            "spiritual",
+            "genies",
+            "manes"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Onmyodo / Exorcism",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:01.737Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Onmyodo / Exorcism",
+            "skepticism",
+            "atheism.",
+            "rationalism"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Sengoku Period",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:03.984Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Sengoku Period",
+            "jinshin war",
+            "civil war of wa",
+            "siege of osaka"
+        ],
+        "genres": [
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            },
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Isekai",
+                "weight": 0.8
+            },
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Samurai",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Shoujo",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Edo Period",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:06.006Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Edo Period",
+            "kamakura period",
+            "tosa domain",
+            "sendai domain"
+        ],
+        "genres": [
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Centaur",
+                "weight": 0.8
+            },
+            {
+                "name": "Anthology",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Monster Girl",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Meiji Restoration",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:08.028Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Meiji Restoration",
+            "abolition of the han system",
+            "empire of japan",
+            "economy of the empire of japan"
+        ],
+        "genres": [
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Action",
+                "weight": 0.95
+            }
+        ],
+        "themes": [
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Swordplay",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76
+        }
+    },
+    {
+        "id": "Taisho Roman",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:10.066Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Taisho Roman",
+            "antonine",
+            "malta",
+            "none"
+        ],
+        "genres": [
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Drama",
+                "weight": 0.85
+            }
+        ],
+        "themes": [
+            {
+                "name": "Shoujo",
+                "weight": 0.8
+            },
+            {
+                "name": "Heterosexual",
+                "weight": 0.8
+            },
+            {
+                "name": "Historical",
+                "weight": 0.8
+            },
+            {
+                "name": "Seinen",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Showa Era Retro",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:12.087Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Showa Era Retro",
+            "hirohito",
+            "hiroshima",
+            "africa"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Cybernetic Augmentation",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:14.108Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Cybernetic Augmentation",
+            "reinforce",
+            "reinforced",
+            "reinforcing"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Artificial Intelligence",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:16.128Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Artificial Intelligence",
+            "ai",
+            "intelligent agent",
+            "artificialism"
+        ],
+        "genres": [
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Sci-Fi",
+                "weight": 0.85
+            },
+            {
+                "name": "Slice of Life",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Artificial Intelligence",
+                "weight": 0.8
+            },
+            {
+                "name": "Economics",
+                "weight": 0.8
+            },
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Transhumanism",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:18.166Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Transhumanism",
+            "human enhancement",
+            "transhumanity",
+            "transhuman"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Virtual Reality MMORPG",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:20.205Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Virtual Reality MMORPG",
+            "avatar",
+            "mule",
+            "shard"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Otome Game Reincarnation",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:22.319Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Otome Game Reincarnation",
+            "avatar",
+            "transmigration",
+            "forgive"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Villainess Protagonist",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:24.338Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Villainess Protagonist",
+            "alto",
+            "regan",
+            "sue"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Misunderstanding Comedy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:26.359Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Misunderstanding Comedy",
+            "misconstruction",
+            "misinterpretation",
+            "misprision"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Master-Servant Dynamics",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:28.398Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Master-Servant Dynamics",
+            "changes",
+            "developments",
+            "dynamic"
+        ],
+        "genres": [
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            }
+        ],
+        "themes": [
+            {
+                "name": "Yuri",
+                "weight": 0.8
+            },
+            {
+                "name": "Age Gap",
+                "weight": 0.8
+            },
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            },
+            {
+                "name": "Cheating",
+                "weight": 0.8
+            },
+            {
+                "name": "Scissoring",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Contractual Relationship",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:30.415Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Contractual Relationship",
+            "instrument",
+            "account",
+            "partnership"
+        ],
+        "genres": [
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Supernatural",
+                "weight": 0.7
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Slice of Life",
+                "weight": 0.7
+            }
+        ],
+        "themes": [
+            {
+                "name": "Male Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Primarily Male Cast",
+                "weight": 0.8
+            },
+            {
+                "name": "Demons",
+                "weight": 0.8
+            },
+            {
+                "name": "Primarily Adult Cast",
+                "weight": 0.8
+            },
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Fake Marriage",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:32.435Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Fake Marriage",
+            "bastard",
+            "pseudo",
+            "a mensa et thoro"
+        ],
+        "genres": [
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "themes": [
+            {
+                "name": "Josei",
+                "weight": 0.8
+            },
+            {
+                "name": "Female Protagonist",
+                "weight": 0.8
+            },
+            {
+                "name": "Heterosexual",
+                "weight": 0.8
+            },
+            {
+                "name": "Primarily Adult Cast",
+                "weight": 0.8
+            },
+            {
+                "name": "Fake Relationship",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Arranged Marriage",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:34.456Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Arranged Marriage",
+            "marriage",
+            "match",
+            "traditional marriage"
+        ],
+        "genres": [
+            {
+                "name": "Comedy",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            }
+        ],
+        "themes": [
+            {
+                "name": "Boys' Love",
+                "weight": 0.8
+            },
+            {
+                "name": "Josei",
+                "weight": 0.8
+            },
+            {
+                "name": "Foreign",
+                "weight": 0.8
+            },
+            {
+                "name": "Rural",
+                "weight": 0.8
+            },
+            {
+                "name": "Marriage",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Workplace Romance",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:36.479Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Workplace Romance",
+            "workplaces",
+            "relationship",
+            "romances"
+        ],
+        "genres": [
+            {
+                "name": "Drama",
+                "weight": 0.85
+            },
+            {
+                "name": "Hentai",
+                "weight": 0.7
+            },
+            {
+                "name": "Romance",
+                "weight": 0.75
+            }
+        ],
+        "themes": [
+            {
+                "name": "Large Breasts",
+                "weight": 0.8
+            },
+            {
+                "name": "Nudity",
+                "weight": 0.8
+            },
+            {
+                "name": "Heterosexual",
+                "weight": 0.8
+            },
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            },
+            {
+                "name": "Defloration",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
+    },
+    {
+        "id": "Office Politics",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:53.760Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Office Politics",
+            "office work",
+            "officeholding",
+            "politics"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Manga Industry Focus",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:55.798Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Manga Industry Focus",
+            "electron lens",
+            "ray",
+            "tree"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Voice Acting / Seiyuu",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:57.819Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Voice Acting / Seiyuu",
+            "silent",
+            "voiceless",
+            "active"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Idol Industry Dark Side",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T20:59:59.858Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Idol Industry Dark Side",
+            "evil",
+            "satan",
+            "carbon"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Classical Music",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:01.877Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Classical Music",
+            "serious music",
+            "classical",
+            "classical period"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Jazz Scene",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:03.917Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Jazz Scene",
+            "art",
+            "set",
+            "montgomery"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Theater / Acting",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:05.942Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Theater / Acting",
+            "stage",
+            "histrionic",
+            "staged"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Ballet / Contemporary Dance",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:08.004Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Ballet / Contemporary Dance",
+            "modern dance",
+            "variation",
+            "adagio"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Architectural Focus",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:10.024Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Architectural Focus",
+            "arts",
+            "axis",
+            "decor"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Medical / Surgical Drama",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:12.042Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Medical / Surgical Drama",
+            "theatre",
+            "surgery",
+            "hospital"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Legal / Courtroom Drama",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:14.081Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Legal / Courtroom Drama",
+            "das",
+            "trial",
+            "jag"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Firefighting / Rescue",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:16.105Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Firefighting / Rescue",
+            "hose",
+            "axe",
+            "fire hydrant"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Military Strategy",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:18.125Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Military Strategy",
+            "grand strategy",
+            "principles of war",
+            "nuclear strategy"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Espionage / Spy Craft",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:20.445Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Espionage / Spy Craft",
+            "mole",
+            "counterspy",
+            "spook"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Political Intrigue",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:22.466Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Political Intrigue",
+            "cabal",
+            "politics",
+            "roorbach"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Royal Court Drama",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:24.488Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Royal Court Drama",
+            "courtly",
+            "formal",
+            "levee"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Found Family",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:26.508Z",
+            "confidence": 0.5,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Found Family",
+            "globulin",
+            "carcharhinidae",
+            "tinamou"
+        ],
+        "genres": [
+            {
+                "name": "Romance",
+                "weight": 0.75
+            },
+            {
+                "name": "Fantasy",
+                "weight": 0.8
+            }
+        ],
+        "themes": [
+            {
+                "name": "Josei",
+                "weight": 0.8
+            },
+            {
+                "name": "Foreign",
+                "weight": 0.8
+            },
+            {
+                "name": "Time Manipulation",
+                "weight": 0.8
+            },
+            {
+                "name": "Reincarnation",
+                "weight": 0.8
+            },
+            {
+                "name": "Full Color",
+                "weight": 0.8
+            }
+        ],
+        "moodWeights": {}
+    },
+    {
+        "id": "Coming-of-Age (Sennen)",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:28.524Z",
+            "confidence": 0,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Coming-of-Age (Sennen)"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Midlife Crisis / Adult Growth",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:30.545Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Midlife Crisis / Adult Growth",
+            "angst",
+            "phase",
+            "state"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    },
+    {
+        "id": "Intergenerational Friendship",
+        "metadata": {
+            "sources": [
+                "ANN",
+                "AniList",
+                "Jikan",
+                "Datamuse"
+            ],
+            "generatedAt": "2026-07-07T21:00:32.563Z",
+            "confidence": 0.25,
+            "version": "1.0.0"
+        },
+        "aliases": [
+            "Intergenerational Friendship",
+            "monarchy",
+            "aristocracy",
+            "arm"
+        ],
+        "genres": [],
+        "themes": [],
+        "moodWeights": {}
+    }
+]

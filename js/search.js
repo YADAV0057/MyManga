@@ -1,19 +1,60 @@
- 
 // ==========================================
 // SEARCH / AGGREGATION ENGINE (js/search.js)
 // ==========================================
 import { db, doc, getDoc, setDoc, generateCacheKey } from './firebase.js';
-import { parseSmartQuery, fetchFromAniListUnified } from './anilist.js';
+import { buildIntent } from './parser/pipeline.js';
+import { MangaIntent } from './parser/intentSchema.js';
+import { buildSearchPlan, buildPlanFromGenreList } from './parser/searchPlanner.js';
+import { fetchFromAniListUnified } from './anilist.js';
 import { fetchFromJikanFallback } from './jikan.js';
 import { fetchFromKitsuFallback } from './kitsu.js';
-import { fetchFromMangaDexFallback, resolveReadLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
-import { renderMangaCard, formatStatus, renderDidYouMean } from './renderer.js';  
-import { CONFIG } from './config.js'; // Ensure CONFIG is imported for IMAGE_FALLBACK
+import { fetchFromMangaDexFallback, resolveReadLinks, getFallbackLinks, suggestTitlesFromMangaDex } from './mangadex.js'; 
+import { renderMangaCard, renderDidYouMean } from './renderer.js';  
+import { normalizeResult } from './resultNormalizer.js';
+import { scoreResults } from './parser/recommendationScorer.js';
+import { runIntentAnimation, setApiTierStatus, finishAnimation, settlePanel, hideAIPanel } from './aiPanel.js';
+import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
+
+let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
+const dictionaryLoadPromise = (async () => {
+    try {
+        const mod = await import('./parser/dictionary/harvested_knowledge.js');
+        CONCEPT_DICTIONARY = { ...mod.HARVESTED_RULES, ...CONCEPT_PROPERTIES }; 
+    } catch (e) {
+        console.warn('[search.js] harvested_knowledge.js not available, using base properties.', e.message);
+    }
+})();
 
 let isSearching = false;
 
+const SOURCE_LABELS = {
+    anilist: 'AniList',
+    jikan: 'Jikan',
+    kitsu: 'Kitsu',
+    mangadex: 'MangaDex',
+    cache: 'AniList (cached)'
+};
+
+function buildPresetIntent(genreQuery, plan) {
+    const intent = new MangaIntent();
+    intent.originalQuery = genreQuery;
+    intent.confidence = 1.0;
+    intent.genres = plan.primaryGenres.map(name => ({ name, confidence: 1.0 }));
+    return intent;
+}
+
+export async function triggerPresetSearch(genreQuery, page = 1) {
+    const plan = buildPlanFromGenreList(genreQuery);
+    return runSearch(genreQuery, page, buildPresetIntent(genreQuery, plan), plan);
+}
+
 export async function triggerSearch(rawQuery, page = 1) {
     if (rawQuery === undefined || rawQuery === null) return;
+    const intent = buildIntent(rawQuery);
+    return runSearch(rawQuery, page, intent, buildSearchPlan(intent));
+}
+
+async function runSearch(rawQuery, page, intent, plan) {
     if (isSearching) return;
     isSearching = true;
 
@@ -27,12 +68,19 @@ export async function triggerSearch(rawQuery, page = 1) {
     loadingBar.classList.add('is-loading');
     refreshBtn.style.display = 'none';
     
-    // NEW: Instantly inject 15 shimmering skeleton cards while we wait!
     renderSkeletonLoaders(15);
     document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
 
+    const hasQuery = typeof rawQuery === 'string' && rawQuery.trim().length > 0;
+    const isGenreSearch = (plan.primaryGenres.length + plan.secondaryThemes.length) > 0;
+
     try {
-        const parsedQuery = parseSmartQuery(rawQuery);
+        if (hasQuery) {
+            await runIntentAnimation(intent);
+        } else {
+            hideAIPanel();
+        }
+
         const cacheKey = generateCacheKey(rawQuery, page);
         let finalResults = [];
         let dataSource = "cache"; 
@@ -50,48 +98,56 @@ export async function triggerSearch(rawQuery, page = 1) {
         if (docSnap && docSnap.exists()) {
             console.log("Loaded from Firebase cache.");
             finalResults = docSnap.data().results;
+            if (hasQuery) setApiTierStatus('cache', 'success');
         } else {
-            console.log("Not in cache. Beginning API Waterfall...");
-
-            // TIER 1: AniList
             dataSource = "anilist";
-            if (parsedQuery.isVibeOrTag) {
+            if (hasQuery) setApiTierStatus('anilist', 'pending');
+            if (isGenreSearch) {
                 const [koreanResults, globalResults] = await Promise.all([
-                    fetchFromAniListUnified(parsedQuery, page, true, 5),
-                    fetchFromAniListUnified(parsedQuery, page, false, 5)
+                    fetchFromAniListUnified(plan, page, true, 5),
+                    fetchFromAniListUnified(plan, page, false, 5)
                 ]);
                 finalResults = [...koreanResults, ...globalResults];
                 finalResults = Array.from(new Map(finalResults.map(item => [item.id, item])).values());
             } else {
-                finalResults = await fetchFromAniListUnified(parsedQuery, page, false, 10);
+                finalResults = await fetchFromAniListUnified(plan, page, false, 10);
             }
+            if (hasQuery) setApiTierStatus('anilist', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
 
-            // TIER 2: Jikan (MAL) Fallback
             if (!finalResults || finalResults.length === 0) {
-                console.log("AniList failed. Trying Jikan...");
                 dataSource = "jikan";
-                try { finalResults = await fetchFromJikanFallback(parsedQuery, page, 10); } 
-                catch (e) { console.warn("Jikan failed:", e); }
-            }
+                if (hasQuery) setApiTierStatus('jikan', 'pending');
+                try {
+                    finalResults = await fetchFromJikanFallback(plan, page, 10);
+                    if (hasQuery) setApiTierStatus('jikan', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
+                } catch (e) {
+                    if (hasQuery) setApiTierStatus('jikan', 'fail');
+                }
+            } else if (hasQuery) setApiTierStatus('jikan', 'skip');
 
-            // TIER 3: Kitsu Fallback
             if (!finalResults || finalResults.length === 0) {
-                console.log("Jikan failed. Trying Kitsu...");
                 dataSource = "kitsu";
-                try { finalResults = await fetchFromKitsuFallback(parsedQuery, page, 10); } 
-                catch (e) { console.warn("Kitsu failed:", e); }
-            }
+                if (hasQuery) setApiTierStatus('kitsu', 'pending');
+                try {
+                    finalResults = await fetchFromKitsuFallback(plan, page, 10);
+                    if (hasQuery) setApiTierStatus('kitsu', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
+                } catch (e) {
+                    if (hasQuery) setApiTierStatus('kitsu', 'fail');
+                }
+            } else if (hasQuery) setApiTierStatus('kitsu', 'skip');
 
-            // TIER 4: MangaDex Fallback 
             if (!finalResults || finalResults.length === 0) {
-                console.log("Kitsu failed. Trying MangaDex...");
                 dataSource = "mangadex";
-                try { finalResults = await fetchFromMangaDexFallback(parsedQuery, page, 10); } 
-                catch (e) { console.warn("MangaDex failed:", e); }
-            }
+                if (hasQuery) setApiTierStatus('mangadex', 'pending');
+                try {
+                    finalResults = await fetchFromMangaDexFallback(plan, page, 10);
+                    if (hasQuery) setApiTierStatus('mangadex', (finalResults && finalResults.length > 0) ? 'success' : 'fail');
+                } catch (e) {
+                    if (hasQuery) setApiTierStatus('mangadex', 'fail');
+                }
+            } else if (hasQuery) setApiTierStatus('mangadex', 'skip');
 
-            // CACHE SAVE: Only save Tier 1 (AniList) data to Firebase to keep cache clean
-            if (db && finalResults && finalResults.length > 0 && dataSource === "anilist") {
+            if (db && finalResults && finalResults.length > 0 && dataSource !== "cache") {
                 try {
                     const docRef = doc(db, "searches", cacheKey);
                     await setDoc(docRef, { results: finalResults });
@@ -99,60 +155,62 @@ export async function triggerSearch(rawQuery, page = 1) {
             }
         }
 
+        if (plan.filters?.maxChapters) {
+            finalResults = (finalResults || []).filter(m => {
+                const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
+                return !ch || isNaN(ch) || ch <= plan.filters.maxChapters;
+            });
+        }
+
         if (!finalResults || finalResults.length === 0) {
+            if (hasQuery) { await finishAnimation(0); settlePanel(intent); }
             let suggestions = [];
-            if (parsedQuery.cleanQuery && parsedQuery.cleanQuery.length > 0) {
-                try { suggestions = await suggestTitlesFromMangaDex(parsedQuery.cleanQuery, 5); } 
+            if (plan.cleanQuery && plan.cleanQuery.length > 0) {
+                try { suggestions = await suggestTitlesFromMangaDex(plan.cleanQuery, 5); } 
                 catch (e) { console.warn("Did-you-mean lookup failed:", e); }
             }
-
             grid.innerHTML = '';
-            if (suggestions.length > 0) {
-                renderDidYouMean(rawQuery, suggestions);
-            } else {
-                grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found for this search. All fallbacks exhausted!</p>';
-            }
+            if (suggestions.length > 0) renderDidYouMean(rawQuery, suggestions);
+            else grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">No official API data found!</p>';
             return;
         }
 
-        const factSheets = await Promise.all(finalResults.map(async (aniManga) => {
-            const title = aniManga.title.english || aniManga.title.romaji;
-            const cleanSynopsis = aniManga.description ? aniManga.description.replace(/<[^>]*>?/gm, '') : "No synopsis available.";
-            const generatedLinks = await resolveReadLinks(title);
+        const unifiedResults = finalResults.map(aniManga =>
+            normalizeResult(aniManga, SOURCE_LABELS[dataSource] || dataSource)
+        );
 
-            return {
-                id: aniManga.id,
-                title: title,
-                globalScore: aniManga.averageScore || "N/A",
-                rawGenres: aniManga.genres || [],
-                coverUrl: aniManga.coverImage?.large || CONFIG.IMAGE_FALLBACK,
-                synopsis: cleanSynopsis,
-                status: formatStatus(aniManga.status),
-                chapters: aniManga.chapters ? `${aniManga.chapters} Chp.` : "N/A",
-                readLinks: generatedLinks
-            };
+        await dictionaryLoadPromise;
+        const scored = await scoreResults(unifiedResults, intent, plan, CONCEPT_DICTIONARY);
+
+        const factSheets = await Promise.all(scored.map(async (unified) => {
+            const generatedLinks = await Promise.race([
+                resolveReadLinks(unified.title).catch(() => getFallbackLinks(unified.title)),
+                new Promise(resolve => setTimeout(() => resolve(getFallbackLinks(unified.title)), 700))
+            ]);
+            return { ...unified, readLinks: generatedLinks };
         }));
 
-        grid.innerHTML = ''; // Clears the skeletons before rendering real cards
+        if (hasQuery) {
+            await finishAnimation(factSheets.length);
+            settlePanel(intent);
+        }
+
+        grid.innerHTML = '';
         refreshBtn.style.display = 'block';
         factSheets.forEach(renderMangaCard);
 
     } catch (error) {
         console.error("Aggregation Error:", error);
-        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred connecting to the databases.</p>';
+        grid.innerHTML = '<p style="text-align:center; width:100%; color: #ef4444;">An error occurred.</p>';
     } finally {
         loadingBar.classList.remove('is-loading');
         isSearching = false;
     }
 }
 
-// ==========================================
-// SKELETON LOADER UI
-// ==========================================
 export function renderSkeletonLoaders(count = 15) {
     const grid = document.getElementById('community-grid');
     if (!grid) return;
-    
     let skeletonHTML = '';
     for (let i = 0; i < count; i++) {
         skeletonHTML += `

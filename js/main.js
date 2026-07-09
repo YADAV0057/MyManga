@@ -1,12 +1,27 @@
 // ==========================================
 // APP ENTRY POINT (js/main.js)
 // ==========================================
-
-import { setupParserTester } from './setupParserTester.js';
+// CHANGED: setupParserTester() / #parser-input / #parser-output are gone —
+// the standalone "Mood Intelligence Preview" box has been replaced by the
+// AI Search Intelligence panel (js/aiPanel.js), which is now driven by the
+// real search bar instead of a separate manual tester. setupParserTester.js
+// is no longer imported anywhere and can be deleted from the repo.
 
 // ===============================
 // DIAGNOSTICS SYSTEM
 // ===============================
+window.addEventListener('error', (e) => {
+    alert('JS ERROR: ' + e.message + '\nFile: ' + e.filename + '\nLine: ' + e.lineno);
+});
+window.addEventListener('unhandledrejection', (e) => {
+    alert('PROMISE ERROR: ' + (e.reason?.message || e.reason));
+});
+
+console.log("🚀 main.js is executing!");
+
+
+
+
 window.AppDiagnostics = {
     status: {},
     log: function (module, success, message) {
@@ -30,7 +45,7 @@ window.AppDiagnostics = {
             { name: "Search", fn: () => typeof window.triggerSearch === "function" },
             { name: "Theme", fn: () => typeof window.applyMoodTheme === "function" },
             { name: "Moods", fn: () => typeof window.populateAllVibes === "function" },
-            { name: "Parser UI", fn: () => document.getElementById("parser-test-btn") }
+            { name: "AI Panel", fn: () => document.getElementById("ai-panel") }
         ];
 
         let allGood = true;
@@ -73,14 +88,22 @@ async function initializeApp() {
             window.AppDiagnostics.log("Config", false, e.message);
         }
 
+        
         // Load Search
         try {
-            const search = await import("./search.js");
+            const search = await import("./search.js"); // <--- Corrected Path
             window.triggerSearch = search.triggerSearch;
+            window.triggerPresetSearch = search.triggerPresetSearch;
             window.AppDiagnostics.log("Search", true, "Loaded");
         } catch (e) {
-            window.AppDiagnostics.log("Search", false, e.message);
+            console.error("DEBUG - Search Load Failure:", e);
+            window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
         }
+
+        
+
+
+
 
         // Load Theme
         try {
@@ -99,8 +122,24 @@ async function initializeApp() {
             window.toggleTags = moods.toggleTags;
             window.attachMoodButtonListeners = moods.attachMoodButtonListeners;
             window.AppDiagnostics.log("Moods", true, "Loaded");
+
+            // BUGFIX: these were only ever assigned to window, never invoked,
+            // so the 50-mood grid was never populated, the 3-button rotation
+            // never started, and mood buttons had no click handler.
+            moods.populateAllVibes();          // fills #extra-tags with all 50 mood buttons
+            moods.attachMoodButtonListeners(); // delegated click handler for every .vibe-btn
+            moods.startVibeRotation(30000);    // starts the 3-button rotation, every 30s
         } catch (e) {
             window.AppDiagnostics.log("Moods", false, e.message);
+        }
+
+        // Load AI Panel (replaces the old standalone parser tester)
+        try {
+            const aiPanel = await import("./aiPanel.js");
+            aiPanel.initAIPanel();
+            window.AppDiagnostics.log("AIPanel", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("AIPanel", false, e.message);
         }
 
         // Load Renderer
@@ -108,6 +147,12 @@ async function initializeApp() {
             const renderer = await import("./renderer.js");
             window.renderMangaCard = renderer.renderMangaCard;
             window.getCachedFactSheet = renderer.getCachedFactSheet;
+            // BUGFIX: handleFavoriteClick was called via onclick in renderer.js's
+            // card markup but never attached to window anywhere — the ♥ button
+            // threw a silent ReferenceError. renderer.js now exports it.
+            window.handleFavoriteClick = renderer.handleFavoriteClick;
+            // NEW: same pattern for the "Why?" match-breakdown toggle.
+            window.toggleWhyPanel = renderer.toggleWhyPanel;
             window.AppDiagnostics.log("Renderer", true, "Loaded");
         } catch (e) {
             window.AppDiagnostics.log("Renderer", false, e.message);
@@ -128,16 +173,17 @@ async function initializeApp() {
         setupSearchBar();
         setupViewToggle();
         setupRefreshButton();
-
-        // Setup Parser Tester (Imported from external file)
-        setupParserTester();
+        setupMoodPanel();
 
         window.AppDiagnostics.log("App", true, "Initialized");
 
-    } catch (err) {
-        window.AppDiagnostics.log("Fatal", false, err.message);
+    } catch (e) {
+        console.error("DEBUG - App Init Failure:", e);
+        window.AppDiagnostics.log("App", false, "Load Failed - Check Console");
     }
 }
+
+
 
 // ===============================
 // SEARCH BAR
@@ -166,24 +212,65 @@ function setupSearchBar() {
 // ===============================
 // VIEW TOGGLE
 // ===============================
+// Single toggle button flips window.currentView between "discover"/
+// "favorites" and swaps its own label, instead of two buttons fighting
+// over an active-view class.
 function setupViewToggle() {
-    const discoverBtn = document.getElementById("nav-discover-btn");
     const favBtn = document.getElementById("nav-favorites-btn");
-
-    if (!discoverBtn || !favBtn) return;
+    const grid = document.getElementById("community-grid");
+    if (!favBtn || !grid) return;
 
     window.currentView = "discover";
-
-    discoverBtn.addEventListener("click", () => {
-        window.currentView = "discover";
-        discoverBtn.classList.add("active-view");
-        favBtn.classList.remove("active-view");
-    });
+    let discoverSnapshot = null; // last-rendered discover grid HTML, restored on "Back to Discover"
 
     favBtn.addEventListener("click", () => {
-        window.currentView = "favorites";
-        favBtn.classList.add("active-view");
-        discoverBtn.classList.remove("active-view");
+        const goingToFavorites = window.currentView !== "favorites";
+        window.currentView = goingToFavorites ? "favorites" : "discover";
+        favBtn.classList.toggle("active-view", goingToFavorites);
+        favBtn.textContent = goingToFavorites ? "🔍 Back to Discover" : "❤️ My List";
+
+        // BUGFIX: this used to only flip currentView/the label and never
+        // touched the grid at all. Clicking "My List" left whatever discover
+        // results were already on screen sitting there untouched (looked like
+        // nothing happened), and clicking it again just flipped the label
+        // back to "❤️ My List" with no visible change — read exactly as "the
+        // button does nothing except switch back to Discover."
+        if (goingToFavorites) {
+            discoverSnapshot = grid.innerHTML;
+            renderFavoritesView(grid);
+        } else if (discoverSnapshot !== null) {
+            grid.innerHTML = discoverSnapshot;
+        }
+    });
+}
+
+// Renders window.getAllFavorites() into the grid, same as a normal search
+// result set. Relies on favorites.js storing the full factSheet (renderer.js
+// hands toggleFavorite() the complete cached factSheet, not just an id), so
+// window.renderMangaCard can consume each entry directly.
+function renderFavoritesView(grid) {
+    const favorites = window.getAllFavorites ? window.getAllFavorites() : [];
+    grid.innerHTML = '';
+
+    if (!favorites || favorites.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">Nothing saved yet — tap ♡ on any card to add it here.</p>';
+        return;
+    }
+
+    if (window.renderMangaCard) {
+        favorites.forEach(window.renderMangaCard);
+    }
+}
+
+// ===============================
+// MOOD PANEL ("+ Show All Moods" toggle)
+// ===============================
+function setupMoodPanel() {
+    const moreBtn = document.getElementById("more-btn");
+    if (!moreBtn) return;
+
+    moreBtn.addEventListener("click", () => {
+        if (window.toggleTags) window.toggleTags();
     });
 }
 
@@ -196,7 +283,14 @@ function setupRefreshButton() {
 
     btn.addEventListener("click", () => {
         if (window.triggerSearch) {
-            window.triggerSearch("", 1);
+            // CHANGED: was always triggerSearch("", 1) — a blank query on a
+            // fixed page 1 produces the exact same cache key (generateCacheKey
+            // hashes query+page) AND the exact same AniList POPULARITY_DESC
+            // page every time, so "Reroll" just reloaded the same cached
+            // manga forever. Picking a random page each click both busts the
+            // cache key and pulls a genuinely different slice of results.
+            const randomPage = Math.floor(Math.random() * 10) + 1;
+            window.triggerSearch("", randomPage);
         }
     });
 }
