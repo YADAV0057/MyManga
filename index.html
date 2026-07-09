@@ -168,6 +168,9 @@
     <button class="bn-item">
         <span class="bn-icon">😊</span>Profile
     </button>
+    <button class="bn-item" onclick="window.openAdvancedFilter && window.openAdvancedFilter()">
+    <span class="bn-icon">🔎</span>Filter
+    </button>
 </nav>
 
 <!-- =========================
@@ -197,6 +200,10 @@
         
         <button class="menu-item" onclick="window.cycleTheme && window.cycleTheme()">
             <span class="menu-icon">🎨</span> Toggle Theme
+        </button>
+
+        <button class="menu-item" onclick="window.closeMenu(); window.openAdvancedFilter && window.openAdvancedFilter()">
+    <span class="menu-icon">🔎</span> Advanced Filter
         </button>
 
         <div class="menu-divider"></div>
