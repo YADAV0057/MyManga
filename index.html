@@ -1,6 +1,6 @@
 <!DOCTYPE html> 
-<html lang="en">  
- 
+<html lang="en"> 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/cards.css">
     <link rel="stylesheet" href="./css/detail.css">
+    <link rel="stylesheet" href="./css/mixer.css">
+    <link rel="stylesheet" href="./css/mylist.css">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -108,6 +110,13 @@
             + Show All Moods
         </button>
 
+        <!-- STEP 2: opens the dedicated Mood Mixer page (js/mixerPage.js) —
+             2 mood slots + genre chips + status/length filters, submitted
+             once instead of instant-searching on every tap. -->
+        <button class="vibe-btn open-mixer-btn" id="open-mixer-btn" style="margin-top:12px;">
+            🔮 Open Full Mixer →
+        </button>
+
         <div id="extra-tags" class="hidden-tags"></div>
 
     </section>
@@ -119,9 +128,9 @@
 
     <!-- Quick filter chips (decorative, matches design mockup) -->
     <div class="quick-filters">
-        <button class="qf-chip">🔁 Finish tonight</button>
-        <button class="qf-chip">📚 Long binge</button>
-        <button class="qf-chip qf-done">✅ Completed</button>
+        <button class="qf-chip" data-quick-filter="finish-tonight">🔁 Finish tonight</button>
+        <button class="qf-chip" data-quick-filter="long-binge">📚 Long binge</button>
+        <button class="qf-chip qf-done" data-quick-filter="completed">✅ Completed</button>
     </div>
 
     <!-- RESULTS -->
@@ -161,13 +170,13 @@
     <button class="bn-item active" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <span class="bn-icon">🏠</span>Home
     </button>
-    <button class="bn-item" onclick="document.getElementById('rotating-vibes')?.scrollIntoView({behavior:'smooth'})">
+    <button class="bn-item" onclick="window.openMixerPage && window.openMixerPage()">
         <span class="bn-icon">🔮</span>Mixer
     </button>
     <button class="bn-item" onclick="document.getElementById('manga-search-input')?.focus()">
         <span class="bn-icon">🔍</span>Search
     </button>
-    <button class="bn-item" onclick="document.getElementById('nav-favorites-btn')?.click()">
+    <button class="bn-item" onclick="window.openMyListPage && window.openMyListPage()">
         <span class="bn-icon">♡</span>My List
     </button>
     <button class="bn-item">
