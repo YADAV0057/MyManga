@@ -1,6 +1,6 @@
 // ==========================================
 // landing/index.js
-// ==========================================
+// ========================================== 
 // SINGLE ENTRY POINT for the whole landing-page feature.
 //
 // Everything the "Trending Today" + "Hidden Gems" rows need — fetching,
