@@ -3,7 +3,7 @@
    ========================================== 
    Full-screen "manga detail" page shown when any card (search grid,
    Trending Today, Hidden Gems) is tapped. Lives as a fixed overlay so it
-   never needs real routing — js/mangaDetail.js just toggles the .open
+   never needs real routing — js/mangaDetail.js just toggles the .open 
    class. Scoped entirely to .detail-* classes so it can't collide with
    the rest of the site's CSS.
 */
