@@ -2,6 +2,12 @@
    css/menu.css
    Slide-out navigation drawer
    ========================================== */
+body.menu-open {
+    overflow: hidden;
+}
+
+
+
 
 .menu-overlay {
     position: fixed;
