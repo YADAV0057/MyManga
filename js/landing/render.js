@@ -1,31 +1,3 @@
-// ========================================== 
-// landing/render.js
-// ==========================================
-// DOM layer for the landing page's always-visible rows. Takes normalized
-// manga data (from fetch.js) and renders it into the two containers.
-//
-// VISUAL NOTE: earlier versions of this file reused ../renderer.js's full
-// search-result card (getMangaCardHTML) inside the 118px carousel slot.
-// That card's design — cover + title + genres + facts row + synopsis +
-// favorite button — is built for a ~260px grid card, so squeezed into a
-// carousel it rendered cramped and cut off. These rows are meant to look
-// like the compact "Trending Today" cards in the design mockup (image,
-// score badge, title, one-line genre), so this file now builds that
-// simpler card directly from the normalized data instead. No favorite
-// button or read-options overlay here by design — tapping a card triggers
-// a real search for its title instead (same window.triggerSearch used by
-// the mood chips elsewhere), which is a better fit for a discovery row.
-//
-// Isolation note: the only external imports are escapeHTML from ../utils.js
-// (a pure string helper — no DOM/app coupling) and cacheMangaForDetail from
-// ../mangaDetail.js (a plain in-memory cache keyed by id — no DOM coupling
-// either). Everything else here is local to landing/.
-//
-// Tapping a card now opens the full manga detail page (cover, synopsis,
-// stats, and read-links from external sites) instead of re-running a
-// title search — a better fit for a discovery row, and consistent with
-// how the main search-result grid's cards behave (see renderer.js).
-
 import { escapeHTML } from '../utils.js';
 import { cacheMangaForDetail } from '../mangaDetail.js';
 
@@ -52,14 +24,21 @@ function renderCompactCard(item) {
     `;
 }
 
-// Replace your existing showSkeletons function with this:
+// This was the missing function!
+function renderSkeletonRow(count) {
+    let html = '';
+    for (let i = 0; i < count; i++) {
+        html += `<div class="skeleton-card--carousel"><div class="skeleton-cover"></div></div>`;
+    }
+    return html;
+}
+
 export function showSkeletons(...elements) {
     elements.forEach(el => {
         if (el) el.innerHTML = renderSkeletonRow(6);
     });
 }
 
-// Add these to the bottom of the file:
 export function renderNewReleasesRow(el, items) {
     if (!el) return;
     el.innerHTML = items.length
@@ -81,16 +60,6 @@ export function renderShortReadsRow(el, items) {
         : renderEmptyState('Could not find short reads at the moment.');
 }
 
-function renderEmptyState(message) {
-    return `<div class="row-empty-state">${message}</div>`;
-}
-
-function renderCards(items) {
-    return items.map(item => `<div class="carousel-card-wrap">${renderCompactCard(item)}</div>`).join('');
-}
-
-
-
 export function renderTrendingRow(el, trending) {
     if (!el) return;
     el.innerHTML = trending.length
@@ -105,4 +74,10 @@ export function renderHiddenGemsRow(el, hiddenGems) {
         : renderEmptyState('No hidden gems surfaced yet — check back in a bit.');
 }
 
+function renderEmptyState(message) {
+    return `<div class="row-empty-state">${message}</div>`;
+}
 
+function renderCards(items) {
+    return items.map(item => `<div class="carousel-card-wrap">${renderCompactCard(item)}</div>`).join('');
+}
