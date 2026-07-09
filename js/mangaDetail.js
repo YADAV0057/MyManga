@@ -138,8 +138,12 @@ function buildMarkup(item) {
                     ${saved ? '♥ Saved to My List' : '♡ Save to My List'}
                 </button>
 
-                <h3 class="detail-section-heading">Synopsis</h3>
-                <p class="detail-synopsis">${synopsis}</p>
+
+<h3 class="detail-section-heading">Synopsis</h3>
+<p class="detail-synopsis" onclick="window.toggleSynopsis(this)" title="Tap to expand/collapse">
+    ${synopsis}
+</p>
+
 
                 ${renderDetailMatchBreakdown(item)}
 
