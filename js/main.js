@@ -1,7 +1,7 @@
 // ==========================================
 // APP ENTRY POINT (js/main.js)
 // ==========================================
-// CHANGED: setupParserTester() / #parser-input / #parser-output are gone —
+// CHANGED: setupParserTester() / #parser-input / #parser-output are gone — 
 // the standalone "Mood Intelligence Preview" box has been replaced by the
 // AI Search Intelligence panel (js/aiPanel.js), which is now driven by the
 // real search bar instead of a separate manual tester. setupParserTester.js
