@@ -79,6 +79,33 @@ function renderLinksSkeleton() {
         </div>`;
 }
 
+
+function renderDetailMatchBreakdown(item) {
+    if (typeof item.matchScore !== 'number' || !item.matchReasons || item.matchReasons.length === 0) {
+        return '';
+    }
+
+    const items = item.matchReasons.map(r => `
+        <div class="detail-match-item ${r.ok ? 'is-match' : ''}">
+            <span class="detail-match-icon">${r.ok ? '✓' : '✗'}</span>
+            <span>${escapeHTML(r.text)}</span>
+        </div>
+    `).join('');
+
+    return `
+        <div class="detail-match-container">
+            <div class="detail-match-header">
+                <span class="detail-match-score">✨ ${item.matchScore}% Match</span>
+                <span class="detail-match-title">Why we picked this</span>
+            </div>
+            <div class="detail-match-list">${items}</div>
+        </div>
+    `;
+}
+
+
+
+
 function buildMarkup(item) {
     const safeTitle = escapeHTML(item.title || 'Untitled');
     const synopsis = escapeHTML(item.synopsis || 'No description available.');
@@ -113,6 +140,8 @@ function buildMarkup(item) {
 
                 <h3 class="detail-section-heading">Synopsis</h3>
                 <p class="detail-synopsis">${synopsis}</p>
+
+                ${renderDetailMatchBreakdown(item)}
 
                 <h3 class="detail-section-heading">Read Now</h3>
                 <div class="detail-links-row" id="detail-links-row">
