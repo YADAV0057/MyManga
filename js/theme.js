@@ -4,7 +4,7 @@
 
 // DEEP CINEMA TONES: 
 // Darker, richer shades to ensure text remains highly readable.
-const MOOD_COLORS = {
+export const MOOD_COLORS = {
     // Joy & Energy (Deep Ambers & Dark Golds)
     '😊 happy': '#78350f',         // Dark Amber
     '😂 laugh out loud': '#713f12', // Deep Bronze
@@ -79,4 +79,25 @@ export function applyMoodTheme(moodLabel) {
     const newBgColor = MOOD_COLORS[cleanLabel] || '#0b1622';
 
     document.documentElement.style.setProperty('--bg-dark', newBgColor);
+}
+
+function moodColorFor(label) {
+    const clean = (label || '').toLowerCase().trim();
+    return MOOD_COLORS[clean] || '#0b1622';
+}
+
+// STEP 6 (Mood Mixer visual overhaul): blends 1-2 selected moods' own theme
+// colors into a CSS gradient string for the Mixer page's background. Kept
+// separate from applyMoodTheme()/--bg-dark above on purpose — the Mixer is
+// a self-contained overlay (see mixerPage.js's isolation note), so picking
+// a mood there shouldn't repaint the rest of the site's theme underneath it.
+export function blendMoodColors(labels) {
+    const colors = (labels || []).map(moodColorFor);
+    if (colors.length === 0) {
+        return 'radial-gradient(circle at 30% 20%, #171233 0%, var(--bg-dark, #0c0a16) 70%)';
+    }
+    if (colors.length === 1) {
+        return `radial-gradient(circle at 30% 20%, ${colors[0]} 0%, var(--bg-dark, #0c0a16) 75%)`;
+    }
+    return `linear-gradient(135deg, ${colors[0]} 0%, ${colors[1]} 55%, var(--bg-dark, #0c0a16) 100%)`;
 }
