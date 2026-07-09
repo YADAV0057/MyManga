@@ -1,5 +1,5 @@
 // ==========================================
-// SEARCH RESULTS PAGE (js/searchResultsPage.js) 
+// SEARCH RESULTS PAGE (js/searchResultsPage.js)
 // ==========================================
 // STEP 7b built the page shell and a single first page of real results
 // (fixed-overlay pattern, re-parenting cards out of #community-grid).
