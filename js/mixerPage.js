@@ -7,40 +7,41 @@
 // extra genre chips, set status/length filters, and submit once to see a
 // full grid of matches — instead of every tap re-searching immediately.
 //
-// STEP 2 FIX (too-few-results bug): AniList's genre_in is an AND filter
-// across the whole array, not "any of these" — see PROJECT_BRIEF Section 1.
-// Approach (c): only each selected mood's own genre pair goes into the
-// AniList genre_in query (so usually 2, rarely 4 genres). Manually-picked
-// genre chips are never sent to AniList as a hard filter — see STEP 3 below
-// for how they're used instead.
+// STEP 2 FIX (too-few-results bug): only each selected mood's own genre
+// pair goes into AniList's genre_in filter (usually 2, rarely 4 genres).
+// Manually-picked genre chips are never sent to AniList as a hard filter.
 //
-// STEP 3: Mixer results now run through the same recommendationScorer.js
-// used by the main search flow, exactly like search.js does — this also
-// replaces Step 2's hand-rolled client-side overlap sort with the real
-// weighted scorer (manual genre chips go in as intent.boosts.genres, which
-// the scorer already treats as "extra signal, not a hard filter" — same
-// idea as before, just using the shared, better-tested implementation).
-// Cards now get the same ⭐ match % badge and "Why?" panel as normal search
-// results.
+// STEP 3: Mixer results run through the same recommendationScorer.js used
+// by the main search flow — manual genre chips go in as intent.boosts.genres
+// (extra signal, not a hard filter). Cards get the same ⭐ match % badge and
+// "Why?" panel as normal search results.
+//
+// STEP 6: picking mood(s) blends their theme.js colors into the page's own
+// background (separate from the site-wide --bg-dark), and selected chips
+// get a subtle animated glow/shift — purely visual, isolated to this page.
+//
+// STEP 7: picking exactly 2 moods shows a live "named blend" preview line
+// (js/mixerBlends.js — curated pairs + generated fallback).
+//
+// STEP 8: the first time a given mood pair is actually mixed (submitted),
+// an unlock toast fires once; tried pairs are tracked in localStorage so it
+// never re-fires for a repeat combo, same pattern as favorites.js's local
+// persistence.
 //
 // Isolation note: self-contained like landing/, using the same "fixed
 // overlay toggled by a .open class" pattern as mangaDetail.js (no router
-// needed). Imports from outside this file: allMoods (moods.js, pure data),
-// buildPlanFromGenreList (searchPlanner.js), fetchFromAniListUnified
-// (anilist.js), normalizeResult (resultNormalizer.js), getMangaCardHTML
-// (renderer.js, pure string builder — doesn't touch #community-grid),
-// scoreResults + CONCEPT_PROPERTIES (same scorer + dictionary search.js
-// uses), and MangaIntent (intentSchema.js).
+// needed).
 
 import { allMoods } from './moods.js';
 import { buildPlanFromGenreList } from './parser/searchPlanner.js';
 import { fetchFromAniListUnified } from './anilist.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { getMangaCardHTML } from './renderer.js';
-import { blendMoodColors } from './theme.js';
 import { scoreResults } from './parser/recommendationScorer.js';
 import { MangaIntent } from './parser/intentSchema.js';
 import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
+import { blendMoodColors } from './theme.js';
+import { getBlendInfo } from './mixerBlends.js';
 
 const VIEW_ID = 'mixer-view';
 
@@ -65,11 +66,6 @@ const LENGTH_OPTIONS = [
     { value: 'long', label: 'Long (200+ chapters)' }
 ];
 
-// STEP 3: same pattern as search.js — base CONCEPT_PROPERTIES loads
-// synchronously (bundled), harvested_knowledge.js loads async and merges on
-// top when available. dictionaryLoadPromise is awaited right before scoring
-// so a slow/failed harvested-knowledge fetch never blocks the AniList
-// fetch/render, only the scoring step.
 let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
 const dictionaryLoadPromise = (async () => {
     try {
@@ -79,6 +75,29 @@ const dictionaryLoadPromise = (async () => {
         console.warn('[mixerPage.js] harvested_knowledge.js not available, using base properties.', e.message);
     }
 })();
+
+// STEP 8: which mood pairs (sorted "labelA+labelB" keys) this device has
+// already mixed at least once. Local-only, no Firestore — this is a small
+// gamification nicety, not core data worth syncing cross-device.
+const TRIED_BLENDS_KEY = 'mangamood_mixer_tried_blends';
+
+function readTriedBlends() {
+    try {
+        return new Set(JSON.parse(localStorage.getItem(TRIED_BLENDS_KEY)) || []);
+    } catch (e) {
+        return new Set();
+    }
+}
+
+function writeTriedBlends(set) {
+    try {
+        localStorage.setItem(TRIED_BLENDS_KEY, JSON.stringify(Array.from(set)));
+    } catch (e) {
+        console.warn('[mixerPage.js] Could not persist tried blends locally.', e);
+    }
+}
+
+let triedBlends = readTriedBlends();
 
 // This page's own selection state — deliberately separate from moods.js's
 // homepage selection (Step 1), since picking a mood here should NOT fire
@@ -123,6 +142,7 @@ function buildMarkup() {
             <div class="mixer-card">
                 <h3><span class="mixer-step-num">1</span>Pick your moods <span class="mixer-hint" id="mixer-mood-hint">Tap up to 2</span></h3>
                 <div class="mixer-chip-grid">${moodChips}</div>
+                <div class="mixer-blend-preview" id="mixer-blend-preview"></div>
             </div>
 
             <div class="mixer-card">
@@ -159,6 +179,14 @@ function buildMarkup() {
     `;
 }
 
+function updateMoodHint() {
+    const hint = document.getElementById('mixer-mood-hint');
+    if (!hint) return;
+    if (selectedMoodIndexes.length === 0) hint.textContent = 'Tap up to 2';
+    else if (selectedMoodIndexes.length === 1) hint.textContent = `${allMoods[selectedMoodIndexes[0]].label} — tap 1 more`;
+    else hint.textContent = `${allMoods[selectedMoodIndexes[0]].label} + ${allMoods[selectedMoodIndexes[1]].label}`;
+}
+
 function updateMixerBlend() {
     const view = document.getElementById(VIEW_ID);
     if (!view) return;
@@ -166,12 +194,19 @@ function updateMixerBlend() {
     view.style.setProperty('--mixer-blend', blendMoodColors(labels));
 }
 
-function updateMoodHint() {
-    const hint = document.getElementById('mixer-mood-hint');
-    if (!hint) return;
-    if (selectedMoodIndexes.length === 0) hint.textContent = 'Tap up to 2';
-    else if (selectedMoodIndexes.length === 1) hint.textContent = `${allMoods[selectedMoodIndexes[0]].label} — tap 1 more`;
-    else hint.textContent = `${allMoods[selectedMoodIndexes[0]].label} + ${allMoods[selectedMoodIndexes[1]].label}`;
+// STEP 7: live preview line, only shown once exactly 2 moods are picked.
+function updateBlendPreview() {
+    const el = document.getElementById('mixer-blend-preview');
+    if (!el) return;
+    if (selectedMoodIndexes.length !== 2) {
+        el.classList.remove('visible');
+        el.innerHTML = '';
+        return;
+    }
+    const [a, b] = selectedMoodIndexes.map(i => allMoods[i].label);
+    const info = getBlendInfo(a, b);
+    el.innerHTML = `You're mixing <strong>${info.name}</strong> — ${info.blurb}`;
+    el.classList.add('visible');
 }
 
 function wireEvents(root) {
@@ -196,13 +231,13 @@ function wireEvents(root) {
                 chip.classList.add('selected');
             }
             updateMoodHint();
-            updateMixerBlend();  
+            updateMixerBlend();
+            updateBlendPreview();
         });
     });
 
     // Genre chips — unlimited multi-select. Not sent to AniList's genre_in
-    // (that's mood-only, see collectMoodGenres) — these feed the scorer as
-    // extra boost signal instead (see buildMixerIntent).
+    // (that's mood-only) — these feed the scorer as extra boost signal.
     root.querySelectorAll('.mixer-chip[data-genre]').forEach(chip => {
         chip.addEventListener('click', () => {
             const genre = chip.dataset.genre;
@@ -219,9 +254,6 @@ function wireEvents(root) {
     root.querySelector('#mixer-submit-btn')?.addEventListener('click', runMixerSearch);
 }
 
-// STEP 2 FIX: genres pulled from the selected mood(s) only — this is what
-// actually gets sent to AniList as the hard genre_in filter (via
-// plan.primaryGenres). Usually 2 genres (1 mood), rarely 4 (2 moods).
 function collectMoodGenres() {
     const fromMoods = selectedMoodIndexes.flatMap(i =>
         allMoods[i].query.split(',').map(s => s.trim())
@@ -229,13 +261,6 @@ function collectMoodGenres() {
     return Array.from(new Set(fromMoods)).filter(Boolean);
 }
 
-// STEP 3: builds a minimal MangaIntent-shaped object for scoreResults(),
-// the same way search.js's buildPresetIntent() does for mood-button
-// searches. moodGenres go on intent.genres (required-ish, drives the 20%
-// genre-score component via plan.primaryGenres too); the manually-picked
-// genre chips go on intent.boosts.genres — additional signal the scorer
-// folds into the 40% mood-score component, without ever being able to
-// zero out results the way a hard AniList AND-filter did.
 function buildMixerIntent(moodGenres, extraGenres) {
     const intent = new MangaIntent();
     intent.originalQuery = [...moodGenres, ...extraGenres].join(', ');
@@ -255,12 +280,47 @@ function chapterRangeFor(lengthValue) {
     return {};
 }
 
+// STEP 8: fires the unlock toast the first time this exact mood pair is
+// mixed on this device. No-op for 0 or 1 selected moods — "a blend" means
+// two moods combined, not a single mood.
+function checkNewBlend() {
+    if (selectedMoodIndexes.length !== 2) return;
+    const [a, b] = selectedMoodIndexes.map(i => allMoods[i].label);
+    const key = [a, b].sort().join('+');
+    if (triedBlends.has(key)) return;
+
+    triedBlends.add(key);
+    writeTriedBlends(triedBlends);
+
+    const info = getBlendInfo(a, b);
+    showMixerToast(`🎉 New blend discovered: ${info.name}!`);
+}
+
+function showMixerToast(message) {
+    const view = document.getElementById(VIEW_ID);
+    if (!view) return;
+    let toast = view.querySelector('.mixer-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'mixer-toast';
+        view.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.remove('show');
+    void toast.offsetWidth; // force reflow so re-triggering restarts the animation
+    toast.classList.add('show');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+}
+
 async function runMixerSearch() {
     const grid = document.getElementById('mixer-results-grid');
     const section = document.getElementById('mixer-results-section');
     const countEl = document.getElementById('mixer-results-count');
     const submitBtn = document.getElementById('mixer-submit-btn');
     if (!grid || !section) return;
+
+    checkNewBlend();
 
     const moodGenres = collectMoodGenres();
     const extraGenres = Array.from(selectedGenres);
@@ -284,15 +344,12 @@ async function runMixerSearch() {
 
         results = results.filter(m => {
             const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
-            if (isNaN(ch)) return true; // unknown chapter counts pass through rather than get hidden
+            if (isNaN(ch)) return true;
             if (typeof minChapters === 'number' && ch < minChapters) return false;
             if (typeof maxChapters === 'number' && ch > maxChapters) return false;
             return true;
         });
 
-        // STEP 3: score against the same weighted engine normal search
-        // results use, so Mixer cards get a real ⭐ match % and "Why?"
-        // breakdown instead of rendering with no score at all.
         if (results.length > 0) {
             const intent = buildMixerIntent(moodGenres, extraGenres);
             await dictionaryLoadPromise;
@@ -337,7 +394,7 @@ function renderSkeletons(count) {
 
 export function openMixerPage() {
     const view = ensureViewEl();
-    updateMixerBlend();   // ← add this line
+    updateMixerBlend();
     void view.offsetWidth; // force reflow so the transition plays
     view.classList.add('open');
     document.body.classList.add('mixer-open');
