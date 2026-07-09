@@ -189,6 +189,47 @@
 </nav>
 
 <!-- =========================
+    SLIDE-OUT MENU DRAWER
+========================= -->
+<div id="menu-overlay" class="menu-overlay" onclick="window.closeMenu && window.closeMenu()"></div>
+<nav id="menu-drawer" class="menu-drawer">
+    <div class="menu-header">
+        <h2>Menu</h2>
+        <button class="menu-close-btn" aria-label="Close menu" onclick="window.closeMenu && window.closeMenu()">×</button>
+    </div>
+    <div class="menu-links">
+        <button class="menu-item" onclick="window.closeMenu(); window.scrollTo({top:0,behavior:'smooth'})">
+            <span class="menu-icon">🏠</span> Home
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); window.openMixerPage && window.openMixerPage()">
+            <span class="menu-icon">🔮</span> Mood Mixer
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); window.openMyListPage && window.openMyListPage()">
+            <span class="menu-icon">♡</span> My List
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); document.getElementById('manga-search-input')?.focus()">
+            <span class="menu-icon">🔍</span> Search
+        </button>
+
+        <div class="menu-divider"></div>
+        
+        <button class="menu-item" onclick="window.cycleTheme && window.cycleTheme()">
+            <span class="menu-icon">🎨</span> Toggle Theme
+        </button>
+
+        <div class="menu-divider"></div>
+        
+        <div class="menu-about">
+            <strong>Powered By</strong>
+            AniList · MangaDex<br>
+            Kitsu · Jikan
+        </div>
+    </div>
+</nav>
+    
+
+    
+<!-- =========================
     SCRIPT
 ========================= -->
 <script type="module" src="./js/main.js"></script>
