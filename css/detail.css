@@ -151,12 +151,81 @@ body.detail-open {
     letter-spacing: .04em;
 }
 
-.detail-bookmark-btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
+/* ==========================
+   BADGES (rating / reading-time / confidence)
+   Moved here from the homepage cards — see js/mangaDetail.js header comment.
+========================== */
+.detail-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.detail-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    color: var(--text-main, #a2afc0);
+    background: rgba(255,255,255,.04);
+    white-space: nowrap;
+}
+
+.detail-badge-rating {
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.1);
+    border-color: rgba(250, 204, 21, 0.3);
+}
+
+.detail-badge-readtime {
+    color: var(--accent, #3db4f2);
+    background: rgba(61, 180, 242, 0.1);
+    border-color: rgba(61, 180, 242, 0.3);
+}
+
+.detail-badge-confidence {
+    color: var(--green, #34d399);
+    background: rgba(52, 211, 153, 0.1);
+    border-color: rgba(52, 211, 153, 0.3);
+}
+
+/* ==========================
+   MOOD TAGS
+========================== */
+.detail-mood-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.detail-mood-chip {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-main, #a2afc0);
+    background: rgba(255,255,255,.04);
+    border: 1px dashed var(--border, rgba(255,255,255,.12));
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+
+/* ==========================
+   QUICK ACTIONS (Save / Similar Titles / Share)
+========================== */
+.detail-quick-actions {
+    display: flex;
+    gap: 10px;
     margin-bottom: 26px;
-    font-size: 15px;
+}
+
+.detail-bookmark-btn {
+    flex: 1.3 1 0;
+    padding: 14px;
+    font-size: 14px;
     font-weight: 700;
     color: #fff;
     background: var(--accent, #3db4f2);
@@ -172,6 +241,63 @@ body.detail-open {
 
 .detail-bookmark-btn.active {
     background: #ef4444;
+}
+
+.detail-action-btn {
+    flex: 1 1 0;
+    padding: 14px 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-title, #eef4ff);
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 100px;
+    cursor: pointer;
+    transition: var(--transition, .3s ease);
+    white-space: nowrap;
+}
+
+.detail-action-btn:hover {
+    background: rgba(255,255,255,.08);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 380px) {
+    .detail-quick-actions {
+        flex-wrap: wrap;
+    }
+    .detail-bookmark-btn {
+        flex: 1 1 100%;
+    }
+    .detail-action-btn {
+        flex: 1 1 0;
+    }
+}
+
+/* ==========================
+   TOAST (used by Share)
+========================== */
+.detail-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translate(-50%, 12px);
+    z-index: 1000;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(10,14,28,.92);
+    border: 1px solid var(--border, rgba(255,255,255,.1));
+    border-radius: 100px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.detail-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
 }
 
 .detail-section-heading {
@@ -352,3 +478,6 @@ body.detail-open {
 .detail-match-item:not(.is-match) .detail-match-icon { 
     color: var(--red); 
 }
+
+
+

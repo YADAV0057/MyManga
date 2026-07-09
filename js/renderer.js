@@ -196,16 +196,19 @@ export function getMangaCardHTML(factSheet) {
     const safeTitle = escapeHTML(factSheet.title);
 
     return `
-        <div class="manga-card" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
+        
+            <div class="manga-card" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
             <div class="manga-cover-container">
                 <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
                 <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                         onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
                         title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
-                ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
             </div>
             <div class="manga-info">
-                <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
+                <div class="manga-title-row">
+                    <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
+                    ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
+                </div>
                 ${renderMatchBadge(factSheet)}
                 <p class="manga-meta">${escapeHTML(genresText)}</p>
                 <div class="manga-facts">

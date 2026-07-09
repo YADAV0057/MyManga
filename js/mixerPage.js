@@ -7,18 +7,41 @@
 // extra genre chips, set status/length filters, and submit once to see a
 // full grid of matches — instead of every tap re-searching immediately.
 //
+// STEP 2 FIX (too-few-results bug): only each selected mood's own genre
+// pair goes into AniList's genre_in filter (usually 2, rarely 4 genres).
+// Manually-picked genre chips are never sent to AniList as a hard filter.
+//
+// STEP 3: Mixer results run through the same recommendationScorer.js used
+// by the main search flow — manual genre chips go in as intent.boosts.genres
+// (extra signal, not a hard filter). Cards get the same ⭐ match % badge and
+// "Why?" panel as normal search results.
+//
+// STEP 6: picking mood(s) blends their theme.js colors into the page's own
+// background (separate from the site-wide --bg-dark), and selected chips
+// get a subtle animated glow/shift — purely visual, isolated to this page.
+//
+// STEP 7: picking exactly 2 moods shows a live "named blend" preview line
+// (js/mixerBlends.js — curated pairs + generated fallback).
+//
+// STEP 8: the first time a given mood pair is actually mixed (submitted),
+// an unlock toast fires once; tried pairs are tracked in localStorage so it
+// never re-fires for a repeat combo, same pattern as favorites.js's local
+// persistence.
+//
 // Isolation note: self-contained like landing/, using the same "fixed
 // overlay toggled by a .open class" pattern as mangaDetail.js (no router
-// needed). Only imports from outside this file: allMoods (moods.js, pure
-// data), buildPlanFromGenreList (searchPlanner.js), fetchFromAniListUnified
-// (anilist.js), normalizeResult (resultNormalizer.js), and getMangaCardHTML
-// (renderer.js, pure string builder — doesn't touch #community-grid).
+// needed).
 
 import { allMoods } from './moods.js';
 import { buildPlanFromGenreList } from './parser/searchPlanner.js';
 import { fetchFromAniListUnified } from './anilist.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { getMangaCardHTML } from './renderer.js';
+import { scoreResults } from './parser/recommendationScorer.js';
+import { MangaIntent } from './parser/intentSchema.js';
+import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
+import { blendMoodColors } from './theme.js';
+import { getBlendInfo } from './mixerBlends.js';
 
 const VIEW_ID = 'mixer-view';
 
@@ -42,6 +65,39 @@ const LENGTH_OPTIONS = [
     { value: 'medium', label: 'Medium (50–200 chapters)' },
     { value: 'long', label: 'Long (200+ chapters)' }
 ];
+
+let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
+const dictionaryLoadPromise = (async () => {
+    try {
+        const mod = await import('./parser/dictionary/harvested_knowledge.js');
+        CONCEPT_DICTIONARY = { ...mod.HARVESTED_RULES, ...CONCEPT_PROPERTIES };
+    } catch (e) {
+        console.warn('[mixerPage.js] harvested_knowledge.js not available, using base properties.', e.message);
+    }
+})();
+
+// STEP 8: which mood pairs (sorted "labelA+labelB" keys) this device has
+// already mixed at least once. Local-only, no Firestore — this is a small
+// gamification nicety, not core data worth syncing cross-device.
+const TRIED_BLENDS_KEY = 'mangamood_mixer_tried_blends';
+
+function readTriedBlends() {
+    try {
+        return new Set(JSON.parse(localStorage.getItem(TRIED_BLENDS_KEY)) || []);
+    } catch (e) {
+        return new Set();
+    }
+}
+
+function writeTriedBlends(set) {
+    try {
+        localStorage.setItem(TRIED_BLENDS_KEY, JSON.stringify(Array.from(set)));
+    } catch (e) {
+        console.warn('[mixerPage.js] Could not persist tried blends locally.', e);
+    }
+}
+
+let triedBlends = readTriedBlends();
 
 // This page's own selection state — deliberately separate from moods.js's
 // homepage selection (Step 1), since picking a mood here should NOT fire
@@ -68,7 +124,7 @@ function buildMarkup() {
     ).join('');
 
     const genreChips = GENRE_OPTIONS.map(g =>
-        `<button type="button" class="mixer-chip" data-genre="${g}">${g}</button>`
+        `<button type="button" class="mixer-chip mixer-chip--compact" data-genre="${g}">${g}</button>`
     ).join('');
 
     const statusOpts = STATUS_OPTIONS.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
@@ -83,18 +139,19 @@ function buildMarkup() {
                 <p>Pick up to 2 moods, stack on genres, and dial in filters — we'll find your match.</p>
             </div>
 
-            <section class="mixer-section">
-                <h3>1. Pick your moods <span class="mixer-hint" id="mixer-mood-hint">Tap up to 2</span></h3>
+            <div class="mixer-card">
+                <h3><span class="mixer-step-num">1</span>Pick your moods <span class="mixer-hint" id="mixer-mood-hint">Tap up to 2</span></h3>
                 <div class="mixer-chip-grid">${moodChips}</div>
-            </section>
+                <div class="mixer-blend-preview" id="mixer-blend-preview"></div>
+            </div>
 
-            <section class="mixer-section">
-                <h3>2. Add genres <span class="mixer-hint" id="mixer-genre-hint">Optional</span></h3>
-                <div class="mixer-chip-grid">${genreChips}</div>
-            </section>
+            <div class="mixer-card">
+                <h3><span class="mixer-step-num">2</span>Add genres <span class="mixer-hint" id="mixer-genre-hint">Boosts matches, optional</span></h3>
+                <div class="mixer-chip-grid mixer-chip-grid--compact">${genreChips}</div>
+            </div>
 
-            <section class="mixer-section">
-                <h3>3. Filters</h3>
+            <div class="mixer-card">
+                <h3><span class="mixer-step-num">3</span>Filters</h3>
                 <div class="mixer-filter-row">
                     <label class="mixer-filter">
                         <span>Status</span>
@@ -105,9 +162,11 @@ function buildMarkup() {
                         <select id="mixer-length-select">${lengthOpts}</select>
                     </label>
                 </div>
-            </section>
+            </div>
 
-            <button class="mixer-submit-btn" id="mixer-submit-btn">Find My Mix</button>
+            <div class="mixer-footer">
+                <button class="mixer-submit-btn" id="mixer-submit-btn">Find My Mix</button>
+            </div>
 
             <section class="mixer-results-section" id="mixer-results-section" style="display:none;">
                 <div class="mixer-results-header">
@@ -126,6 +185,28 @@ function updateMoodHint() {
     if (selectedMoodIndexes.length === 0) hint.textContent = 'Tap up to 2';
     else if (selectedMoodIndexes.length === 1) hint.textContent = `${allMoods[selectedMoodIndexes[0]].label} — tap 1 more`;
     else hint.textContent = `${allMoods[selectedMoodIndexes[0]].label} + ${allMoods[selectedMoodIndexes[1]].label}`;
+}
+
+function updateMixerBlend() {
+    const view = document.getElementById(VIEW_ID);
+    if (!view) return;
+    const labels = selectedMoodIndexes.map(i => allMoods[i].label);
+    view.style.setProperty('--mixer-blend', blendMoodColors(labels));
+}
+
+// STEP 7: live preview line, only shown once exactly 2 moods are picked.
+function updateBlendPreview() {
+    const el = document.getElementById('mixer-blend-preview');
+    if (!el) return;
+    if (selectedMoodIndexes.length !== 2) {
+        el.classList.remove('visible');
+        el.innerHTML = '';
+        return;
+    }
+    const [a, b] = selectedMoodIndexes.map(i => allMoods[i].label);
+    const info = getBlendInfo(a, b);
+    el.innerHTML = `You're mixing <strong>${info.name}</strong> — ${info.blurb}`;
+    el.classList.add('visible');
 }
 
 function wireEvents(root) {
@@ -150,10 +231,13 @@ function wireEvents(root) {
                 chip.classList.add('selected');
             }
             updateMoodHint();
+            updateMixerBlend();
+            updateBlendPreview();
         });
     });
 
-    // Genre chips — unlimited multi-select.
+    // Genre chips — unlimited multi-select. Not sent to AniList's genre_in
+    // (that's mood-only) — these feed the scorer as extra boost signal.
     root.querySelectorAll('.mixer-chip[data-genre]').forEach(chip => {
         chip.addEventListener('click', () => {
             const genre = chip.dataset.genre;
@@ -170,12 +254,23 @@ function wireEvents(root) {
     root.querySelector('#mixer-submit-btn')?.addEventListener('click', runMixerSearch);
 }
 
-function collectGenreQuery() {
+function collectMoodGenres() {
     const fromMoods = selectedMoodIndexes.flatMap(i =>
         allMoods[i].query.split(',').map(s => s.trim())
     );
-    const fromGenres = Array.from(selectedGenres);
-    return Array.from(new Set([...fromMoods, ...fromGenres])).filter(Boolean);
+    return Array.from(new Set(fromMoods)).filter(Boolean);
+}
+
+function buildMixerIntent(moodGenres, extraGenres) {
+    const intent = new MangaIntent();
+    intent.originalQuery = [...moodGenres, ...extraGenres].join(', ');
+    intent.confidence = 1.0;
+    intent.genres = moodGenres.map(name => ({ name, confidence: 1.0 }));
+    intent.moods = selectedMoodIndexes.map(i => allMoods[i].label);
+    if (extraGenres.length > 0) {
+        intent.boosts.genres = extraGenres.map(name => ({ name, confidence: 1.0 }));
+    }
+    return intent;
 }
 
 function chapterRangeFor(lengthValue) {
@@ -185,6 +280,39 @@ function chapterRangeFor(lengthValue) {
     return {};
 }
 
+// STEP 8: fires the unlock toast the first time this exact mood pair is
+// mixed on this device. No-op for 0 or 1 selected moods — "a blend" means
+// two moods combined, not a single mood.
+function checkNewBlend() {
+    if (selectedMoodIndexes.length !== 2) return;
+    const [a, b] = selectedMoodIndexes.map(i => allMoods[i].label);
+    const key = [a, b].sort().join('+');
+    if (triedBlends.has(key)) return;
+
+    triedBlends.add(key);
+    writeTriedBlends(triedBlends);
+
+    const info = getBlendInfo(a, b);
+    showMixerToast(`🎉 New blend discovered: ${info.name}!`);
+}
+
+function showMixerToast(message) {
+    const view = document.getElementById(VIEW_ID);
+    if (!view) return;
+    let toast = view.querySelector('.mixer-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'mixer-toast';
+        view.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.remove('show');
+    void toast.offsetWidth; // force reflow so re-triggering restarts the animation
+    toast.classList.add('show');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+}
+
 async function runMixerSearch() {
     const grid = document.getElementById('mixer-results-grid');
     const section = document.getElementById('mixer-results-section');
@@ -192,7 +320,10 @@ async function runMixerSearch() {
     const submitBtn = document.getElementById('mixer-submit-btn');
     if (!grid || !section) return;
 
-    const genres = collectGenreQuery();
+    checkNewBlend();
+
+    const moodGenres = collectMoodGenres();
+    const extraGenres = Array.from(selectedGenres);
     const statusValue = document.getElementById('mixer-status-select')?.value || '';
     const lengthValue = document.getElementById('mixer-length-select')?.value || '';
     const { min: minChapters, max: maxChapters } = chapterRangeFor(lengthValue);
@@ -205,7 +336,7 @@ async function runMixerSearch() {
     section.scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const plan = buildPlanFromGenreList(genres.length ? genres : ['']);
+        const plan = buildPlanFromGenreList(moodGenres.length ? moodGenres : ['']);
         if (statusValue) plan.filters.statusFilter = statusValue;
 
         const raw = await fetchFromAniListUnified(plan, 1, false, 30);
@@ -213,11 +344,17 @@ async function runMixerSearch() {
 
         results = results.filter(m => {
             const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
-            if (isNaN(ch)) return true; // unknown chapter counts pass through rather than get hidden
+            if (isNaN(ch)) return true;
             if (typeof minChapters === 'number' && ch < minChapters) return false;
             if (typeof maxChapters === 'number' && ch > maxChapters) return false;
             return true;
         });
+
+        if (results.length > 0) {
+            const intent = buildMixerIntent(moodGenres, extraGenres);
+            await dictionaryLoadPromise;
+            results = await scoreResults(results, intent, plan, CONCEPT_DICTIONARY);
+        }
 
         grid.innerHTML = '';
         if (results.length === 0) {
@@ -257,6 +394,7 @@ function renderSkeletons(count) {
 
 export function openMixerPage() {
     const view = ensureViewEl();
+    updateMixerBlend();
     void view.offsetWidth; // force reflow so the transition plays
     view.classList.add('open');
     document.body.classList.add('mixer-open');

@@ -341,6 +341,7 @@ header{
     text-align:center;
 }
 
+
 .mixer-heading{
     display:flex;
     justify-content:space-between;
@@ -528,7 +529,7 @@ footer{
     to{ opacity:1; transform:translateY(0); }
 }
 
-header, .vibe-panel-container, #results-area{ animation:fadeUp .5s ease; }
+header,#results-area{ animation:fadeUp .5s ease; }
 
 /* ==========================
    MOBILE
