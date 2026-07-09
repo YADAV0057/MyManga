@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="./css/mixer.css">
     <link rel="stylesheet" href="./css/mylist.css">
     <link rel="stylesheet" href="./css/results.css">
+    <link rel="stylesheet" href="./css/results.css">
+    <link rel="stylesheet" href="./css/menu.css"> <!-- ADD THIS LINE -->
+    
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -31,7 +34,7 @@
 
     <div class="view-toggle">
         <button id="nav-favorites-btn" class="tab-btn" title="My List">♡</button>
-        <button id="more-btn-icon" class="tab-btn" title="Show all moods" onclick="window.toggleTags && window.toggleTags()">☰</button>
+        <button id="more-btn-icon" class="tab-btn" title="Menu" onclick="window.openMenu && window.openMenu()">☰</button>
     </div>
 </nav>
 
@@ -185,6 +188,47 @@
     </button>
 </nav>
 
+<!-- =========================
+    SLIDE-OUT MENU DRAWER
+========================= -->
+<div id="menu-overlay" class="menu-overlay" onclick="window.closeMenu && window.closeMenu()"></div>
+<nav id="menu-drawer" class="menu-drawer">
+    <div class="menu-header">
+        <h2>Menu</h2>
+        <button class="menu-close-btn" aria-label="Close menu" onclick="window.closeMenu && window.closeMenu()">×</button>
+    </div>
+    <div class="menu-links">
+        <button class="menu-item" onclick="window.closeMenu(); window.scrollTo({top:0,behavior:'smooth'})">
+            <span class="menu-icon">🏠</span> Home
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); window.openMixerPage && window.openMixerPage()">
+            <span class="menu-icon">🔮</span> Mood Mixer
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); window.openMyListPage && window.openMyListPage()">
+            <span class="menu-icon">♡</span> My List
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); document.getElementById('manga-search-input')?.focus()">
+            <span class="menu-icon">🔍</span> Search
+        </button>
+
+        <div class="menu-divider"></div>
+        
+        <button class="menu-item" onclick="window.cycleTheme && window.cycleTheme()">
+            <span class="menu-icon">🎨</span> Toggle Theme
+        </button>
+
+        <div class="menu-divider"></div>
+        
+        <div class="menu-about">
+            <strong>Powered By</strong>
+            AniList · MangaDex<br>
+            Kitsu · Jikan
+        </div>
+    </div>
+</nav>
+    
+
+    
 <!-- =========================
     SCRIPT
 ========================= -->

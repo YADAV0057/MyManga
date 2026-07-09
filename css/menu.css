@@ -1,0 +1,133 @@
+/* ==========================================
+   css/menu.css
+   Slide-out navigation drawer
+   ========================================== */
+body.menu-open {
+    overflow: hidden;
+}
+
+
+
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(12, 10, 22, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility 0s linear .3s;
+}
+
+.menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .3s ease;
+}
+
+.menu-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    z-index: 1001;
+    background: rgba(18, 16, 31, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 32px rgba(0,0,0,0.4);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-drawer.open {
+    transform: translateX(0);
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.menu-header h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.2rem;
+    color: var(--text-title);
+    margin: 0;
+}
+
+.menu-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    transition: var(--transition);
+}
+
+.menu-close-btn:hover {
+    color: var(--pink);
+    transform: scale(1.1);
+}
+
+.menu-links {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 24px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+}
+
+.menu-item:hover {
+    background: var(--purple-soft);
+    color: var(--text-bright);
+}
+
+.menu-icon {
+    font-size: 1.2rem;
+}
+
+.menu-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 12px 24px;
+}
+
+.menu-about {
+    padding: 16px 24px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.menu-about strong {
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 4px;
+}

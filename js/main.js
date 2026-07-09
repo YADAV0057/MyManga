@@ -101,6 +101,18 @@ async function initializeApp() {
             window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
         }
 
+
+        //Load Slide-out Menu Drawer
+        try {
+            const menuDrawer = await import("./menuDrawer.js");
+            window.openMenu = menuDrawer.openMenu;
+            window.closeMenu = menuDrawer.closeMenu;
+            window.cycleTheme = menuDrawer.cycleTheme;
+            window.AppDiagnostics.log("MenuDrawer", true, "Loaded");
+        } catch (e) {
+            window.AppDiagnostics.log("MenuDrawer", false, e.message);
+        }
+
         
 
 

@@ -189,24 +189,15 @@ export function getMangaCardHTML(factSheet) {
     cacheMangaForDetail(factSheet);
 
     const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
-    // BUGFIX #3: was `factSheet.globalScore && ...`, which hid a legitimate
-    // score of 0 because 0 is falsy. Now checks the actual type.
     const hasScore = typeof factSheet.globalScore === 'number';
     const statusText = factSheet.status || 'Unknown';
     const statusIcon = getStatusIcon(statusText);
     const saved = isFavorite(factSheet.id);
     const safeTitle = escapeHTML(factSheet.title);
 
-    // NOTE: this card used to build its own "Available Sources" overlay
-    // (readLinks rendered inline, shown via toggleOptions()) directly here.
-    // That's now the manga detail page's job (js/mangaDetail.js) — tapping
-    // the cover opens a full page with the cover, synopsis, stats, and
-    // those same readLinks as real buttons, instead of a cramped in-card
-    // popover. readLinks still travels with factSheet via cacheMangaForDetail
-    // above, so the detail page has them instantly with no re-fetch.
     return `
-        <div class="manga-card">
-            <div class="manga-cover-container" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
+        <div class="manga-card" onclick="window.openMangaDetail && window.openMangaDetail('${factSheet.id}')">
+            <div class="manga-cover-container">
                 <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
                 <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
                         onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
@@ -222,13 +213,14 @@ export function getMangaCardHTML(factSheet) {
                     <span>${statusIcon} ${escapeHTML(statusText)}</span>
                 </div>
                 ${renderMatchBreakdown(factSheet)}
-                <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
+                <p class="manga-synopsis">
                     ${escapeHTML(factSheet.synopsis || 'No description available.')}
                 </p>
             </div>
         </div>
     `;
 }
+
 
 export function renderMangaCard(factSheet) {
     const grid = document.getElementById('community-grid');
