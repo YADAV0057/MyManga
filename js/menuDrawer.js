@@ -21,7 +21,7 @@ export function openMenu() {
 
     overlay.classList.add('open');
     drawer.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('menu-open'); // Consistent with detail-open, mixer-open, etc.
 }
 
 export function closeMenu() {
@@ -31,8 +31,10 @@ export function closeMenu() {
 
     overlay.classList.remove('open');
     drawer.classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.classList.remove('menu-open');
 }
+
+
 
 export function cycleTheme() {
     currentThemeIndex = (currentThemeIndex + 1) % THEMES.length;
