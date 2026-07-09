@@ -37,6 +37,7 @@ import { buildPlanFromGenreList } from './parser/searchPlanner.js';
 import { fetchFromAniListUnified } from './anilist.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { getMangaCardHTML } from './renderer.js';
+import { blendMoodColors } from './theme.js';
 import { scoreResults } from './parser/recommendationScorer.js';
 import { MangaIntent } from './parser/intentSchema.js';
 import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
@@ -158,6 +159,13 @@ function buildMarkup() {
     `;
 }
 
+function updateMixerBlend() {
+    const view = document.getElementById(VIEW_ID);
+    if (!view) return;
+    const labels = selectedMoodIndexes.map(i => allMoods[i].label);
+    view.style.setProperty('--mixer-blend', blendMoodColors(labels));
+}
+
 function updateMoodHint() {
     const hint = document.getElementById('mixer-mood-hint');
     if (!hint) return;
@@ -188,6 +196,7 @@ function wireEvents(root) {
                 chip.classList.add('selected');
             }
             updateMoodHint();
+            updateMixerBlend();  
         });
     });
 
