@@ -200,9 +200,12 @@ async function initializeApp() {
             window.openMixerPage = mixer.openMixerPage;
             window.closeMixerPage = mixer.closeMixerPage;
             window.AppDiagnostics.log("MixerPage", true, "Loaded");
-        } catch (e) {
+       } catch (e) {
             window.AppDiagnostics.log("MixerPage", false, e.message);
-        }. 
+        }
+
+        try {
+            const advFilter = await import("./advancedFilter/index.js"); 
 
         try {
     const advFilter = await import("./advancedFilter/index.js");
