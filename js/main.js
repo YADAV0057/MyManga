@@ -128,23 +128,7 @@ async function initializeApp() {
         }
 
         // Load Moods
-        try {
-            const moods = await import("./moods.js");
-            window.populateAllVibes = moods.populateAllVibes;
-            window.startVibeRotation = moods.startVibeRotation;
-            window.toggleTags = moods.toggleTags;
-            window.attachMoodButtonListeners = moods.attachMoodButtonListeners;
-            window.AppDiagnostics.log("Moods", true, "Loaded");
-
-            // BUGFIX: these were only ever assigned to window, never invoked,
-            // so the 50-mood grid was never populated, the 3-button rotation
-            // never started, and mood buttons had no click handler.
-            moods.populateAllVibes();          // fills #extra-tags with all 50 mood buttons
-            moods.attachMoodButtonListeners(); // delegated click handler for every .vibe-btn
-            moods.startVibeRotation(30000);    // starts the 3-button rotation, every 30s
-        } catch (e) {
-            window.AppDiagnostics.log("Moods", false, e.message);
-        }
+        
 
         // Load AI Panel (replaces the old standalone parser tester)
         try {
@@ -251,7 +235,6 @@ async function initializeApp() {
         setupSearchBar();
         setupMyListButton();
         setupRefreshButton();
-        setupMoodPanel();
         setupMixerPageButton();
         setupQuickFilters();
 
@@ -313,14 +296,7 @@ function setupMyListButton() {
 // ===============================
 // MOOD PANEL ("+ Show All Moods" toggle)
 // ===============================
-function setupMoodPanel() {
-    const moreBtn = document.getElementById("more-btn");
-    if (!moreBtn) return;
 
-    moreBtn.addEventListener("click", () => {
-        if (window.toggleTags) window.toggleTags();
-    });
-}
 
 // ===============================
 // MOOD MIXER PAGE ("Open Full Mixer" button)
