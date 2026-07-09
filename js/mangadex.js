@@ -171,7 +171,7 @@ export function getFallbackLinks(title) {
     return [
         { name: "Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false },
         { name: "Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false },
-        { name: "Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false }
+        { name: "Google Search", url: `https://www.google.com/search?q=site:bato.to+OR+site:manganato.com+${encodedTitle}+manga`, isValidated: false }
     ];
 }
 
