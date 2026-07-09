@@ -30,8 +30,8 @@
     border-left:4px solid var(--gold);
     box-shadow:0 12px 28px rgba(0,0,0,.28);
     transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    cursor:pointer; /* ADD THIS: Make the whole card show a pointer */
 }
-
 .manga-card:hover{
     transform:translateY(-4px);
     box-shadow:0 18px 40px rgba(0,0,0,.4);
@@ -51,7 +51,6 @@
     width:110px;
     align-self:stretch;
     overflow:hidden;
-    cursor:pointer;
     background:rgba(255,255,255,.03);
 }
 
