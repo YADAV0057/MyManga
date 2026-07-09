@@ -178,14 +178,13 @@ function renderMatchBreakdown(factSheet) {
     `;
 }
 
-export function renderMangaCard(factSheet) {
-    const grid = document.getElementById('community-grid');
-    if (!grid) return;
-
+// Builds the full <div class="manga-card">...</div> markup for one
+// factSheet and caches it (for handleFavoriteClick/toggleWhyPanel lookups),
+// but never touches the DOM itself. Exported so other rendering contexts
+// (e.g. landing/render.js's carousel rows) can produce byte-identical cards
+// without needing a real #community-grid to append into.
+export function getMangaCardHTML(factSheet) {
     factSheetCache[String(factSheet.id)] = factSheet;
-
-    const card = document.createElement('div');
-    card.className = 'manga-card';
 
     const genresText = (factSheet.rawGenres && factSheet.rawGenres.length > 0) ? factSheet.rawGenres.slice(0, 3).join(' • ') : "Various";
     // BUGFIX #3: was `factSheet.globalScore && ...`, which hid a legitimate
@@ -209,31 +208,42 @@ export function renderMangaCard(factSheet) {
             </a>`;
     });
 
-    card.innerHTML = `
-        <div class="manga-cover-container" onclick="window.toggleOptions('${factSheet.id}')">
-            <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
-            <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
-                    onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
-                    title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
-            ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
-            <div class="read-options" id="overlay-${factSheet.id}">
-                <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
-                ${linksHtml}
+    return `
+        <div class="manga-card">
+            <div class="manga-cover-container" onclick="window.toggleOptions('${factSheet.id}')">
+                <img src="${factSheet.coverUrl}" alt="${safeTitle}" class="manga-cover" loading="lazy">
+                <button class="fav-btn ${saved ? 'active' : ''}" id="fav-${factSheet.id}"
+                        onclick="window.handleFavoriteClick(event, '${factSheet.id}')"
+                        title="${saved ? 'Remove from My List' : 'Save to My List'}">${saved ? '♥' : '♡'}</button>
+                ${hasScore ? `<div class="score-badge">⭐ ${factSheet.globalScore}%</div>` : ''}
+                <div class="read-options" id="overlay-${factSheet.id}">
+                    <span style="color: white; margin-bottom: 5px; font-weight: 600;">Available Sources:</span>
+                    ${linksHtml}
+                </div>
             </div>
-        </div>
-        <div class="manga-info">
-            <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
-            ${renderMatchBadge(factSheet)}
-            <p class="manga-meta">${escapeHTML(genresText)}</p>
-            <div class="manga-facts">
-                <span>📚 ${escapeHTML(factSheet.chapters || 'N/A')}</span>
-                <span>${statusIcon} ${escapeHTML(statusText)}</span>
+            <div class="manga-info">
+                <h3 class="manga-title" title="${safeTitle}">${safeTitle}</h3>
+                ${renderMatchBadge(factSheet)}
+                <p class="manga-meta">${escapeHTML(genresText)}</p>
+                <div class="manga-facts">
+                    <span>📚 ${escapeHTML(factSheet.chapters || 'N/A')}</span>
+                    <span>${statusIcon} ${escapeHTML(statusText)}</span>
+                </div>
+                ${renderMatchBreakdown(factSheet)}
+                <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
+                    ${escapeHTML(factSheet.synopsis || 'No description available.')}
+                </p>
             </div>
-            ${renderMatchBreakdown(factSheet)}
-            <p class="manga-synopsis" onclick="window.toggleSynopsis(this)" title="Click to read full description">
-                ${escapeHTML(factSheet.synopsis || 'No description available.')}
-            </p>
         </div>
     `;
-    grid.appendChild(card);
+}
+
+export function renderMangaCard(factSheet) {
+    const grid = document.getElementById('community-grid');
+    if (!grid) return;
+
+    const temp = document.createElement('div');
+    temp.innerHTML = getMangaCardHTML(factSheet).trim();
+    const card = temp.firstElementChild;
+    if (card) grid.appendChild(card);
 }
