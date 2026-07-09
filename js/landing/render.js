@@ -1,4 +1,4 @@
-// ==========================================
+// ========================================== 
 // landing/render.js
 // ==========================================
 // DOM layer for the landing page's always-visible rows. Takes normalized
