@@ -69,11 +69,20 @@
 /* ==========================
    SCORE BADGE (gold match %)
 ========================== */
+.manga-title-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.manga-title-row .manga-title{
+    flex:1;
+    min-width:0;
+}
+
 .score-badge{
-    position:absolute;
-    top:10px;
-    left:10px;
-    z-index:3;
+    flex-shrink:0;
     display:flex;
     align-items:center;
     gap:3px;
@@ -85,15 +94,16 @@
     font-weight:700;
     letter-spacing:.2px;
     box-shadow:0 6px 14px rgba(0,0,0,.35);
+    white-space:nowrap;
 }
 
 /* ==========================
-   FAVORITE BUTTON — top-right of the whole card
+   FAVORITE BUTTON — top-right of the cover
 ========================== */
 .fav-btn{
     position:absolute;
-    top:14px;
-    right:14px;
+    bottom:10px;
+    right:10px;
     z-index:4;
     width:32px;
     height:32px;
@@ -104,11 +114,14 @@
     justify-content:center;
     cursor:pointer;
     font-size:1.05rem;
-    color:var(--text-muted);
-    background:transparent;
-    transition:transform .25s ease, color .25s ease;
+    color:#fff;
+    background:rgba(10,8,20,.55);
+    box-shadow:0 4px 10px rgba(0,0,0,.3);
+    transition:transform .25s ease, color .25s ease, background .25s ease;
 }
 
+.fav-btn:hover{ transform:scale(1.15); color:var(--pink); background:rgba(10,8,20,.75); }
+.fav-btn.active{ color:var(--pink); }
 .fav-btn:hover{ transform:scale(1.15); color:var(--pink); }
 .fav-btn.active{ color:var(--pink); }
 
