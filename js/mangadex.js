@@ -12,8 +12,18 @@
 // and getFallbackLinks() both take an optional `meta` object (currently
 // just { author }, forwarded from mangaDetail.js) so the Google entry's
 // buildUrl() can use it when available; no other behavior changed.
+//
+// CHANGED (READLINKS_UPGRADE_PLAN.md Step 3): resolveReadLinks() now
+// checks a Firestore cache before ever calling MangaDex, using the same
+// `cache` collection + read/write-through pattern already used by
+// myListPage.js/topPicks.js/mixerPage.js (db, doc, getDoc, setDoc from
+// firebase.js -- same export style as everywhere else in the app). Cache
+// key is `readlinks_<normalizedTitle>`, TTL is CONFIG.CACHE_EXPIRY (24h).
+// Writes are fire-and-forget so a slow/failed write never delays the
+// links actually rendering.
 import { CONFIG } from './config.js';
 import { READ_LINK_SOURCES } from './readLinks/sources.js';
+import { db, doc, getDoc, setDoc } from './firebase.js';
 
 // MangaDex requires specific UUIDs for genres
 const MD_TAG_MAP = {
@@ -185,7 +195,43 @@ export function getFallbackLinks(title, meta = {}) {
     }));
 }
 
+// ---- Step 3: Firestore cache for resolved read-links ----
+// Same `cache` collection + shape (key, { ..., cachedAt }) already used by
+// myListPage.js/topPicks.js/mixerPage.js, so this doesn't introduce a new
+// caching pattern into the app, just reuses the existing one.
+function readLinksCacheKey(title) {
+    const cleanTitle = title.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+    return `readlinks_${cleanTitle}`;
+}
+
+async function readLinksCache(key) {
+    if (!db) return null; // matches the rest of the app's `if (!db)` guard -- init failure degrades to no cache, not a crash
+    try {
+        const snap = await getDoc(doc(db, 'cache', key));
+        if (!snap.exists()) return null;
+        const data = snap.data();
+        if (Date.now() - data.cachedAt > CONFIG.CACHE_EXPIRY) return null;
+        return data.links;
+    } catch (e) {
+        console.warn('[mangadex.js] read-links cache read failed:', e.message);
+        return null;
+    }
+}
+
+// Deliberately NOT awaited by callers -- a slow or failed write must never
+// delay the links that are about to render.
+function writeLinksCache(key, links) {
+    if (!db) return;
+    setDoc(doc(db, 'cache', key), { links, cachedAt: Date.now() }).catch(e =>
+        console.warn('[mangadex.js] read-links cache write failed:', e.message)
+    );
+}
+
 export async function resolveReadLinks(title, meta = {}) {
+    const cacheKey = readLinksCacheKey(title);
+    const cached = await readLinksCache(cacheKey);
+    if (cached) return cached;
+
     let validLinks = [];
 
     if (!mangaDexUnreachable) {
@@ -226,6 +272,7 @@ export async function resolveReadLinks(title, meta = {}) {
     // Manganato, Bato.to, and Google fallbacks
     validLinks.push(...getFallbackLinks(title, meta));
 
+    writeLinksCache(cacheKey, validLinks);
     return validLinks;
 }
 
