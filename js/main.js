@@ -64,6 +64,30 @@ window.AppDiagnostics = {
 };
 
 // ===============================
+// MODULE LOADER
+// ===============================
+// Collapses the old copy-pasted "try { import } catch { log }" blocks into
+// one call per module. This is the fix for the class of bug where a hand-
+// written block gets duplicated/edited and ends up with a stray or
+// mismatched try/catch: there's now only ONE place that does the
+// import + diagnostics-logging dance, so a broken copy-paste of an
+// individual block is no longer possible.
+//
+// `assign` receives the imported module and does whatever wiring that
+// module needs (attaching things to window, calling an init function,
+// awaiting a load call, etc). It can be sync or async — both are awaited.
+async function loadModule(name, path, assign) {
+    try {
+        const mod = await import(path);
+        if (assign) await assign(mod);
+        window.AppDiagnostics.log(name, true, "Loaded");
+    } catch (e) {
+        console.error(`DEBUG - ${name} Load Failure:`, e);
+        window.AppDiagnostics.log(name, false, e.message || "Load Failed - Check Console");
+    }
+}
+
+// ===============================
 // APP INIT
 // ===============================
 async function initializeApp() {
@@ -71,77 +95,41 @@ async function initializeApp() {
         window.AppDiagnostics.log("App", true, "Initializing...");
 
         // Load Firebase
-        try {
-            const fb = await import("./firebase.js");
+        await loadModule("Firebase", "./firebase.js", (fb) => {
             window.db = fb.db;
-            window.AppDiagnostics.log("Firebase", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Firebase", false, e.message);
-        }
+        });
 
         // Load Config
-        try {
-            const cfg = await import("./config.js");
+        await loadModule("Config", "./config.js", (cfg) => {
             window.CONFIG = cfg.CONFIG;
-            window.AppDiagnostics.log("Config", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Config", false, e.message);
-        }
+        });
 
-        
         // Load Search
-        try {
-            const search = await import("./search.js"); // <--- Corrected Path
+        await loadModule("Search", "./search.js", (search) => {
             window.triggerSearch = search.triggerSearch;
             window.triggerPresetSearch = search.triggerPresetSearch;
             window.triggerQuickFilter = search.triggerQuickFilter;
-            window.AppDiagnostics.log("Search", true, "Loaded");
-        } catch (e) {
-            console.error("DEBUG - Search Load Failure:", e);
-            window.AppDiagnostics.log("Search", false, "Load Failed - Check Console");
-        }
+        });
 
-
-        //Load Slide-out Menu Drawer
-        try {
-            const menuDrawer = await import("./menuDrawer.js");
+        // Load Slide-out Menu Drawer
+        await loadModule("MenuDrawer", "./menuDrawer.js", (menuDrawer) => {
             window.openMenu = menuDrawer.openMenu;
             window.closeMenu = menuDrawer.closeMenu;
             window.cycleTheme = menuDrawer.cycleTheme;
-            window.AppDiagnostics.log("MenuDrawer", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("MenuDrawer", false, e.message);
-        }
-
-        
-
-
-
+        });
 
         // Load Theme
-        try {
-            const theme = await import("./theme.js");
+        await loadModule("Theme", "./theme.js", (theme) => {
             window.applyMoodTheme = theme.applyMoodTheme;
-            window.AppDiagnostics.log("Theme", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Theme", false, e.message);
-        }
-
-        // Load Moods
-        
+        });
 
         // Load AI Panel (replaces the old standalone parser tester)
-        try {
-            const aiPanel = await import("./aiPanel.js");
+        await loadModule("AIPanel", "./aiPanel.js", (aiPanel) => {
             aiPanel.initAIPanel();
-            window.AppDiagnostics.log("AIPanel", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("AIPanel", false, e.message);
-        }
+        });
 
         // Load Renderer
-        try {
-            const renderer = await import("./renderer.js");
+        await loadModule("Renderer", "./renderer.js", (renderer) => {
             window.renderMangaCard = renderer.renderMangaCard;
             window.getCachedFactSheet = renderer.getCachedFactSheet;
             // BUGFIX: handleFavoriteClick was called via onclick in renderer.js's
@@ -150,81 +138,53 @@ async function initializeApp() {
             window.handleFavoriteClick = renderer.handleFavoriteClick;
             // NEW: same pattern for the "Why?" match-breakdown toggle.
             window.toggleWhyPanel = renderer.toggleWhyPanel;
-            window.AppDiagnostics.log("Renderer", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Renderer", false, e.message);
-        }
+        });
 
         // Load Favorites
-        try {
-            const fav = await import("./favorites.js");
+        await loadModule("Favorites", "./favorites.js", (fav) => {
             window.toggleFavorite = fav.toggleFavorite;
             window.getAllFavorites = fav.getAllFavorites;
             window.hydrateFavorites = fav.hydrateFromRemote;
-            window.AppDiagnostics.log("Favorites", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("Favorites", false, e.message);
-        }
+        });
 
         // Load Manga Detail Page (full-page cover/synopsis/read-links view,
         // opened when any card — search grid, Trending Today, Hidden Gems —
         // is tapped).
-        try {
-            const detail = await import("./mangaDetail.js");
+        await loadModule("MangaDetail", "./mangaDetail.js", (detail) => {
             window.openMangaDetail = detail.openMangaDetail;
             window.closeMangaDetail = detail.closeMangaDetail;
-            window.AppDiagnostics.log("MangaDetail", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("MangaDetail", false, e.message);
-        }
+        });
 
         // Load Today's Top Picks (Step 4 — auto-fills the homepage grid on
         // load with a small rotating set of well-rated manga, instead of
         // leaving #community-grid empty until the user searches. Loaded
         // after MangaDetail/Renderer/Favorites above so the cards it
         // renders are immediately clickable/favoritable.)
-        try {
-            const topPicks = await import("./topPicks.js");
+        await loadModule("TopPicks", "./topPicks.js", async (topPicks) => {
             await topPicks.loadTodaysTopPicks();
-            window.AppDiagnostics.log("TopPicks", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("TopPicks", false, e.message);
-        }
+        });
 
         // Load Mood Mixer Page (Step 2 — dedicated 2-mood + genre + filter
         // page, opened from the homepage Mood Mixer panel's "Open Full
         // Mixer" button instead of mixing being limited to instant-search
         // chip taps).
-        try {
-            const mixer = await import("./mixerPage.js");
+        await loadModule("MixerPage", "./mixerPage.js", (mixer) => {
             window.openMixerPage = mixer.openMixerPage;
             window.closeMixerPage = mixer.closeMixerPage;
-            window.AppDiagnostics.log("MixerPage", true, "Loaded");
-       } catch (e) {
-            window.AppDiagnostics.log("MixerPage", false, e.message);
-        }
+        });
 
-        try {
-            const advFilter = await import("./advancedFilter/index.js");
+        await loadModule("AdvancedFilter", "./advancedFilter/index.js", (advFilter) => {
             window.openAdvancedFilter = advFilter.openAdvancedFilter;
             window.closeAdvancedFilter = advFilter.closeAdvancedFilter;
-            window.AppDiagnostics.log("AdvancedFilter", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("AdvancedFilter", false, e.message);
-        }
-        
+        });
 
         // Load My List Page (Step 5 — dedicated saved-favorites + hourly
         // rotating recommendations page, replacing the old in-place grid
         // toggle entirely; see setupMyListButton below).
-        try {
-            const myList = await import("./myListPage.js");
+        await loadModule("MyListPage", "./myListPage.js", (myList) => {
             window.openMyListPage = myList.openMyListPage;
             window.closeMyListPage = myList.closeMyListPage;
-            window.AppDiagnostics.log("MyListPage", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("MyListPage", false, e.message);
-        }
+        });
 
         // Load Search Results Page (Step 7 — dedicated paginated results
         // page for typed searches, replacing the old behavior of rendering
@@ -232,14 +192,10 @@ async function initializeApp() {
         // below. Uses window.triggerSearch internally, so it must load
         // after Search above, though import order here doesn't actually
         // matter since it's only called on a later user action.)
-        try {
-            const resultsPage = await import("./searchResultsPage.js");
+        await loadModule("SearchResultsPage", "./searchResultsPage.js", (resultsPage) => {
             window.openSearchResultsPage = resultsPage.openSearchResultsPage;
             window.closeSearchResultsPage = resultsPage.closeSearchResultsPage;
-            window.AppDiagnostics.log("SearchResultsPage", true, "Loaded");
-        } catch (e) {
-            window.AppDiagnostics.log("SearchResultsPage", false, e.message);
-        }
+        });
 
         // Setup UI
         setupSearchBar();
@@ -359,6 +315,9 @@ if (document.readyState === "loading") {
 } else {
     initializeApp();
 }
+
+
+
 
 
 
