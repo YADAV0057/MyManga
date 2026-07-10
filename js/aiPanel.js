@@ -197,7 +197,7 @@ function renderDetails(intent) {
             </div>
         </div>
     `).join('') || '<p class="ai-empty">No strong mood detected</p>';
-const debugVector = `<p style="font-size:10px;opacity:0.6">vector: ${JSON.stringify(intent.moodVector)}</p>`;
+const debugVector = `<p style="font-size:10px;opacity:0.6">moods: ${JSON.stringify(intent.moods)}<br>vector: ${JSON.stringify(intent.moodVector)}</p>`;
     const mustHave = [...(intent.genres || []), ...(intent.themes || [])].map(x => x.name);
     const niceToHave = [...(intent.boosts?.genres || []), ...(intent.boosts?.themes || [])].map(x => x.name);
     const avoid = [...(intent.avoids?.genres || []), ...(intent.avoids?.themes || [])];
