@@ -47,6 +47,17 @@ import { formatStatus } from './renderer.js';
  */
 export function normalizeResult(rawMedia, source) {
     const title = rawMedia.title?.english || rawMedia.title?.romaji || 'Unknown Title';
+    // NEW (READLINKS_UPGRADE_PLAN.md Step 4): keep the other language variant
+    // around when it differs from the primary title (e.g. AniList's
+    // `title.romaji` when `title.english` was picked as primary). Without
+    // this, the raw adapter object's alternate title is discarded here and
+    // never available again downstream -- mangadex.js's fallback-link
+    // builder needs it to try both variants against Manganato/Bato.to's
+    // guessed search-pattern URLs. null when there's no second variant, or
+    // it's identical to the primary (nothing to gain from trying "twice").
+    const altTitle = (rawMedia.title?.english && rawMedia.title?.romaji && rawMedia.title.english !== rawMedia.title.romaji)
+        ? (title === rawMedia.title.english ? rawMedia.title.romaji : rawMedia.title.english)
+        : null;
     const cleanSynopsis = rawMedia.description
         ? rawMedia.description.replace(/<[^>]*>?/gm, '')
         : "No synopsis available.";
@@ -54,6 +65,7 @@ export function normalizeResult(rawMedia, source) {
     return {
         id: rawMedia.id,
         title,
+        altTitle,
         coverUrl: rawMedia.coverImage?.large || CONFIG.IMAGE_FALLBACK,
         synopsis: cleanSynopsis,
         status: formatStatus(rawMedia.status),
