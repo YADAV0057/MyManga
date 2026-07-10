@@ -143,8 +143,8 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
     // overlap approximation when there's no profile yet, so a cold cache
     // never silently degrades a search to NEUTRAL.
     let moodScore = null;
-    if (mangaProfile && intent.moodProfile && Object.keys(mangaProfile).length > 0) {
-        const sim = cosineSimilarity(intent.moodProfile, mangaProfile);
+    if (mangaProfile && intent.moodVector && Object.keys(mangaProfile).length > 0) {
+        const sim = cosineSimilarity(intent.moodVector, mangaProfile);
         if (sim !== null) moodScore = (sim + 1) / 2; // cosine is -1..1 → rescale to 0..1
     }
     if (moodScore === null) {
@@ -341,7 +341,7 @@ export async function scoreResults(unifiedResults, intent, plan, conceptDictiona
     const profileEntries = await Promise.all(
         unifiedResults.map(item => {
             // OPTIMIZATION: Skip the Firestore round-trip entirely if there is no mood profile vector to score against[span_1](start_span)[span_1](end_span)
-            if (!intent.moodProfile || intent.moodProfile.length === 0) {
+            if (!intent.moodVector || Object.keys(intent.moodVector).length === 0) {
                 return Promise.resolve([profileKey(item), {}]);
             }
             return getOrBuildProfile(item, conceptDictionary)
