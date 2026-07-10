@@ -36,6 +36,12 @@ function handleNegations(text) {
     return { cleanText: cleanText.trim(), excluded };
 }
 
+import { correctTypos } from './fuzzyMatch.js';   // add this import at the top
+
+// ...inside buildIntent():
+const normalized = normalize(rawUserInput);
+const corrected = correctTypos(normalized);          // add this line
+const { cleanText, excluded } = handleNegations(corrected); // change normalized -> corrected here
 /**
  * Orchestrates the full intent analysis pipeline.
  */
