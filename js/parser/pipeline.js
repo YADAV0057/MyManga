@@ -62,6 +62,7 @@ export function buildIntent(rawUserInput) {
     intent.moods = moodData.moods;
     intent.intensity = moodData.intensity;
     intent.moodProfile = moodData.moodProfile;
+    intent.moodVector = moodData.moodVector; 
     intent.tone = moodData.tone;
 
     // 5. Map to Categories
