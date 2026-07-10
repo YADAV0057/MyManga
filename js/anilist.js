@@ -5,6 +5,17 @@
 // the simple parser's { cleanQuery, statusFilter, isVibeOrTag }. The old
 // top-level parser.js / parseSmartQuery import is kept as a re-export only
 // for any other file that may still depend on it — it's no longer used here.
+//
+// CHANGED (READLINKS_UPGRADE_PLAN.md Step 8): the media query now also
+// requests `staff` (sorted by relevance, capped at 3 entries -- AniList
+// lists creators first, so the top entry is almost always the actual
+// author/artist rather than a minor contributor). resultNormalizer.js
+// reads this into item.author, which Step 1's Google fallback query
+// already knew how to use the moment it existed (it was written to
+// degrade gracefully with author omitted until this step landed).
+// Jikan/Kitsu/MangaDex results simply have no `staff` property on their
+// raw media objects, so resultNormalizer.js's extraction resolves to null
+// for those sources -- no adapter-specific branching needed there.
 import { parseSmartQuery } from './parser.js';
 
 export { parseSmartQuery };
@@ -75,6 +86,7 @@ export async function fetchFromAniListUnified(plan, page = 1, isKorean = false, 
             Page(page: $page, perPage: $perPage) {
                 media(${mediaArgs}) {
                     id title { romaji english } averageScore genres description(asHtml: false) coverImage { large } chapters status popularity
+                    staff(sort: RELEVANCE, perPage: 3) { edges { role node { name { full } } } }
                 }
             }
         }
