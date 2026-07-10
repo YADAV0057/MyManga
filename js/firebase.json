@@ -1,0 +1,37 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "firestore.rules",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**",
+      "package.json",
+      "queue.txt",
+      "raw_paste.txt",
+      "README.md",
+      "js/parser/dictionary/harvester.js",
+      "js/parser/dictionary/HarvesterAPI.js",
+      "js/clean_queue.js"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Frame-Options", "value": "DENY" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "Permissions-Policy", "value": "geolocation=(), camera=(), microphone=()" },
+          {
+            "key": "Content-Security-Policy-Report-Only",
+            "value": "default-src 'self'; script-src 'self' https://www.gstatic.com; connect-src 'self' https://graphql.anilist.co https://api.jikan.moe https://kitsu.io https://api.mangadex.org https://firestore.googleapis.com https://www.googleapis.com https://www.google-analytics.com https://region1.google-analytics.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          }
+        ]
+      }
+    ]
+  }
+}
