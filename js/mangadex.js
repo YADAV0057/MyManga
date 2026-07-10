@@ -22,18 +22,19 @@
 // Writes are fire-and-forget so a slow/failed write never delays the
 // links actually rendering.
 //
-// CHANGED (READLINKS_UPGRADE_PLAN.md Step 5): resolveReadLinks() now also
-// queries Comick.io (js/comick.js) as a second "verified" tier source.
-// The MangaDex lookup was extracted into its own resolveMangaDexLink()
-// helper so it and resolveComickLink() can run concurrently via
-// Promise.all instead of back-to-back -- each still has its own 1.5s
-// timeout, but total wait time doesn't stack. A Comick miss/failure
-// degrades the same way a MangaDex miss always has: silently, falling
-// through to whatever other links are available.
+// REVERTED: resolveReadLinks() no longer queries Comick.io. No working
+// Brave API key was available for Step 9 either, and that whole feature
+// (js/braveSearch.js + netlify/functions/searchManga.js) has been dropped
+// from mangaDetail.js. Read Now is back to just: MangaDex (Verified, real
+// existence check) + Google Search (js/readLinks/sources.js, now a
+// single-entry registry). Manganato, Bato.to, and MangaPlus were all cut
+// too -- Manganato/Bato.to are guessed-URL-only (no real check possible),
+// and MangaPlus has no usable search API (see comment history in
+// js/readLinks/sources.js) so a "does this exist" check for it isn't
+// feasible without a fragile Protobuf decoder, which was ruled out.
 import { CONFIG } from './config.js';
 import { READ_LINK_SOURCES } from './readLinks/sources.js';
 import { db, doc, getDoc, setDoc } from './firebase.js';
-import { resolveComickLink } from './comick.js';
 
 // MangaDex requires specific UUIDs for genres
 const MD_TAG_MAP = {
@@ -202,22 +203,14 @@ let consecutiveFailures = 0;
 const MANGADEX_COOLDOWN_MS = 60000; // 60s skip window once tripped
 const RETRY_BACKOFF_MS = 300; // short pause before the one retry
 
-// Instant, no-network fallback links (Manganato, Bato.to, Google), built
-// from the READ_LINK_SOURCES registry (js/readLinks/sources.js) instead of
-// hardcoded inline. `meta` is optional and currently only used by the
-// Google entry (author, if the item model ever provides one -- see Step 8).
-// Instant, no-network fallback links (Manganato, Bato.to, Google), built
-// from the READ_LINK_SOURCES registry (js/readLinks/sources.js) instead of
-// hardcoded inline. `meta` is optional: `author` is used by the Google
-// entry (see Step 1); `altTitle` (Step 4) is used here to also compute a
-// second candidate URL for search-pattern-guess sources (Manganato,
-// Bato.to), since those sites frequently index under a different title
-// (romaji vs. English) than the one AniList picked as primary. Google is
-// excluded from this since its broad, unrestricted query doesn't depend on
-// an exact title match the way a site's own search-URL pattern does.
-// Output stays at the same 3 top-level links as before -- the alt
-// candidate is attached as `altUrl` on the existing link object, not a new
-// entry, so the UI (unchanged this step) doesn't balloon.
+// Instant, no-network fallback link(s), built from the READ_LINK_SOURCES
+// registry (js/readLinks/sources.js) -- now just Google Search after the
+// Manganato/Bato.to/MangaPlus revert. `meta.author` (Step 8, AniList staff
+// data) sharpens the query when available. The altTitle branch below is
+// dead code now that Google is the only entry (it explicitly skips
+// 'google'), but left in place rather than restructured -- if a real
+// guessable-URL source is ever added back to the registry, this logic is
+// already correct for it with zero changes.
 export function getFallbackLinks(title, meta = {}) {
     return READ_LINK_SOURCES.map(source => {
         const url = source.buildUrl(title, meta);
@@ -290,11 +283,9 @@ async function attemptMangaDexLookup(title) {
 }
 
 // Looks up `title` on MangaDex and returns a verified link object, or null
-// on a miss/failure/circuit-breaker cooldown. Extracted from
-// resolveReadLinks() in Step 5 so it can run concurrently with
-// resolveComickLink() via Promise.all. Step 6 added the retry-with-backoff
-// and swapped the permanent breaker for a timed cooldown (see comments
-// above mangaDexUnreachableUntil).
+// on a miss/failure/circuit-breaker cooldown. Step 6 added the
+// retry-with-backoff and swapped the permanent breaker for a timed
+// cooldown (see comments above mangaDexUnreachableUntil).
 async function resolveMangaDexLink(title) {
     if (Date.now() < mangaDexUnreachableUntil) return null;
 
@@ -327,19 +318,12 @@ export async function resolveReadLinks(title, meta = {}) {
     const cached = await readLinksCache(cacheKey);
     if (cached) return cached;
 
-    // MangaDex and Comick are independent APIs with independent circuit
-    // breakers -- run their lookups concurrently so a slow/timed-out one
-    // doesn't add its 1.5s on top of the other's.
-    const [mangaDexLink, comickLink] = await Promise.all([
-        resolveMangaDexLink(title),
-        resolveComickLink(title)
-    ]);
+    const mangaDexLink = await resolveMangaDexLink(title);
 
     let validLinks = [];
     if (mangaDexLink) validLinks.push(mangaDexLink);
-    if (comickLink) validLinks.push(comickLink);
 
-    // Manganato, Bato.to, and Google fallbacks
+    // Google fallback only (see READ_LINK_SOURCES in sources.js)
     validLinks.push(...getFallbackLinks(title, meta));
 
     writeLinksCache(cacheKey, validLinks);
