@@ -22,12 +22,12 @@
 // CHANGED (moved from cards to detail page): rating/reading-time/confidence
 // badges, mood tags, and the "Similar Titles"/"Share" quick actions were
 // originally attempted directly on the homepage cards. That made the grid
-// noisy and cramped on mobile, so they now live here instead — the card
+// noisy and cramped on mobile, so they now live here instead -- the card
 // stays exactly as before (cover, title, score badge, fav button) and this
 // richer info only renders once a title is actually opened. Everything
 // added below is derived synchronously from fields resultNormalizer.js /
 // recommendationScorer.js already put on the item (globalScore, chapters,
-// rawGenres, themes, matchScore) — no new API calls, no new async data
+// rawGenres, themes, matchScore) -- no new API calls, no new async data
 // source (mangaProfiles.js's real mood-vector profile is Firestore-backed
 // and async, which is too heavy for a page-open render, so the mood tags
 // here are a lightweight synchronous keyword heuristic, not that system).
@@ -70,7 +70,7 @@ function getStatusIcon(status) {
 }
 
 // ---- NEW: badges (rating / reading-time / match confidence) ----
-// All three are derived synchronously from fields already on the item —
+// All three are derived synchronously from fields already on the item --
 // no extra fetch, no extra Firestore round-trip.
 
 function getReadingTimeInfo(item) {
@@ -113,7 +113,7 @@ function renderDetailBadgeRow(item) {
 // Lightweight synchronous keyword heuristic against rawGenres/themes.
 // Deliberately NOT mangaProfiles.js's real cosine-compared mood-atom vector
 // (that's async/Firestore-backed and meant for search scoring, not a quick
-// page-open render) — this is a simpler, honest "inferred from genre" label.
+// page-open render) -- this is a simpler, honest "inferred from genre" label.
 const MOOD_TAG_RULES = [
     { tag: 'Tearjerker', icon: '😢', keywords: ['drama', 'tragedy', 'tragic'] },
     { tag: 'Wholesome', icon: '🌼', keywords: ['slice of life', 'iyashikei', 'healing'] },
@@ -140,7 +140,7 @@ function renderMoodTagRow(item) {
 
 // ---- NEW: quick actions (Save / Similar Titles / Share) ----
 // Save reuses the existing bookmark button/handler unchanged. Similar
-// Titles and Share are new — both act on the cached item by id so they
+// Titles and Share are new -- both act on the cached item by id so they
 // work the same way handleDetailFavoriteClick already does.
 
 function renderQuickActions(item, saved) {
@@ -277,14 +277,19 @@ function buildMarkup(item) {
 
 async function loadLinksIfNeeded(item) {
     if (item.readLinks) return;
+    // meta.author is currently always undefined (item.author doesn't exist
+    // in the data model yet -- see Step 8 of READLINKS_UPGRADE_PLAN.md).
+    // Passed through anyway so the Google fallback query picks it up for
+    // free the moment that field is added, with no further code change.
+    const meta = { author: item.author };
     let links;
     try {
         links = await Promise.race([
-            resolveReadLinks(item.title).catch(() => getFallbackLinks(item.title)),
-            new Promise(resolve => setTimeout(() => resolve(getFallbackLinks(item.title)), 2500))
+            resolveReadLinks(item.title, meta).catch(() => getFallbackLinks(item.title, meta)),
+            new Promise(resolve => setTimeout(() => resolve(getFallbackLinks(item.title, meta)), 2500))
         ]);
     } catch (e) {
-        links = getFallbackLinks(item.title);
+        links = getFallbackLinks(item.title, meta);
     }
     item.readLinks = links;
     cacheMangaForDetail(item);
@@ -313,7 +318,7 @@ window.handleDetailFavoriteClick = function () {
     btn.innerHTML = nowSaved ? '♥ Saved' : '♡ Save';
 };
 
-// NEW: "Similar Titles" quick action — closes the detail page and reuses
+// NEW: "Similar Titles" quick action -- closes the detail page and reuses
 // the app's existing search pipeline (same one vibe-btn/preset buttons use)
 // with a query built from this title's top genres. No new search logic.
 window.findSimilarTitles = function (id) {
@@ -336,7 +341,7 @@ window.findSimilarTitles = function (id) {
     }
 };
 
-// NEW: "Share" quick action — native share sheet where available, clipboard
+// NEW: "Share" quick action -- native share sheet where available, clipboard
 // fallback otherwise. Self-contained toast, no dependency on any other file.
 window.shareManga = function (id) {
     const item = getCachedMangaDetail(id);
@@ -351,7 +356,7 @@ window.shareManga = function (id) {
     if (navigator.share) {
         navigator.share(shareData).catch(() => {});
     } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(`${item.title} — ${window.location.href}`)
+        navigator.clipboard.writeText(`${item.title} -- ${window.location.href}`)
             .then(() => showDetailToast('Link copied to clipboard'))
             .catch(() => showDetailToast('Could not copy link'));
     } else {
@@ -394,6 +399,3 @@ export function closeMangaDetail() {
     view.classList.remove('open');
     document.body.classList.remove('detail-open');
 }
-
-
-
