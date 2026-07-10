@@ -118,13 +118,41 @@ export class HarvesterAPI {
         }
     }
 
-    static async fetchAliases(tag) {
-        try {
-            const res = await axios.get(`https://api.datamuse.com/words?ml=${encodeURIComponent(tag)}&max=3`);
-            return res.data.map(item => item.word);
-        } catch (e) { return []; }
-    }
+    
+static async fetchAliases(tag) {
+    try {
+        // Pull more candidates than we need (max=10, not 3) so filtering by
+        // relevance below still leaves real ones to keep, instead of just
+        // shrinking an already-tiny unfiltered list.
+        const res = await axios.get(`https://api.datamuse.com/words?ml=${encodeURIComponent(tag)}&max=10`);
+        const results = res.data || [];
+        if (results.length === 0) return [];
 
+        // FIX: this used to keep Datamuse's top 3 words no matter how weak
+        // the match was. For real single words ("horror") that's fine — for
+        // invented multi-word trope names ("Noble Academy", "Cursed
+        // Bloodline") Datamuse has nothing good to associate, so it just
+        // returned the least-bad garbage it had, which then got injected
+        // straight into SYNONYM_MAP as if it were a real synonym (e.g.
+        // "flame" silently routing searches to "Noble Academy").
+        //
+        // Datamuse's `score` isn't on a fixed scale — it depends on how
+        // well-connected the query word is overall — so a single hardcoded
+        // cutoff would be too strict for some tags and too loose for
+        // others. Instead, keep only words scoring at least RELATIVE_FLOOR
+        // of *this query's own* top score, so it adapts per tag. If even
+        // the best result has no real score, Datamuse effectively found
+        // nothing meaningful — return no aliases rather than guessing.
+        const RELATIVE_FLOOR = 0.3;
+        const topScore = results[0].score || 0;
+        if (topScore <= 0) return [];
+
+        return results
+            .filter(item => (item.score || 0) >= topScore * RELATIVE_FLOOR)
+            .slice(0, 3)
+            .map(item => item.word);
+    } catch (e) { return []; }
+}
     static async fetchFromJikan(tag) {
         try {
             const res = await axios.get(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(tag)}&limit=3`);
