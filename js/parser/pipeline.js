@@ -9,6 +9,7 @@ import { applySynonyms } from './synonyms.js';
 import { analyzeMood } from './moodEngine.js';
 import { mapMoodsToCategories } from './genreMapper.js';
 import { applyReasoningRules } from './ruleEngine.js'; 
+import { correctTypos } from './fuzzyMatch.js';
 
 /**
  * Strips negation terms from the input and tracks excluded intent.
@@ -36,12 +37,7 @@ function handleNegations(text) {
     return { cleanText: cleanText.trim(), excluded };
 }
 
-import { correctTypos } from './fuzzyMatch.js';   // add this import at the top
 
-// ...inside buildIntent():
-const normalized = normalize(rawUserInput);
-const corrected = correctTypos(normalized);          // add this line
-const { cleanText, excluded } = handleNegations(corrected); // change normalized -> corrected here
 /**
  * Orchestrates the full intent analysis pipeline.
  */
@@ -50,10 +46,10 @@ export function buildIntent(rawUserInput) {
     intent.originalQuery = rawUserInput;
 
     // 1. Normalize & Handle Negations
-    const normalized = normalize(rawUserInput);
-    const { cleanText, excluded } = handleNegations(normalized);
-    intent.excluded = excluded;
-    
+    // 1. Normalize & Handle Negations
+const normalized = normalize(rawUserInput);
+const corrected = correctTypos(normalized);
+const { cleanText, excluded } = handleNegations(corrected);
     // 2. Extract Hard Filters 
     const filterData = extractRules(cleanText); 
     intent.status = filterData.status;
