@@ -3,7 +3,7 @@
 // PARITY FIX: properties.js's 250 hand-curated concepts have never had
 // `moodWeights` computed for them. upgrade.js computes moodWeights from
 // properties.js's concepts, but writes the result into harvested_knowledge.js
-// / review_queue.json — never back into properties.js itself. backfillMoodWeights.js
+// / review_queue.json — never back into properties.js itself. backfillMoodWeights.js 
 // only touches harvested_knowledge.js. So properties.js concepts have always been
 // silently invisible to mangaProfiles.js's computeMoodAtomProfile(), which skips
 // any concept where `!concept.moodWeights` — meaning only the 2000+ harvested
