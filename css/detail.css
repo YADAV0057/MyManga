@@ -478,6 +478,92 @@ body.detail-open {
 .detail-match-item:not(.is-match) .detail-match-icon { 
     color: var(--red); 
 }
+/* ==========================================
+   STEP 9 ADDITIONS — append to css/detail.css
+   ==========================================
+   Styles for js/mangaDetail.js's new "Search Results" section (Brave
+   Search results, Step 9 of READLINKS_UPGRADE_PLAN.md). Built on the same
+   design tokens (--accent, --border, --text-title, --text-muted,
+   --transition) already used throughout the rest of detail.css, so this
+   should sit visually consistent with everything above it.
+
+   Reuses existing classes for the loading state -- .detail-links-skeleton
+   and .skel-pill are already defined above and need no changes; only the
+   6 classes below are new.
+*/
+
+/* Small "Unverified" pill next to the section heading -- amber/warning
+   tone, distinct from the green "Verified" badges used on MangaDex/Comick
+   Read Now buttons, so the trust-level difference reads at a glance. */
+.detail-unverified-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 100px;
+    vertical-align: middle;
+}
+
+/* Small spacing fix so Search Results doesn't crowd the Read Now row
+   above it now that a new section follows it. */
+.detail-links-row {
+    margin-bottom: 26px;
+}
+
+.detail-search-results-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 26px;
+}
+
+.detail-search-result {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid var(--border, rgba(255, 255, 255, .08));
+    border-radius: 12px;
+    text-decoration: none;
+    transition: var(--transition, .3s ease);
+}
+
+.detail-search-result:hover {
+    background: rgba(255, 255, 255, .06);
+    border-color: rgba(255, 255, 255, .16);
+    transform: translateY(-1px);
+}
+
+.detail-search-result-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--accent, #3db4f2);
+    line-height: 1.35;
+}
+
+.detail-search-result-snippet {
+    font-size: 12.5px;
+    color: var(--text-muted, #6f7d8c);
+    line-height: 1.5;
+    /* Cap snippets to 2 lines so a long meta description can't blow out
+       the card height and push everything below it down unpredictably. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.detail-search-empty {
+    font-size: 13px;
+    color: var(--text-muted, #6f7d8c);
+}
 
 
 
