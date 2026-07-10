@@ -187,12 +187,30 @@ let consecutiveFailures = 0;
 // from the READ_LINK_SOURCES registry (js/readLinks/sources.js) instead of
 // hardcoded inline. `meta` is optional and currently only used by the
 // Google entry (author, if the item model ever provides one -- see Step 8).
+// Instant, no-network fallback links (Manganato, Bato.to, Google), built
+// from the READ_LINK_SOURCES registry (js/readLinks/sources.js) instead of
+// hardcoded inline. `meta` is optional: `author` is used by the Google
+// entry (see Step 1); `altTitle` (Step 4) is used here to also compute a
+// second candidate URL for search-pattern-guess sources (Manganato,
+// Bato.to), since those sites frequently index under a different title
+// (romaji vs. English) than the one AniList picked as primary. Google is
+// excluded from this since its broad, unrestricted query doesn't depend on
+// an exact title match the way a site's own search-URL pattern does.
+// Output stays at the same 3 top-level links as before -- the alt
+// candidate is attached as `altUrl` on the existing link object, not a new
+// entry, so the UI (unchanged this step) doesn't balloon.
 export function getFallbackLinks(title, meta = {}) {
-    return READ_LINK_SOURCES.map(source => ({
-        name: source.name,
-        url: source.buildUrl(title, meta),
-        isValidated: false
-    }));
+    return READ_LINK_SOURCES.map(source => {
+        const url = source.buildUrl(title, meta);
+        const link = { name: source.name, url, isValidated: false };
+
+        if (source.id !== 'google' && meta.altTitle && meta.altTitle !== title) {
+            const altUrl = source.buildUrl(meta.altTitle, meta);
+            if (altUrl !== url) link.altUrl = altUrl; // dedupe: skip if identical
+        }
+
+        return link;
+    });
 }
 
 // ---- Step 3: Firestore cache for resolved read-links ----
