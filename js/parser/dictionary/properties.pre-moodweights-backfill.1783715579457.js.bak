@@ -61,18 +61,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 0.43,
-            "violent": 0.59,
-            "dark": 1,
-            "mysterious": 0.3,
-            "emotional": 0.95,
-            "tragic": 0.23,
-            "funny": 0.06,
-            "romantic": 0.06,
-            "intense": 0.02
-        }
+        "intensity": 0.9
     },
     "horror": {
         "id": "horror",
@@ -140,15 +129,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 1,
-        "moodWeights": {
-            "scary": 0.73,
-            "dark": 1,
-            "violent": 0.4,
-            "mysterious": 0.53,
-            "emotional": 0.15,
-            "intense": 0.34
-        }
+        "intensity": 1
     },
     "healing": {
         "id": "healing",
@@ -219,15 +200,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "funny": 0.55,
-            "happy": 1,
-            "romantic": 0.55,
-            "emotional": 0.68,
-            "relaxing": 0.63,
-            "wholesome": 0.93
-        }
+        "intensity": 0.2
     },
     "romance": {
         "id": "romance",
@@ -296,16 +269,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 0.97,
-            "emotional": 1,
-            "happy": 0.33,
-            "tragic": 0.23,
-            "wholesome": 0.14,
-            "relaxing": 0.11,
-            "intense": 0.12
-        }
+        "intensity": 0.5
     },
     "tragedy": {
         "id": "tragedy",
@@ -361,14 +325,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.72,
-            "dark": 0.37,
-            "mysterious": 0.17,
-            "hopeful": 0.13
-        }
+        "intensity": 0.9
     },
     "action": {
         "id": "action",
@@ -426,15 +383,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.44,
-            "hopeful": 0.26,
-            "dark": 0.03,
-            "mysterious": 0.02,
-            "intense": 0.02
-        }
+        "intensity": 0.8
     },
     "martial_arts": {
         "id": "martial_arts",
@@ -493,15 +442,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.56,
-            "hopeful": 0.21,
-            "intense": 0.19,
-            "dark": 0.03,
-            "mysterious": 0.03
-        }
+        "intensity": 0.7
     },
     "military": {
         "id": "military",
@@ -565,17 +506,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "intense": 0.49,
-            "dark": 0.31,
-            "scary": 0.19,
-            "mysterious": 0.05
-        }
+        "intensity": 0.8
     },
     "assassin": {
         "id": "assassin",
@@ -640,15 +571,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.96,
-            "violent": 0.72,
-            "mysterious": 0.9,
-            "intense": 1,
-            "dark": 0.48,
-            "hopeful": 0.04
-        }
+        "intensity": 0.8
     },
     "fantasy": {
         "id": "fantasy",
@@ -709,14 +632,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.53,
-            "hopeful": 0.61,
-            "scary": 0.15,
-            "dark": 0.1
-        }
+        "intensity": 0.5
     },
     "magic_school": {
         "id": "magic_school",
@@ -774,17 +690,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.75,
-            "hopeful": 0.64,
-            "wholesome": 0.3,
-            "happy": 0.3,
-            "relaxing": 0.23,
-            "romantic": 0.07,
-            "emotional": 0.05
-        }
+        "intensity": 0.4
     },
     "demons": {
         "id": "demons",
@@ -845,16 +751,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.93,
-            "hopeful": 0.32,
-            "dark": 0.42,
-            "scary": 0.46,
-            "violent": 0.42,
-            "intense": 0.03
-        }
+        "intensity": 0.6
     },
     "isekai": {
         "id": "isekai",
@@ -916,14 +813,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.56,
-            "hopeful": 0.79,
-            "romantic": 0.02,
-            "emotional": 0.01
-        }
+        "intensity": 0.5
     },
     "system": {
         "id": "system",
@@ -984,16 +874,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.48,
-            "mysterious": 0.26,
-            "hopeful": 0.27,
-            "intense": 0.27,
-            "dark": 0.15,
-            "scary": 0.12
-        }
+        "intensity": 0.7
     },
     "op_mc": {
         "id": "op_mc",
@@ -1044,15 +925,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.48,
-            "mysterious": 0.29,
-            "hopeful": 0.27,
-            "dark": 0.03,
-            "intense": 0.02
-        }
+        "intensity": 0.8
     },
     "dungeon": {
         "id": "dungeon",
@@ -1110,16 +983,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.31,
-            "hopeful": 0.37,
-            "mysterious": 0.29,
-            "scary": 0.24,
-            "dark": 0.2,
-            "intense": 0.16
-        }
+        "intensity": 0.7
     },
     "mystery": {
         "id": "mystery",
@@ -1181,15 +1045,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "mysterious": 1,
-            "intense": 0.69,
-            "dark": 0.56,
-            "emotional": 0.17,
-            "exciting": 0.03,
-            "hopeful": 0.02
-        }
+        "intensity": 0.6
     },
     "comedy": {
         "id": "comedy",
@@ -1244,13 +1100,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "funny": 1,
-            "happy": 0.38,
-            "exciting": 0.05,
-            "hopeful": 0.03
-        }
+        "intensity": 0.4
     },
     "parody": {
         "id": "parody",
@@ -1293,11 +1143,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "funny": 1,
-            "happy": 0.23
-        }
+        "intensity": 0.5
     },
     "enemies_to_lovers": {
         "id": "enemies_to_lovers",
@@ -1350,16 +1196,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "romantic": 0.9,
-            "emotional": 1,
-            "happy": 0.58,
-            "funny": 0.4,
-            "tragic": 0.28,
-            "wholesome": 0.1,
-            "relaxing": 0.08
-        }
+        "intensity": 0.6
     },
     "harem": {
         "id": "harem",
@@ -1415,18 +1252,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.32,
-            "happy": 0.43,
-            "funny": 0.79,
-            "exciting": 0.23,
-            "hopeful": 0.05,
-            "dark": 0.03,
-            "mysterious": 0.02,
-            "intense": 0.02
-        }
+        "intensity": 0.5
     },
     "villainess": {
         "id": "villainess",
@@ -1490,18 +1316,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.43,
-            "mysterious": 0.56,
-            "hopeful": 0.49,
-            "romantic": 0.95,
-            "emotional": 1,
-            "happy": 0.19,
-            "tragic": 0.34,
-            "dark": 0.19,
-            "funny": 0.19
-        }
+        "intensity": 0.6
     },
     "yuri": {
         "id": "yuri",
@@ -1545,14 +1360,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.6,
-            "happy": 0.49,
-            "wholesome": 0.19,
-            "relaxing": 0.14
-        }
+        "intensity": 0.5
     },
     "death_game": {
         "id": "death_game",
@@ -1619,17 +1427,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 1,
-        "moodWeights": {
-            "dark": 1,
-            "mysterious": 0.38,
-            "emotional": 0.32,
-            "scary": 0.36,
-            "violent": 0.1,
-            "intense": 0.54,
-            "exciting": 0.02,
-            "hopeful": 0.01
-        }
+        "intensity": 1
     },
     "psychological": {
         "id": "psychological",
@@ -1688,14 +1486,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "dark": 1,
-            "mysterious": 0.64,
-            "emotional": 0.8,
-            "intense": 0.47,
-            "tragic": 0.23
-        }
+        "intensity": 0.9
     },
     "cultivation": {
         "id": "cultivation",
@@ -1754,15 +1545,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.34,
-            "hopeful": 0.3,
-            "violent": 0.45,
-            "dark": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "post_apocalyptic": {
         "id": "post_apocalyptic",
@@ -1814,15 +1597,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "intense": 0.77,
-            "dark": 0.47,
-            "scary": 0.32,
-            "mysterious": 0.05
-        }
+        "intensity": 0.9
     },
     "detective": {
         "id": "detective",
@@ -1882,16 +1657,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "mysterious": 1,
-            "intense": 0.52,
-            "emotional": 0.52,
-            "tragic": 0.34,
-            "dark": 0.06,
-            "exciting": 0.07,
-            "hopeful": 0.05
-        }
+        "intensity": 0.5
     },
     "nobility": {
         "id": "nobility",
@@ -1949,15 +1715,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 0.36,
-            "mysterious": 0.3,
-            "hopeful": 0.24,
-            "emotional": 0.76,
-            "tragic": 0.42,
-            "romantic": 0.13
-        }
+        "intensity": 0.4
     },
     "survival": {
         "id": "survival",
@@ -2009,16 +1767,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 1,
-            "mysterious": 0.47,
-            "emotional": 0.3,
-            "intense": 0.76,
-            "scary": 0.32
-        }
+        "intensity": 0.8
     },
     "mecha": {
         "id": "mecha",
@@ -2078,17 +1827,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.72,
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "hopeful": 0.06,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.7
     },
     "school_life": {
         "id": "school_life",
@@ -2152,17 +1891,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "funny": 0.6,
-            "happy": 0.83,
-            "romantic": 0.58,
-            "emotional": 0.36,
-            "wholesome": 0.32,
-            "relaxing": 0.24,
-            "exciting": 0.08,
-            "hopeful": 0.06
-        }
+        "intensity": 0.3
     },
     "office_work": {
         "id": "office_work",
@@ -2225,18 +1954,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 0.58,
-            "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.28,
-            "relaxing": 0.19,
-            "funny": 0.19,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.4
     },
     "delinquents": {
         "id": "delinquents",
@@ -2296,21 +2014,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.5,
-            "funny": 0.75,
-            "happy": 0.47,
-            "emotional": 0.4,
-            "tragic": 0.27,
-            "intense": 0.32,
-            "wholesome": 0.14,
-            "relaxing": 0.11,
-            "hopeful": 0.06,
-            "dark": 0.04,
-            "mysterious": 0.03
-        }
+        "intensity": 0.6
     },
     "sports_training": {
         "id": "sports_training",
@@ -2363,14 +2067,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.83,
-            "intense": 0.42,
-            "violent": 0.28,
-            "emotional": 0.25
-        }
+        "intensity": 0.5
     },
     "superpower": {
         "id": "superpower",
@@ -2423,13 +2120,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.5,
-            "mysterious": 0.25,
-            "hopeful": 0.25
-        }
+        "intensity": 0.7
     },
     "dystopia_politics": {
         "id": "dystopia_politics",
@@ -2483,14 +2174,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.47,
-            "dark": 0.61,
-            "mysterious": 0.47,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "cooking": {
         "id": "cooking",
@@ -2549,16 +2233,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "emotional": 0.06,
-            "romantic": 0.04
-        }
+        "intensity": 0.3
     },
     "trauma_recovery": {
         "id": "trauma_recovery",
@@ -2617,16 +2292,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.49,
-            "dark": 0.34,
-            "mysterious": 0.26,
-            "hopeful": 0.25,
-            "intense": 0.02,
-            "romantic": 0.02
-        }
+        "intensity": 0.9
     },
     "supernatural_detective": {
         "id": "supernatural_detective",
@@ -2676,13 +2342,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "mysterious": 1,
-            "dark": 0.26,
-            "scary": 0.23,
-            "intense": 0.31
-        }
+        "intensity": 0.7
     },
     "adventure": {
         "id": "adventure",
@@ -2734,15 +2394,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.83,
-            "mysterious": 0.25,
-            "emotional": 0.41,
-            "wholesome": 0.32,
-            "happy": 0.16
-        }
+        "intensity": 0.5
     },
     "martial_arts_tournament": {
         "id": "martial_arts_tournament",
@@ -2793,13 +2445,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.53,
-            "hopeful": 0.25,
-            "intense": 0.2
-        }
+        "intensity": 0.8
     },
     "monster_girl": {
         "id": "monster_girl",
@@ -2854,19 +2500,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.51,
-            "mysterious": 0.6,
-            "hopeful": 0.26,
-            "romantic": 1,
-            "emotional": 0.34,
-            "happy": 0.17,
-            "funny": 0.3,
-            "scary": 0.35,
-            "dark": 0.29,
-            "intense": 0.04
-        }
+        "intensity": 0.5
     },
     "body_horror": {
         "id": "body_horror",
@@ -2920,15 +2554,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 1,
-        "moodWeights": {
-            "scary": 0.74,
-            "dark": 1,
-            "violent": 0.5,
-            "mysterious": 0.33,
-            "emotional": 0.15,
-            "intense": 0.02
-        }
+        "intensity": 1
     },
     "stalker_thriller": {
         "id": "stalker_thriller",
@@ -2985,14 +2611,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "intense": 0.55,
-            "dark": 1,
-            "mysterious": 0.62,
-            "emotional": 0.47,
-            "romantic": 0.02
-        }
+        "intensity": 0.9
     },
     "urban_legend": {
         "id": "urban_legend",
@@ -3048,16 +2667,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "scary": 1,
-            "dark": 0.85,
-            "violent": 0.24,
-            "mysterious": 0.5,
-            "exciting": 0.04,
-            "hopeful": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "survival_horror": {
         "id": "survival_horror",
@@ -3109,15 +2719,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 1,
-        "moodWeights": {
-            "scary": 0.92,
-            "dark": 1,
-            "violent": 0.86,
-            "exciting": 0.34,
-            "intense": 0.43,
-            "mysterious": 0.03
-        }
+        "intensity": 1
     },
     "thriller": {
         "id": "thriller",
@@ -3173,14 +2775,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "intense": 1,
-            "dark": 0.46,
-            "mysterious": 0.93,
-            "exciting": 0.05,
-            "hopeful": 0.03
-        }
+        "intensity": 0.8
     },
     "secret_identity": {
         "id": "secret_identity",
@@ -3232,15 +2827,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.56,
-            "mysterious": 0.6,
-            "intense": 0.3,
-            "hopeful": 0.4,
-            "emotional": 0.24
-        }
+        "intensity": 0.6
     },
     "found_family": {
         "id": "found_family",
@@ -3296,15 +2883,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "exciting": 0.8,
-            "hopeful": 0.46,
-            "wholesome": 0.64,
-            "emotional": 0.53,
-            "happy": 0.32,
-            "romantic": 0.07
-        }
+        "intensity": 0.3
     },
     "time_travel": {
         "id": "time_travel",
@@ -3360,15 +2939,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 0.93,
-            "tragic": 0.42,
-            "dark": 0.6,
-            "mysterious": 0.63,
-            "hopeful": 0.16,
-            "intense": 0.05
-        }
+        "intensity": 0.7
     },
     "rivals": {
         "id": "rivals",
@@ -3419,14 +2990,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.39,
-            "hopeful": 0.69,
-            "intense": 0.33,
-            "emotional": 0.22
-        }
+        "intensity": 0.6
     },
     "slice_of_life": {
         "id": "slice_of_life",
@@ -3484,18 +3048,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.52,
-            "wholesome": 0.22,
-            "relaxing": 0.17,
-            "romantic": 0.07,
-            "emotional": 0.05,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.2
     },
     "tsundere": {
         "id": "tsundere",
@@ -3546,17 +3099,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 0.9,
-            "emotional": 0.54,
-            "happy": 0.82,
-            "funny": 0.7,
-            "wholesome": 0.16,
-            "relaxing": 0.12,
-            "exciting": 0.07,
-            "hopeful": 0.05
-        }
+        "intensity": 0.4
     },
     "kuudere": {
         "id": "kuudere",
@@ -3602,17 +3145,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.3,
-        "moodWeights": {
-            "romantic": 0.57,
-            "emotional": 1,
-            "happy": 0.17,
-            "tragic": 0.29,
-            "hopeful": 0.32,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.3
     },
     "antihero": {
         "id": "antihero",
@@ -3663,15 +3196,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.5,
-            "violent": 0.65,
-            "dark": 1,
-            "mysterious": 0.34,
-            "emotional": 0.65,
-            "intense": 0.03
-        }
+        "intensity": 0.8
     },
     "shounen_jump_style": {
         "id": "shounen_jump_style",
@@ -3721,13 +3246,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.41,
-            "hopeful": 0.54,
-            "emotional": 0.19
-        }
+        "intensity": 0.8
     },
     "josei_drama": {
         "id": "josei_drama",
@@ -3779,15 +3298,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.35,
-            "romantic": 0.55,
-            "happy": 0.16,
-            "relaxing": 0.11,
-            "funny": 0.11
-        }
+        "intensity": 0.5
     },
     "seinen_psychological": {
         "id": "seinen_psychological",
@@ -3837,14 +3348,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "dark": 0.8,
-            "mysterious": 0.62,
-            "emotional": 1,
-            "tragic": 0.39,
-            "intense": 0.05
-        }
+        "intensity": 0.9
     },
     "elves": {
         "id": "elves",
@@ -3890,12 +3394,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 0.98,
-            "mysterious": 0.76,
-            "hopeful": 0.63
-        }
+        "intensity": 0.4
     },
     "dragons": {
         "id": "dragons",
@@ -3945,15 +3444,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.62,
-            "hopeful": 0.37,
-            "violent": 0.34,
-            "scary": 0.29,
-            "dark": 0.2
-        }
+        "intensity": 0.7
     },
     "dwarves": {
         "id": "dwarves",
@@ -3999,12 +3490,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "exciting": 0.66,
-            "mysterious": 0.5,
-            "hopeful": 0.44
-        }
+        "intensity": 0.3
     },
     "magic_circles": {
         "id": "magic_circles",
@@ -4050,12 +3536,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.76,
-            "hopeful": 0.64
-        }
+        "intensity": 0.4
     },
     "alchemy": {
         "id": "alchemy",
@@ -4109,15 +3590,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.48,
-            "hopeful": 0.39,
-            "violent": 0.31,
-            "dark": 0.03,
-            "intense": 0.02
-        }
+        "intensity": 0.5
     },
     "guilds": {
         "id": "guilds",
@@ -4168,15 +3641,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.31,
-            "hopeful": 0.6,
-            "wholesome": 0.35,
-            "emotional": 0.27,
-            "happy": 0.18
-        }
+        "intensity": 0.4
     },
     "baseball": {
         "id": "baseball",
@@ -4225,12 +3690,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.91,
-            "hopeful": 0.67,
-            "intense": 0.6
-        }
+        "intensity": 0.5
     },
     "soccer": {
         "id": "soccer",
@@ -4277,13 +3737,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.81,
-            "hopeful": 1,
-            "intense": 0.54,
-            "emotional": 0.29
-        }
+        "intensity": 0.5
     },
     "volleyball": {
         "id": "volleyball",
@@ -4330,13 +3784,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.81,
-            "hopeful": 1,
-            "intense": 0.54,
-            "emotional": 0.29
-        }
+        "intensity": 0.6
     },
     "basketball": {
         "id": "basketball",
@@ -4381,12 +3829,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.91,
-            "hopeful": 0.67,
-            "intense": 0.6
-        }
+        "intensity": 0.6
     },
     "esports": {
         "id": "esports",
@@ -4441,15 +3884,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.44,
-            "intense": 0.42,
-            "violent": 0.33,
-            "dark": 0.03,
-            "mysterious": 0.02
-        }
+        "intensity": 0.5
     },
     "racing": {
         "id": "racing",
@@ -4500,15 +3935,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.43,
-            "intense": 0.46,
-            "violent": 0.34,
-            "dark": 0.05,
-            "mysterious": 0.03
-        }
+        "intensity": 0.7
     },
     "music": {
         "id": "music",
@@ -4568,16 +3995,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.42,
-            "hopeful": 0.45,
-            "romantic": 0.08,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.4
     },
     "art": {
         "id": "art",
@@ -4634,16 +4052,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.4,
-            "hopeful": 0.48,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
-        }
+        "intensity": 0.3
     },
     "theater": {
         "id": "theater",
@@ -4694,13 +4103,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.45,
-            "hopeful": 0.38,
-            "romantic": 0.08
-        }
+        "intensity": 0.4
     },
     "dance": {
         "id": "dance",
@@ -4754,17 +4157,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.64,
-            "hopeful": 0.48,
-            "intense": 0.52,
-            "emotional": 0.68,
-            "tragic": 0.42,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "romantic": 0.07
-        }
+        "intensity": 0.5
     },
     "fashion": {
         "id": "fashion",
@@ -4820,12 +4213,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "emotional": 0.69,
-            "tragic": 0.36,
-            "romantic": 0.14
-        }
+        "intensity": 0.3
     },
     "prison": {
         "id": "prison",
@@ -4878,15 +4266,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "intense": 1,
-            "dark": 0.6,
-            "mysterious": 0.3,
-            "exciting": 0.42,
-            "violent": 0.33,
-            "scary": 0.19
-        }
+        "intensity": 0.9
     },
     "deserted_island": {
         "id": "deserted_island",
@@ -4938,16 +4318,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.72,
-            "hopeful": 0.4,
-            "scary": 0.92,
-            "dark": 0.94,
-            "violent": 0.24,
-            "intense": 0.76,
-            "mysterious": 0.04
-        }
+        "intensity": 0.8
     },
     "yakuza": {
         "id": "yakuza",
@@ -4999,16 +4370,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "space_travel": {
         "id": "space_travel",
@@ -5061,14 +4423,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.63,
-            "hopeful": 0.35,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.6
     },
     "cyber_crime": {
         "id": "cyber_crime",
@@ -5119,13 +4474,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "intense": 1,
-            "dark": 0.77,
-            "mysterious": 0.68,
-            "exciting": 0.21
-        }
+        "intensity": 0.7
     },
     "necromancy": {
         "id": "necromancy",
@@ -5176,16 +4525,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "scary": 0.8,
-            "dark": 0.7,
-            "violent": 0.32,
-            "exciting": 0.4,
-            "mysterious": 0.37,
-            "hopeful": 0.24,
-            "intense": 0.05
-        }
+        "intensity": 0.9
     },
     "shinto_occult": {
         "id": "shinto_occult",
@@ -5235,15 +4575,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "mysterious": 1,
-            "dark": 0.33,
-            "scary": 0.3,
-            "exciting": 0.55,
-            "hopeful": 0.35,
-            "intense": 0.03
-        }
+        "intensity": 0.5
     },
     "vampire": {
         "id": "vampire",
@@ -5298,17 +4630,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "mysterious": 0.74,
-            "dark": 0.78,
-            "scary": 0.6,
-            "romantic": 0.68,
-            "emotional": 0.42,
-            "happy": 0.18,
-            "violent": 0.4,
-            "intense": 0.04
-        }
+        "intensity": 0.7
     },
     "werewolf": {
         "id": "werewolf",
@@ -5358,16 +4680,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "mysterious": 0.95,
-            "dark": 0.9,
-            "scary": 1,
-            "exciting": 0.74,
-            "violent": 0.52,
-            "intense": 0.4,
-            "hopeful": 0.06
-        }
+        "intensity": 0.8
     },
     "witchcraft": {
         "id": "witchcraft",
@@ -5417,16 +4730,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.77,
-            "mysterious": 1,
-            "hopeful": 0.49,
-            "dark": 0.23,
-            "scary": 0.23,
-            "romantic": 0.07,
-            "emotional": 0.05
-        }
+        "intensity": 0.5
     },
     "exorcism": {
         "id": "exorcism",
@@ -5477,15 +4781,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.8,
-        "moodWeights": {
-            "mysterious": 0.85,
-            "dark": 0.37,
-            "scary": 0.37,
-            "exciting": 1,
-            "violent": 0.51,
-            "hopeful": 0.22
-        }
+        "intensity": 0.8
     },
     "demon_harem": {
         "id": "demon_harem",
@@ -5535,16 +4831,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.72,
-            "mysterious": 0.45,
-            "hopeful": 0.32,
-            "funny": 0.62,
-            "romantic": 0.88,
-            "dark": 0.07,
-            "intense": 0.05
-        }
+        "intensity": 0.6
     },
     "cursed_items": {
         "id": "cursed_items",
@@ -5595,15 +4882,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "mysterious": 1,
-            "dark": 0.31,
-            "scary": 0.26,
-            "exciting": 0.62,
-            "hopeful": 0.39,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "ghost_hunter": {
         "id": "ghost_hunter",
@@ -5653,13 +4932,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "mysterious": 1,
-            "dark": 0.28,
-            "scary": 0.24,
-            "intense": 0.3
-        }
+        "intensity": 0.7
     },
     "possession": {
         "id": "possession",
@@ -5711,15 +4984,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "scary": 0.56,
-            "dark": 1,
-            "violent": 0.22,
-            "mysterious": 0.43,
-            "emotional": 0.28,
-            "intense": 0.03
-        }
+        "intensity": 0.9
     },
     "surgery": {
         "id": "surgery",
@@ -5774,15 +5039,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 0.88,
-            "tragic": 0.54,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05,
-            "romantic": 0.04
-        }
+        "intensity": 0.7
     },
     "plague_outbreak": {
         "id": "plague_outbreak",
@@ -5834,14 +5091,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "scary": 1,
-            "dark": 0.99,
-            "violent": 0.29,
-            "intense": 0.69,
-            "mysterious": 0.05
-        }
+        "intensity": 0.9
     },
     "bio_engineering": {
         "id": "bio_engineering",
@@ -5893,13 +5143,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "dark": 0.61,
-            "mysterious": 0.47,
-            "emotional": 0.3,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "cyborg": {
         "id": "cyborg",
@@ -5950,14 +5194,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 0.99,
-            "violent": 0.56,
-            "dark": 0.42,
-            "mysterious": 0.41,
-            "intense": 0.34
-        }
+        "intensity": 0.7
     },
     "ai_awakening": {
         "id": "ai_awakening",
@@ -6007,14 +5244,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "dark": 0.93,
-            "mysterious": 0.79,
-            "emotional": 0.3,
-            "exciting": 0.26,
-            "intense": 0.31
-        }
+        "intensity": 0.6
     },
     "space_opera": {
         "id": "space_opera",
@@ -6065,14 +5295,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.7
     },
     "exploration": {
         "id": "exploration",
@@ -6123,15 +5346,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.59,
-            "mysterious": 0.22,
-            "intense": 0.27,
-            "dark": 0.15,
-            "scary": 0.12
-        }
+        "intensity": 0.4
     },
     "time_loop": {
         "id": "time_loop",
@@ -6183,13 +5398,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "dark": 0.78,
-            "mysterious": 0.61,
-            "emotional": 0.4,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "royal_court": {
         "id": "royal_court",
@@ -6245,16 +5454,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.47,
-            "nostalgic": 0.33,
-            "romantic": 0.04,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.5
     },
     "grand_strategy": {
         "id": "grand_strategy",
@@ -6305,16 +5505,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 0.08,
-            "mysterious": 0.06,
-            "intense": 0.06
-        }
+        "intensity": 0.7
     },
     "espionage": {
         "id": "espionage",
@@ -6366,14 +5557,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "intense": 1,
-            "dark": 0.64,
-            "mysterious": 0.53,
-            "exciting": 0.66,
-            "violent": 0.53
-        }
+        "intensity": 0.8
     },
     "uprising": {
         "id": "uprising",
@@ -6424,17 +5608,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "emotional": 0.81,
-            "tragic": 0.54,
-            "exciting": 0.7,
-            "violent": 0.56,
-            "intense": 0.41,
-            "dark": 0.27,
-            "scary": 0.16,
-            "mysterious": 0.05
-        }
+        "intensity": 0.8
     },
     "mercenary_life": {
         "id": "mercenary_life",
@@ -6485,15 +5659,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.49,
-            "hopeful": 0.21,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "propaganda": {
         "id": "propaganda",
@@ -6543,14 +5709,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "dark": 0.82,
-            "mysterious": 0.63,
-            "emotional": 1,
-            "tragic": 0.39,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "diplomacy": {
         "id": "diplomacy",
@@ -6605,15 +5764,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.44,
-            "dark": 0.55,
-            "mysterious": 0.42,
-            "intense": 0.04,
-            "romantic": 0.04
-        }
+        "intensity": 0.4
     },
     "warlord": {
         "id": "warlord",
@@ -6663,16 +5814,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "childcare": {
         "id": "childcare",
@@ -6730,16 +5872,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "emotional": 0.07,
-            "romantic": 0.04,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.3
     },
     "single_parent": {
         "id": "single_parent",
@@ -6793,15 +5926,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 0.89,
-            "tragic": 0.54,
-            "romantic": 0.05,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.5
     },
     "domestic_life": {
         "id": "domestic_life",
@@ -6852,12 +5977,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "romantic": 0.65,
-            "emotional": 0.44,
-            "happy": 0.18
-        }
+        "intensity": 0.2
     },
     "orphan": {
         "id": "orphan",
@@ -6906,15 +6026,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.37,
-            "exciting": 0.42,
-            "hopeful": 0.51,
-            "wholesome": 0.35,
-            "happy": 0.17
-        }
+        "intensity": 0.6
     },
     "elderly_care": {
         "id": "elderly_care",
@@ -6963,12 +6075,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.75,
-            "romantic": 0.04
-        }
+        "intensity": 0.3
     },
     "sibling_bond": {
         "id": "sibling_bond",
@@ -7023,14 +6130,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 0.69,
-            "tragic": 0.42,
-            "exciting": 0.1,
-            "hopeful": 0.06,
-            "romantic": 0.1
-        }
+        "intensity": 0.4
     },
     "pet_care": {
         "id": "pet_care",
@@ -7080,13 +6180,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "exciting": 0.07,
-            "hopeful": 0.05,
-            "romantic": 0.07,
-            "emotional": 0.05
-        }
+        "intensity": 0.2
     },
     "marriage": {
         "id": "marriage",
@@ -7138,12 +6232,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.65,
-            "happy": 0.28
-        }
+        "intensity": 0.4
     },
     "mentorship": {
         "id": "mentorship",
@@ -7194,16 +6283,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.62,
-            "violent": 0.44,
-            "emotional": 1,
-            "tragic": 0.28,
-            "hopeful": 0.49,
-            "wholesome": 0.35,
-            "happy": 0.18
-        }
+        "intensity": 0.5
     },
     "community_life": {
         "id": "community_life",
@@ -7248,12 +6328,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.3
     },
     "nihilism": {
         "id": "nihilism",
@@ -7305,14 +6380,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "dark": 0.8,
-            "mysterious": 0.62,
-            "emotional": 1,
-            "tragic": 0.39,
-            "intense": 0.05
-        }
+        "intensity": 0.9
     },
     "determinism": {
         "id": "determinism",
@@ -7367,16 +6435,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 0.92,
-            "tragic": 0.48,
-            "exciting": 0.43,
-            "mysterious": 0.34,
-            "hopeful": 0.57,
-            "dark": 0.06,
-            "intense": 0.04
-        }
+        "intensity": 0.7
     },
     "human_nature": {
         "id": "human_nature",
@@ -7427,14 +6486,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.8,
-        "moodWeights": {
-            "dark": 0.85,
-            "mysterious": 0.44,
-            "emotional": 1,
-            "tragic": 0.31,
-            "intense": 0.04
-        }
+        "intensity": 0.8
     },
     "absurdism": {
         "id": "absurdism",
@@ -7485,15 +6537,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "funny": 1,
-            "happy": 0.35,
-            "dark": 0.45,
-            "mysterious": 0.35,
-            "emotional": 0.23,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "transcendence": {
         "id": "transcendence",
@@ -7544,14 +6588,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.82,
-            "mysterious": 0.72,
-            "hopeful": 0.53,
-            "dark": 0.06,
-            "intense": 0.05
-        }
+        "intensity": 0.6
     },
     "solitude": {
         "id": "solitude",
@@ -7607,16 +6644,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.49,
-            "dark": 0.44,
-            "mysterious": 0.34,
-            "hopeful": 0.17,
-            "intense": 0.02,
-            "romantic": 0.02
-        }
+        "intensity": 0.7
     },
     "hedonism": {
         "id": "hedonism",
@@ -7667,16 +6695,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "funny": 0.24,
-            "romantic": 0.32,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.6
     },
     "self_discovery": {
         "id": "self_discovery",
@@ -7728,13 +6747,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.42,
-            "hopeful": 0.39,
-            "romantic": 0.1
-        }
+        "intensity": 0.4
     },
     "justice": {
         "id": "justice",
@@ -7785,14 +6798,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.91,
-            "violent": 0.64,
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "hopeful": 0.07
-        }
+        "intensity": 0.6
     },
     "conspiracy": {
         "id": "conspiracy",
@@ -7843,12 +6849,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "mysterious": 1,
-            "intense": 0.97,
-            "dark": 0.41
-        }
+        "intensity": 0.8
     },
     "slow_burn": {
         "id": "slow_burn",
@@ -7899,17 +6900,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "romantic": 0.57,
-            "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.25,
-            "hopeful": 0.34,
-            "dark": 0.03,
-            "mysterious": 0.02,
-            "intense": 0.02
-        }
+        "intensity": 0.2
     },
     "non_linear": {
         "id": "non_linear",
@@ -7960,13 +6951,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "mysterious": 1,
-            "intense": 0.32,
-            "dark": 0.56,
-            "emotional": 0.28
-        }
+        "intensity": 0.7
     },
     "episodic": {
         "id": "episodic",
@@ -8015,14 +7000,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "funny": 0.7,
-            "happy": 0.42,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.2
     },
     "cliffhanger": {
         "id": "cliffhanger",
@@ -8068,16 +7046,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "intense": 1,
-            "dark": 0.59,
-            "mysterious": 0.33,
-            "exciting": 0.6,
-            "violent": 0.43,
-            "scary": 0.15,
-            "hopeful": 0.04
-        }
+        "intensity": 0.9
     },
     "multiple_pov": {
         "id": "multiple_pov",
@@ -8122,14 +7091,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "mysterious": 0.75,
-            "intense": 0.4,
-            "dark": 0.06
-        }
+        "intensity": 0.5
     },
     "flashback": {
         "id": "flashback",
@@ -8179,14 +7141,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 0.91,
-            "tragic": 0.42,
-            "exciting": 0.6,
-            "violent": 0.4,
-            "hopeful": 0.46
-        }
+        "intensity": 0.4
     },
     "meta_fiction": {
         "id": "meta_fiction",
@@ -8232,15 +7187,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "funny": 1,
-            "happy": 0.35,
-            "dark": 0.35,
-            "mysterious": 0.27,
-            "emotional": 0.17,
-            "intense": 0.02
-        }
+        "intensity": 0.5
     },
     "crescendo": {
         "id": "crescendo",
@@ -8286,16 +7233,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 0.68,
-            "violent": 0.49,
-            "intense": 1,
-            "dark": 0.58,
-            "mysterious": 0.3,
-            "scary": 0.17,
-            "hopeful": 0.05
-        }
+        "intensity": 0.9
     },
     "unreliable_narrator": {
         "id": "unreliable_narrator",
@@ -8345,13 +7283,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "dark": 0.98,
-            "mysterious": 1,
-            "emotional": 0.65,
-            "intense": 0.31
-        }
+        "intensity": 0.9
     },
     "world_building_heavy": {
         "id": "world_building_heavy",
@@ -8401,14 +7333,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.88,
-            "mysterious": 0.77,
-            "hopeful": 0.57,
-            "dark": 0.06,
-            "intense": 0.05
-        }
+        "intensity": 0.5
     },
     "swordplay": {
         "id": "swordplay",
@@ -8452,12 +7377,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.72,
-            "hopeful": 0.06
-        }
+        "intensity": 0.7
     },
     "gunplay": {
         "id": "gunplay",
@@ -8505,14 +7425,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.8,
-            "intense": 0.85,
-            "dark": 0.55,
-            "mysterious": 0.45
-        }
+        "intensity": 0.8
     },
     "elemental_magic": {
         "id": "elemental_magic",
@@ -8556,12 +7469,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.74,
-            "hopeful": 0.64
-        }
+        "intensity": 0.5
     },
     "dark_magic": {
         "id": "dark_magic",
@@ -8612,16 +7520,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.94,
-            "mysterious": 0.82,
-            "hopeful": 0.6,
-            "scary": 0.7,
-            "dark": 0.62,
-            "violent": 0.28,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "archery": {
         "id": "archery",
@@ -8666,13 +7565,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.49,
-            "mysterious": 0.27,
-            "hopeful": 0.26
-        }
+        "intensity": 0.5
     },
     "stealth_combat": {
         "id": "stealth_combat",
@@ -8723,14 +7616,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "intense": 0.85,
-            "dark": 0.54,
-            "mysterious": 0.45
-        }
+        "intensity": 0.8
     },
     "martial_arts_styles": {
         "id": "martial_arts_styles",
@@ -8778,13 +7664,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.53,
-            "hopeful": 0.25,
-            "intense": 0.2
-        }
+        "intensity": 0.7
     },
     "summoning": {
         "id": "summoning",
@@ -8834,14 +7714,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.67,
-            "mysterious": 1,
-            "hopeful": 0.43,
-            "dark": 0.35,
-            "scary": 0.42
-        }
+        "intensity": 0.6
     },
     "transformation_magic": {
         "id": "transformation_magic",
@@ -8886,14 +7759,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.97,
-            "hopeful": 0.64,
-            "scary": 0.32,
-            "dark": 0.21
-        }
+        "intensity": 0.6
     },
     "psionics": {
         "id": "psionics",
@@ -8944,14 +7810,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.7
     },
     "technomancy": {
         "id": "technomancy",
@@ -9001,14 +7860,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.97,
-            "mysterious": 0.96,
-            "hopeful": 0.43,
-            "dark": 0.42,
-            "intense": 0.34
-        }
+        "intensity": 0.6
     },
     "spirit_energy": {
         "id": "spirit_energy",
@@ -9059,13 +7911,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.39,
-            "mysterious": 0.37,
-            "hopeful": 0.33
-        }
+        "intensity": 0.7
     },
     "trap_setting": {
         "id": "trap_setting",
@@ -9116,16 +7962,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.45,
-            "hopeful": 0.24,
-            "intense": 0.5,
-            "dark": 0.3,
-            "scary": 0.21,
-            "mysterious": 0.03
-        }
+        "intensity": 0.6
     },
     "siege_warfare": {
         "id": "siege_warfare",
@@ -9176,16 +8013,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "ritual_magic": {
         "id": "ritual_magic",
@@ -9236,16 +8064,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.94,
-            "mysterious": 0.82,
-            "hopeful": 0.6,
-            "scary": 0.8,
-            "dark": 0.7,
-            "violent": 0.32,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "knighthood": {
         "id": "knighthood",
@@ -9296,13 +8115,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.33,
-            "hopeful": 0.31,
-            "violent": 0.43
-        }
+        "intensity": 0.5
     },
     "martial_arts_weapons": {
         "id": "martial_arts_weapons",
@@ -9345,12 +8158,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.72,
-            "hopeful": 0.06
-        }
+        "intensity": 0.6
     },
     "blood_magic": {
         "id": "blood_magic",
@@ -9400,16 +8208,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "scary": 0.9,
-            "dark": 1,
-            "violent": 0.81,
-            "exciting": 0.31,
-            "mysterious": 0.29,
-            "hopeful": 0.19,
-            "intense": 0.04
-        }
+        "intensity": 0.9
     },
     "heavy_artillery": {
         "id": "heavy_artillery",
@@ -9460,14 +8259,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.8,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.9
     },
     "energy_shielding": {
         "id": "energy_shielding",
@@ -9517,14 +8309,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.66,
-            "mysterious": 0.58,
-            "hopeful": 0.42,
-            "dark": 0.06,
-            "intense": 0.04
-        }
+        "intensity": 0.5
     },
     "transformation_items": {
         "id": "transformation_items",
@@ -9571,13 +8356,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.36,
-            "hopeful": 0.33,
-            "violent": 0.4
-        }
+        "intensity": 0.5
     },
     "enchantment": {
         "id": "enchantment",
@@ -9624,12 +8403,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.76,
-            "hopeful": 0.64
-        }
+        "intensity": 0.4
     },
     "beast_taming": {
         "id": "beast_taming",
@@ -9679,14 +8453,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.58,
-            "hopeful": 0.61,
-            "scary": 0.34,
-            "dark": 0.23
-        }
+        "intensity": 0.5
     },
     "weapon_forging": {
         "id": "weapon_forging",
@@ -9736,13 +8503,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.34,
-            "hopeful": 0.31,
-            "violent": 0.42
-        }
+        "intensity": 0.4
     },
     "gravity_manipulation": {
         "id": "gravity_manipulation",
@@ -9788,14 +8549,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.7
     },
     "stealth_technology": {
         "id": "stealth_technology",
@@ -9845,12 +8599,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "intense": 0.85,
-            "dark": 0.54,
-            "mysterious": 0.45
-        }
+        "intensity": 0.6
     },
     "martial_arts_energy": {
         "id": "martial_arts_energy",
@@ -9900,13 +8649,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.52,
-            "mysterious": 0.23,
-            "hopeful": 0.23
-        }
+        "intensity": 0.8
     },
     "dimensional_travel": {
         "id": "dimensional_travel",
@@ -9956,14 +8699,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 0.82,
-            "mysterious": 0.72,
-            "hopeful": 0.53,
-            "dark": 0.06,
-            "intense": 0.05
-        }
+        "intensity": 0.7
     },
     "mechanical_engineering": {
         "id": "mechanical_engineering",
@@ -10014,14 +8750,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.4
     },
     "psionic_combat": {
         "id": "psionic_combat",
@@ -10071,15 +8800,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "dark": 0.97,
-            "mysterious": 0.75,
-            "emotional": 0.5,
-            "exciting": 0.7,
-            "violent": 0.56,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "love_triangle": {
         "id": "love_triangle",
@@ -10132,17 +8853,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 0.79,
-            "emotional": 1,
-            "happy": 0.33,
-            "tragic": 0.35,
-            "wholesome": 0.12,
-            "relaxing": 0.09,
-            "exciting": 0.05,
-            "hopeful": 0.03
-        }
+        "intensity": 0.5
     },
     "childhood_friend": {
         "id": "childhood_friend",
@@ -10196,14 +8907,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.6,
-            "happy": 0.27,
-            "exciting": 0.1,
-            "hopeful": 0.06
-        }
+        "intensity": 0.3
     },
     "forbidden_love": {
         "id": "forbidden_love",
@@ -10256,16 +8960,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "romantic": 0.7,
-            "emotional": 1,
-            "happy": 0.2,
-            "tragic": 0.36,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "arranged_marriage": {
         "id": "arranged_marriage",
@@ -10317,13 +9012,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 0.83,
-            "emotional": 1,
-            "happy": 0.22,
-            "tragic": 0.31
-        }
+        "intensity": 0.4
     },
     "reunion": {
         "id": "reunion",
@@ -10377,17 +9066,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 0.56,
-            "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.32,
-            "hopeful": 0.22,
-            "dark": 0.03,
-            "mysterious": 0.02,
-            "intense": 0.02
-        }
+        "intensity": 0.4
     },
     "age_gap": {
         "id": "age_gap",
@@ -10436,16 +9115,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 0.82,
-            "emotional": 1,
-            "happy": 0.23,
-            "tragic": 0.31,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.5
     },
     "rivalry_romance": {
         "id": "rivalry_romance",
@@ -10493,15 +9163,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.6,
-            "funny": 0.54,
-            "exciting": 0.06,
-            "hopeful": 0.04
-        }
+        "intensity": 0.5
     },
     "fake_relationship": {
         "id": "fake_relationship",
@@ -10550,15 +9212,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.66,
-            "funny": 0.64,
-            "exciting": 0.07,
-            "hopeful": 0.04
-        }
+        "intensity": 0.4
     },
     "unrequited_love": {
         "id": "unrequited_love",
@@ -10611,13 +9265,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.6,
-        "moodWeights": {
-            "romantic": 0.61,
-            "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.48
-        }
+        "intensity": 0.6
     },
     "workplace_romance": {
         "id": "workplace_romance",
@@ -10669,17 +9317,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.88,
-            "happy": 0.28,
-            "relaxing": 0.23,
-            "funny": 0.23,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.4
     },
     "friendship_bond": {
         "id": "friendship_bond",
@@ -10730,11 +9368,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "exciting": 0.64,
-            "hopeful": 0.36
-        }
+        "intensity": 0.3
     },
     "rival_to_ally": {
         "id": "rival_to_ally",
@@ -10784,13 +9418,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.44,
-            "hopeful": 0.57,
-            "emotional": 0.22
-        }
+        "intensity": 0.6
     },
     "betrayal_arc": {
         "id": "betrayal_arc",
@@ -10844,16 +9472,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.37,
-            "intense": 0.59,
-            "dark": 0.88,
-            "mysterious": 0.31,
-            "exciting": 0.05,
-            "hopeful": 0.03
-        }
+        "intensity": 0.9
     },
     "secret_crush": {
         "id": "secret_crush",
@@ -10903,14 +9522,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.27,
-            "exciting": 0.08,
-            "hopeful": 0.05
-        }
+        "intensity": 0.3
     },
     "long_distance": {
         "id": "long_distance",
@@ -10959,13 +9571,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 0.6,
-            "emotional": 1,
-            "happy": 0.17,
-            "tragic": 0.49
-        }
+        "intensity": 0.5
     },
     "toxic_relationship": {
         "id": "toxic_relationship",
@@ -11019,15 +9625,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "dark": 0.81,
-            "mysterious": 0.4,
-            "emotional": 1,
-            "tragic": 0.28,
-            "intense": 0.03,
-            "romantic": 0.03
-        }
+        "intensity": 0.9
     },
     "reincarnated_love": {
         "id": "reincarnated_love",
@@ -11076,15 +9674,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.27,
-            "exciting": 0.5,
-            "mysterious": 0.66,
-            "hopeful": 0.63
-        }
+        "intensity": 0.6
     },
     "team_dynamics": {
         "id": "team_dynamics",
@@ -11135,12 +9725,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.37,
-            "hopeful": 0.3
-        }
+        "intensity": 0.4
     },
     "rival_in_love": {
         "id": "rival_in_love",
@@ -11184,13 +9769,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.55,
-            "funny": 0.46
-        }
+        "intensity": 0.5
     },
     "comfort_bond": {
         "id": "comfort_bond",
@@ -11244,15 +9823,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "emotional": 0.7,
-            "tragic": 0.42,
-            "romantic": 0.04,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.3
     },
     "harem_dynamics": {
         "id": "harem_dynamics",
@@ -11302,17 +9873,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.34,
-            "happy": 0.16,
-            "funny": 0.31,
-            "exciting": 0.14,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.5
     },
     "guardian_ward": {
         "id": "guardian_ward",
@@ -11363,16 +9924,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.6
     },
     "enforced_closeness": {
         "id": "enforced_closeness",
@@ -11422,15 +9974,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.6,
-            "happy": 0.69,
-            "funny": 0.7,
-            "exciting": 0.08,
-            "hopeful": 0.06
-        }
+        "intensity": 0.4
     },
     "power_imbalance": {
         "id": "power_imbalance",
@@ -11480,14 +10024,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.34,
-            "dark": 0.77,
-            "mysterious": 0.39,
-            "intense": 0.03
-        }
+        "intensity": 0.8
     },
     "mentor_mentee_romance": {
         "id": "mentor_mentee_romance",
@@ -11536,17 +10073,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 0.66,
-            "emotional": 1,
-            "happy": 0.19,
-            "tragic": 0.26,
-            "hopeful": 0.25,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.5
     },
     "rebellion_together": {
         "id": "rebellion_together",
@@ -11595,16 +10122,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.8
     },
     "secret_society_romance": {
         "id": "secret_society_romance",
@@ -11652,15 +10170,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "intense": 0.95,
-            "dark": 0.61,
-            "mysterious": 0.5,
-            "romantic": 0.8,
-            "emotional": 0.48,
-            "happy": 0.24
-        }
+        "intensity": 0.7
     },
     "rival_families": {
         "id": "rival_families",
@@ -11713,16 +10223,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "romantic": 0.8,
-            "emotional": 1,
-            "happy": 0.22,
-            "tragic": 0.34,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "social_class_difference": {
         "id": "social_class_difference",
@@ -11775,13 +10276,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 0.79,
-            "emotional": 1,
-            "happy": 0.2,
-            "tragic": 0.33
-        }
+        "intensity": 0.5
     },
     "destined_meeting": {
         "id": "destined_meeting",
@@ -11826,15 +10321,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.27,
-            "exciting": 0.38,
-            "mysterious": 0.32,
-            "hopeful": 0.25
-        }
+        "intensity": 0.5
     },
     "urban_night": {
         "id": "urban_night",
@@ -11885,14 +10372,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "intense": 0.85,
-            "dark": 0.55,
-            "mysterious": 0.45,
-            "emotional": 0.54,
-            "tragic": 0.36
-        }
+        "intensity": 0.7
     },
     "cozy_countryside": {
         "id": "cozy_countryside",
@@ -11948,16 +10428,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "emotional": 0.07,
-            "romantic": 0.04
-        }
+        "intensity": 0.2
     },
     "gothic_mansion": {
         "id": "gothic_mansion",
@@ -12008,14 +10479,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "scary": 1,
-            "dark": 0.86,
-            "violent": 0.4,
-            "mysterious": 0.85,
-            "intense": 0.45
-        }
+        "intensity": 0.8
     },
     "steampunk_world": {
         "id": "steampunk_world",
@@ -12066,14 +10530,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.48,
-            "mysterious": 0.44,
-            "hopeful": 0.32,
-            "dark": 0.06,
-            "intense": 0.04
-        }
+        "intensity": 0.6
     },
     "post_apocalyptic_ruins": {
         "id": "post_apocalyptic_ruins",
@@ -12123,15 +10580,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "intense": 0.77,
-            "dark": 0.47,
-            "scary": 0.32,
-            "mysterious": 0.05
-        }
+        "intensity": 0.9
     },
     "underground_world": {
         "id": "underground_world",
@@ -12182,15 +10631,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.33,
-            "hopeful": 0.61,
-            "intense": 0.37,
-            "dark": 0.21,
-            "scary": 0.17
-        }
+        "intensity": 0.7
     },
     "high_fantasy_kingdom": {
         "id": "high_fantasy_kingdom",
@@ -12240,12 +10681,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.45,
-            "hopeful": 0.61
-        }
+        "intensity": 0.5
     },
     "isolated_mountain": {
         "id": "isolated_mountain",
@@ -12296,16 +10732,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 0.72,
-            "hopeful": 0.4,
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.5
     },
     "sea_faring": {
         "id": "sea_faring",
@@ -12357,15 +10784,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.33,
-            "violent": 0.33,
-            "intense": 0.25,
-            "dark": 0.14,
-            "scary": 0.11
-        }
+        "intensity": 0.6
     },
     "desert_wasteland": {
         "id": "desert_wasteland",
@@ -12416,16 +10835,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.3,
-            "violent": 0.37,
-            "intense": 0.46,
-            "dark": 0.28,
-            "scary": 0.19,
-            "mysterious": 0.03
-        }
+        "intensity": 0.8
     },
     "winter_tundra": {
         "id": "winter_tundra",
@@ -12477,15 +10887,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.8,
-        "moodWeights": {
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "intense": 0.69,
-            "dark": 0.42,
-            "scary": 0.29,
-            "mysterious": 0.04
-        }
+        "intensity": 0.8
     },
     "space_colony": {
         "id": "space_colony",
@@ -12535,14 +10937,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.6
     },
     "tropical_paradise": {
         "id": "tropical_paradise",
@@ -12597,15 +10992,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "funny": 0.7,
-            "happy": 0.42,
-            "exciting": 0.07,
-            "hopeful": 0.05,
-            "romantic": 0.07,
-            "emotional": 0.05
-        }
+        "intensity": 0.3
     },
     "dense_forest": {
         "id": "dense_forest",
@@ -12656,15 +11043,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "hopeful": 0.6,
-            "mysterious": 0.34,
-            "intense": 0.42,
-            "dark": 0.26,
-            "scary": 0.17
-        }
+        "intensity": 0.5
     },
     "dystopian_city": {
         "id": "dystopian_city",
@@ -12714,14 +11093,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.9
     },
     "floating_island": {
         "id": "floating_island",
@@ -12771,12 +11143,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "mysterious": 0.43,
-            "hopeful": 0.61
-        }
+        "intensity": 0.5
     },
     "suburban_neighborhood": {
         "id": "suburban_neighborhood",
@@ -12830,15 +11197,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.2,
-        "moodWeights": {
-            "emotional": 0.61,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
-        }
+        "intensity": 0.2
     },
     "war_zone": {
         "id": "war_zone",
@@ -12888,17 +11247,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.8,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "intense": 0.56,
-            "dark": 0.35,
-            "scary": 0.22,
-            "mysterious": 0.05
-        }
+        "intensity": 0.9
     },
     "haunted_asylum": {
         "id": "haunted_asylum",
@@ -12948,15 +11297,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.9,
-        "moodWeights": {
-            "scary": 0.59,
-            "dark": 1,
-            "violent": 0.24,
-            "mysterious": 0.41,
-            "emotional": 0.27,
-            "intense": 0.03
-        }
+        "intensity": 0.9
     },
     "underwater_city": {
         "id": "underwater_city",
@@ -13006,14 +11347,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.48,
-            "mysterious": 0.44,
-            "hopeful": 0.32,
-            "dark": 0.06,
-            "intense": 0.04
-        }
+        "intensity": 0.6
     },
     "rags_to_riches": {
         "id": "rags_to_riches",
@@ -13067,16 +11401,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.45,
-            "hopeful": 0.52,
-            "exciting": 0.08,
-            "dark": 0.05,
-            "mysterious": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.5
     },
     "corporate_hierarchy": {
         "id": "corporate_hierarchy",
@@ -13130,17 +11455,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.49,
-            "relaxing": 0.2,
-            "funny": 0.2,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
-        }
+        "intensity": 0.5
     },
     "feudal_system": {
         "id": "feudal_system",
@@ -13190,15 +11505,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "nostalgic": 0.54,
-            "emotional": 1,
-            "tragic": 0.43,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.6
     },
     "new_money": {
         "id": "new_money",
@@ -13246,14 +11553,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 0.89,
-            "tragic": 0.54,
-            "funny": 0.6,
-            "happy": 0.36,
-            "romantic": 0.05
-        }
+        "intensity": 0.4
     },
     "social_outcast": {
         "id": "social_outcast",
@@ -13304,15 +11604,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.36,
-            "dark": 0.47,
-            "mysterious": 0.37,
-            "hopeful": 0.3,
-            "intense": 0.04
-        }
+        "intensity": 0.7
     },
     "aristocratic_decline": {
         "id": "aristocratic_decline",
@@ -13366,16 +11658,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.6,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.48,
-            "nostalgic": 0.34,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.03
-        }
+        "intensity": 0.6
     },
     "commoner_hero": {
         "id": "commoner_hero",
@@ -13425,13 +11708,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.5,
-        "moodWeights": {
-            "exciting": 1,
-            "violent": 0.39,
-            "hopeful": 0.6,
-            "emotional": 0.22
-        }
+        "intensity": 0.5
     },
     "meritocracy": {
         "id": "meritocracy",
@@ -13481,15 +11758,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.7,
-        "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "dark": 0.7,
-            "mysterious": 0.54,
-            "emotional": 0.35,
-            "intense": 0.05
-        }
+        "intensity": 0.7
     },
     "secret_wealth": {
         "id": "secret_wealth",
@@ -13541,13 +11810,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.66,
-            "happy": 0.6,
-            "funny": 0.57
-        }
+        "intensity": 0.4
     },
     "bureaucracy": {
         "id": "bureaucracy",
@@ -13598,14 +11861,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 0.81,
-            "tragic": 0.54,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.4
     },
     "manga_artist_life": {
         "id": "manga_artist_life",
@@ -13661,16 +11917,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "funny": 0.6,
-            "happy": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05,
-            "emotional": 0.07,
-            "romantic": 0.04
-        }
+        "intensity": 0.3
     },
     "fourth_wall_break": {
         "id": "fourth_wall_break",
@@ -13716,16 +11963,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "funny": 1,
-            "happy": 0.33,
-            "dark": 0.25,
-            "mysterious": 0.19,
-            "emotional": 0.14,
-            "exciting": 0.05,
-            "hopeful": 0.03
-        }
+        "intensity": 0.4
     },
     "game_development": {
         "id": "game_development",
@@ -13776,16 +12014,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 0.78,
-            "tragic": 0.36,
-            "relaxing": 0.24,
-            "funny": 0.24,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
-        }
+        "intensity": 0.4
     },
     "parody_story": {
         "id": "parody_story",
@@ -13832,14 +12061,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.6,
-        "moodWeights": {
-            "funny": 1,
-            "happy": 0.33,
-            "exciting": 0.39,
-            "violent": 0.27,
-            "hopeful": 0.04
-        }
+        "intensity": 0.6
     },
     "publisher_politics": {
         "id": "publisher_politics",
@@ -13889,16 +12111,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.5,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.55,
-            "relaxing": 0.18,
-            "funny": 0.18,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.5
     },
     "writer_block": {
         "id": "writer_block",
@@ -13952,15 +12165,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "negative",
-        "intensity": 0.7,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.43,
-            "dark": 0.56,
-            "mysterious": 0.44,
-            "romantic": 0.03,
-            "intense": 0.03
-        }
+        "intensity": 0.7
     },
     "fan_culture": {
         "id": "fan_culture",
@@ -14016,15 +12221,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "funny": 0.7,
-            "happy": 0.42,
-            "exciting": 0.08,
-            "hopeful": 0.06,
-            "romantic": 0.08,
-            "emotional": 0.06
-        }
+        "intensity": 0.3
     },
     "as_if_story": {
         "id": "as_if_story",
@@ -14074,14 +12271,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.6,
-        "moodWeights": {
-            "exciting": 0.42,
-            "mysterious": 0.4,
-            "hopeful": 0.28,
-            "dark": 0.06,
-            "intense": 0.05
-        }
+        "intensity": 0.6
     },
     "editor_perspective": {
         "id": "editor_perspective",
@@ -14134,17 +12324,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "mixed",
-        "intensity": 0.4,
-        "moodWeights": {
-            "emotional": 1,
-            "tragic": 0.47,
-            "relaxing": 0.21,
-            "funny": 0.21,
-            "romantic": 0.05,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
-        }
+        "intensity": 0.4
     },
     "creative_collaboration": {
         "id": "creative_collaboration",
@@ -14197,15 +12377,7 @@ export const CONCEPT_PROPERTIES = {
             ]
         },
         "tone": "positive",
-        "intensity": 0.3,
-        "moodWeights": {
-            "emotional": 0.7,
-            "tragic": 0.42,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
-        }
+        "intensity": 0.3
     },
     "cyberpunk": {
         "id": "cyberpunk",
@@ -14253,13 +12425,12 @@ export const CONCEPT_PROPERTIES = {
             }
         ],
         "moodWeights": {
-            "exciting": 1,
-            "violent": 0.47,
-            "emotional": 0.74,
-            "tragic": 0.31,
-            "dark": 0.69,
-            "mysterious": 0.84,
-            "intense": 0.31
+            "exciting": 0.78,
+            "violent": 0.63,
+            "emotional": 1,
+            "tragic": 0.42,
+            "dark": 0.67,
+            "mysterious": 0.52
         }
     },
     "necromancer": {
@@ -14316,18 +12487,21 @@ export const CONCEPT_PROPERTIES = {
             }
         ],
         "moodWeights": {
-            "exciting": 0.38,
-            "violent": 0.45,
-            "mysterious": 0.72,
-            "intense": 0.52,
-            "dark": 1,
-            "scary": 0.75,
-            "romantic": 0.14,
-            "emotional": 0.18
+            "exciting": 0.95,
+            "violent": 0.76,
+            "dark": 0.81,
+            "mysterious": 0.63,
+            "emotional": 0.45
         }
     },
     "​time_loop": {
-        "moodWeights": {}
+    
+        "moodWeights": {
+            "exciting": 0.95,
+            "violent": 0.76,
+            "emotional": 0.77,
+            "tragic": 0.51
+        }
     },
     "space_bounty_hunter": {
         "id": "space_bounty_hunter",
@@ -14363,11 +12537,9 @@ export const CONCEPT_PROPERTIES = {
             }
         ],
         "moodWeights": {
-            "mysterious": 0.21,
-            "exciting": 1,
-            "intense": 0.13,
-            "violent": 0.38,
-            "hopeful": 0.17
+            "exciting": 0.95,
+            "violent": 0.76
         }
     }
+    
 };
