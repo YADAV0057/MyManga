@@ -281,7 +281,10 @@ async function loadLinksIfNeeded(item) {
     // in the data model yet -- see Step 8 of READLINKS_UPGRADE_PLAN.md).
     // Passed through anyway so the Google fallback query picks it up for
     // free the moment that field is added, with no further code change.
-    const meta = { author: item.author };
+    // meta.altTitle (Step 4) IS populated today -- resultNormalizer.js now
+    // keeps the romaji/english alternate title, used by getFallbackLinks()
+    // to try a second URL variant for Manganato/Bato.to.
+    const meta = { author: item.author, altTitle: item.altTitle };
     let links;
     try {
         links = await Promise.race([
@@ -294,14 +297,12 @@ async function loadLinksIfNeeded(item) {
     item.readLinks = links;
     cacheMangaForDetail(item);
 
-    // Only patch the DOM if this item's detail page is still the one open.
     const view = document.getElementById(VIEW_ID);
     if (view && view.dataset.openId === String(item.id)) {
         const row = document.getElementById('detail-links-row');
         if (row) row.innerHTML = renderLinksHTML(links);
     }
 }
-
 window.handleDetailFavoriteClick = function () {
     const view = document.getElementById(VIEW_ID);
     const id = view && view.dataset.openId;
