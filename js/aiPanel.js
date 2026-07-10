@@ -187,6 +187,7 @@ function renderDetails(intent) {
 
     const moodBars = (intent.moodProfile || []).map(m => `
         <div class="ai-mood-bar">
+        
             <div class="ai-mood-bar-label">
                 <span>${escapeHTML(capitalize(m.name))}</span>
                 <span>${m.percent}%</span>
@@ -196,7 +197,7 @@ function renderDetails(intent) {
             </div>
         </div>
     `).join('') || '<p class="ai-empty">No strong mood detected</p>';
-
+const debugVector = `<p style="font-size:10px;opacity:0.6">vector: ${JSON.stringify(intent.moodVector)}</p>`;
     const mustHave = [...(intent.genres || []), ...(intent.themes || [])].map(x => x.name);
     const niceToHave = [...(intent.boosts?.genres || []), ...(intent.boosts?.themes || [])].map(x => x.name);
     const avoid = [...(intent.avoids?.genres || []), ...(intent.avoids?.themes || [])];
@@ -217,7 +218,7 @@ function renderDetails(intent) {
     details.innerHTML = `
         <div class="ai-detail-section">
             <h4>Mood Analysis</h4>
-            <div class="ai-mood-bars">${moodBars}</div>
+            <div class="ai-mood-bars"> ${debugVector}</div>
         </div>
 
         <div class="ai-detail-section ai-tag-columns">
