@@ -8,7 +8,8 @@ export class MangaIntent {
         
         // AI Understanding
         this.moods = [];          
-        this.moodProfile = [];    
+        this.moodProfile = [];  
+        this.moodVector = {};  
         this.intensity = 0.0;     
         this.tone = "neutral";
                 this.confidence = 1.0;
