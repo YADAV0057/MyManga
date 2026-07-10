@@ -16,6 +16,13 @@
 // unchanged, so renderer.js needed NO changes for this step. The new fields
 // (themes, demographics, popularity, source) are additive, for the
 // upcoming Recommendation Scorer (Phase 2, Step 4).
+//
+// CHANGED (READLINKS_UPGRADE_PLAN.md Step 8): added `author`, read from
+// rawMedia.staff (only AniList's adapter currently requests this field --
+// see anilist.js). Jikan/Kitsu/MangaDex raw media objects have no `staff`
+// property at all, so the optional-chaining below just resolves to null
+// for those sources, same degrade-gracefully pattern as every other
+// source-specific-only field here (themes, demographics, popularity).
 
 import { CONFIG } from './config.js';
 import { formatStatus } from './renderer.js';
@@ -38,6 +45,9 @@ import { formatStatus } from './renderer.js';
  * @property {string[]} themes        - [] where the source API doesn't distinguish theme from genre
  * @property {string[]} demographics  - [] where the source API doesn't expose one
  * @property {"AniList"|"Jikan"|"Kitsu"|"MangaDex"|"AniList (cached)"} source
+ * @property {string|null} author - primary creator name from AniList's staff
+ *   data (highest-relevance entry). null for results from any other source,
+ *   or when AniList has no staff data for that title.
  */
 
 /**
@@ -61,11 +71,18 @@ export function normalizeResult(rawMedia, source) {
     const cleanSynopsis = rawMedia.description
         ? rawMedia.description.replace(/<[^>]*>?/gm, '')
         : "No synopsis available.";
+    // NEW (READLINKS_UPGRADE_PLAN.md Step 8): first staff edge = highest
+    // relevance per anilist.js's `sort: RELEVANCE` on the query, which in
+    // practice is almost always the actual author/artist rather than a
+    // minor contributor. Optional-chained all the way through since only
+    // AniList's raw media objects have a `staff` property at all.
+    const author = rawMedia.staff?.edges?.[0]?.node?.name?.full || null;
 
     return {
         id: rawMedia.id,
         title,
         altTitle,
+        author,
         coverUrl: rawMedia.coverImage?.large || CONFIG.IMAGE_FALLBACK,
         synopsis: cleanSynopsis,
         status: formatStatus(rawMedia.status),
