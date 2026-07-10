@@ -12,10 +12,22 @@ export function calculateMood(concept) {
     const process = (items = [], map, mult) => {
         items.forEach(item => {
             const moodMap = map[item.name];
-            if (moodMap) {
-                for (let [m, v] of Object.entries(moodMap)) {
-                    scores[m] = (scores[m] || 0) + (v * item.weight * mult);
-                }
+            if (!moodMap) return;
+
+            const weight = Number(item.weight);
+            if (!Number.isFinite(weight)) {
+                // Missing/invalid weight used to silently produce NaN here,
+                // which JSON.stringify writes out as `null` -- a "successful"
+                // run that quietly corrupts moodWeights with no error, no
+                // warning, nothing in the logs. Skip the item instead and
+                // say so, so a bad concept shows up as a console warning,
+                // not as null values discovered later in production.
+                console.warn(`[calculateMood] Skipping "${item.name}" — missing/invalid weight (got: ${item.weight})`);
+                return;
+            }
+
+            for (let [m, v] of Object.entries(moodMap)) {
+                scores[m] = (scores[m] || 0) + (v * weight * mult);
             }
         });
     };
@@ -59,3 +71,6 @@ function runUpgrade() {
     
     console.log("Upgrade complete. Harvested knowledge updated and review queue synchronized.");
 }
+
+
+
