@@ -32,17 +32,15 @@
 // and async, which is too heavy for a page-open render, so the mood tags
 // here are a lightweight synchronous keyword heuristic, not that system).
 
-// CHANGED (READLINKS_UPGRADE_PLAN.md Step 9): added an additive "Search
-// Results" section below the existing Read Now buttons, backed by
-// js/braveSearch.js (Brave Search API via the app's one Netlify function).
-// This is a SEPARATE async load from loadLinksIfNeeded() -- its own cache
-// field (item.searchResults), its own skeleton, its own render function --
-// deliberately not merged into the Read Now buttons/links flow, since
-// these results are explicitly unverified web results, not confirmed
-// reading-page links the way MangaDex/Comick badges are.
+// REVERTED: Step 9's "Search Results" section (js/braveSearch.js +
+// netlify/functions/searchManga.js, Brave Search API) has been removed --
+// no working Brave API key was available. Read Now is back to just
+// MangaDex (Verified) + Google Search; see js/mangadex.js and
+// js/readLinks/sources.js for that revert. braveSearch.js and the Netlify
+// function are no longer imported/used anywhere and can be deleted from
+// the repo.
 import { escapeHTML } from './utils.js';
 import { resolveReadLinks, getFallbackLinks } from './mangadex.js';
-import { fetchBraveResults } from './braveSearch.js';
 
 const VIEW_ID = 'manga-detail-view';
 const detailCache = {};
@@ -208,28 +206,6 @@ function renderLinksSkeleton() {
         </div>`;
 }
 
-// ---- NEW (Step 9): Brave search results ----
-// Clearly labeled "Unverified" per the plan's acceptance check -- these are
-// raw web-search hits, not confirmed reading pages the way MangaDex/Comick
-// badges above them are.
-function renderSearchResultsHTML(results) {
-    if (!results || results.length === 0) {
-        return `<p class="detail-search-empty">No additional search results found.</p>`;
-    }
-    return results.map(r => `
-        <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="detail-search-result">
-            <span class="detail-search-result-title">${escapeHTML(r.title)}</span>
-            ${r.snippet ? `<span class="detail-search-result-snippet">${escapeHTML(r.snippet)}</span>` : ''}
-        </a>`).join('');
-}
-
-function renderSearchResultsSkeleton() {
-    return `
-        <div class="detail-links-skeleton">
-            <div class="skel-pill"></div><div class="skel-pill"></div>
-        </div>`;
-}
-
 
 function renderDetailMatchBreakdown(item) {
     if (typeof item.matchScore !== 'number' || !item.matchReasons || item.matchReasons.length === 0) {
@@ -301,11 +277,6 @@ function buildMarkup(item) {
                 <div class="detail-links-row" id="detail-links-row">
                     ${item.readLinks ? renderLinksHTML(item.readLinks) : renderLinksSkeleton()}
                 </div>
-
-                <h3 class="detail-section-heading">Search Results <span class="detail-unverified-badge">Unverified</span></h3>
-                <div class="detail-search-results-row" id="detail-search-results-row">
-                    ${item.searchResults ? renderSearchResultsHTML(item.searchResults) : renderSearchResultsSkeleton()}
-                </div>
             </div>
         </div>
     `;
@@ -313,13 +284,11 @@ function buildMarkup(item) {
 
 async function loadLinksIfNeeded(item) {
     if (item.readLinks) return;
-    // meta.author is currently always undefined (item.author doesn't exist
-    // in the data model yet -- see Step 8 of READLINKS_UPGRADE_PLAN.md).
-    // Passed through anyway so the Google fallback query picks it up for
-    // free the moment that field is added, with no further code change.
-    // meta.altTitle (Step 4) IS populated today -- resultNormalizer.js now
-    // keeps the romaji/english alternate title, used by getFallbackLinks()
-    // to try a second URL variant for Manganato/Bato.to.
+    // item.author (Step 8, AniList staff data) sharpens the Google fallback
+    // query when available. item.altTitle (Step 4) is still passed through
+    // but has no active consumer since Manganato/Bato.to were removed --
+    // harmless to keep forwarding it in case a guessable-URL source is ever
+    // added back to the registry.
     const meta = { author: item.author, altTitle: item.altTitle };
     let links;
     try {
@@ -340,29 +309,6 @@ async function loadLinksIfNeeded(item) {
     }
 }
 
-// NEW (Step 9): loads Brave search results independently of
-// loadLinksIfNeeded() above -- separate cache field, separate DOM target,
-// separate failure mode. A slow/failed Brave lookup must never block or
-// delay the Read Now buttons, and vice versa.
-async function loadSearchResultsIfNeeded(item) {
-    if (item.searchResults) return;
-
-    const meta = { author: item.author };
-    let results;
-    try {
-        results = await fetchBraveResults(item.title, meta);
-    } catch (e) {
-        results = []; // fetchBraveResults already catches internally; this is just a final safety net
-    }
-    item.searchResults = results;
-    cacheMangaForDetail(item);
-
-    const view = document.getElementById(VIEW_ID);
-    if (view && view.dataset.openId === String(item.id)) {
-        const row = document.getElementById('detail-search-results-row');
-        if (row) row.innerHTML = renderSearchResultsHTML(results);
-    }
-}
 window.handleDetailFavoriteClick = function () {
     const view = document.getElementById(VIEW_ID);
     const id = view && view.dataset.openId;
@@ -452,7 +398,6 @@ export function openMangaDetail(idOrItem) {
     view.querySelector('.detail-scroll')?.scrollTo(0, 0);
 
     loadLinksIfNeeded(item);
-    loadSearchResultsIfNeeded(item);
 }
 
 export function closeMangaDetail() {
