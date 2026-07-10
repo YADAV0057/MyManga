@@ -21,9 +21,19 @@
 // key is `readlinks_<normalizedTitle>`, TTL is CONFIG.CACHE_EXPIRY (24h).
 // Writes are fire-and-forget so a slow/failed write never delays the
 // links actually rendering.
+//
+// CHANGED (READLINKS_UPGRADE_PLAN.md Step 5): resolveReadLinks() now also
+// queries Comick.io (js/comick.js) as a second "verified" tier source.
+// The MangaDex lookup was extracted into its own resolveMangaDexLink()
+// helper so it and resolveComickLink() can run concurrently via
+// Promise.all instead of back-to-back -- each still has its own 1.5s
+// timeout, but total wait time doesn't stack. A Comick miss/failure
+// degrades the same way a MangaDex miss always has: silently, falling
+// through to whatever other links are available.
 import { CONFIG } from './config.js';
 import { READ_LINK_SOURCES } from './readLinks/sources.js';
 import { db, doc, getDoc, setDoc } from './firebase.js';
+import { resolveComickLink } from './comick.js';
 
 // MangaDex requires specific UUIDs for genres
 const MD_TAG_MAP = {
@@ -179,9 +189,18 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
 }
 
 // 2. THE READ LINK RESOLVER 
-// Session-level circuit breaker added here
-let mangaDexUnreachable = false;
+// CHANGED (READLINKS_UPGRADE_PLAN.md Step 6): the breaker used to be a
+// permanent-for-the-session boolean -- once tripped, MangaDex was never
+// retried again until a full page reload, even if the outage was a
+// 5-second blip. It's now a timed cooldown (`mangaDexUnreachableUntil`,
+// a timestamp): skip calls until that time passes, then try again
+// normally. Also added: one retry with a short backoff before a call
+// counts as "failed" at all, so a single transient error doesn't burn
+// one of the two strikes needed to trip the breaker.
+let mangaDexUnreachableUntil = 0; // timestamp (ms); 0 = not currently in cooldown
 let consecutiveFailures = 0;
+const MANGADEX_COOLDOWN_MS = 60000; // 60s skip window once tripped
+const RETRY_BACKOFF_MS = 300; // short pause before the one retry
 
 // Instant, no-network fallback links (Manganato, Bato.to, Google), built
 // from the READ_LINK_SOURCES registry (js/readLinks/sources.js) instead of
@@ -245,47 +264,80 @@ function writeLinksCache(key, links) {
     );
 }
 
+// Single attempt at the MangaDex title lookup, no retry logic -- kept
+// separate from resolveMangaDexLink() so the retry loop below can call it
+// twice without duplicating the fetch/timeout/parse code.
+async function attemptMangaDexLookup(title) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 1500); // MangaDex API is generally fast, but we add a 1.5-second timeout
+    const encodedTitle = encodeURIComponent(title);
+
+    const mdRes = await fetch(`${CONFIG.MANGADEX_API}/manga?title=${encodedTitle}&limit=1`, {
+        signal: controller.signal
+    });
+    clearTimeout(timeout);
+
+    if (!mdRes.ok) return null;
+    const mdData = await mdRes.json();
+    if (mdData.data && mdData.data.length > 0) {
+        return {
+            name: "MangaDex (Verified)",
+            url: `https://mangadex.org/title/${mdData.data[0].id}`,
+            isValidated: true
+        };
+    }
+    return null; // valid response, just no match -- not a failure
+}
+
+// Looks up `title` on MangaDex and returns a verified link object, or null
+// on a miss/failure/circuit-breaker cooldown. Extracted from
+// resolveReadLinks() in Step 5 so it can run concurrently with
+// resolveComickLink() via Promise.all. Step 6 added the retry-with-backoff
+// and swapped the permanent breaker for a timed cooldown (see comments
+// above mangaDexUnreachableUntil).
+async function resolveMangaDexLink(title) {
+    if (Date.now() < mangaDexUnreachableUntil) return null;
+
+    try {
+        const result = await attemptMangaDexLookup(title);
+        consecutiveFailures = 0; // any successful round-trip (match or not) clears the strike count
+        return result;
+    } catch (e) {
+        // One retry with a short backoff before this counts as a real
+        // failure -- a single transient blip shouldn't cost a strike.
+        await new Promise(resolve => setTimeout(resolve, RETRY_BACKOFF_MS));
+        try {
+            const result = await attemptMangaDexLookup(title);
+            consecutiveFailures = 0;
+            return result;
+        } catch (e2) {
+            if (++consecutiveFailures >= 2) {
+                mangaDexUnreachableUntil = Date.now() + MANGADEX_COOLDOWN_MS;
+                consecutiveFailures = 0; // fresh count for the next cooldown window
+                console.warn(`[mangadex.js] MangaDex unreachable -- skipping for ${MANGADEX_COOLDOWN_MS / 1000}s.`);
+            }
+            console.warn("MangaDex link resolution skipped for:", title);
+            return null;
+        }
+    }
+}
+
 export async function resolveReadLinks(title, meta = {}) {
     const cacheKey = readLinksCacheKey(title);
     const cached = await readLinksCache(cacheKey);
     if (cached) return cached;
 
+    // MangaDex and Comick are independent APIs with independent circuit
+    // breakers -- run their lookups concurrently so a slow/timed-out one
+    // doesn't add its 1.5s on top of the other's.
+    const [mangaDexLink, comickLink] = await Promise.all([
+        resolveMangaDexLink(title),
+        resolveComickLink(title)
+    ]);
+
     let validLinks = [];
-
-    if (!mangaDexUnreachable) {
-        // MangaDex API is generally fast, but we add a 1.5-second timeout
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 1500);
-        const encodedTitle = encodeURIComponent(title);
-
-        try {
-            const mdRes = await fetch(`${CONFIG.MANGADEX_API}/manga?title=${encodedTitle}&limit=1`, {
-                signal: controller.signal
-            });
-
-            clearTimeout(timeout);
-            consecutiveFailures = 0; // Reset consecutive failures on success
-
-            if (mdRes.ok) {
-                const mdData = await mdRes.json();
-                if (mdData.data && mdData.data.length > 0) {
-                    validLinks.push({
-                        name: "MangaDex (Verified)",
-                        url: `https://mangadex.org/title/${mdData.data[0].id}`,
-                        isValidated: true
-                    });
-                }
-            }
-        } catch (e) {
-            clearTimeout(timeout);
-            if (++consecutiveFailures >= 2) {
-                mangaDexUnreachable = true;
-                console.warn("[mangadex.js] MangaDex unreachable this session -- skipping further link resolution until reload.");
-            }
-            // Silently fail to fallback links if API is down or blocked
-            console.warn("MangaDex link resolution skipped for:", title);
-        }
-    }
+    if (mangaDexLink) validLinks.push(mangaDexLink);
+    if (comickLink) validLinks.push(comickLink);
 
     // Manganato, Bato.to, and Google fallbacks
     validLinks.push(...getFallbackLinks(title, meta));
