@@ -3,9 +3,17 @@
 // ==========================================
 // CHANGED: fetchFromMangaDexFallback now consumes a SearchPlan
 // (js/parser/searchPlanner.js) instead of the simple parser's parsedData.
-// resolveReadLinks() and suggestTitlesFromMangaDex() are untouched â€” they
-// only ever took a raw title/query string, not a parsed object.
+// suggestTitlesFromMangaDex() is untouched -- it only ever took a raw
+// title/query string, not a parsed object.
+//
+// CHANGED (READLINKS_UPGRADE_PLAN.md Steps 1 & 2): getFallbackLinks() no
+// longer builds its 3 hardcoded link objects inline -- it now reads from
+// the data-driven registry in js/readLinks/sources.js. resolveReadLinks()
+// and getFallbackLinks() both take an optional `meta` object (currently
+// just { author }, forwarded from mangaDetail.js) so the Google entry's
+// buildUrl() can use it when available; no other behavior changed.
 import { CONFIG } from './config.js';
+import { READ_LINK_SOURCES } from './readLinks/sources.js';
 
 // MangaDex requires specific UUIDs for genres
 const MD_TAG_MAP = {
@@ -113,7 +121,7 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
             const coverFile = coverRel?.attributes?.fileName;
             const coverUrl = coverFile ? `${CONFIG.MANGADEX_COVER}/${m.id}/${coverFile}` : null;
 
-            // Extract genres and themes separately â€” MangaDex already tags each
+            // Extract genres and themes separately -- MangaDex already tags each
             // one by `group`, we were just merging them into one array before.
             const tags = attr.tags || [];
             const genres = tags
@@ -138,7 +146,7 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
                     romaji: titleObj['ja-ro'] || null
                 },
                 averageScore: null, // Skipped for speed (requires secondary API call)
-                // popularity: intentionally omitted â€” MangaDex has no cheap
+                // popularity: intentionally omitted -- MangaDex has no cheap
                 // popularity field on this endpoint (follower count requires
                 // a separate /statistics call per title). normalizeResult()
                 // defaults this to null, which is accurate here, not a bug.
@@ -165,17 +173,19 @@ export async function fetchFromMangaDexFallback(plan, page = 1, limit = 10) {
 let mangaDexUnreachable = false;
 let consecutiveFailures = 0;
 
-// Instant, no-network fallback links (Manganato, Bato.to, Google)
-export function getFallbackLinks(title) {
-    const encodedTitle = encodeURIComponent(title);
-    return [
-        { name: "Manganato", url: `https://manganato.com/search/story/${encodedTitle}`, isValidated: false },
-        { name: "Bato.to", url: `https://bato.to/search?word=${encodedTitle}`, isValidated: false },
-        { name: "Google Search", url: `https://www.google.com/search?q=Read+${encodedTitle}+manga+online`, isValidated: false }
-    ];
+// Instant, no-network fallback links (Manganato, Bato.to, Google), built
+// from the READ_LINK_SOURCES registry (js/readLinks/sources.js) instead of
+// hardcoded inline. `meta` is optional and currently only used by the
+// Google entry (author, if the item model ever provides one -- see Step 8).
+export function getFallbackLinks(title, meta = {}) {
+    return READ_LINK_SOURCES.map(source => ({
+        name: source.name,
+        url: source.buildUrl(title, meta),
+        isValidated: false
+    }));
 }
 
-export async function resolveReadLinks(title) {
+export async function resolveReadLinks(title, meta = {}) {
     let validLinks = [];
 
     if (!mangaDexUnreachable) {
@@ -214,12 +224,12 @@ export async function resolveReadLinks(title) {
     }
 
     // Manganato, Bato.to, and Google fallbacks
-    validLinks.push(...getFallbackLinks(title));
+    validLinks.push(...getFallbackLinks(title, meta));
 
     return validLinks;
 }
 
-// 3. THE SUGGESTION ENGINE (unchanged â€” takes a plain query string)
+// 3. THE SUGGESTION ENGINE (unchanged -- takes a plain query string)
 export async function suggestTitlesFromMangaDex(query, limit = 5) {
     if (!query || query.length < 2) return [];
 
