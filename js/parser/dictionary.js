@@ -1,3 +1,5 @@
+// js/parser/dictionary.js
+
 // 1. Import your curated Base Knowledge
 import { CONCEPT_PROPERTIES as BASE_PROPERTIES } from './dictionary/properties.js';
 
@@ -12,9 +14,9 @@ try {
 }
 
 // 3. Merge Layers: Base (properties) overrides Harvested if keys conflict
-export const CONCEPT_PROPERTIES = { 
-    ...HARVESTED_RULES, 
-    ...BASE_PROPERTIES 
+export const CONCEPT_PROPERTIES = {
+    ...HARVESTED_RULES,
+    ...BASE_PROPERTIES
 };
 
 // --- YOUR EXISTING HARDCODED DATA ---
@@ -26,7 +28,7 @@ export const URGENCY_MODIFIERS = {
 };
 
 export const MOOD_MAPPINGS = {
-    sad: { genres: { Drama: 1.0, Tragedy: 0.9 }, themes: {}, demographics: {} }, 
+    sad: { genres: { Drama: 1.0, Tragedy: 0.9 }, themes: {}, demographics: {} },
     emotional: { genres: { Drama: 0.8, Romance: 0.5, Psychological: 0.4 }, themes: {}, demographics: {} },
     dark: { genres: { Psychological: 1.0, Horror: 0.9, Thriller: 0.8, Mystery: 0.5 }, themes: { Survival: 0.7, Monsters: 0.5 }, demographics: { Seinen: 0.8 } }
 };
@@ -44,14 +46,37 @@ export const SYNONYM_MAP = {
 
 // --- THE AI INJECTION SCRIPT ---
 // This automatically merges all concepts into the operational maps above.
-
+//
+// FIX: every key we inject into SYNONYM_MAP / MOOD_DICTIONARY / MOOD_MAPPINGS
+// is now the LOWERCASED concept id, not the raw concept.id string. Two bugs
+// this fixes:
+//   1. harvested_knowledge.js concepts carry a title-cased id
+//      ("Abandoned Amusement Park") while every downstream lookup
+//      (normalize.js lowercases user input; synonyms.js / moodEngine.js do
+//      lowercase phrase matching) only ever sees lowercase text. A
+//      case-sensitive key never matched, silently disabling every harvested
+//      concept.
+//   2. This lowercased id is exactly the same string as the concept's own
+//      top-level key in CONCEPT_PROPERTIES/HARVESTED_RULES (see
+//      harvested_knowledge.js: `"abandoned amusement park": { "id":
+//      "Abandoned Amusement Park", ... }`). recommendationScorer.js's
+//      matchedConcepts() does `conceptDictionary[id]` using the ids that
+//      ended up in intent.moods — those now resolve correctly instead of
+//      silently returning undefined for every harvested concept.
+//
+// concept.id itself (original casing) is left untouched on the concept
+// object, since it's used for display text elsewhere (match reasons, "Known
+// {concept.id} pick", etc).
 Object.values(CONCEPT_PROPERTIES).forEach(concept => {
-    const id = concept.id;
+    const rawId = concept.id;
+    if (!rawId) return;
+    const id = rawId.toLowerCase();
 
     // 1. Inject Aliases
     if (concept.aliases && Array.isArray(concept.aliases)) {
         concept.aliases.forEach(alias => {
-            if (alias !== id) SYNONYM_MAP[alias.toLowerCase()] = id;
+            const aliasKey = alias.toLowerCase();
+            if (aliasKey !== id) SYNONYM_MAP[aliasKey] = id;
         });
     }
 
@@ -59,7 +84,7 @@ Object.values(CONCEPT_PROPERTIES).forEach(concept => {
     if (!MOOD_MAPPINGS[id]) {
         MOOD_MAPPINGS[id] = { genres: {}, themes: {}, demographics: {} };
     }
-    
+
     if (concept.genres) {
         concept.genres.forEach(g => { MOOD_MAPPINGS[id].genres[g.name] = g.weight; });
     }
@@ -83,6 +108,3 @@ Object.values(CONCEPT_PROPERTIES).forEach(concept => {
         };
     }
 });
-
-
-
