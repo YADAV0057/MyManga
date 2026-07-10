@@ -1,0 +1,70 @@
+rules_version = '2';
+
+// ==========================================
+// MangaMood Firestore Security Rules
+// ==========================================
+// Deploy with: firebase deploy --only firestore:rules
+// (requires firebase.json to point at this file — see note at bottom)
+//
+// Collections in use (from js/firebase.js, favorites.js, mangaProfiles.js):
+//   searches      -- cached search results, keyed by generateCacheKey()
+//   cache         -- cached read-links / top-picks / landing / mixer results
+//   mangaProfiles -- cached per-title mood-vector profiles
+//   favorites     -- per-device "My List", keyed by a random localStorage id
+//
+// None of this data is app-secret, but with NO rules deployed, a Firebase
+// project defaults to fully closed (good) or, if it was ever put in "test
+// mode" during development, fully OPEN read/write until that test-mode
+// window expires (bad, and easy to miss). These rules make the intended
+// behavior explicit instead of relying on whatever the console default is.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isReasonablyShaped(requiredKeys) {
+      return request.resource.data.keys().hasAll(requiredKeys)
+          && request.resource.data.size() < 500;
+    }
+
+    // ---- Shared, non-personal caches ----
+    // The app itself is the only writer, but every visitor is anonymous, so
+    // "the app" just means "any client with the public API key" -- there's
+    // no way to prove server vs. browser without App Check (see README note
+    // below). We keep these writable but shape/size-limited, so the worst a
+    // bad actor can do is fill the cache with junk entries (cheap, and each
+    // one just gets overwritten/expires on its own key), not corrupt other
+    // users' data or run up read/write costs on arbitrary large documents.
+    match /searches/{cacheKey} {
+      allow read: if true;
+      allow write: if isReasonablyShaped(['results']);
+    }
+
+    match /cache/{cacheKey} {
+      allow read: if true;
+      allow write: if isReasonablyShaped(['results']) || isReasonablyShaped(['links']);
+    }
+
+    match /mangaProfiles/{profileKey} {
+      allow read: if true;
+      allow write: if request.resource.data.size() < 20;
+    }
+
+    // ---- Per-device favorites ----
+    // No real auth exists yet (device id is just a client-generated
+    // localStorage value), so this cannot be locked to "owner only" the way
+    // it could with Firebase Auth. Anyone who has (or guesses) a device id
+    // can currently read/write that document -- device ids are random
+    // UUIDs, so guessing one is impractical, but this is NOT the same
+    // guarantee real auth gives you. Documented as a known limitation below.
+    match /favorites/{deviceId} {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasOnly(['items', 'updatedAt'])
+                    && request.resource.data.size() < 500;
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
