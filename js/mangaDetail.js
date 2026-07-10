@@ -32,8 +32,17 @@
 // and async, which is too heavy for a page-open render, so the mood tags
 // here are a lightweight synchronous keyword heuristic, not that system).
 
+// CHANGED (READLINKS_UPGRADE_PLAN.md Step 9): added an additive "Search
+// Results" section below the existing Read Now buttons, backed by
+// js/braveSearch.js (Brave Search API via the app's one Netlify function).
+// This is a SEPARATE async load from loadLinksIfNeeded() -- its own cache
+// field (item.searchResults), its own skeleton, its own render function --
+// deliberately not merged into the Read Now buttons/links flow, since
+// these results are explicitly unverified web results, not confirmed
+// reading-page links the way MangaDex/Comick badges are.
 import { escapeHTML } from './utils.js';
 import { resolveReadLinks, getFallbackLinks } from './mangadex.js';
+import { fetchBraveResults } from './braveSearch.js';
 
 const VIEW_ID = 'manga-detail-view';
 const detailCache = {};
@@ -199,6 +208,28 @@ function renderLinksSkeleton() {
         </div>`;
 }
 
+// ---- NEW (Step 9): Brave search results ----
+// Clearly labeled "Unverified" per the plan's acceptance check -- these are
+// raw web-search hits, not confirmed reading pages the way MangaDex/Comick
+// badges above them are.
+function renderSearchResultsHTML(results) {
+    if (!results || results.length === 0) {
+        return `<p class="detail-search-empty">No additional search results found.</p>`;
+    }
+    return results.map(r => `
+        <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="detail-search-result">
+            <span class="detail-search-result-title">${escapeHTML(r.title)}</span>
+            ${r.snippet ? `<span class="detail-search-result-snippet">${escapeHTML(r.snippet)}</span>` : ''}
+        </a>`).join('');
+}
+
+function renderSearchResultsSkeleton() {
+    return `
+        <div class="detail-links-skeleton">
+            <div class="skel-pill"></div><div class="skel-pill"></div>
+        </div>`;
+}
+
 
 function renderDetailMatchBreakdown(item) {
     if (typeof item.matchScore !== 'number' || !item.matchReasons || item.matchReasons.length === 0) {
@@ -270,6 +301,11 @@ function buildMarkup(item) {
                 <div class="detail-links-row" id="detail-links-row">
                     ${item.readLinks ? renderLinksHTML(item.readLinks) : renderLinksSkeleton()}
                 </div>
+
+                <h3 class="detail-section-heading">Search Results <span class="detail-unverified-badge">Unverified</span></h3>
+                <div class="detail-search-results-row" id="detail-search-results-row">
+                    ${item.searchResults ? renderSearchResultsHTML(item.searchResults) : renderSearchResultsSkeleton()}
+                </div>
             </div>
         </div>
     `;
@@ -301,6 +337,30 @@ async function loadLinksIfNeeded(item) {
     if (view && view.dataset.openId === String(item.id)) {
         const row = document.getElementById('detail-links-row');
         if (row) row.innerHTML = renderLinksHTML(links);
+    }
+}
+
+// NEW (Step 9): loads Brave search results independently of
+// loadLinksIfNeeded() above -- separate cache field, separate DOM target,
+// separate failure mode. A slow/failed Brave lookup must never block or
+// delay the Read Now buttons, and vice versa.
+async function loadSearchResultsIfNeeded(item) {
+    if (item.searchResults) return;
+
+    const meta = { author: item.author };
+    let results;
+    try {
+        results = await fetchBraveResults(item.title, meta);
+    } catch (e) {
+        results = []; // fetchBraveResults already catches internally; this is just a final safety net
+    }
+    item.searchResults = results;
+    cacheMangaForDetail(item);
+
+    const view = document.getElementById(VIEW_ID);
+    if (view && view.dataset.openId === String(item.id)) {
+        const row = document.getElementById('detail-search-results-row');
+        if (row) row.innerHTML = renderSearchResultsHTML(results);
     }
 }
 window.handleDetailFavoriteClick = function () {
@@ -392,6 +452,7 @@ export function openMangaDetail(idOrItem) {
     view.querySelector('.detail-scroll')?.scrollTo(0, 0);
 
     loadLinksIfNeeded(item);
+    loadSearchResultsIfNeeded(item);
 }
 
 export function closeMangaDetail() {
