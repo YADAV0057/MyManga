@@ -221,12 +221,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "funny": 0.55,
-            "happy": 1,
-            "romantic": 0.55,
-            "emotional": 0.68,
-            "relaxing": 0.63,
-            "wholesome": 0.93
+            "emotional": 1,
+            "funny": 0.59,
+            "romantic": 0.59,
+            "happy": 0.89,
+            "tragic": 0.2,
+            "relaxing": 0.43,
+            "wholesome": 0.63
         }
     },
     "romance": {
@@ -298,13 +299,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "romantic": 0.97,
+            "romantic": 0.87,
             "emotional": 1,
-            "happy": 0.33,
-            "tragic": 0.23,
-            "wholesome": 0.14,
-            "relaxing": 0.11,
-            "intense": 0.12
+            "happy": 0.34,
+            "tragic": 0.25,
+            "funny": 0.08,
+            "wholesome": 0.08,
+            "relaxing": 0.06,
+            "intense": 0.07
         }
     },
     "tragedy": {
@@ -429,10 +431,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.44,
-            "hopeful": 0.26,
-            "dark": 0.03,
-            "mysterious": 0.02,
+            "violent": 0.47,
+            "hopeful": 0.25,
+            "mysterious": 0.06,
+            "dark": 0.02,
             "intense": 0.02
         }
     },
@@ -496,11 +498,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.56,
-            "hopeful": 0.21,
-            "intense": 0.19,
-            "dark": 0.03,
-            "mysterious": 0.03
+            "violent": 0.51,
+            "hopeful": 0.24,
+            "intense": 0.1,
+            "mysterious": 0.1,
+            "emotional": 0.07,
+            "dark": 0.02
         }
     },
     "military": {
@@ -567,14 +570,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "intense": 0.49,
-            "dark": 0.31,
-            "scary": 0.19,
-            "mysterious": 0.05
+            "exciting": 1,
+            "violent": 0.5,
+            "emotional": 0.62,
+            "tragic": 0.27,
+            "mysterious": 0.39,
+            "dark": 0.24,
+            "intense": 0.27,
+            "romantic": 0.17,
+            "scary": 0.07
         }
     },
     "assassin": {
@@ -642,12 +646,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.96,
-            "violent": 0.72,
-            "mysterious": 0.9,
-            "intense": 1,
-            "dark": 0.48,
-            "hopeful": 0.04
+            "exciting": 1,
+            "violent": 0.59,
+            "mysterious": 0.86,
+            "intense": 0.68,
+            "dark": 0.41,
+            "emotional": 0.32,
+            "romantic": 0.12,
+            "hopeful": 0.01
         }
     },
     "fantasy": {
@@ -712,10 +718,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.53,
-            "hopeful": 0.61,
-            "scary": 0.15,
-            "dark": 0.1
+            "mysterious": 0.56,
+            "hopeful": 0.5,
+            "emotional": 0.09,
+            "violent": 0.08,
+            "romantic": 0.07,
+            "scary": 0.13,
+            "dark": 0.08
         }
     },
     "magic_school": {
@@ -779,11 +788,13 @@ export const CONCEPT_PROPERTIES = {
             "exciting": 1,
             "mysterious": 0.75,
             "hopeful": 0.64,
+            "emotional": 0.42,
+            "funny": 0.16,
+            "romantic": 0.22,
+            "happy": 0.45,
+            "tragic": 0.14,
             "wholesome": 0.3,
-            "happy": 0.3,
-            "relaxing": 0.23,
-            "romantic": 0.07,
-            "emotional": 0.05
+            "relaxing": 0.23
         }
     },
     "demons": {
@@ -848,12 +859,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.93,
-            "hopeful": 0.32,
-            "dark": 0.42,
-            "scary": 0.46,
-            "violent": 0.42,
-            "intense": 0.03
+            "mysterious": 0.85,
+            "hopeful": 0.2,
+            "dark": 0.26,
+            "scary": 0.28,
+            "violent": 0.43,
+            "emotional": 0.19,
+            "romantic": 0.15,
+            "intense": 0.02
         }
     },
     "isekai": {
@@ -987,12 +1000,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.48,
+            "violent": 0.44,
             "mysterious": 0.26,
-            "hopeful": 0.27,
-            "intense": 0.27,
-            "dark": 0.15,
-            "scary": 0.12
+            "hopeful": 0.25,
+            "dark": 0.17,
+            "intense": 0.32,
+            "scary": 0.07
         }
     },
     "op_mc": {
@@ -1184,11 +1197,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "mysterious": 1,
-            "intense": 0.69,
-            "dark": 0.56,
-            "emotional": 0.17,
-            "exciting": 0.03,
-            "hopeful": 0.02
+            "intense": 0.59,
+            "dark": 0.58,
+            "emotional": 0.34,
+            "exciting": 0.21,
+            "hopeful": 0.01
         }
     },
     "comedy": {
@@ -1247,8 +1260,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "funny": 1,
-            "happy": 0.38,
-            "exciting": 0.05,
+            "happy": 0.46,
+            "emotional": 0.33,
+            "romantic": 0.13,
+            "tragic": 0.12,
+            "exciting": 0.04,
             "hopeful": 0.03
         }
     },
@@ -1492,15 +1508,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.43,
-            "mysterious": 0.56,
-            "hopeful": 0.49,
-            "romantic": 0.95,
+            "exciting": 0.38,
+            "mysterious": 0.45,
+            "hopeful": 0.31,
+            "romantic": 0.72,
             "emotional": 1,
-            "happy": 0.19,
-            "tragic": 0.34,
-            "dark": 0.19,
-            "funny": 0.19
+            "happy": 0.12,
+            "tragic": 0.37,
+            "dark": 0.12,
+            "funny": 0.12
         }
     },
     "yuri": {
@@ -1550,8 +1566,8 @@ export const CONCEPT_PROPERTIES = {
             "romantic": 1,
             "emotional": 0.6,
             "happy": 0.49,
-            "wholesome": 0.19,
-            "relaxing": 0.14
+            "wholesome": 0.1,
+            "relaxing": 0.07
         }
     },
     "death_game": {
@@ -1625,7 +1641,7 @@ export const CONCEPT_PROPERTIES = {
             "mysterious": 0.38,
             "emotional": 0.32,
             "scary": 0.36,
-            "violent": 0.1,
+            "violent": 0.08,
             "intense": 0.54,
             "exciting": 0.02,
             "hopeful": 0.01
@@ -1692,9 +1708,9 @@ export const CONCEPT_PROPERTIES = {
         "moodWeights": {
             "dark": 1,
             "mysterious": 0.64,
-            "emotional": 0.8,
-            "intense": 0.47,
-            "tragic": 0.23
+            "emotional": 0.79,
+            "intense": 0.37,
+            "tragic": 0.18
         }
     },
     "cultivation": {
@@ -1757,11 +1773,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.34,
-            "hopeful": 0.3,
+            "mysterious": 0.29,
+            "hopeful": 0.29,
             "violent": 0.45,
-            "dark": 0.03,
-            "intense": 0.03
+            "emotional": 0.09,
+            "dark": 0.02,
+            "intense": 0.01
         }
     },
     "post_apocalyptic": {
@@ -1816,12 +1833,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "exciting": 0.8,
+            "exciting": 1,
             "violent": 0.64,
-            "intense": 0.77,
-            "dark": 0.47,
-            "scary": 0.32,
-            "mysterious": 0.05
+            "mysterious": 0.48,
+            "dark": 0.78,
+            "intense": 0.53,
+            "scary": 0.16,
+            "emotional": 0.31
         }
     },
     "detective": {
@@ -1885,12 +1903,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "mysterious": 1,
-            "intense": 0.52,
-            "emotional": 0.52,
-            "tragic": 0.34,
-            "dark": 0.06,
-            "exciting": 0.07,
-            "hopeful": 0.05
+            "intense": 0.36,
+            "emotional": 0.68,
+            "tragic": 0.11,
+            "dark": 0.41,
+            "exciting": 0.49,
+            "violent": 0.11,
+            "hopeful": 0.01
         }
     },
     "nobility": {
@@ -1951,12 +1970,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "exciting": 0.36,
-            "mysterious": 0.3,
-            "hopeful": 0.24,
-            "emotional": 0.76,
-            "tragic": 0.42,
-            "romantic": 0.13
+            "exciting": 0.49,
+            "mysterious": 0.38,
+            "hopeful": 0.11,
+            "emotional": 1,
+            "tragic": 0.48,
+            "romantic": 0.28
         }
     },
     "survival": {
@@ -2011,13 +2030,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
+            "exciting": 0.71,
+            "violent": 0.54,
             "dark": 1,
-            "mysterious": 0.47,
-            "emotional": 0.3,
-            "intense": 0.76,
-            "scary": 0.32
+            "mysterious": 0.52,
+            "emotional": 0.5,
+            "intense": 0.49,
+            "scary": 0.2
         }
     },
     "mecha": {
@@ -2081,13 +2100,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.72,
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "hopeful": 0.06,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "mysterious": 0.27,
+            "dark": 0.17,
+            "intense": 0.13,
+            "violent": 0.59,
+            "emotional": 0.39,
+            "tragic": 0.2,
+            "romantic": 0.06,
+            "hopeful": 0.02
         }
     },
     "school_life": {
@@ -2154,14 +2174,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "funny": 0.6,
-            "happy": 0.83,
-            "romantic": 0.58,
-            "emotional": 0.36,
-            "wholesome": 0.32,
-            "relaxing": 0.24,
-            "exciting": 0.08,
-            "hopeful": 0.06
+            "emotional": 0.72,
+            "funny": 0.9,
+            "romantic": 0.81,
+            "happy": 1,
+            "tragic": 0.18,
+            "wholesome": 0.2,
+            "relaxing": 0.15,
+            "exciting": 0.45,
+            "hopeful": 0.2
         }
     },
     "office_work": {
@@ -2227,15 +2248,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "romantic": 0.58,
             "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.28,
-            "relaxing": 0.19,
-            "funny": 0.19,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
+            "funny": 0.27,
+            "romantic": 0.52,
+            "happy": 0.25,
+            "tragic": 0.33,
+            "relaxing": 0.08,
+            "dark": 0.02,
+            "mysterious": 0.01,
+            "intense": 0.01
         }
     },
     "delinquents": {
@@ -2366,9 +2387,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "hopeful": 0.83,
-            "intense": 0.42,
-            "violent": 0.28,
+            "hopeful": 0.76,
+            "intense": 0.37,
+            "violent": 0.27,
             "emotional": 0.25
         }
     },
@@ -2426,9 +2447,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.5,
-            "mysterious": 0.25,
-            "hopeful": 0.25
+            "violent": 0.52,
+            "mysterious": 0.27,
+            "hopeful": 0.24
         }
     },
     "dystopia_politics": {
@@ -2486,10 +2507,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.47,
-            "dark": 0.61,
-            "mysterious": 0.47,
-            "intense": 0.05
+            "tragic": 0.36,
+            "dark": 0.53,
+            "mysterious": 0.53,
+            "exciting": 0.42,
+            "romantic": 0.11,
+            "violent": 0.13,
+            "intense": 0.02
         }
     },
     "cooking": {
@@ -2551,13 +2575,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "emotional": 0.06,
-            "romantic": 0.04
+            "emotional": 1,
+            "funny": 0.7,
+            "romantic": 0.64,
+            "happy": 0.67,
+            "tragic": 0.22,
+            "exciting": 0.27,
+            "dark": 0.02,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "trauma_recovery": {
@@ -2679,9 +2705,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "mysterious": 1,
-            "dark": 0.26,
-            "scary": 0.23,
-            "intense": 0.31
+            "dark": 0.45,
+            "scary": 0.3,
+            "intense": 0.31,
+            "violent": 0.05,
+            "emotional": 0.11,
+            "exciting": 0.08
         }
     },
     "adventure": {
@@ -2796,9 +2825,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.53,
-            "hopeful": 0.25,
-            "intense": 0.2
+            "violent": 0.48,
+            "hopeful": 0.3,
+            "intense": 0.15,
+            "emotional": 0.04
         }
     },
     "monster_girl": {
@@ -2987,10 +3017,11 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "intense": 0.55,
+            "intense": 0.59,
             "dark": 1,
-            "mysterious": 0.62,
-            "emotional": 0.47,
+            "mysterious": 0.75,
+            "emotional": 0.61,
+            "exciting": 0.19,
             "romantic": 0.02
         }
     },
@@ -3051,12 +3082,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "scary": 1,
-            "dark": 0.85,
-            "violent": 0.24,
-            "mysterious": 0.5,
-            "exciting": 0.04,
-            "hopeful": 0.03,
-            "intense": 0.03
+            "dark": 0.9,
+            "violent": 0.25,
+            "mysterious": 0.71,
+            "intense": 0.12,
+            "exciting": 0.03,
+            "hopeful": 0.02
         }
     },
     "survival_horror": {
@@ -3175,11 +3206,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "intense": 1,
-            "dark": 0.46,
-            "mysterious": 0.93,
-            "exciting": 0.05,
-            "hopeful": 0.03
+            "intense": 0.83,
+            "dark": 0.5,
+            "mysterious": 1,
+            "emotional": 0.43,
+            "exciting": 0.38,
+            "tragic": 0.09,
+            "romantic": 0.07,
+            "hopeful": 0.02
         }
     },
     "secret_identity": {
@@ -3234,12 +3268,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.56,
-            "mysterious": 0.6,
-            "intense": 0.3,
-            "hopeful": 0.4,
-            "emotional": 0.24
+            "exciting": 1,
+            "violent": 0.64,
+            "mysterious": 0.56,
+            "intense": 0.21,
+            "hopeful": 0.38,
+            "emotional": 0.17
         }
     },
     "found_family": {
@@ -3298,12 +3332,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "exciting": 0.8,
-            "hopeful": 0.46,
-            "wholesome": 0.64,
-            "emotional": 0.53,
-            "happy": 0.32,
-            "romantic": 0.07
+            "exciting": 1,
+            "hopeful": 0.59,
+            "emotional": 0.92,
+            "funny": 0.19,
+            "romantic": 0.23,
+            "happy": 0.38,
+            "tragic": 0.17,
+            "wholesome": 0.42,
+            "violent": 0.12,
+            "intense": 0.11
         }
     },
     "time_travel": {
@@ -3362,12 +3400,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "emotional": 0.93,
-            "tragic": 0.42,
-            "dark": 0.6,
-            "mysterious": 0.63,
-            "hopeful": 0.16,
-            "intense": 0.05
+            "exciting": 0.54,
+            "mysterious": 0.92,
+            "dark": 0.83,
+            "intense": 0.26,
+            "violent": 0.21,
+            "emotional": 1,
+            "tragic": 0.44,
+            "hopeful": 0.11,
+            "romantic": 0.09
         }
     },
     "rivals": {
@@ -3422,10 +3463,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.39,
-            "hopeful": 0.69,
-            "intense": 0.33,
-            "emotional": 0.22
+            "violent": 0.36,
+            "hopeful": 0.67,
+            "intense": 0.31,
+            "emotional": 0.23
         }
     },
     "slice_of_life": {
@@ -3486,15 +3527,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.52,
-            "wholesome": 0.22,
-            "relaxing": 0.17,
-            "romantic": 0.07,
-            "emotional": 0.05,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "emotional": 1,
+            "funny": 0.65,
+            "romantic": 0.49,
+            "happy": 0.65,
+            "tragic": 0.36,
+            "wholesome": 0.14,
+            "relaxing": 0.1,
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "tsundere": {
@@ -3724,9 +3766,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.41,
-            "hopeful": 0.54,
-            "emotional": 0.19
+            "violent": 0.37,
+            "hopeful": 0.55,
+            "emotional": 0.2,
+            "intense": 0.06
         }
     },
     "josei_drama": {
@@ -3784,9 +3827,9 @@ export const CONCEPT_PROPERTIES = {
             "emotional": 1,
             "tragic": 0.35,
             "romantic": 0.55,
-            "happy": 0.16,
-            "relaxing": 0.11,
-            "funny": 0.11
+            "happy": 0.19,
+            "funny": 0.15,
+            "relaxing": 0.08
         }
     },
     "seinen_psychological": {
@@ -3839,11 +3882,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "dark": 0.8,
-            "mysterious": 0.62,
+            "dark": 0.72,
+            "mysterious": 0.64,
             "emotional": 1,
-            "tragic": 0.39,
-            "intense": 0.05
+            "tragic": 0.33,
+            "exciting": 0.17,
+            "romantic": 0.08,
+            "intense": 0.03
         }
     },
     "elves": {
@@ -3892,9 +3937,11 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "exciting": 0.98,
-            "mysterious": 0.76,
-            "hopeful": 0.63
+            "exciting": 1,
+            "mysterious": 0.71,
+            "hopeful": 0.63,
+            "intense": 0.09,
+            "dark": 0.08
         }
     },
     "dragons": {
@@ -4001,9 +4048,10 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "exciting": 0.66,
-            "mysterious": 0.5,
-            "hopeful": 0.44
+            "exciting": 1,
+            "mysterious": 0.7,
+            "hopeful": 0.6,
+            "violent": 0.08
         }
     },
     "magic_circles": {
@@ -4112,10 +4160,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.48,
-            "hopeful": 0.39,
-            "violent": 0.31,
-            "dark": 0.03,
+            "mysterious": 0.6,
+            "hopeful": 0.38,
+            "violent": 0.25,
+            "dark": 0.19,
+            "emotional": 0.06,
             "intense": 0.02
         }
     },
@@ -4171,11 +4220,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.31,
-            "hopeful": 0.6,
-            "wholesome": 0.35,
-            "emotional": 0.27,
-            "happy": 0.18
+            "mysterious": 0.21,
+            "hopeful": 0.61,
+            "wholesome": 0.24,
+            "emotional": 0.26,
+            "happy": 0.12,
+            "violent": 0.08,
+            "intense": 0.08
         }
     },
     "baseball": {
@@ -4227,9 +4278,11 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.5,
         "moodWeights": {
-            "exciting": 0.91,
-            "hopeful": 0.67,
-            "intense": 0.6
+            "exciting": 1,
+            "hopeful": 0.66,
+            "intense": 0.45,
+            "violent": 0.15,
+            "emotional": 0.15
         }
     },
     "soccer": {
@@ -4279,10 +4332,11 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.5,
         "moodWeights": {
-            "exciting": 0.81,
-            "hopeful": 1,
-            "intense": 0.54,
-            "emotional": 0.29
+            "exciting": 1,
+            "hopeful": 0.96,
+            "intense": 0.47,
+            "violent": 0.11,
+            "emotional": 0.31
         }
     },
     "volleyball": {
@@ -4332,10 +4386,11 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.81,
-            "hopeful": 1,
-            "intense": 0.54,
-            "emotional": 0.29
+            "exciting": 1,
+            "hopeful": 0.94,
+            "intense": 0.46,
+            "violent": 0.12,
+            "emotional": 0.3
         }
     },
     "basketball": {
@@ -4383,9 +4438,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.91,
-            "hopeful": 0.67,
-            "intense": 0.6
+            "exciting": 1,
+            "hopeful": 0.61,
+            "intense": 0.4,
+            "violent": 0.18,
+            "emotional": 0.09,
+            "mysterious": 0.05
         }
     },
     "esports": {
@@ -4444,11 +4502,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "hopeful": 0.44,
-            "intense": 0.42,
+            "hopeful": 0.45,
+            "intense": 0.35,
             "violent": 0.33,
-            "dark": 0.03,
-            "mysterious": 0.02
+            "emotional": 0.05,
+            "dark": 0.02,
+            "mysterious": 0.01
         }
     },
     "racing": {
@@ -4503,11 +4562,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "hopeful": 0.43,
-            "intense": 0.46,
+            "hopeful": 0.44,
+            "intense": 0.32,
             "violent": 0.34,
-            "dark": 0.05,
-            "mysterious": 0.03
+            "emotional": 0.05,
+            "mysterious": 0.07,
+            "dark": 0.02
         }
     },
     "music": {
@@ -4571,12 +4631,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "emotional": 1,
+            "funny": 0.13,
+            "romantic": 0.16,
+            "happy": 0.12,
             "tragic": 0.42,
-            "hopeful": 0.45,
-            "romantic": 0.08,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "hopeful": 0.24,
+            "dark": 0.02,
+            "mysterious": 0.01,
+            "intense": 0.01
         }
     },
     "art": {
@@ -4637,12 +4699,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.3,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.4,
-            "hopeful": 0.48,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
+            "funny": 0.13,
+            "romantic": 0.15,
+            "happy": 0.12,
+            "tragic": 0.41,
+            "hopeful": 0.25,
+            "dark": 0.02,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "theater": {
@@ -4697,9 +4761,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.45,
-            "hopeful": 0.38,
-            "romantic": 0.08
+            "tragic": 0.44,
+            "funny": 0.09,
+            "romantic": 0.13,
+            "happy": 0.09,
+            "hopeful": 0.24
         }
     },
     "dance": {
@@ -4756,14 +4822,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.5,
         "moodWeights": {
-            "exciting": 0.64,
-            "hopeful": 0.48,
-            "intense": 0.52,
-            "emotional": 0.68,
-            "tragic": 0.42,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "romantic": 0.07
+            "exciting": 0.86,
+            "hopeful": 0.69,
+            "intense": 0.5,
+            "emotional": 1,
+            "tragic": 0.48,
+            "violent": 0.11,
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "romantic": 0.05
         }
     },
     "fashion": {
@@ -4822,9 +4889,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "emotional": 0.69,
-            "tragic": 0.36,
-            "romantic": 0.14
+            "emotional": 1,
+            "funny": 0.16,
+            "romantic": 0.25,
+            "happy": 0.15,
+            "tragic": 0.44,
+            "hopeful": 0.07
         }
     },
     "prison": {
@@ -4881,11 +4951,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.9,
         "moodWeights": {
             "intense": 1,
-            "dark": 0.6,
-            "mysterious": 0.3,
-            "exciting": 0.42,
-            "violent": 0.33,
-            "scary": 0.19
+            "dark": 0.74,
+            "mysterious": 0.59,
+            "exciting": 0.61,
+            "violent": 0.27,
+            "scary": 0.15,
+            "emotional": 0.31
         }
     },
     "deserted_island": {
@@ -4940,13 +5011,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.72,
-            "hopeful": 0.4,
-            "scary": 0.92,
-            "dark": 0.94,
-            "violent": 0.24,
-            "intense": 0.76,
-            "mysterious": 0.04
+            "exciting": 0.9,
+            "hopeful": 0.47,
+            "scary": 0.61,
+            "dark": 1,
+            "violent": 0.16,
+            "intense": 0.9,
+            "emotional": 0.34,
+            "mysterious": 0.03
         }
     },
     "yakuza": {
@@ -5001,13 +5073,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 0.99,
+            "violent": 0.39,
+            "emotional": 1,
+            "tragic": 0.36,
+            "mysterious": 0.58,
+            "dark": 0.35,
+            "intense": 0.27,
+            "romantic": 0.08
         }
     },
     "space_travel": {
@@ -5063,11 +5136,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.63,
-            "hopeful": 0.35,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "exciting": 1,
+            "mysterious": 0.52,
+            "dark": 0.35,
+            "intense": 0.27,
+            "violent": 0.21,
+            "hopeful": 0.13,
+            "emotional": 0.24,
+            "romantic": 0.12
         }
     },
     "cyber_crime": {
@@ -5121,10 +5197,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.7,
         "moodWeights": {
-            "intense": 1,
-            "dark": 0.77,
-            "mysterious": 0.68,
-            "exciting": 0.21
+            "intense": 0.94,
+            "dark": 0.9,
+            "mysterious": 1,
+            "exciting": 0.75,
+            "violent": 0.14,
+            "emotional": 0.32
         }
     },
     "necromancy": {
@@ -5178,13 +5256,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "scary": 0.8,
-            "dark": 0.7,
-            "violent": 0.32,
-            "exciting": 0.4,
-            "mysterious": 0.37,
-            "hopeful": 0.24,
-            "intense": 0.05
+            "dark": 1,
+            "scary": 0.96,
+            "violent": 0.4,
+            "exciting": 0.32,
+            "mysterious": 0.42,
+            "hopeful": 0.1,
+            "emotional": 0.11,
+            "intense": 0.12
         }
     },
     "shinto_occult": {
@@ -5238,11 +5317,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "mysterious": 1,
-            "dark": 0.33,
-            "scary": 0.3,
-            "exciting": 0.55,
-            "hopeful": 0.35,
-            "intense": 0.03
+            "dark": 0.34,
+            "scary": 0.24,
+            "exciting": 0.75,
+            "hopeful": 0.47,
+            "intense": 0.09
         }
     },
     "vampire": {
@@ -5300,14 +5379,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "mysterious": 0.74,
-            "dark": 0.78,
-            "scary": 0.6,
-            "romantic": 0.68,
-            "emotional": 0.42,
-            "happy": 0.18,
-            "violent": 0.4,
-            "intense": 0.04
+            "mysterious": 1,
+            "dark": 0.62,
+            "scary": 0.48,
+            "romantic": 0.78,
+            "emotional": 0.63,
+            "happy": 0.14,
+            "exciting": 0.57,
+            "violent": 0.57,
+            "intense": 0.03
         }
     },
     "werewolf": {
@@ -5479,12 +5559,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.8,
         "moodWeights": {
-            "mysterious": 0.85,
-            "dark": 0.37,
-            "scary": 0.37,
+            "mysterious": 0.79,
+            "dark": 0.21,
+            "scary": 0.21,
             "exciting": 1,
-            "violent": 0.51,
-            "hopeful": 0.22
+            "violent": 0.48,
+            "emotional": 0.22,
+            "romantic": 0.17,
+            "hopeful": 0.13
         }
     },
     "demon_harem": {
@@ -5537,13 +5619,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.72,
-            "mysterious": 0.45,
-            "hopeful": 0.32,
-            "funny": 0.62,
-            "romantic": 0.88,
-            "dark": 0.07,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.67,
+            "hopeful": 0.21,
+            "funny": 0.41,
+            "romantic": 0.79,
+            "emotional": 0.27,
+            "violent": 0.23,
+            "dark": 0.05,
+            "intense": 0.04
         }
     },
     "cursed_items": {
@@ -5598,11 +5682,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "mysterious": 1,
-            "dark": 0.31,
-            "scary": 0.26,
-            "exciting": 0.62,
-            "hopeful": 0.39,
-            "intense": 0.03
+            "dark": 0.39,
+            "scary": 0.19,
+            "exciting": 0.56,
+            "hopeful": 0.36,
+            "emotional": 0.06,
+            "intense": 0.02
         }
     },
     "ghost_hunter": {
@@ -5656,9 +5741,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "mysterious": 1,
-            "dark": 0.28,
-            "scary": 0.24,
-            "intense": 0.3
+            "dark": 0.48,
+            "scary": 0.33,
+            "intense": 0.3,
+            "violent": 0.05,
+            "emotional": 0.11,
+            "exciting": 0.08
         }
     },
     "possession": {
@@ -5713,12 +5801,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "scary": 0.56,
+            "scary": 0.42,
             "dark": 1,
-            "violent": 0.22,
-            "mysterious": 0.43,
-            "emotional": 0.28,
-            "intense": 0.03
+            "violent": 0.3,
+            "mysterious": 0.69,
+            "emotional": 0.56,
+            "exciting": 0.3,
+            "romantic": 0.12,
+            "intense": 0.02
         }
     },
     "surgery": {
@@ -5776,12 +5866,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "emotional": 0.88,
-            "tragic": 0.54,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05,
-            "romantic": 0.04
+            "emotional": 1,
+            "tragic": 0.57,
+            "romantic": 0.1,
+            "happy": 0.04,
+            "funny": 0.04,
+            "dark": 0.02,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "plague_outbreak": {
@@ -5836,11 +5928,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "scary": 1,
-            "dark": 0.99,
-            "violent": 0.29,
-            "intense": 0.69,
-            "mysterious": 0.05
+            "scary": 0.76,
+            "dark": 1,
+            "violent": 0.28,
+            "exciting": 0.33,
+            "mysterious": 0.37,
+            "intense": 0.6,
+            "emotional": 0.1
         }
     },
     "bio_engineering": {
@@ -5895,10 +5989,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "dark": 0.61,
-            "mysterious": 0.47,
-            "emotional": 0.3,
-            "intense": 0.05
+            "exciting": 0.9,
+            "mysterious": 0.98,
+            "dark": 1,
+            "intense": 0.21,
+            "violent": 0.29,
+            "emotional": 0.43,
+            "hopeful": 0.1
         }
     },
     "cyborg": {
@@ -5952,11 +6049,11 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "exciting": 0.99,
-            "violent": 0.56,
-            "dark": 0.42,
-            "mysterious": 0.41,
-            "intense": 0.34
+            "exciting": 1,
+            "mysterious": 0.7,
+            "dark": 0.55,
+            "intense": 0.41,
+            "violent": 0.47
         }
     },
     "ai_awakening": {
@@ -6009,11 +6106,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
+            "exciting": 0.86,
+            "mysterious": 1,
             "dark": 0.93,
-            "mysterious": 0.79,
-            "emotional": 0.3,
-            "exciting": 0.26,
-            "intense": 0.31
+            "intense": 0.32,
+            "violent": 0.18,
+            "emotional": 0.23,
+            "hopeful": 0.11
         }
     },
     "space_opera": {
@@ -6067,11 +6166,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.66,
+            "dark": 0.28,
+            "intense": 0.33,
+            "violent": 0.18,
+            "emotional": 0.66,
+            "tragic": 0.28,
+            "romantic": 0.23
         }
     },
     "exploration": {
@@ -6126,11 +6228,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "exciting": 1,
-            "hopeful": 0.59,
-            "mysterious": 0.22,
-            "intense": 0.27,
-            "dark": 0.15,
-            "scary": 0.12
+            "hopeful": 0.6,
+            "mysterious": 0.34,
+            "intense": 0.26,
+            "dark": 0.17,
+            "scary": 0.08
         }
     },
     "time_loop": {
@@ -6185,10 +6287,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "dark": 0.78,
-            "mysterious": 0.61,
-            "emotional": 0.4,
-            "intense": 0.05
+            "dark": 0.93,
+            "mysterious": 1,
+            "emotional": 0.67,
+            "exciting": 0.46,
+            "intense": 0.17,
+            "violent": 0.13,
+            "hopeful": 0.08,
+            "tragic": 0.16,
+            "romantic": 0.1
         }
     },
     "royal_court": {
@@ -6248,12 +6355,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.47,
-            "nostalgic": 0.33,
-            "romantic": 0.04,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
+            "tragic": 0.45,
+            "nostalgic": 0.15,
+            "exciting": 0.29,
+            "mysterious": 0.23,
+            "romantic": 0.21,
+            "dark": 0.02,
+            "intense": 0.01
         }
     },
     "grand_strategy": {
@@ -6307,13 +6415,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 0.08,
-            "mysterious": 0.06,
-            "intense": 0.06
+            "emotional": 0.9,
+            "tragic": 0.39,
+            "exciting": 1,
+            "violent": 0.48,
+            "mysterious": 0.35,
+            "romantic": 0.25,
+            "dark": 0.04,
+            "intense": 0.03
         }
     },
     "espionage": {
@@ -6368,11 +6477,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "intense": 1,
-            "dark": 0.64,
-            "mysterious": 0.53,
-            "exciting": 0.66,
-            "violent": 0.53
+            "intense": 0.85,
+            "dark": 0.66,
+            "mysterious": 0.88,
+            "exciting": 1,
+            "violent": 0.36,
+            "emotional": 0.69,
+            "tragic": 0.19,
+            "romantic": 0.15
         }
     },
     "uprising": {
@@ -6426,14 +6538,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "emotional": 0.81,
-            "tragic": 0.54,
-            "exciting": 0.7,
-            "violent": 0.56,
-            "intense": 0.41,
-            "dark": 0.27,
-            "scary": 0.16,
-            "mysterious": 0.05
+            "emotional": 1,
+            "tragic": 0.56,
+            "exciting": 0.8,
+            "violent": 0.35,
+            "mysterious": 0.29,
+            "romantic": 0.17,
+            "intense": 0.26,
+            "dark": 0.17,
+            "scary": 0.1
         }
     },
     "mercenary_life": {
@@ -6488,11 +6601,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.49,
-            "hopeful": 0.21,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
+            "violent": 0.42,
+            "hopeful": 0.13,
+            "emotional": 0.29,
+            "mysterious": 0.29,
+            "romantic": 0.08,
+            "dark": 0.15,
+            "intense": 0.12
         }
     },
     "propaganda": {
@@ -6545,11 +6660,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "dark": 0.82,
-            "mysterious": 0.63,
+            "dark": 0.62,
+            "mysterious": 0.61,
             "emotional": 1,
-            "tragic": 0.39,
-            "intense": 0.05
+            "tragic": 0.32,
+            "exciting": 0.43,
+            "romantic": 0.11,
+            "violent": 0.14,
+            "intense": 0.02
         }
     },
     "diplomacy": {
@@ -6609,10 +6727,11 @@ export const CONCEPT_PROPERTIES = {
         "moodWeights": {
             "emotional": 1,
             "tragic": 0.44,
-            "dark": 0.55,
+            "dark": 0.25,
             "mysterious": 0.42,
-            "intense": 0.04,
-            "romantic": 0.04
+            "exciting": 0.31,
+            "romantic": 0.2,
+            "intense": 0.02
         }
     },
     "warlord": {
@@ -6665,13 +6784,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "violent": 0.49,
+            "emotional": 0.81,
+            "tragic": 0.34,
+            "mysterious": 0.33,
+            "romantic": 0.24,
+            "dark": 0.03,
+            "intense": 0.03
         }
     },
     "childcare": {
@@ -6732,13 +6852,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "emotional": 0.07,
-            "romantic": 0.04,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "emotional": 1,
+            "funny": 0.44,
+            "romantic": 0.3,
+            "happy": 0.34,
+            "tragic": 0.46,
+            "exciting": 0.23,
+            "violent": 0.1,
+            "dark": 0.02,
+            "mysterious": 0.01,
+            "intense": 0.01
         }
     },
     "single_parent": {
@@ -6795,12 +6918,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "emotional": 0.89,
-            "tragic": 0.54,
-            "romantic": 0.05,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "emotional": 1,
+            "tragic": 0.47,
+            "funny": 0.15,
+            "romantic": 0.33,
+            "happy": 0.2,
+            "exciting": 0.07,
+            "dark": 0.02,
+            "mysterious": 0.01,
+            "intense": 0.01
         }
     },
     "domestic_life": {
@@ -6854,9 +6980,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "romantic": 0.65,
-            "emotional": 0.44,
-            "happy": 0.18
+            "emotional": 1,
+            "funny": 0.2,
+            "romantic": 0.6,
+            "happy": 0.32,
+            "tragic": 0.34,
+            "exciting": 0.07
         }
     },
     "orphan": {
@@ -6966,8 +7095,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.3,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.75,
-            "romantic": 0.04
+            "funny": 0.14,
+            "romantic": 0.26,
+            "happy": 0.19,
+            "tragic": 0.55,
+            "exciting": 0.07
         }
     },
     "sibling_bond": {
@@ -7025,11 +7157,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.4,
         "moodWeights": {
-            "emotional": 0.69,
-            "tragic": 0.42,
-            "exciting": 0.1,
-            "hopeful": 0.06,
-            "romantic": 0.1
+            "emotional": 1,
+            "tragic": 0.52,
+            "funny": 0.16,
+            "romantic": 0.24,
+            "happy": 0.15,
+            "exciting": 0.25,
+            "violent": 0.09,
+            "hopeful": 0.02
         }
     },
     "pet_care": {
@@ -7082,10 +7217,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "exciting": 0.07,
-            "hopeful": 0.05,
-            "romantic": 0.07,
-            "emotional": 0.05
+            "emotional": 1,
+            "funny": 0.36,
+            "romantic": 0.3,
+            "happy": 0.33,
+            "tragic": 0.44,
+            "exciting": 0.1,
+            "hopeful": 0.02
         }
     },
     "marriage": {
@@ -7140,9 +7278,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.4,
         "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.65,
-            "happy": 0.28
+            "romantic": 0.72,
+            "emotional": 1,
+            "happy": 0.32,
+            "funny": 0.17,
+            "tragic": 0.3,
+            "exciting": 0.06
         }
     },
     "mentorship": {
@@ -7250,9 +7391,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "emotional": 1,
+            "funny": 0.63,
+            "romantic": 0.68,
+            "happy": 0.66,
+            "tragic": 0.41,
+            "exciting": 0.52,
+            "hopeful": 0.18,
+            "dark": 0.04,
+            "mysterious": 0.03,
+            "intense": 0.03
         }
     },
     "nihilism": {
@@ -7307,11 +7455,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "dark": 0.8,
-            "mysterious": 0.62,
-            "emotional": 1,
-            "tragic": 0.39,
-            "intense": 0.05
+            "dark": 1,
+            "mysterious": 0.65,
+            "emotional": 0.9,
+            "tragic": 0.24,
+            "scary": 0.19,
+            "intense": 0.11
         }
     },
     "determinism": {
@@ -7369,13 +7518,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "emotional": 0.92,
+            "emotional": 1,
             "tragic": 0.48,
-            "exciting": 0.43,
-            "mysterious": 0.34,
-            "hopeful": 0.57,
-            "dark": 0.06,
-            "intense": 0.04
+            "exciting": 0.29,
+            "mysterious": 0.36,
+            "hopeful": 0.38,
+            "dark": 0.17,
+            "romantic": 0.09,
+            "intense": 0.03
         }
     },
     "human_nature": {
@@ -7429,11 +7579,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.8,
         "moodWeights": {
-            "dark": 0.85,
-            "mysterious": 0.44,
+            "dark": 0.65,
+            "mysterious": 0.46,
             "emotional": 1,
-            "tragic": 0.31,
-            "intense": 0.04
+            "tragic": 0.34,
+            "exciting": 0.17,
+            "romantic": 0.08,
+            "intense": 0.03
         }
     },
     "absurdism": {
@@ -7489,9 +7641,9 @@ export const CONCEPT_PROPERTIES = {
         "moodWeights": {
             "funny": 1,
             "happy": 0.35,
-            "dark": 0.45,
-            "mysterious": 0.35,
-            "emotional": 0.23,
+            "dark": 0.71,
+            "mysterious": 0.52,
+            "emotional": 0.43,
             "intense": 0.03
         }
     },
@@ -7546,11 +7698,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.82,
-            "mysterious": 0.72,
-            "hopeful": 0.53,
-            "dark": 0.06,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.68,
+            "hopeful": 0.33,
+            "dark": 0.22,
+            "intense": 0.17,
+            "violent": 0.25,
+            "emotional": 0.1
         }
     },
     "solitude": {
@@ -7669,13 +7823,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "emotional": 0.63,
-            "tragic": 0.42,
+            "emotional": 1,
+            "tragic": 0.4,
             "funny": 0.24,
-            "romantic": 0.32,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "romantic": 0.4,
+            "mysterious": 0.31,
+            "exciting": 0.21,
+            "dark": 0.24,
+            "intense": 0.19,
+            "happy": 0.08
         }
     },
     "self_discovery": {
@@ -7731,9 +7887,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.42,
-            "hopeful": 0.39,
-            "romantic": 0.1
+            "tragic": 0.4,
+            "funny": 0.12,
+            "romantic": 0.19,
+            "happy": 0.11,
+            "hopeful": 0.27
         }
     },
     "justice": {
@@ -7787,11 +7945,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.91,
-            "violent": 0.64,
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "hopeful": 0.07
+            "exciting": 1,
+            "violent": 0.41,
+            "emotional": 0.93,
+            "tragic": 0.41,
+            "mysterious": 0.41,
+            "romantic": 0.11,
+            "dark": 0.18,
+            "intense": 0.14,
+            "hopeful": 0.05
         }
     },
     "conspiracy": {
@@ -7846,8 +8008,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "mysterious": 1,
-            "intense": 0.97,
-            "dark": 0.41
+            "intense": 0.74,
+            "dark": 0.42,
+            "emotional": 0.48,
+            "exciting": 0.38,
+            "tragic": 0.12,
+            "romantic": 0.09
         }
     },
     "slow_burn": {
@@ -7963,9 +8129,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "mysterious": 1,
-            "intense": 0.32,
-            "dark": 0.56,
-            "emotional": 0.28
+            "intense": 0.3,
+            "dark": 0.6,
+            "emotional": 0.46,
+            "tragic": 0.11,
+            "romantic": 0.07,
+            "exciting": 0.16,
+            "violent": 0.06
         }
     },
     "episodic": {
@@ -8017,11 +8187,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "funny": 0.7,
-            "happy": 0.42,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "emotional": 0.89,
+            "funny": 1,
+            "romantic": 0.57,
+            "happy": 0.83,
+            "tragic": 0.36,
+            "exciting": 0.4,
+            "hopeful": 0.14,
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "cliffhanger": {
@@ -8124,11 +8299,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "mysterious": 0.75,
-            "intense": 0.4,
-            "dark": 0.06
+            "emotional": 1,
+            "tragic": 0.58,
+            "mysterious": 0.83,
+            "intense": 0.33,
+            "exciting": 0.3,
+            "romantic": 0.14,
+            "dark": 0.05
         }
     },
     "flashback": {
@@ -8181,11 +8358,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "emotional": 0.91,
-            "tragic": 0.42,
-            "exciting": 0.6,
-            "violent": 0.4,
-            "hopeful": 0.46
+            "emotional": 1,
+            "tragic": 0.44,
+            "exciting": 0.38,
+            "violent": 0.26,
+            "mysterious": 0.14,
+            "dark": 0.14,
+            "romantic": 0.1,
+            "hopeful": 0.29
         }
     },
     "meta_fiction": {
@@ -8347,10 +8527,10 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "dark": 0.98,
-            "mysterious": 1,
-            "emotional": 0.65,
-            "intense": 0.31
+            "dark": 1,
+            "mysterious": 0.92,
+            "emotional": 0.69,
+            "intense": 0.22
         }
     },
     "world_building_heavy": {
@@ -8403,11 +8583,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "exciting": 0.88,
-            "mysterious": 0.77,
-            "hopeful": 0.57,
-            "dark": 0.06,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.76,
+            "hopeful": 0.25,
+            "dark": 0.28,
+            "intense": 0.21,
+            "violent": 0.18,
+            "emotional": 0.21,
+            "tragic": 0.1,
+            "romantic": 0.08
         }
     },
     "swordplay": {
@@ -8455,8 +8639,8 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.72,
-            "hopeful": 0.06
+            "violent": 0.64,
+            "hopeful": 0.13
         }
     },
     "gunplay": {
@@ -8508,10 +8692,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.8,
-            "intense": 0.85,
-            "dark": 0.55,
-            "mysterious": 0.45
+            "violent": 0.56,
+            "intense": 0.81,
+            "dark": 0.66,
+            "mysterious": 0.71,
+            "emotional": 0.35
         }
     },
     "elemental_magic": {
@@ -8614,13 +8799,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.94,
-            "mysterious": 0.82,
-            "hopeful": 0.6,
-            "scary": 0.7,
-            "dark": 0.62,
-            "violent": 0.28,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.81,
+            "hopeful": 0.38,
+            "scary": 0.44,
+            "dark": 0.39,
+            "violent": 0.36,
+            "emotional": 0.21,
+            "romantic": 0.17,
+            "intense": 0.03
         }
     },
     "archery": {
@@ -8669,9 +8856,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.49,
-            "mysterious": 0.27,
-            "hopeful": 0.26
+            "violent": 0.47,
+            "mysterious": 0.25,
+            "hopeful": 0.29
         }
     },
     "stealth_combat": {
@@ -8725,11 +8912,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "intense": 0.85,
-            "dark": 0.54,
-            "mysterious": 0.45
+            "exciting": 1,
+            "violent": 0.56,
+            "intense": 0.54,
+            "dark": 0.43,
+            "mysterious": 0.65,
+            "emotional": 0.42,
+            "romantic": 0.15
         }
     },
     "martial_arts_styles": {
@@ -8782,8 +8971,8 @@ export const CONCEPT_PROPERTIES = {
         "moodWeights": {
             "exciting": 1,
             "violent": 0.53,
-            "hopeful": 0.25,
-            "intense": 0.2
+            "hopeful": 0.24,
+            "intense": 0.13
         }
     },
     "summoning": {
@@ -8946,11 +9135,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.47,
+            "dark": 0.31,
+            "intense": 0.15,
+            "violent": 0.5,
+            "hopeful": 0.11,
+            "emotional": 0.04
         }
     },
     "technomancy": {
@@ -9003,11 +9194,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.97,
-            "mysterious": 0.96,
-            "hopeful": 0.43,
-            "dark": 0.42,
-            "intense": 0.34
+            "exciting": 1,
+            "mysterious": 0.84,
+            "dark": 0.5,
+            "intense": 0.39,
+            "violent": 0.2,
+            "hopeful": 0.22
         }
     },
     "spirit_energy": {
@@ -9062,9 +9254,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.39,
-            "mysterious": 0.37,
-            "hopeful": 0.33
+            "violent": 0.42,
+            "mysterious": 0.28,
+            "hopeful": 0.31
         }
     },
     "trap_setting": {
@@ -9119,12 +9311,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.45,
-            "hopeful": 0.24,
-            "intense": 0.5,
-            "dark": 0.3,
-            "scary": 0.21,
-            "mysterious": 0.03
+            "violent": 0.52,
+            "hopeful": 0.15,
+            "intense": 0.41,
+            "dark": 0.34,
+            "scary": 0.13,
+            "emotional": 0.12,
+            "mysterious": 0.02
         }
     },
     "siege_warfare": {
@@ -9178,13 +9371,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.8,
+            "exciting": 1,
             "violent": 0.64,
-            "emotional": 0.63,
-            "tragic": 0.42,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "emotional": 0.55,
+            "tragic": 0.18,
+            "mysterious": 0.15,
+            "romantic": 0.12,
+            "dark": 0.15,
+            "intense": 0.1
         }
     },
     "ritual_magic": {
@@ -9238,13 +9432,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.94,
-            "mysterious": 0.82,
-            "hopeful": 0.6,
-            "scary": 0.8,
-            "dark": 0.7,
-            "violent": 0.32,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.87,
+            "hopeful": 0.64,
+            "scary": 0.85,
+            "dark": 0.75,
+            "violent": 0.19,
+            "intense": 0.03
         }
     },
     "knighthood": {
@@ -9299,9 +9493,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.33,
-            "hopeful": 0.31,
-            "violent": 0.43
+            "mysterious": 0.27,
+            "hopeful": 0.29,
+            "violent": 0.45
         }
     },
     "martial_arts_weapons": {
@@ -9348,8 +9542,8 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.72,
-            "hopeful": 0.06
+            "violent": 0.64,
+            "hopeful": 0.13
         }
     },
     "blood_magic": {
@@ -9402,13 +9596,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "scary": 0.9,
             "dark": 1,
-            "violent": 0.81,
-            "exciting": 0.31,
-            "mysterious": 0.29,
-            "hopeful": 0.19,
-            "intense": 0.04
+            "scary": 0.94,
+            "violent": 0.75,
+            "exciting": 0.35,
+            "mysterious": 0.33,
+            "hopeful": 0.1,
+            "intense": 0.02
         }
     },
     "heavy_artillery": {
@@ -9463,10 +9657,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.9,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.8,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "violent": 0.62,
+            "mysterious": 0.28,
+            "dark": 0.16,
+            "intense": 0.12,
+            "emotional": 0.13,
+            "romantic": 0.08
         }
     },
     "energy_shielding": {
@@ -9519,11 +9715,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "exciting": 0.66,
-            "mysterious": 0.58,
-            "hopeful": 0.42,
-            "dark": 0.06,
-            "intense": 0.04
+            "exciting": 1,
+            "mysterious": 0.88,
+            "dark": 0.44,
+            "intense": 0.41,
+            "violent": 0.2,
+            "hopeful": 0.32
         }
     },
     "transformation_items": {
@@ -9574,9 +9771,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.36,
-            "hopeful": 0.33,
-            "violent": 0.4
+            "mysterious": 0.35,
+            "hopeful": 0.3,
+            "violent": 0.46
         }
     },
     "enchantment": {
@@ -9627,8 +9824,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.76,
-            "hopeful": 0.64
+            "mysterious": 0.69,
+            "hopeful": 0.59,
+            "violent": 0.07
         }
     },
     "beast_taming": {
@@ -9682,10 +9880,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.58,
-            "hopeful": 0.61,
-            "scary": 0.34,
-            "dark": 0.23
+            "mysterious": 0.54,
+            "hopeful": 0.57,
+            "scary": 0.31,
+            "dark": 0.21,
+            "emotional": 0.26,
+            "tragic": 0.13,
+            "romantic": 0.1,
+            "happy": 0.06
         }
     },
     "weapon_forging": {
@@ -9739,9 +9941,9 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.34,
-            "hopeful": 0.31,
-            "violent": 0.42
+            "mysterious": 0.38,
+            "hopeful": 0.37,
+            "violent": 0.36
         }
     },
     "gravity_manipulation": {
@@ -9790,11 +9992,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.37,
+            "dark": 0.23,
+            "intense": 0.17,
+            "violent": 0.58,
+            "hopeful": 0.07
         }
     },
     "stealth_technology": {
@@ -9847,9 +10050,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "intense": 0.85,
-            "dark": 0.54,
-            "mysterious": 0.45
+            "exciting": 0.8,
+            "mysterious": 1,
+            "dark": 0.78,
+            "intense": 0.88,
+            "violent": 0.17,
+            "hopeful": 0.14,
+            "emotional": 0.18
         }
     },
     "martial_arts_energy": {
@@ -9903,9 +10110,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.52,
-            "mysterious": 0.23,
-            "hopeful": 0.23
+            "violent": 0.49,
+            "mysterious": 0.22,
+            "hopeful": 0.26,
+            "emotional": 0.08
         }
     },
     "dimensional_travel": {
@@ -9958,11 +10166,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "exciting": 0.82,
-            "mysterious": 0.72,
-            "hopeful": 0.53,
-            "dark": 0.06,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.85,
+            "dark": 0.44,
+            "intense": 0.2,
+            "violent": 0.17,
+            "hopeful": 0.31,
+            "emotional": 0.06
         }
     },
     "mechanical_engineering": {
@@ -10016,11 +10226,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.4,
         "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.86,
+            "dark": 0.46,
+            "intense": 0.47,
+            "violent": 0.24,
+            "funny": 0.22,
+            "happy": 0.13,
+            "hopeful": 0.31
         }
     },
     "psionic_combat": {
@@ -10074,11 +10287,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "dark": 0.97,
-            "mysterious": 0.75,
-            "emotional": 0.5,
-            "exciting": 0.7,
-            "violent": 0.56,
-            "intense": 0.05
+            "mysterious": 0.88,
+            "emotional": 0.58,
+            "exciting": 1,
+            "violent": 0.67,
+            "hopeful": 0.12,
+            "intense": 0.04
         }
     },
     "love_triangle": {
@@ -10134,14 +10348,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "romantic": 0.79,
+            "romantic": 0.88,
             "emotional": 1,
-            "happy": 0.33,
-            "tragic": 0.35,
-            "wholesome": 0.12,
-            "relaxing": 0.09,
-            "exciting": 0.05,
-            "hopeful": 0.03
+            "happy": 0.39,
+            "tragic": 0.31,
+            "funny": 0.08,
+            "wholesome": 0.08,
+            "relaxing": 0.06,
+            "exciting": 0.04,
+            "hopeful": 0.02
         }
     },
     "childhood_friend": {
@@ -10199,10 +10414,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.3,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.6,
-            "happy": 0.27,
-            "exciting": 0.1,
-            "hopeful": 0.06
+            "emotional": 0.85,
+            "happy": 0.63,
+            "funny": 0.49,
+            "tragic": 0.22,
+            "exciting": 0.51,
+            "hopeful": 0.21
         }
     },
     "forbidden_love": {
@@ -10258,13 +10475,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.7,
         "moodWeights": {
-            "romantic": 0.7,
+            "romantic": 0.88,
             "emotional": 1,
-            "happy": 0.2,
-            "tragic": 0.36,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
+            "happy": 0.32,
+            "tragic": 0.27,
+            "intense": 0.09,
+            "dark": 0.09,
+            "funny": 0.07,
+            "mysterious": 0.02
         }
     },
     "arranged_marriage": {
@@ -10319,10 +10537,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "romantic": 0.83,
+            "romantic": 0.58,
             "emotional": 1,
-            "happy": 0.22,
-            "tragic": 0.31
+            "happy": 0.11,
+            "tragic": 0.37,
+            "exciting": 0.25,
+            "mysterious": 0.19
         }
     },
     "reunion": {
@@ -10379,13 +10599,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "romantic": 0.56,
+            "romantic": 0.47,
             "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.32,
-            "hopeful": 0.22,
-            "dark": 0.03,
-            "mysterious": 0.02,
+            "happy": 0.12,
+            "tragic": 0.34,
+            "mysterious": 0.11,
+            "dark": 0.12,
+            "hopeful": 0.16,
             "intense": 0.02
         }
     },
@@ -10442,9 +10662,9 @@ export const CONCEPT_PROPERTIES = {
             "emotional": 1,
             "happy": 0.23,
             "tragic": 0.31,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "rivalry_romance": {
@@ -10496,11 +10716,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.6,
-            "funny": 0.54,
-            "exciting": 0.06,
-            "hopeful": 0.04
+            "emotional": 0.75,
+            "happy": 0.54,
+            "funny": 0.45,
+            "tragic": 0.09,
+            "exciting": 0.04,
+            "hopeful": 0.03
         }
     },
     "fake_relationship": {
@@ -10553,11 +10774,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.66,
-            "funny": 0.64,
-            "exciting": 0.07,
-            "hopeful": 0.04
+            "emotional": 0.67,
+            "happy": 0.57,
+            "funny": 0.4,
+            "intense": 0.11,
+            "dark": 0.11,
+            "exciting": 0.04,
+            "hopeful": 0.03
         }
     },
     "unrequited_love": {
@@ -10613,10 +10836,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.6,
         "moodWeights": {
-            "romantic": 0.61,
+            "romantic": 0.52,
             "emotional": 1,
-            "happy": 0.16,
-            "tragic": 0.48
+            "happy": 0.12,
+            "tragic": 0.46,
+            "mysterious": 0.09,
+            "dark": 0.09
         }
     },
     "workplace_romance": {
@@ -10671,14 +10896,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "romantic": 1,
-            "emotional": 0.88,
-            "happy": 0.28,
-            "relaxing": 0.23,
-            "funny": 0.23,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "romantic": 0.74,
+            "emotional": 1,
+            "happy": 0.32,
+            "funny": 0.3,
+            "tragic": 0.22,
+            "relaxing": 0.1,
+            "dark": 0.02,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "friendship_bond": {
@@ -10732,8 +10958,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "exciting": 0.64,
-            "hopeful": 0.36
+            "emotional": 0.45,
+            "funny": 0.46,
+            "romantic": 0.39,
+            "happy": 0.42,
+            "tragic": 0.14,
+            "exciting": 1,
+            "hopeful": 0.53,
+            "violent": 0.08,
+            "intense": 0.08
         }
     },
     "rival_to_ally": {
@@ -10787,9 +11020,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.44,
-            "hopeful": 0.57,
-            "emotional": 0.22
+            "violent": 0.39,
+            "hopeful": 0.58,
+            "emotional": 0.23,
+            "intense": 0.07
         }
     },
     "betrayal_arc": {
@@ -10847,12 +11081,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.9,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.37,
-            "intense": 0.59,
-            "dark": 0.88,
-            "mysterious": 0.31,
-            "exciting": 0.05,
-            "hopeful": 0.03
+            "tragic": 0.38,
+            "intense": 0.42,
+            "dark": 0.73,
+            "mysterious": 0.32,
+            "romantic": 0.07,
+            "exciting": 0.04,
+            "hopeful": 0.02
         }
     },
     "secret_crush": {
@@ -10906,10 +11141,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.3,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.27,
-            "exciting": 0.08,
-            "hopeful": 0.05
+            "emotional": 0.92,
+            "happy": 0.41,
+            "funny": 0.14,
+            "tragic": 0.13,
+            "intense": 0.1,
+            "dark": 0.09,
+            "exciting": 0.04,
+            "hopeful": 0.03
         }
     },
     "long_distance": {
@@ -10961,10 +11200,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "romantic": 0.6,
+            "romantic": 0.54,
             "emotional": 1,
-            "happy": 0.17,
-            "tragic": 0.49
+            "happy": 0.14,
+            "tragic": 0.48,
+            "mysterious": 0.07,
+            "dark": 0.06
         }
     },
     "toxic_relationship": {
@@ -11021,12 +11262,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "dark": 0.81,
-            "mysterious": 0.4,
+            "dark": 0.91,
+            "mysterious": 0.49,
             "emotional": 1,
-            "tragic": 0.28,
-            "intense": 0.03,
-            "romantic": 0.03
+            "tragic": 0.23,
+            "intense": 0.02,
+            "romantic": 0.02
         }
     },
     "reincarnated_love": {
@@ -11138,8 +11379,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.37,
-            "hopeful": 0.3
+            "violent": 0.26,
+            "hopeful": 0.41,
+            "emotional": 0.06,
+            "intense": 0.06,
+            "funny": 0.18,
+            "happy": 0.17,
+            "romantic": 0.14
         }
     },
     "rival_in_love": {
@@ -11187,9 +11433,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.61,
-            "happy": 0.55,
-            "funny": 0.46
+            "emotional": 0.73,
+            "happy": 0.52,
+            "funny": 0.37,
+            "tragic": 0.09
         }
     },
     "comfort_bond": {
@@ -11246,12 +11493,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "emotional": 0.7,
-            "tragic": 0.42,
-            "romantic": 0.04,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "emotional": 1,
+            "funny": 0.3,
+            "romantic": 0.21,
+            "happy": 0.26,
+            "tragic": 0.48,
+            "exciting": 0.04,
+            "dark": 0.02,
+            "mysterious": 0.01,
+            "intense": 0.01
         }
     },
     "harem_dynamics": {
@@ -11365,13 +11615,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 0.61,
+            "violent": 0.41,
+            "emotional": 1,
+            "tragic": 0.59,
+            "funny": 0.11,
+            "romantic": 0.12,
+            "happy": 0.07,
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "enforced_closeness": {
@@ -11425,11 +11678,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.6,
-            "happy": 0.69,
-            "funny": 0.7,
-            "exciting": 0.08,
-            "hopeful": 0.06
+            "emotional": 0.74,
+            "happy": 0.61,
+            "funny": 0.56,
+            "tragic": 0.09,
+            "exciting": 0.06,
+            "hopeful": 0.04
         }
     },
     "power_imbalance": {
@@ -11483,9 +11737,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.34,
-            "dark": 0.77,
-            "mysterious": 0.39,
+            "tragic": 0.37,
+            "dark": 0.57,
+            "mysterious": 0.42,
+            "exciting": 0.19,
+            "romantic": 0.09,
             "intense": 0.03
         }
     },
@@ -11597,13 +11853,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "exciting": 0.9,
-            "violent": 0.72,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "violent": 0.44,
+            "emotional": 0.78,
+            "tragic": 0.4,
+            "mysterious": 0.2,
+            "romantic": 0.12,
+            "hopeful": 0.18,
+            "intense": 0.1,
+            "dark": 0.04
         }
     },
     "secret_society_romance": {
@@ -11654,12 +11912,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "intense": 0.95,
-            "dark": 0.61,
-            "mysterious": 0.5,
-            "romantic": 0.8,
-            "emotional": 0.48,
-            "happy": 0.24
+            "intense": 0.67,
+            "dark": 0.47,
+            "mysterious": 0.44,
+            "romantic": 1,
+            "emotional": 0.93,
+            "happy": 0.32,
+            "exciting": 0.23,
+            "tragic": 0.14
         }
     },
     "rival_families": {
@@ -11715,13 +11975,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.7,
         "moodWeights": {
-            "romantic": 0.8,
+            "romantic": 0.75,
             "emotional": 1,
             "happy": 0.22,
-            "tragic": 0.34,
-            "dark": 0.04,
-            "mysterious": 0.03,
-            "intense": 0.03
+            "tragic": 0.35,
+            "exciting": 0.16,
+            "mysterious": 0.12,
+            "funny": 0.07,
+            "dark": 0.02,
+            "intense": 0.02
         }
     },
     "social_class_difference": {
@@ -11777,10 +12039,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "romantic": 0.79,
+            "romantic": 0.66,
             "emotional": 1,
-            "happy": 0.2,
-            "tragic": 0.33
+            "happy": 0.17,
+            "tragic": 0.36,
+            "exciting": 0.15,
+            "mysterious": 0.1,
+            "funny": 0.04
         }
     },
     "destined_meeting": {
@@ -11833,7 +12098,7 @@ export const CONCEPT_PROPERTIES = {
             "happy": 0.27,
             "exciting": 0.38,
             "mysterious": 0.32,
-            "hopeful": 0.25
+            "hopeful": 0.15
         }
     },
     "urban_night": {
@@ -11887,11 +12152,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.7,
         "moodWeights": {
-            "intense": 0.85,
-            "dark": 0.55,
-            "mysterious": 0.45,
-            "emotional": 0.54,
-            "tragic": 0.36
+            "intense": 1,
+            "dark": 0.87,
+            "mysterious": 0.63,
+            "emotional": 0.9,
+            "tragic": 0.21,
+            "exciting": 0.61,
+            "hopeful": 0.16
         }
     },
     "cozy_countryside": {
@@ -11950,13 +12217,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "funny": 0.5,
-            "happy": 0.3,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "emotional": 0.07,
-            "romantic": 0.04
+            "emotional": 1,
+            "funny": 0.75,
+            "romantic": 0.24,
+            "happy": 0.52,
+            "tragic": 0.42,
+            "exciting": 0.34,
+            "mysterious": 0.23,
+            "hopeful": 0.21,
+            "intense": 0.1,
+            "dark": 0.11
         }
     },
     "gothic_mansion": {
@@ -12010,11 +12280,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "scary": 1,
-            "dark": 0.86,
-            "violent": 0.4,
-            "mysterious": 0.85,
-            "intense": 0.45
+            "scary": 0.96,
+            "dark": 1,
+            "violent": 0.34,
+            "mysterious": 0.96,
+            "intense": 0.51,
+            "romantic": 0.34,
+            "emotional": 0.27,
+            "happy": 0.14
         }
     },
     "steampunk_world": {
@@ -12068,11 +12341,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.48,
-            "mysterious": 0.44,
-            "hopeful": 0.32,
-            "dark": 0.06,
-            "intense": 0.04
+            "exciting": 1,
+            "mysterious": 0.94,
+            "hopeful": 0.46,
+            "dark": 0.37,
+            "intense": 0.39,
+            "violent": 0.13
         }
     },
     "post_apocalyptic_ruins": {
@@ -12125,12 +12399,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "intense": 0.77,
-            "dark": 0.47,
-            "scary": 0.32,
-            "mysterious": 0.05
+            "exciting": 1,
+            "violent": 0.43,
+            "mysterious": 0.25,
+            "dark": 0.68,
+            "intense": 0.79,
+            "scary": 0.15,
+            "emotional": 0.24,
+            "hopeful": 0.15
         }
     },
     "underground_world": {
@@ -12185,11 +12461,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.33,
-            "hopeful": 0.61,
-            "intense": 0.37,
-            "dark": 0.21,
-            "scary": 0.17
+            "mysterious": 0.32,
+            "hopeful": 0.58,
+            "intense": 0.24,
+            "dark": 0.13,
+            "scary": 0.11
         }
     },
     "high_fantasy_kingdom": {
@@ -12243,8 +12519,11 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.45,
-            "hopeful": 0.61
+            "mysterious": 0.49,
+            "hopeful": 0.55,
+            "emotional": 0.37,
+            "tragic": 0.15,
+            "romantic": 0.12
         }
     },
     "isolated_mountain": {
@@ -12298,13 +12577,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.5,
         "moodWeights": {
-            "exciting": 0.72,
-            "hopeful": 0.4,
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "exciting": 1,
+            "hopeful": 0.54,
+            "emotional": 0.77,
+            "tragic": 0.35,
+            "intense": 0.3,
+            "dark": 0.29,
+            "mysterious": 0.02
         }
     },
     "sea_faring": {
@@ -12360,11 +12639,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "exciting": 1,
-            "hopeful": 0.33,
-            "violent": 0.33,
-            "intense": 0.25,
-            "dark": 0.14,
-            "scary": 0.11
+            "hopeful": 0.39,
+            "violent": 0.23,
+            "intense": 0.18,
+            "dark": 0.1,
+            "scary": 0.08,
+            "mysterious": 0.09
         }
     },
     "desert_wasteland": {
@@ -12419,12 +12699,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.8,
         "moodWeights": {
             "exciting": 1,
-            "hopeful": 0.3,
-            "violent": 0.37,
-            "intense": 0.46,
-            "dark": 0.28,
-            "scary": 0.19,
-            "mysterious": 0.03
+            "hopeful": 0.35,
+            "violent": 0.27,
+            "intense": 0.59,
+            "dark": 0.45,
+            "scary": 0.14,
+            "emotional": 0.22,
+            "mysterious": 0.02
         }
     },
     "winter_tundra": {
@@ -12479,12 +12760,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.8,
         "moodWeights": {
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "intense": 0.69,
-            "dark": 0.42,
-            "scary": 0.29,
-            "mysterious": 0.04
+            "intense": 1,
+            "emotional": 0.8,
+            "dark": 0.7,
+            "tragic": 0.37,
+            "scary": 0.3,
+            "exciting": 0.31,
+            "hopeful": 0.15,
+            "mysterious": 0.02
         }
     },
     "space_colony": {
@@ -12537,11 +12820,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "emotional": 0.54,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.69,
+            "dark": 0.54,
+            "intense": 0.33,
+            "violent": 0.31,
+            "emotional": 0.63,
+            "tragic": 0.16,
+            "romantic": 0.14
         }
     },
     "tropical_paradise": {
@@ -12599,12 +12885,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "funny": 0.7,
-            "happy": 0.42,
-            "exciting": 0.07,
-            "hopeful": 0.05,
-            "romantic": 0.07,
-            "emotional": 0.05
+            "emotional": 0.89,
+            "funny": 1,
+            "romantic": 0.64,
+            "happy": 0.84,
+            "tragic": 0.35,
+            "exciting": 0.5,
+            "hopeful": 0.19
         }
     },
     "dense_forest": {
@@ -12660,10 +12947,10 @@ export const CONCEPT_PROPERTIES = {
         "moodWeights": {
             "exciting": 1,
             "hopeful": 0.6,
-            "mysterious": 0.34,
-            "intense": 0.42,
-            "dark": 0.26,
-            "scary": 0.17
+            "mysterious": 0.45,
+            "intense": 0.34,
+            "dark": 0.25,
+            "scary": 0.1
         }
     },
     "dystopian_city": {
@@ -12716,11 +13003,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "exciting": 0.7,
-            "violent": 0.56,
-            "dark": 0.07,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "exciting": 1,
+            "mysterious": 0.56,
+            "dark": 0.52,
+            "intense": 0.17,
+            "violent": 0.5,
+            "emotional": 0.5,
+            "tragic": 0.11,
+            "romantic": 0.08
         }
     },
     "floating_island": {
@@ -12774,8 +13064,8 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "mysterious": 0.43,
-            "hopeful": 0.61
+            "mysterious": 0.39,
+            "hopeful": 0.58
         }
     },
     "suburban_neighborhood": {
@@ -12832,12 +13122,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.2,
         "moodWeights": {
-            "emotional": 0.61,
-            "tragic": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
+            "emotional": 1,
+            "funny": 0.19,
+            "romantic": 0.36,
+            "happy": 0.24,
+            "tragic": 0.44,
+            "exciting": 0.07,
+            "dark": 0.02,
+            "mysterious": 0.01,
+            "intense": 0.01
         }
     },
     "war_zone": {
@@ -12891,13 +13184,14 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.9,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.8,
-            "emotional": 0.72,
-            "tragic": 0.48,
-            "intense": 0.56,
-            "dark": 0.35,
-            "scary": 0.22,
-            "mysterious": 0.05
+            "violent": 0.66,
+            "emotional": 0.63,
+            "tragic": 0.27,
+            "mysterious": 0.2,
+            "romantic": 0.15,
+            "intense": 0.31,
+            "dark": 0.2,
+            "scary": 0.12
         }
     },
     "haunted_asylum": {
@@ -12950,12 +13244,12 @@ export const CONCEPT_PROPERTIES = {
         "tone": "negative",
         "intensity": 0.9,
         "moodWeights": {
-            "scary": 0.59,
+            "scary": 0.49,
             "dark": 1,
-            "violent": 0.24,
-            "mysterious": 0.41,
-            "emotional": 0.27,
-            "intense": 0.03
+            "violent": 0.18,
+            "mysterious": 0.6,
+            "emotional": 0.36,
+            "intense": 0.07
         }
     },
     "underwater_city": {
@@ -13008,11 +13302,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.48,
-            "mysterious": 0.44,
-            "hopeful": 0.32,
-            "dark": 0.06,
-            "intense": 0.04
+            "exciting": 1,
+            "mysterious": 0.48,
+            "dark": 0.41,
+            "intense": 0.37,
+            "violent": 0.13,
+            "hopeful": 0.38,
+            "emotional": 0.18
         }
     },
     "rags_to_riches": {
@@ -13070,12 +13366,15 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.45,
-            "hopeful": 0.52,
-            "exciting": 0.08,
-            "dark": 0.05,
-            "mysterious": 0.03,
-            "intense": 0.03
+            "tragic": 0.41,
+            "funny": 0.16,
+            "romantic": 0.23,
+            "happy": 0.16,
+            "hopeful": 0.26,
+            "exciting": 0.04,
+            "dark": 0.02,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "corporate_hierarchy": {
@@ -13133,13 +13432,15 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.49,
-            "relaxing": 0.2,
-            "funny": 0.2,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
+            "tragic": 0.45,
+            "funny": 0.18,
+            "romantic": 0.22,
+            "happy": 0.09,
+            "exciting": 0.23,
+            "mysterious": 0.18,
+            "relaxing": 0.09,
+            "dark": 0.03,
+            "intense": 0.02
         }
     },
     "feudal_system": {
@@ -13192,12 +13493,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "nostalgic": 0.54,
+            "nostalgic": 0.23,
             "emotional": 1,
-            "tragic": 0.43,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "tragic": 0.44,
+            "exciting": 0.3,
+            "mysterious": 0.24,
+            "romantic": 0.19,
+            "dark": 0.02,
+            "intense": 0.02
         }
     },
     "new_money": {
@@ -13248,11 +13551,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "emotional": 0.89,
-            "tragic": 0.54,
-            "funny": 0.6,
-            "happy": 0.36,
-            "romantic": 0.05
+            "emotional": 1,
+            "tragic": 0.5,
+            "funny": 0.37,
+            "happy": 0.25,
+            "exciting": 0.21,
+            "mysterious": 0.15,
+            "romantic": 0.26
         }
     },
     "social_outcast": {
@@ -13307,11 +13612,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.36,
-            "dark": 0.47,
-            "mysterious": 0.37,
-            "hopeful": 0.3,
-            "intense": 0.04
+            "tragic": 0.26,
+            "dark": 0.66,
+            "mysterious": 0.26,
+            "hopeful": 0.39,
+            "exciting": 0.35,
+            "intense": 0.36
         }
     },
     "aristocratic_decline": {
@@ -13369,12 +13675,13 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.6,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.48,
-            "nostalgic": 0.34,
-            "dark": 0.05,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.03
+            "tragic": 0.45,
+            "nostalgic": 0.16,
+            "romantic": 0.17,
+            "exciting": 0.09,
+            "mysterious": 0.18,
+            "dark": 0.1,
+            "intense": 0.02
         }
     },
     "commoner_hero": {
@@ -13428,9 +13735,10 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.39,
+            "violent": 0.35,
             "hopeful": 0.6,
-            "emotional": 0.22
+            "emotional": 0.23,
+            "intense": 0.11
         }
     },
     "meritocracy": {
@@ -13483,12 +13791,14 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.7,
         "moodWeights": {
-            "exciting": 0.8,
-            "violent": 0.64,
-            "dark": 0.7,
-            "mysterious": 0.54,
-            "emotional": 0.35,
-            "intense": 0.05
+            "exciting": 1,
+            "violent": 0.57,
+            "dark": 0.51,
+            "mysterious": 0.45,
+            "emotional": 0.61,
+            "tragic": 0.14,
+            "romantic": 0.11,
+            "intense": 0.12
         }
     },
     "secret_wealth": {
@@ -13544,9 +13854,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "romantic": 1,
-            "emotional": 0.66,
-            "happy": 0.6,
-            "funny": 0.57
+            "emotional": 0.83,
+            "happy": 0.52,
+            "funny": 0.37,
+            "intense": 0.1,
+            "dark": 0.1,
+            "tragic": 0.08
         }
     },
     "bureaucracy": {
@@ -13600,11 +13913,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.4,
         "moodWeights": {
-            "emotional": 0.81,
-            "tragic": 0.54,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "emotional": 1,
+            "tragic": 0.48,
+            "funny": 0.14,
+            "romantic": 0.31,
+            "happy": 0.14,
+            "exciting": 0.21,
+            "mysterious": 0.16,
+            "dark": 0.02,
+            "intense": 0.02
         }
     },
     "manga_artist_life": {
@@ -13663,13 +13980,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "funny": 0.6,
+            "emotional": 1,
+            "funny": 0.46,
+            "romantic": 0.32,
             "happy": 0.36,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05,
-            "emotional": 0.07,
-            "romantic": 0.04
+            "tragic": 0.39,
+            "hopeful": 0.07,
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "fourth_wall_break": {
@@ -13778,13 +14097,16 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.4,
         "moodWeights": {
-            "emotional": 0.78,
-            "tragic": 0.36,
-            "relaxing": 0.24,
-            "funny": 0.24,
-            "dark": 0.06,
-            "mysterious": 0.05,
-            "intense": 0.05
+            "emotional": 1,
+            "funny": 0.26,
+            "romantic": 0.16,
+            "happy": 0.15,
+            "tragic": 0.43,
+            "hopeful": 0.06,
+            "relaxing": 0.1,
+            "dark": 0.03,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "parody_story": {
@@ -13892,12 +14214,15 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.5,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.55,
-            "relaxing": 0.18,
-            "funny": 0.18,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "tragic": 0.47,
+            "funny": 0.19,
+            "romantic": 0.21,
+            "happy": 0.11,
+            "exciting": 0.21,
+            "mysterious": 0.17,
+            "relaxing": 0.08,
+            "dark": 0.03,
+            "intense": 0.02
         }
     },
     "writer_block": {
@@ -13955,11 +14280,12 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.7,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.43,
-            "dark": 0.56,
-            "mysterious": 0.44,
-            "romantic": 0.03,
-            "intense": 0.03
+            "tragic": 0.37,
+            "dark": 0.53,
+            "mysterious": 0.38,
+            "hopeful": 0.07,
+            "romantic": 0.02,
+            "intense": 0.02
         }
     },
     "fan_culture": {
@@ -14018,12 +14344,13 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "funny": 0.7,
-            "happy": 0.42,
-            "exciting": 0.08,
-            "hopeful": 0.06,
-            "romantic": 0.08,
-            "emotional": 0.06
+            "emotional": 0.9,
+            "funny": 1,
+            "romantic": 0.54,
+            "happy": 0.78,
+            "tragic": 0.35,
+            "hopeful": 0.27,
+            "exciting": 0.45
         }
     },
     "as_if_story": {
@@ -14076,11 +14403,15 @@ export const CONCEPT_PROPERTIES = {
         "tone": "mixed",
         "intensity": 0.6,
         "moodWeights": {
-            "exciting": 0.42,
-            "mysterious": 0.4,
-            "hopeful": 0.28,
-            "dark": 0.06,
-            "intense": 0.05
+            "exciting": 0.96,
+            "mysterious": 1,
+            "dark": 0.6,
+            "intense": 0.36,
+            "violent": 0.28,
+            "hopeful": 0.17,
+            "emotional": 0.29,
+            "tragic": 0.12,
+            "romantic": 0.07
         }
     },
     "editor_perspective": {
@@ -14137,13 +14468,15 @@ export const CONCEPT_PROPERTIES = {
         "intensity": 0.4,
         "moodWeights": {
             "emotional": 1,
-            "tragic": 0.47,
-            "relaxing": 0.21,
+            "tragic": 0.44,
             "funny": 0.21,
-            "romantic": 0.05,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04
+            "romantic": 0.14,
+            "happy": 0.11,
+            "hopeful": 0.06,
+            "relaxing": 0.09,
+            "dark": 0.02,
+            "mysterious": 0.02,
+            "intense": 0.02
         }
     },
     "creative_collaboration": {
@@ -14199,12 +14532,17 @@ export const CONCEPT_PROPERTIES = {
         "tone": "positive",
         "intensity": 0.3,
         "moodWeights": {
-            "emotional": 0.7,
-            "tragic": 0.42,
-            "dark": 0.06,
-            "mysterious": 0.04,
-            "intense": 0.04,
-            "romantic": 0.04
+            "emotional": 1,
+            "funny": 0.14,
+            "romantic": 0.16,
+            "happy": 0.13,
+            "tragic": 0.44,
+            "hopeful": 0.24,
+            "exciting": 0.28,
+            "violent": 0.07,
+            "intense": 0.08,
+            "dark": 0.02,
+            "mysterious": 0.02
         }
     },
     "cyberpunk": {
@@ -14254,12 +14592,13 @@ export const CONCEPT_PROPERTIES = {
         ],
         "moodWeights": {
             "exciting": 1,
-            "violent": 0.47,
-            "emotional": 0.74,
-            "tragic": 0.31,
-            "dark": 0.69,
-            "mysterious": 0.84,
-            "intense": 0.31
+            "violent": 0.37,
+            "emotional": 0.83,
+            "tragic": 0.13,
+            "dark": 0.63,
+            "mysterious": 0.9,
+            "intense": 0.28,
+            "romantic": 0.1
         }
     },
     "necromancer": {
@@ -14316,14 +14655,15 @@ export const CONCEPT_PROPERTIES = {
             }
         ],
         "moodWeights": {
-            "exciting": 0.38,
-            "violent": 0.45,
-            "mysterious": 0.72,
-            "intense": 0.52,
-            "dark": 1,
-            "scary": 0.75,
-            "romantic": 0.14,
-            "emotional": 0.18
+            "exciting": 0.8,
+            "violent": 0.42,
+            "mysterious": 1,
+            "intense": 0.47,
+            "dark": 0.93,
+            "scary": 0.7,
+            "romantic": 0.37,
+            "emotional": 0.42,
+            "happy": 0.08
         }
     },
     "​time_loop": {
@@ -14363,11 +14703,13 @@ export const CONCEPT_PROPERTIES = {
             }
         ],
         "moodWeights": {
-            "mysterious": 0.21,
+            "mysterious": 0.31,
             "exciting": 1,
-            "intense": 0.13,
-            "violent": 0.38,
-            "hopeful": 0.17
+            "intense": 0.14,
+            "violent": 0.32,
+            "hopeful": 0.11,
+            "emotional": 0.18,
+            "romantic": 0.13
         }
     }
 };
