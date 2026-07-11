@@ -1,0 +1,36 @@
+name: Run Job 3.1 - Harvest Split
+
+on:
+  workflow_dispatch: {}   # manual "Run workflow" button, no schedule/push trigger
+
+jobs:
+  harvest-split:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: js/parser/dictionary/vectorEngine
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Job 3.1
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node job3_1_harvestSplit.cjs job2_taxonomy_input.json
+
+      - name: Upload outputs as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: job3-1-outputs
+          path: |
+            js/parser/dictionary/vectorEngine/queryable.json
+            js/parser/dictionary/vectorEngine/phraseOnly.json
+            js/parser/dictionary/vectorEngine/newTagsQueue.json
+            js/parser/dictionary/vectorEngine/job3_1_progress.json
+          if-no-files-found: warn
