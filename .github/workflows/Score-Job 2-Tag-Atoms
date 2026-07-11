@@ -1,0 +1,60 @@
+name: Score Job 2 Tag/Theme Atoms  (worker + judge)
+on:
+  workflow_dispatch:
+    inputs:
+      taxonomy_path:
+        description: 'Path (in-repo) to the taxonomy JSON file to score'
+        required: true
+        default: 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json'
+      sample_rate:
+        description: 'Fraction of items the judge re-scores (0-1)'
+        required: false
+        default: '0.15'
+      gemini_rpm:
+        description: 'Gemini requests/minute to pace the worker at (free tier ~10-15; raise once billing is enabled)'
+        required: false
+        default: '10'
+  # Manual trigger only — same reasoning as every other job in this
+  # family (backfill-moodweights.yml etc.): this costs real API calls and
+  # real money, it should never auto-fire on push.
+
+permissions:
+  contents: write
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - run: npm install
+
+      - name: Worker pass (Google Gemini scores every item)
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_RPM: ${{ github.event.inputs.gemini_rpm }}
+        run: node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js "${{ github.event.inputs.taxonomy_path }}"
+
+      - name: Judge pass (Cerebras QCs a sample)
+        env:
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+        run: node js/parser/dictionary/vectorEngine/judgeTagAtoms.js "${{ github.event.inputs.sample_rate }}"
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+
+          git add js/parser/dictionary/vectorEngine/job2_scored_raw.json \
+                  js/parser/dictionary/vectorEngine/job2_final.json \
+                  js/parser/dictionary/vectorEngine/job2_review_queue.json
+
+          git commit -m "Job 2: score tag/theme atoms (worker: Gemini, judge: Cerebras)" || echo "No changes to commit"
+          git push
