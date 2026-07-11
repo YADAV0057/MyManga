@@ -202,12 +202,12 @@ static async fetchAliases(tag) {
     }
 
     static async fetchFromANN(tag) {
-        // ANN search logic implemented here
-        try {
-            const res = await axios.get(`https://www.animenewsnetwork.com/encyclopedia/api.xml?title=~${encodeURIComponent(tag)}`);
-            // XML parsing logic would go here, returning a similar structure:
-            return { genres: [], themes: [] };
-        } catch (e) { return { genres: [], themes: [] }; }
+    // ANN search logic implemented here
+    try {
+        const res = await axios.get(...);
+        // XML parsing logic would go here, returning a similar structure:
+        return { genres: [], themes: [] };
+    } catch (e) { return { genres: [], themes: [] }; }
     }
 }
 
