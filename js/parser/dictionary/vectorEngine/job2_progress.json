@@ -1,0 +1,93 @@
+{
+  "scoredNames": [
+    "Abrasive Protagonist",
+    "Adopted Child",
+    "Adventurer",
+    "Age Gap",
+    "Alchemist",
+    "Alien",
+    "Alter Ego",
+    "Amnesiac",
+    "Android",
+    "Angel",
+    "Animal Companion",
+    "Anti-Hero",
+    "Anti-Villain",
+    "Apothecary",
+    "Archer",
+    "Aristocrat",
+    "Artificial Intelligence",
+    "Assassin",
+    "Athlete",
+    "Author",
+    "Avatar",
+    "Bad Boy",
+    "Badass Normal",
+    "Baker",
+    "Bandit",
+    "Barbarian",
+    "Bard",
+    "Baron",
+    "Bartender",
+    "Beast",
+    "Beastkin",
+    "Beauty and the Beast",
+    "Beggar",
+    "Berserker",
+    "Betrothed",
+    "Billionaire",
+    "Bipolar",
+    "Bird Girl",
+    "Bird Boy"
+  ],
+  "laneUsage": {
+    "gemini-2.5-flash": {
+      "date": "2026-07-11",
+      "requestsUsed": 0,
+      "tokensUsed": 0,
+      "disabled": false
+    },
+    "gemini-3.5-flash": {
+      "date": "2026-07-11",
+      "requestsUsed": 0,
+      "tokensUsed": 0,
+      "disabled": true
+    },
+    "gemini-2.5-flash-gemini-acct": {
+      "date": "2026-07-11",
+      "requestsUsed": 0,
+      "tokensUsed": 0,
+      "disabled": false
+    },
+    "gemini-3.5-flash-gemini-acct": {
+      "date": "2026-07-11",
+      "requestsUsed": 0,
+      "tokensUsed": 0,
+      "disabled": false
+    },
+    "gemini-2.5-flash-monkey-acct": {
+      "date": "2026-07-11",
+      "requestsUsed": 0,
+      "tokensUsed": 0,
+      "disabled": false
+    },
+    "gemini-3.5-flash-monkey-acct": {
+      "date": "2026-07-11",
+      "requestsUsed": 0,
+      "tokensUsed": 0,
+      "disabled": false
+    },
+    "github-models": {
+      "date": "2026-07-11",
+      "requestsUsed": 1,
+      "tokensUsed": 1686,
+      "disabled": false
+    },
+    "groq": {
+      "date": "2026-07-11",
+      "requestsUsed": 1,
+      "tokensUsed": 4154,
+      "disabled": false
+    }
+  }
+}
