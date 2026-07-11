@@ -30,9 +30,9 @@ jobs:
 
       - name: Run Job 2 (tag/theme atom scoring)
         env:
-          JOB2_GEMINI_KEYS: ${{ secrets.JOB2_GEMINI_KEYS }}
-          JOB2_OPENROUTER_KEYS: ${{ secrets.JOB2_OPENROUTER_KEYS }}
-          JOB2_BAZAARLINK_KEYS: ${{ secrets.JOB2_BAZAARLINK_KEYS }}
+          JOB2_GEMINI_KEYS: ${{ secrets.GEMINI_1 }},${{ secrets.GEMINI_2 }},${{ secrets.GEMINI_3 }}
+          JOB2_OPENROUTER_KEYS: ${{ secrets.OPEN_ROUTER_1 }},${{ secrets.OPEN_ROUTER_2 }}
+          JOB2_BAZAARLINK_KEYS: ${{ secrets.BAZAAR_1 }}
         run: node js/parser/dictionary/vectorEngine/job2Tags.cjs "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
 
       - name: Commit Job 2 output
@@ -61,9 +61,9 @@ jobs:
 
       - name: Run Job 3 (phrase generation)
         env:
-          JOB3_GEMINI_KEYS: ${{ secrets.JOB3_GEMINI_KEYS }}
-          JOB3_OPENROUTER_KEYS: ${{ secrets.JOB3_OPENROUTER_KEYS }}
-          JOB3_BAZAARLINK_KEYS: ${{ secrets.JOB3_BAZAARLINK_KEYS }}
+          JOB3_GEMINI_KEYS: ${{ secrets.GEMINI_4 }},${{ secrets.GEMINI_5 }}
+          JOB3_OPENROUTER_KEYS: ${{ secrets.OPEN_ROUTER_3 }},${{ secrets.OPEN_ROUTER_4 }}
+          JOB3_BAZAARLINK_KEYS: ${{ secrets.BAZAAR_2 }}
         run: node js/parser/dictionary/vectorEngine/job3Phrases.cjs "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
 
       - name: Commit Job 3 output
