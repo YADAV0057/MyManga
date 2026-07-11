@@ -96,7 +96,16 @@ export class HarvesterAPI {
             }
 
             return {
-                id: tag,
+                // FIX: was `id: tag` (the raw, underscored queue entry, e.g.
+                // "noble_academy"). dictionary.js documents concept.id as the
+                // field used for display text ("Known {concept.id} pick",
+                // etc.), and every other output here (aliases, console log,
+                // API queries) already uses cleanTag. Using the raw tag meant
+                // any underscored queue entry would display with literal
+                // underscores forever, even though matching/search all worked
+                // fine off the cleaned form. Now consistent with the rest of
+                // this function.
+                id: cleanTag,
                 metadata: {
                     sources: ["ANN", "AniList", "Jikan", "Datamuse"],
                     generatedAt: new Date().toISOString(),
@@ -202,13 +211,11 @@ static async fetchAliases(tag) {
     }
 
     static async fetchFromANN(tag) {
-    // ANN search logic implemented here
-    try {
-        const res = await axios.get(...);
-        // XML parsing logic would go here, returning a similar structure:
-        return { genres: [], themes: [] };
-    } catch (e) { return { genres: [], themes: [] }; }
+        // ANN search logic implemented here
+        try {
+            const res = await axios.get(`https://www.animenewsnetwork.com/encyclopedia/api.xml?title=~${encodeURIComponent(tag)}`);
+            // XML parsing logic would go here, returning a similar structure:
+            return { genres: [], themes: [] };
+        } catch (e) { return { genres: [], themes: [] }; }
     }
 }
-
-
