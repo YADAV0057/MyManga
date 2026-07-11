@@ -18,6 +18,7 @@
 // dictionary has no matching entries) — so scoring never regresses to
 // NEUTRAL just because the cache hasn't warmed up for that title.
 import { cosineSimilarity, getOrBuildProfile, profileKey } from '../mangaProfiles.js';
+import { SYNONYM_MAP } from './dictionary.js';
 
 const WEIGHTS = {
     mood: 0.40,
@@ -69,17 +70,41 @@ function matchedConcepts(intent, conceptDictionary) {
  * themes. This resolves each boost id through the dictionary and returns
  * the union of whatever genre/theme names those sibling concepts have —
  * a proxy signal for a concept that has none of its own.
- * @returns {Set<string>}
+ *
+ * Resolution tries two paths per boost id:
+ *   1. Direct match — the boost string IS some concept's own id.
+ *   2. Alias match, via SYNONYM_MAP (dictionary.js) — the boost string is
+ *      an ALIAS of a differently-named concept (e.g. "antihero" might not
+ *      be any concept's own id, but could be an alias of a concept whose
+ *      id is "morally-grey-protagonist"). Without this fallback, boosts
+ *      only ever resolved against exact concept keys, silently missing
+ *      every alias-only match and understating how much real genre/theme
+ *      signal a concept's boosts actually carry.
+ *
+ * Also reports how many of the concept's boosts actually resolved to
+ * something, vs how many exist total — used upstream to discount the
+ * conceptSignal score's confidence when resolution coverage is sparse
+ * (a concept where 4/5 boosts resolved is a stronger bet than one where
+ * only 1/5 did, even if the resulting hit-rate looks identical).
+ *
+ * @returns {{names: Set<string>, resolved: number, total: number}}
  */
 function resolveBoostGenres(concept, conceptDictionary) {
     const names = new Set();
-    (concept.boosts || []).forEach(boostId => {
-        const boostConcept = conceptDictionary?.[String(boostId).toLowerCase()];
+    const boosts = concept.boosts || [];
+    let resolved = 0;
+    boosts.forEach(boostId => {
+        const key = String(boostId).toLowerCase();
+        let boostConcept = conceptDictionary?.[key];
+        if (!boostConcept && SYNONYM_MAP[key]) {
+            boostConcept = conceptDictionary?.[SYNONYM_MAP[key]];
+        }
         if (!boostConcept) return;
+        resolved++;
         (boostConcept.genres || []).forEach(g => g?.name && names.add(g.name));
         (boostConcept.themes || []).forEach(t => t?.name && names.add(t.name));
     });
-    return names;
+    return { names, resolved, total: boosts.length };
 }
 
 const NEUTRAL = 0.6; // score used when a signal has nothing to compare against
@@ -283,10 +308,20 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
     // moodWeights is scored by the mood component above as before, so this
     // never double-counts or changes existing scoring.
     let conceptSignalScore = null;
+    // Discount factor applied to WEIGHTS.conceptSignal based on how much of
+    // the matched concept(s)' `boosts` lists actually resolved to sibling
+    // concepts with real genre/theme data (see resolveBoostGenres). Floored
+    // at 0.5 rather than going to 0 when nothing resolves, since the
+    // `excludes` half of the signal is always fully resolvable on its own
+    // and shouldn't be zeroed out just because boosts happened to be sparse
+    // or unresolvable. Starts at 1 (no discount) when there are no boosts
+    // at all to be incomplete about.
+    let conceptSignalWeight = WEIGHTS.conceptSignal;
     const moodlessMatches = matchedConcepts(intent, conceptDictionary)
         .filter(c => !c.moodWeights || Object.keys(c.moodWeights).length === 0);
     if (moodlessMatches.length > 0) {
         let hits = 0, total = 0;
+        let boostsResolved = 0, boostsTotal = 0;
         moodlessMatches.forEach(concept => {
             // Own excludes — same polarity as the plan-level excludedGenres/
             // excludedThemes check above: absence of an excluded name is
@@ -295,14 +330,22 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
                 total++;
                 if (!itemHas.has(ex.toLowerCase())) hits++;
             });
-            // Boosts resolved through sibling concepts' real genre/theme data.
-            resolveBoostGenres(concept, conceptDictionary).forEach(name => {
+            // Boosts resolved through sibling concepts' real genre/theme data
+            // (direct id match, or alias match via SYNONYM_MAP).
+            const { names, resolved, total: boostTotal } = resolveBoostGenres(concept, conceptDictionary);
+            boostsResolved += resolved;
+            boostsTotal += boostTotal;
+            names.forEach(name => {
                 total++;
                 if (itemHas.has(name.toLowerCase())) hits++;
             });
         });
         if (total > 0) {
             conceptSignalScore = hits / total;
+            if (boostsTotal > 0) {
+                const completeness = boostsResolved / boostsTotal;
+                conceptSignalWeight = WEIGHTS.conceptSignal * (0.5 + 0.5 * completeness);
+            }
             if (conceptSignalScore >= 0.7) {
                 const label = moodlessMatches[0].id || intent.moods?.[0];
                 reasons.push({ ok: true, text: `Fits "${label}" trope signature` });
@@ -355,7 +398,7 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
         { score: popularityScore, weight: WEIGHTS.popularity },
         { score: ratingScore, weight: WEIGHTS.rating },
         { score: entityScore, weight: WEIGHTS.entity },
-        { score: conceptSignalScore, weight: WEIGHTS.conceptSignal }
+        { score: conceptSignalScore, weight: conceptSignalWeight }
     ].filter(c => c.score !== null && c.score !== undefined);
 
     const weightSum = components.reduce((sum, c) => sum + c.weight, 0);
@@ -435,3 +478,6 @@ export async function scoreResults(unifiedResults, intent, plan, conceptDictiona
     scored.sort((a, b) => b.matchScore - a.matchScore);
     return scored;
 }
+
+
+
