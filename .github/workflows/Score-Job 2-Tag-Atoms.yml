@@ -44,7 +44,7 @@ jobs:
           MONKEY_ACCT_KEY: ${{ secrets.MONKEY }}
           GITHUB_MODELS_KEY: ${{ secrets.GIT_HUB_KEY }}
           GROQ_API_KEY: ${{ secrets.GORQ }}
-        run: node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
+        run: node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.cjs "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
 
       - name: Judge pass (Cerebras QCs a sample)
         if: github.event.inputs.run_judge == 'true'
