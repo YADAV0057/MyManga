@@ -7,12 +7,18 @@ on:
         required: true
         default: 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json'
       sample_rate:
-        description: 'Fraction of items the judge re-scores (0-1)'
+        description: 'Fraction of items the judge re-scores (0-1) — bumped default since results now come from more than one model family'
         required: false
-        default: '0.15'
-# Manual trigger only — same reasoning as every other job in this
-# family (backfill-moodweights.yml etc.): this costs real API calls and
-# real money, it should never auto-fire on push.
+        default: '0.25'
+      run_judge:
+        description: 'Run the judge pass this trigger? (set true only once worker is fully done)'
+        required: false
+        default: 'false'
+  schedule:
+    # Runs daily after the free-tier RPD quotas reset (Google resets at
+    # midnight Pacific). Each lane tracks and self-caps its own daily
+    # budget — see scoreTagAtoms.worker.js — so this never over-runs.
+    - cron: '5 8 * * *'
 
 permissions:
   contents: write
@@ -31,29 +37,20 @@ jobs:
 
       - run: npm install
 
-      - name: Worker pass (4-lane round robin — GitHub Models, Groq, 2x OpenRouter)
+      - name: Worker pass (multi-lane — Gemini, GitHub Models, Groq, OpenRouter)
         env:
-          # Lane 1: GitHub Models. Requires a fine-grained PAT with the
-          # models:read scope — a plain classic token will 403. GitHub
-          # Models retires 2026-07-30; fine for this run, don't depend on
-          # it past that date.
-          GIT_HUB_KEY: ${{ secrets.GIT_HUB_KEY }}
-          # Lane 2: Groq. Secret name kept as GORQ (typo, do not rename
-          # without also updating scoreTagAtoms.worker.js).
-          GORQ: ${{ secrets.GORQ }}
-          # Lane 3: OpenRouter account #1.
-          OPEN_ROUTER: ${{ secrets.OPEN_ROUTER }}
-          # Lane 4: OpenRouter account #2. Secret name kept as
-          # YOUR_SECERET_NAME (naming accident, GitHub secrets can't be
-          # renamed in place — do not rename without also updating
-          # scoreTagAtoms.worker.js).
-          YOUR_SECERET_NAME: ${{ secrets.YOUR_SECERET_NAME }}
-        run: node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js "${{ github.event.inputs.taxonomy_path }}"
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_API_KEY_ALT: ${{ secrets.GOOGLE_API_KEY_ALT }}
+          GITHUB_MODELS_KEY: ${{ secrets.GIT_HUB_KEY }}
+          GROQ_API_KEY: ${{ secrets.GORQ }}
+          OPENROUTER_API_KEY: ${{ secrets.OPEN_ROUTER }}
+        run: node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
 
       - name: Judge pass (Cerebras QCs a sample)
+        if: github.event.inputs.run_judge == 'true'
         env:
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
-        run: node js/parser/dictionary/vectorEngine/judgeTagAtoms.js "${{ github.event.inputs.sample_rate }}"
+        run: node js/parser/dictionary/vectorEngine/judgeTagAtoms.js "${{ github.event.inputs.sample_rate || '0.25' }}"
 
       - name: Commit results
         if: always()
@@ -62,8 +59,9 @@ jobs:
           git config --global user.email 'action@github.com'
 
           git add js/parser/dictionary/vectorEngine/job2_scored_raw.json \
+                  js/parser/dictionary/vectorEngine/job2_progress.json \
                   js/parser/dictionary/vectorEngine/job2_final.json \
                   js/parser/dictionary/vectorEngine/job2_review_queue.json
 
-          git commit -m "Job 2: score tag/theme atoms (worker: GitHub Models+Groq+OpenRouter x2, judge: Cerebras)" || echo "No changes to commit"
+          git commit -m "Job 2: multi-lane score run ($(date -u +%Y-%m-%dT%H:%M:%SZ))" || echo "No changes to commit"
           git push
