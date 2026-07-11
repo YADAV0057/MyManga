@@ -1,1 +1,4 @@
+*firebase-adminsdk*.json
 firebase-key.json
+secrets/
+.env
