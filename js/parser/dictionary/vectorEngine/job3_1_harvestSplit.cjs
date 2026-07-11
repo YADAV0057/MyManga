@@ -34,6 +34,17 @@
  *                               warning, it does not fail the run.
  */
 
+const admin = require('firebase-admin');
+
+// Local run: point at the downloaded key
+// CI run: build the credential from the FIREBASE_SERVICE_ACCOUNT secret instead
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+  : require('/absolute/path/to/moodmanga-firebase-adminsdk.json');
+
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+const db = admin.firestore();
+
 const fs = require('fs');
 const path = require('path');
 
