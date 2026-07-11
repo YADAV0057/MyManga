@@ -19,7 +19,24 @@
 
 const fs = require('fs');
 const path = require('path');
-const { ATOMS } = require('./atoms.js');
+
+// atoms.js may be written as an ES module (repo's package.json has
+// "type": "module"), which require() can't load even from a .cjs file.
+// Try it, but fall back to a known-good copy rather than crashing —
+// this is the exact 16-atom list confirmed from real job2_scored_raw.json
+// output, so it's safe even if the require path fails.
+let ATOMS;
+try {
+  ATOMS = require('./atoms.js').ATOMS;
+  if (!Array.isArray(ATOMS)) throw new Error('atoms.js did not export ATOMS as an array');
+} catch (err) {
+  console.log(`[Job 2 worker] Could not require('./atoms.js') (${err.message}) — using built-in fallback atom list.`);
+  ATOMS = [
+    'dark', 'emotional', 'exciting', 'funny', 'happy', 'hopeful', 'intense',
+    'mysterious', 'nostalgic', 'relaxing', 'romantic', 'scary', 'tragic',
+    'violent', 'wholesome', 'cognitive_load',
+  ];
+}
 
 const [, , taxonomyPathArg] = process.argv;
 if (!taxonomyPathArg) {
