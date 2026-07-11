@@ -1,0 +1,77 @@
+name: Run Vector Engine — Job 2 + Job 3 (parallel)
+on:
+  workflow_dispatch:
+    inputs:
+      taxonomy_path:
+        description: 'Path (in-repo) to the taxonomy JSON file to score/generate from'
+        required: true
+        default: 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json'
+  # No 'needs:' between the two jobs below — GitHub runs them on separate
+  # runners at the same time. Each draws from its OWN set of API key
+  # secrets, so they never compete for the same account's quota.
+
+permissions:
+  contents: write
+
+jobs:
+  job2-tags:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350   # stays under Actions' hard 6-hour job cap
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - name: Run Job 2 (tag/theme atom scoring)
+        env:
+          JOB2_GEMINI_KEYS: ${{ secrets.JOB2_GEMINI_KEYS }}
+          JOB2_OPENROUTER_KEYS: ${{ secrets.JOB2_OPENROUTER_KEYS }}
+          JOB2_BAZAARLINK_KEYS: ${{ secrets.JOB2_BAZAARLINK_KEYS }}
+        run: node js/parser/dictionary/vectorEngine/job2Tags.cjs "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
+
+      - name: Commit Job 2 output
+        if: always()
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add js/parser/dictionary/vectorEngine/tags.json js/parser/dictionary/vectorEngine/review_queue.json
+          git commit -m "Job 2: tags run ($(date -u +%Y-%m-%dT%H:%M:%SZ))" || echo "No changes to commit"
+          git pull --rebase --autostash || true
+          git push
+
+  job3-phrases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - name: Run Job 3 (phrase generation)
+        env:
+          JOB3_GEMINI_KEYS: ${{ secrets.JOB3_GEMINI_KEYS }}
+          JOB3_OPENROUTER_KEYS: ${{ secrets.JOB3_OPENROUTER_KEYS }}
+          JOB3_BAZAARLINK_KEYS: ${{ secrets.JOB3_BAZAARLINK_KEYS }}
+        run: node js/parser/dictionary/vectorEngine/job3Phrases.cjs "${{ github.event.inputs.taxonomy_path || 'js/parser/dictionary/vectorEngine/job2_taxonomy_input.json' }}"
+
+      - name: Commit Job 3 output
+        if: always()
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add js/parser/dictionary/vectorEngine/phrases.json js/parser/dictionary/vectorEngine/review_queue.json
+          git commit -m "Job 3: phrases run ($(date -u +%Y-%m-%dT%H:%M:%SZ))" || echo "No changes to commit"
+          git pull --rebase --autostash || true
+          git push
