@@ -1,0 +1,2663 @@
+[
+  {
+    "name": "Adopted Child",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 80,
+      "exciting": 30,
+      "funny": 35,
+      "happy": 55,
+      "hopeful": 70,
+      "intense": 45,
+      "mysterious": 40,
+      "nostalgic": 50,
+      "relaxing": 40,
+      "romantic": 20,
+      "scary": 15,
+      "tragic": 55,
+      "violent": 20,
+      "wholesome": 75,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 30,
+      "emotional": 85,
+      "exciting": 50,
+      "funny": 60,
+      "happy": 70,
+      "hopeful": 90,
+      "intense": 40,
+      "mysterious": 35,
+      "nostalgic": 65,
+      "relaxing": 55,
+      "romantic": 45,
+      "scary": 20,
+      "tragic": 55,
+      "violent": 20,
+      "wholesome": 85,
+      "cognitive_load": 50
+    },
+    "disagreements": {
+      "funny": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      },
+      "romantic": {
+        "worker": 20,
+        "judge": 45,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Age Gap",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 65,
+      "exciting": 40,
+      "funny": 45,
+      "happy": 50,
+      "hopeful": 50,
+      "intense": 55,
+      "mysterious": 25,
+      "nostalgic": 35,
+      "relaxing": 35,
+      "romantic": 85,
+      "scary": 15,
+      "tragic": 35,
+      "violent": 10,
+      "wholesome": 50,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 80,
+      "exciting": 60,
+      "funny": 20,
+      "happy": 70,
+      "hopeful": 80,
+      "intense": 70,
+      "mysterious": 20,
+      "nostalgic": 60,
+      "relaxing": 50,
+      "romantic": 90,
+      "scary": 10,
+      "tragic": 40,
+      "violent": 10,
+      "wholesome": 70,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "funny": {
+        "worker": 45,
+        "judge": 20,
+        "diff": 25
+      },
+      "hopeful": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      },
+      "nostalgic": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Alchemist",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 45,
+      "emotional": 45,
+      "exciting": 65,
+      "funny": 35,
+      "happy": 45,
+      "hopeful": 55,
+      "intense": 55,
+      "mysterious": 60,
+      "nostalgic": 30,
+      "relaxing": 40,
+      "romantic": 25,
+      "scary": 35,
+      "tragic": 45,
+      "violent": 40,
+      "wholesome": 45,
+      "cognitive_load": 65
+    },
+    "judgeScores": {
+      "dark": 50,
+      "emotional": 60,
+      "exciting": 70,
+      "funny": 50,
+      "happy": 60,
+      "hopeful": 70,
+      "intense": 70,
+      "mysterious": 80,
+      "nostalgic": 50,
+      "relaxing": 40,
+      "romantic": 50,
+      "scary": 50,
+      "tragic": 50,
+      "violent": 60,
+      "wholesome": 60,
+      "cognitive_load": 80
+    },
+    "disagreements": {
+      "romantic": {
+        "worker": 25,
+        "judge": 50,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Archer",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 25,
+      "emotional": 35,
+      "exciting": 65,
+      "funny": 35,
+      "happy": 45,
+      "hopeful": 50,
+      "intense": 60,
+      "mysterious": 35,
+      "nostalgic": 30,
+      "relaxing": 35,
+      "romantic": 25,
+      "scary": 20,
+      "tragic": 30,
+      "violent": 50,
+      "wholesome": 45,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 45,
+      "emotional": 50,
+      "exciting": 75,
+      "funny": 15,
+      "happy": 30,
+      "hopeful": 50,
+      "intense": 80,
+      "mysterious": 40,
+      "nostalgic": 20,
+      "relaxing": 15,
+      "romantic": 30,
+      "scary": 50,
+      "tragic": 40,
+      "violent": 80,
+      "wholesome": 20,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "scary": {
+        "worker": 20,
+        "judge": 50,
+        "diff": 30
+      },
+      "violent": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      },
+      "wholesome": {
+        "worker": 45,
+        "judge": 20,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Artificial Intelligence",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 55,
+      "emotional": 60,
+      "exciting": 65,
+      "funny": 35,
+      "happy": 35,
+      "hopeful": 50,
+      "intense": 65,
+      "mysterious": 65,
+      "nostalgic": 35,
+      "relaxing": 30,
+      "romantic": 40,
+      "scary": 45,
+      "tragic": 55,
+      "violent": 45,
+      "wholesome": 40,
+      "cognitive_load": 70
+    },
+    "judgeScores": {
+      "dark": 50,
+      "emotional": 20,
+      "exciting": 80,
+      "funny": 10,
+      "happy": 20,
+      "hopeful": 60,
+      "intense": 75,
+      "mysterious": 85,
+      "nostalgic": 10,
+      "relaxing": 10,
+      "romantic": 20,
+      "scary": 70,
+      "tragic": 30,
+      "violent": 50,
+      "wholesome": 10,
+      "cognitive_load": 90
+    },
+    "disagreements": {
+      "emotional": {
+        "worker": 60,
+        "judge": 20,
+        "diff": 40
+      },
+      "funny": {
+        "worker": 35,
+        "judge": 10,
+        "diff": 25
+      },
+      "nostalgic": {
+        "worker": 35,
+        "judge": 10,
+        "diff": 25
+      },
+      "scary": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "tragic": {
+        "worker": 55,
+        "judge": 30,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 40,
+        "judge": 10,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Bandit",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 50,
+      "emotional": 30,
+      "exciting": 75,
+      "funny": 40,
+      "happy": 30,
+      "hopeful": 35,
+      "intense": 65,
+      "mysterious": 45,
+      "nostalgic": 20,
+      "relaxing": 20,
+      "romantic": 25,
+      "scary": 40,
+      "tragic": 35,
+      "violent": 70,
+      "wholesome": 20,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 75,
+      "emotional": 50,
+      "exciting": 80,
+      "funny": 20,
+      "happy": 20,
+      "hopeful": 25,
+      "intense": 85,
+      "mysterious": 50,
+      "nostalgic": 30,
+      "relaxing": 15,
+      "romantic": 20,
+      "scary": 70,
+      "tragic": 55,
+      "violent": 90,
+      "wholesome": 10,
+      "cognitive_load": 55
+    },
+    "disagreements": {
+      "dark": {
+        "worker": 50,
+        "judge": 75,
+        "diff": 25
+      },
+      "scary": {
+        "worker": 40,
+        "judge": 70,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Beastkin",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 45,
+      "exciting": 70,
+      "funny": 50,
+      "happy": 60,
+      "hopeful": 60,
+      "intense": 55,
+      "mysterious": 35,
+      "nostalgic": 30,
+      "relaxing": 45,
+      "romantic": 55,
+      "scary": 25,
+      "tragic": 30,
+      "violent": 45,
+      "wholesome": 65,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 45,
+      "emotional": 60,
+      "exciting": 75,
+      "funny": 50,
+      "happy": 60,
+      "hopeful": 70,
+      "intense": 70,
+      "mysterious": 60,
+      "nostalgic": 50,
+      "relaxing": 50,
+      "romantic": 70,
+      "scary": 60,
+      "tragic": 50,
+      "violent": 70,
+      "wholesome": 60,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      },
+      "scary": {
+        "worker": 25,
+        "judge": 60,
+        "diff": 35
+      },
+      "violent": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Brat",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 20,
+      "emotional": 40,
+      "exciting": 45,
+      "funny": 70,
+      "happy": 45,
+      "hopeful": 40,
+      "intense": 45,
+      "mysterious": 15,
+      "nostalgic": 20,
+      "relaxing": 30,
+      "romantic": 35,
+      "scary": 15,
+      "tragic": 20,
+      "violent": 20,
+      "wholesome": 45,
+      "cognitive_load": 30
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 50,
+      "exciting": 70,
+      "funny": 60,
+      "happy": 50,
+      "hopeful": 40,
+      "intense": 65,
+      "mysterious": 30,
+      "nostalgic": 30,
+      "relaxing": 30,
+      "romantic": 30,
+      "scary": 20,
+      "tragic": 20,
+      "violent": 40,
+      "wholesome": 40,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "exciting": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Changeling",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 65,
+      "emotional": 60,
+      "exciting": 65,
+      "funny": 25,
+      "happy": 25,
+      "hopeful": 35,
+      "intense": 70,
+      "mysterious": 80,
+      "nostalgic": 30,
+      "relaxing": 20,
+      "romantic": 35,
+      "scary": 60,
+      "tragic": 55,
+      "violent": 50,
+      "wholesome": 25,
+      "cognitive_load": 65
+    },
+    "judgeScores": {
+      "dark": 55,
+      "emotional": 65,
+      "exciting": 60,
+      "funny": 30,
+      "happy": 50,
+      "hopeful": 55,
+      "intense": 60,
+      "mysterious": 80,
+      "nostalgic": 45,
+      "relaxing": 30,
+      "romantic": 50,
+      "scary": 55,
+      "tragic": 50,
+      "violent": 45,
+      "wholesome": 35,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 25,
+        "judge": 50,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Clumsy",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 10,
+      "emotional": 40,
+      "exciting": 35,
+      "funny": 80,
+      "happy": 75,
+      "hopeful": 60,
+      "intense": 25,
+      "mysterious": 10,
+      "nostalgic": 35,
+      "relaxing": 65,
+      "romantic": 60,
+      "scary": 10,
+      "tragic": 15,
+      "violent": 20,
+      "wholesome": 85,
+      "cognitive_load": 20
+    },
+    "judgeScores": {
+      "dark": 10,
+      "emotional": 40,
+      "exciting": 40,
+      "funny": 80,
+      "happy": 70,
+      "hopeful": 60,
+      "intense": 20,
+      "mysterious": 20,
+      "nostalgic": 50,
+      "relaxing": 60,
+      "romantic": 30,
+      "scary": 10,
+      "tragic": 10,
+      "violent": 10,
+      "wholesome": 75,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "romantic": {
+        "worker": 60,
+        "judge": 30,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Commoner",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 55,
+      "exciting": 60,
+      "funny": 45,
+      "happy": 50,
+      "hopeful": 70,
+      "intense": 55,
+      "mysterious": 25,
+      "nostalgic": 40,
+      "relaxing": 45,
+      "romantic": 60,
+      "scary": 20,
+      "tragic": 35,
+      "violent": 35,
+      "wholesome": 65,
+      "cognitive_load": 40
+    },
+    "judgeScores": {
+      "dark": 10,
+      "emotional": 50,
+      "exciting": 20,
+      "funny": 40,
+      "happy": 60,
+      "hopeful": 70,
+      "intense": 20,
+      "mysterious": 10,
+      "nostalgic": 60,
+      "relaxing": 50,
+      "romantic": 50,
+      "scary": 10,
+      "tragic": 30,
+      "violent": 20,
+      "wholesome": 80,
+      "cognitive_load": 20
+    },
+    "disagreements": {
+      "exciting": {
+        "worker": 60,
+        "judge": 20,
+        "diff": 40
+      },
+      "intense": {
+        "worker": 55,
+        "judge": 20,
+        "diff": 35
+      }
+    }
+  },
+  {
+    "name": "Criminal",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 75,
+      "emotional": 45,
+      "exciting": 70,
+      "funny": 25,
+      "happy": 15,
+      "hopeful": 20,
+      "intense": 75,
+      "mysterious": 60,
+      "nostalgic": 15,
+      "relaxing": 15,
+      "romantic": 20,
+      "scary": 50,
+      "tragic": 50,
+      "violent": 75,
+      "wholesome": 15,
+      "cognitive_load": 55
+    },
+    "judgeScores": {
+      "dark": 80,
+      "emotional": 60,
+      "exciting": 80,
+      "funny": 20,
+      "happy": 10,
+      "hopeful": 20,
+      "intense": 85,
+      "mysterious": 70,
+      "nostalgic": 20,
+      "relaxing": 10,
+      "romantic": 20,
+      "scary": 80,
+      "tragic": 60,
+      "violent": 90,
+      "wholesome": 10,
+      "cognitive_load": 50
+    },
+    "disagreements": {
+      "scary": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Delinquent",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 55,
+      "exciting": 65,
+      "funny": 60,
+      "happy": 45,
+      "hopeful": 50,
+      "intense": 60,
+      "mysterious": 25,
+      "nostalgic": 35,
+      "relaxing": 35,
+      "romantic": 55,
+      "scary": 30,
+      "tragic": 30,
+      "violent": 55,
+      "wholesome": 60,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 60,
+      "emotional": 55,
+      "exciting": 75,
+      "funny": 40,
+      "happy": 30,
+      "hopeful": 35,
+      "intense": 80,
+      "mysterious": 30,
+      "nostalgic": 30,
+      "relaxing": 20,
+      "romantic": 30,
+      "scary": 40,
+      "tragic": 35,
+      "violent": 70,
+      "wholesome": 20,
+      "cognitive_load": 50
+    },
+    "disagreements": {
+      "dark": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      },
+      "romantic": {
+        "worker": 55,
+        "judge": 30,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 60,
+        "judge": 20,
+        "diff": 40
+      }
+    }
+  },
+  {
+    "name": "Demi-God",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 40,
+      "emotional": 45,
+      "exciting": 75,
+      "funny": 25,
+      "happy": 30,
+      "hopeful": 45,
+      "intense": 75,
+      "mysterious": 55,
+      "nostalgic": 25,
+      "relaxing": 20,
+      "romantic": 30,
+      "scary": 40,
+      "tragic": 40,
+      "violent": 65,
+      "wholesome": 25,
+      "cognitive_load": 60
+    },
+    "judgeScores": {
+      "dark": 50,
+      "emotional": 60,
+      "exciting": 80,
+      "funny": 20,
+      "happy": 50,
+      "hopeful": 70,
+      "intense": 85,
+      "mysterious": 75,
+      "nostalgic": 40,
+      "relaxing": 20,
+      "romantic": 60,
+      "scary": 60,
+      "tragic": 50,
+      "violent": 80,
+      "wholesome": 30,
+      "cognitive_load": 50
+    },
+    "disagreements": {
+      "hopeful": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "romantic": {
+        "worker": 30,
+        "judge": 60,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Demi-Human",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 45,
+      "emotional": 55,
+      "exciting": 60,
+      "funny": 35,
+      "happy": 40,
+      "hopeful": 50,
+      "intense": 55,
+      "mysterious": 40,
+      "nostalgic": 25,
+      "relaxing": 35,
+      "romantic": 45,
+      "scary": 30,
+      "tragic": 45,
+      "violent": 50,
+      "wholesome": 45,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 55,
+      "emotional": 70,
+      "exciting": 65,
+      "funny": 35,
+      "happy": 45,
+      "hopeful": 60,
+      "intense": 65,
+      "mysterious": 70,
+      "nostalgic": 40,
+      "relaxing": 30,
+      "romantic": 50,
+      "scary": 50,
+      "tragic": 55,
+      "violent": 60,
+      "wholesome": 35,
+      "cognitive_load": 65
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 40,
+        "judge": 70,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Diplomat",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 40,
+      "exciting": 45,
+      "funny": 25,
+      "happy": 30,
+      "hopeful": 50,
+      "intense": 60,
+      "mysterious": 55,
+      "nostalgic": 20,
+      "relaxing": 25,
+      "romantic": 30,
+      "scary": 20,
+      "tragic": 30,
+      "violent": 20,
+      "wholesome": 35,
+      "cognitive_load": 75
+    },
+    "judgeScores": {
+      "dark": 40,
+      "emotional": 50,
+      "exciting": 50,
+      "funny": 20,
+      "happy": 60,
+      "hopeful": 70,
+      "intense": 60,
+      "mysterious": 60,
+      "nostalgic": 20,
+      "relaxing": 20,
+      "romantic": 50,
+      "scary": 40,
+      "tragic": 40,
+      "violent": 30,
+      "wholesome": 60,
+      "cognitive_load": 75
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 30,
+        "judge": 60,
+        "diff": 30
+      },
+      "wholesome": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Elf",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 50,
+      "exciting": 65,
+      "funny": 35,
+      "happy": 45,
+      "hopeful": 60,
+      "intense": 50,
+      "mysterious": 55,
+      "nostalgic": 65,
+      "relaxing": 50,
+      "romantic": 50,
+      "scary": 25,
+      "tragic": 45,
+      "violent": 45,
+      "wholesome": 55,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 40,
+      "emotional": 60,
+      "exciting": 60,
+      "funny": 20,
+      "happy": 60,
+      "hopeful": 70,
+      "intense": 60,
+      "mysterious": 80,
+      "nostalgic": 50,
+      "relaxing": 50,
+      "romantic": 70,
+      "scary": 20,
+      "tragic": 40,
+      "violent": 50,
+      "wholesome": 60,
+      "cognitive_load": 50
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 55,
+        "judge": 80,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Enchanter",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 25,
+      "emotional": 35,
+      "exciting": 55,
+      "funny": 30,
+      "happy": 40,
+      "hopeful": 50,
+      "intense": 45,
+      "mysterious": 55,
+      "nostalgic": 25,
+      "relaxing": 35,
+      "romantic": 35,
+      "scary": 20,
+      "tragic": 20,
+      "violent": 30,
+      "wholesome": 40,
+      "cognitive_load": 50
+    },
+    "judgeScores": {
+      "dark": 60,
+      "emotional": 65,
+      "exciting": 70,
+      "funny": 30,
+      "happy": 40,
+      "hopeful": 55,
+      "intense": 70,
+      "mysterious": 85,
+      "nostalgic": 30,
+      "relaxing": 35,
+      "romantic": 45,
+      "scary": 55,
+      "tragic": 40,
+      "violent": 45,
+      "wholesome": 30,
+      "cognitive_load": 80
+    },
+    "disagreements": {
+      "dark": {
+        "worker": 25,
+        "judge": 60,
+        "diff": 35
+      },
+      "emotional": {
+        "worker": 35,
+        "judge": 65,
+        "diff": 30
+      },
+      "intense": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "mysterious": {
+        "worker": 55,
+        "judge": 85,
+        "diff": 30
+      },
+      "scary": {
+        "worker": 20,
+        "judge": 55,
+        "diff": 35
+      },
+      "cognitive_load": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Eunuch",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 60,
+      "emotional": 65,
+      "exciting": 45,
+      "funny": 20,
+      "happy": 20,
+      "hopeful": 30,
+      "intense": 70,
+      "mysterious": 50,
+      "nostalgic": 25,
+      "relaxing": 20,
+      "romantic": 40,
+      "scary": 40,
+      "tragic": 70,
+      "violent": 45,
+      "wholesome": 25,
+      "cognitive_load": 65
+    },
+    "judgeScores": {
+      "dark": 50,
+      "emotional": 80,
+      "exciting": 20,
+      "funny": 10,
+      "happy": 20,
+      "hopeful": 30,
+      "intense": 50,
+      "mysterious": 40,
+      "nostalgic": 50,
+      "relaxing": 10,
+      "romantic": 20,
+      "scary": 20,
+      "tragic": 80,
+      "violent": 20,
+      "wholesome": 20,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "exciting": {
+        "worker": 45,
+        "judge": 20,
+        "diff": 25
+      },
+      "nostalgic": {
+        "worker": 25,
+        "judge": 50,
+        "diff": 25
+      },
+      "violent": {
+        "worker": 45,
+        "judge": 20,
+        "diff": 25
+      },
+      "cognitive_load": {
+        "worker": 65,
+        "judge": 40,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Familiar",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 20,
+      "emotional": 55,
+      "exciting": 50,
+      "funny": 60,
+      "happy": 65,
+      "hopeful": 65,
+      "intense": 40,
+      "mysterious": 35,
+      "nostalgic": 35,
+      "relaxing": 55,
+      "romantic": 30,
+      "scary": 15,
+      "tragic": 25,
+      "violent": 25,
+      "wholesome": 85,
+      "cognitive_load": 30
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 70,
+      "exciting": 50,
+      "funny": 60,
+      "happy": 70,
+      "hopeful": 70,
+      "intense": 30,
+      "mysterious": 60,
+      "nostalgic": 60,
+      "relaxing": 70,
+      "romantic": 20,
+      "scary": 20,
+      "tragic": 30,
+      "violent": 10,
+      "wholesome": 80,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      },
+      "nostalgic": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Feral",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 55,
+      "emotional": 45,
+      "exciting": 75,
+      "funny": 25,
+      "happy": 15,
+      "hopeful": 20,
+      "intense": 85,
+      "mysterious": 40,
+      "nostalgic": 10,
+      "relaxing": 5,
+      "romantic": 25,
+      "scary": 60,
+      "tragic": 40,
+      "violent": 80,
+      "wholesome": 10,
+      "cognitive_load": 30
+    },
+    "judgeScores": {
+      "dark": 80,
+      "emotional": 40,
+      "exciting": 85,
+      "funny": 10,
+      "happy": 20,
+      "hopeful": 20,
+      "intense": 90,
+      "mysterious": 60,
+      "nostalgic": 20,
+      "relaxing": 10,
+      "romantic": 10,
+      "scary": 80,
+      "tragic": 30,
+      "violent": 95,
+      "wholesome": 5,
+      "cognitive_load": 30
+    },
+    "disagreements": {
+      "dark": {
+        "worker": 55,
+        "judge": 80,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Freeloader",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 20,
+      "emotional": 40,
+      "exciting": 30,
+      "funny": 80,
+      "happy": 55,
+      "hopeful": 40,
+      "intense": 25,
+      "mysterious": 20,
+      "nostalgic": 20,
+      "relaxing": 70,
+      "romantic": 45,
+      "scary": 10,
+      "tragic": 25,
+      "violent": 15,
+      "wholesome": 60,
+      "cognitive_load": 20
+    },
+    "judgeScores": {
+      "dark": 30,
+      "emotional": 40,
+      "exciting": 20,
+      "funny": 70,
+      "happy": 30,
+      "hopeful": 20,
+      "intense": 20,
+      "mysterious": 40,
+      "nostalgic": 20,
+      "relaxing": 20,
+      "romantic": 20,
+      "scary": 10,
+      "tragic": 40,
+      "violent": 10,
+      "wholesome": 20,
+      "cognitive_load": 50
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 55,
+        "judge": 30,
+        "diff": 25
+      },
+      "relaxing": {
+        "worker": 70,
+        "judge": 20,
+        "diff": 50
+      },
+      "romantic": {
+        "worker": 45,
+        "judge": 20,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 60,
+        "judge": 20,
+        "diff": 40
+      },
+      "cognitive_load": {
+        "worker": 20,
+        "judge": 50,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Gamer",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 15,
+      "emotional": 30,
+      "exciting": 60,
+      "funny": 70,
+      "happy": 60,
+      "hopeful": 45,
+      "intense": 55,
+      "mysterious": 15,
+      "nostalgic": 35,
+      "relaxing": 60,
+      "romantic": 40,
+      "scary": 10,
+      "tragic": 15,
+      "violent": 25,
+      "wholesome": 60,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 30,
+      "emotional": 55,
+      "exciting": 85,
+      "funny": 80,
+      "happy": 70,
+      "hopeful": 60,
+      "intense": 70,
+      "mysterious": 40,
+      "nostalgic": 65,
+      "relaxing": 55,
+      "romantic": 40,
+      "scary": 30,
+      "tragic": 30,
+      "violent": 45,
+      "wholesome": 50,
+      "cognitive_load": 85
+    },
+    "disagreements": {
+      "emotional": {
+        "worker": 30,
+        "judge": 55,
+        "diff": 25
+      },
+      "exciting": {
+        "worker": 60,
+        "judge": 85,
+        "diff": 25
+      },
+      "mysterious": {
+        "worker": 15,
+        "judge": 40,
+        "diff": 25
+      },
+      "nostalgic": {
+        "worker": 35,
+        "judge": 65,
+        "diff": 30
+      },
+      "cognitive_load": {
+        "worker": 35,
+        "judge": 85,
+        "diff": 50
+      }
+    }
+  },
+  {
+    "name": "Gary Stu",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 15,
+      "emotional": 20,
+      "exciting": 45,
+      "funny": 55,
+      "happy": 65,
+      "hopeful": 55,
+      "intense": 35,
+      "mysterious": 15,
+      "nostalgic": 15,
+      "relaxing": 55,
+      "romantic": 40,
+      "scary": 5,
+      "tragic": 10,
+      "violent": 35,
+      "wholesome": 45,
+      "cognitive_load": 15
+    },
+    "judgeScores": {
+      "dark": 15,
+      "emotional": 30,
+      "exciting": 70,
+      "funny": 20,
+      "happy": 50,
+      "hopeful": 70,
+      "intense": 40,
+      "mysterious": 20,
+      "nostalgic": 20,
+      "relaxing": 40,
+      "romantic": 30,
+      "scary": 10,
+      "tragic": 10,
+      "violent": 30,
+      "wholesome": 30,
+      "cognitive_load": 30
+    },
+    "disagreements": {
+      "exciting": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "funny": {
+        "worker": 55,
+        "judge": 20,
+        "diff": 35
+      }
+    }
+  },
+  {
+    "name": "Geek",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 10,
+      "emotional": 45,
+      "exciting": 35,
+      "funny": 70,
+      "happy": 60,
+      "hopeful": 55,
+      "intense": 20,
+      "mysterious": 15,
+      "nostalgic": 35,
+      "relaxing": 65,
+      "romantic": 50,
+      "scary": 5,
+      "tragic": 15,
+      "violent": 10,
+      "wholesome": 70,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 50,
+      "exciting": 30,
+      "funny": 50,
+      "happy": 50,
+      "hopeful": 60,
+      "intense": 20,
+      "mysterious": 40,
+      "nostalgic": 60,
+      "relaxing": 30,
+      "romantic": 30,
+      "scary": 10,
+      "tragic": 20,
+      "violent": 10,
+      "wholesome": 60,
+      "cognitive_load": 80
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 15,
+        "judge": 40,
+        "diff": 25
+      },
+      "nostalgic": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      },
+      "relaxing": {
+        "worker": 65,
+        "judge": 30,
+        "diff": 35
+      },
+      "cognitive_load": {
+        "worker": 35,
+        "judge": 80,
+        "diff": 45
+      }
+    }
+  },
+  {
+    "name": "Ghost",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 65,
+      "emotional": 75,
+      "exciting": 45,
+      "funny": 35,
+      "happy": 25,
+      "hopeful": 40,
+      "intense": 60,
+      "mysterious": 80,
+      "nostalgic": 65,
+      "relaxing": 30,
+      "romantic": 50,
+      "scary": 70,
+      "tragic": 80,
+      "violent": 40,
+      "wholesome": 30,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 80,
+      "emotional": 70,
+      "exciting": 60,
+      "funny": 10,
+      "happy": 10,
+      "hopeful": 20,
+      "intense": 70,
+      "mysterious": 90,
+      "nostalgic": 60,
+      "relaxing": 20,
+      "romantic": 30,
+      "scary": 85,
+      "tragic": 75,
+      "violent": 20,
+      "wholesome": 15,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "funny": {
+        "worker": 35,
+        "judge": 10,
+        "diff": 25
+      },
+      "cognitive_load": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "God",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 50,
+      "emotional": 50,
+      "exciting": 75,
+      "funny": 35,
+      "happy": 40,
+      "hopeful": 55,
+      "intense": 80,
+      "mysterious": 75,
+      "nostalgic": 40,
+      "relaxing": 25,
+      "romantic": 35,
+      "scary": 55,
+      "tragic": 50,
+      "violent": 65,
+      "wholesome": 35,
+      "cognitive_load": 70
+    },
+    "judgeScores": {
+      "dark": 70,
+      "emotional": 80,
+      "exciting": 85,
+      "funny": 20,
+      "happy": 60,
+      "hopeful": 85,
+      "intense": 80,
+      "mysterious": 75,
+      "nostalgic": 30,
+      "relaxing": 25,
+      "romantic": 40,
+      "scary": 60,
+      "tragic": 55,
+      "violent": 65,
+      "wholesome": 40,
+      "cognitive_load": 90
+    },
+    "disagreements": {
+      "emotional": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      },
+      "hopeful": {
+        "worker": 55,
+        "judge": 85,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Hacker",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 45,
+      "emotional": 35,
+      "exciting": 70,
+      "funny": 35,
+      "happy": 30,
+      "hopeful": 40,
+      "intense": 70,
+      "mysterious": 65,
+      "nostalgic": 20,
+      "relaxing": 25,
+      "romantic": 25,
+      "scary": 30,
+      "tragic": 25,
+      "violent": 25,
+      "wholesome": 30,
+      "cognitive_load": 70
+    },
+    "judgeScores": {
+      "dark": 55,
+      "emotional": 40,
+      "exciting": 75,
+      "funny": 40,
+      "happy": 20,
+      "hopeful": 50,
+      "intense": 70,
+      "mysterious": 80,
+      "nostalgic": 20,
+      "relaxing": 20,
+      "romantic": 20,
+      "scary": 60,
+      "tragic": 30,
+      "violent": 20,
+      "wholesome": 20,
+      "cognitive_load": 85
+    },
+    "disagreements": {
+      "scary": {
+        "worker": 30,
+        "judge": 60,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Healer",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 25,
+      "emotional": 65,
+      "exciting": 50,
+      "funny": 30,
+      "happy": 55,
+      "hopeful": 80,
+      "intense": 55,
+      "mysterious": 35,
+      "nostalgic": 35,
+      "relaxing": 55,
+      "romantic": 45,
+      "scary": 20,
+      "tragic": 40,
+      "violent": 25,
+      "wholesome": 80,
+      "cognitive_load": 40
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 70,
+      "exciting": 40,
+      "funny": 30,
+      "happy": 80,
+      "hopeful": 90,
+      "intense": 35,
+      "mysterious": 30,
+      "nostalgic": 50,
+      "relaxing": 85,
+      "romantic": 40,
+      "scary": 15,
+      "tragic": 30,
+      "violent": 20,
+      "wholesome": 90,
+      "cognitive_load": 55
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 55,
+        "judge": 80,
+        "diff": 25
+      },
+      "relaxing": {
+        "worker": 55,
+        "judge": 85,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Hitman",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 85,
+      "emotional": 50,
+      "exciting": 80,
+      "funny": 25,
+      "happy": 15,
+      "hopeful": 20,
+      "intense": 85,
+      "mysterious": 65,
+      "nostalgic": 15,
+      "relaxing": 15,
+      "romantic": 35,
+      "scary": 60,
+      "tragic": 60,
+      "violent": 90,
+      "wholesome": 15,
+      "cognitive_load": 50
+    },
+    "judgeScores": {
+      "dark": 85,
+      "emotional": 60,
+      "exciting": 80,
+      "funny": 10,
+      "happy": 10,
+      "hopeful": 15,
+      "intense": 90,
+      "mysterious": 70,
+      "nostalgic": 20,
+      "relaxing": 10,
+      "romantic": 10,
+      "scary": 80,
+      "tragic": 70,
+      "violent": 95,
+      "wholesome": 5,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "romantic": {
+        "worker": 35,
+        "judge": 10,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Ice Queen",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 65,
+      "exciting": 50,
+      "funny": 40,
+      "happy": 45,
+      "hopeful": 55,
+      "intense": 60,
+      "mysterious": 60,
+      "nostalgic": 25,
+      "relaxing": 35,
+      "romantic": 80,
+      "scary": 25,
+      "tragic": 35,
+      "violent": 20,
+      "wholesome": 55,
+      "cognitive_load": 40
+    },
+    "judgeScores": {
+      "dark": 60,
+      "emotional": 50,
+      "exciting": 40,
+      "funny": 10,
+      "happy": 20,
+      "hopeful": 20,
+      "intense": 70,
+      "mysterious": 80,
+      "nostalgic": 20,
+      "relaxing": 10,
+      "romantic": 50,
+      "scary": 50,
+      "tragic": 40,
+      "violent": 20,
+      "wholesome": 10,
+      "cognitive_load": 40
+    },
+    "disagreements": {
+      "dark": {
+        "worker": 30,
+        "judge": 60,
+        "diff": 30
+      },
+      "funny": {
+        "worker": 40,
+        "judge": 10,
+        "diff": 30
+      },
+      "happy": {
+        "worker": 45,
+        "judge": 20,
+        "diff": 25
+      },
+      "hopeful": {
+        "worker": 55,
+        "judge": 20,
+        "diff": 35
+      },
+      "relaxing": {
+        "worker": 35,
+        "judge": 10,
+        "diff": 25
+      },
+      "romantic": {
+        "worker": 80,
+        "judge": 50,
+        "diff": 30
+      },
+      "scary": {
+        "worker": 25,
+        "judge": 50,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 55,
+        "judge": 10,
+        "diff": 45
+      }
+    }
+  },
+  {
+    "name": "Incubus",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 45,
+      "emotional": 35,
+      "exciting": 60,
+      "funny": 50,
+      "happy": 30,
+      "hopeful": 25,
+      "intense": 65,
+      "mysterious": 40,
+      "nostalgic": 10,
+      "relaxing": 20,
+      "romantic": 70,
+      "scary": 30,
+      "tragic": 20,
+      "violent": 25,
+      "wholesome": 15,
+      "cognitive_load": 30
+    },
+    "judgeScores": {
+      "dark": 85,
+      "emotional": 70,
+      "exciting": 75,
+      "funny": 10,
+      "happy": 20,
+      "hopeful": 30,
+      "intense": 85,
+      "mysterious": 70,
+      "nostalgic": 25,
+      "relaxing": 15,
+      "romantic": 70,
+      "scary": 80,
+      "tragic": 55,
+      "violent": 60,
+      "wholesome": 10,
+      "cognitive_load": 65
+    },
+    "disagreements": {
+      "dark": {
+        "worker": 45,
+        "judge": 85,
+        "diff": 40
+      },
+      "emotional": {
+        "worker": 35,
+        "judge": 70,
+        "diff": 35
+      },
+      "funny": {
+        "worker": 50,
+        "judge": 10,
+        "diff": 40
+      },
+      "mysterious": {
+        "worker": 40,
+        "judge": 70,
+        "diff": 30
+      },
+      "scary": {
+        "worker": 30,
+        "judge": 80,
+        "diff": 50
+      },
+      "tragic": {
+        "worker": 20,
+        "judge": 55,
+        "diff": 35
+      },
+      "violent": {
+        "worker": 25,
+        "judge": 60,
+        "diff": 35
+      },
+      "cognitive_load": {
+        "worker": 30,
+        "judge": 65,
+        "diff": 35
+      }
+    }
+  },
+  {
+    "name": "Loner",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 45,
+      "emotional": 65,
+      "exciting": 35,
+      "funny": 40,
+      "happy": 25,
+      "hopeful": 45,
+      "intense": 45,
+      "mysterious": 50,
+      "nostalgic": 40,
+      "relaxing": 45,
+      "romantic": 40,
+      "scary": 25,
+      "tragic": 45,
+      "violent": 25,
+      "wholesome": 40,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 55,
+      "emotional": 80,
+      "exciting": 40,
+      "funny": 10,
+      "happy": 30,
+      "hopeful": 40,
+      "intense": 70,
+      "mysterious": 80,
+      "nostalgic": 60,
+      "relaxing": 30,
+      "romantic": 20,
+      "scary": 40,
+      "tragic": 60,
+      "violent": 20,
+      "wholesome": 30,
+      "cognitive_load": 75
+    },
+    "disagreements": {
+      "funny": {
+        "worker": 40,
+        "judge": 10,
+        "diff": 30
+      },
+      "intense": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "mysterious": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      },
+      "cognitive_load": {
+        "worker": 35,
+        "judge": 75,
+        "diff": 40
+      }
+    }
+  },
+  {
+    "name": "Magical Girl",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 45,
+      "emotional": 65,
+      "exciting": 75,
+      "funny": 50,
+      "happy": 55,
+      "hopeful": 70,
+      "intense": 65,
+      "mysterious": 45,
+      "nostalgic": 50,
+      "relaxing": 35,
+      "romantic": 45,
+      "scary": 40,
+      "tragic": 50,
+      "violent": 45,
+      "wholesome": 65,
+      "cognitive_load": 40
+    },
+    "judgeScores": {
+      "dark": 25,
+      "emotional": 85,
+      "exciting": 85,
+      "funny": 60,
+      "happy": 90,
+      "hopeful": 95,
+      "intense": 70,
+      "mysterious": 40,
+      "nostalgic": 70,
+      "relaxing": 65,
+      "romantic": 55,
+      "scary": 20,
+      "tragic": 30,
+      "violent": 25,
+      "wholesome": 95,
+      "cognitive_load": 55
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 55,
+        "judge": 90,
+        "diff": 35
+      },
+      "hopeful": {
+        "worker": 70,
+        "judge": 95,
+        "diff": 25
+      },
+      "relaxing": {
+        "worker": 35,
+        "judge": 65,
+        "diff": 30
+      },
+      "wholesome": {
+        "worker": 65,
+        "judge": 95,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Monk",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 45,
+      "exciting": 55,
+      "funny": 35,
+      "happy": 55,
+      "hopeful": 65,
+      "intense": 50,
+      "mysterious": 60,
+      "nostalgic": 55,
+      "relaxing": 65,
+      "romantic": 20,
+      "scary": 25,
+      "tragic": 30,
+      "violent": 40,
+      "wholesome": 70,
+      "cognitive_load": 50
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 60,
+      "exciting": 35,
+      "funny": 20,
+      "happy": 70,
+      "hopeful": 80,
+      "intense": 40,
+      "mysterious": 45,
+      "nostalgic": 45,
+      "relaxing": 90,
+      "romantic": 30,
+      "scary": 15,
+      "tragic": 25,
+      "violent": 15,
+      "wholesome": 95,
+      "cognitive_load": 60
+    },
+    "disagreements": {
+      "relaxing": {
+        "worker": 65,
+        "judge": 90,
+        "diff": 25
+      },
+      "violent": {
+        "worker": 40,
+        "judge": 15,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 70,
+        "judge": 95,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Monster Tamer",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 25,
+      "emotional": 50,
+      "exciting": 75,
+      "funny": 40,
+      "happy": 55,
+      "hopeful": 65,
+      "intense": 60,
+      "mysterious": 35,
+      "nostalgic": 40,
+      "relaxing": 45,
+      "romantic": 30,
+      "scary": 20,
+      "tragic": 25,
+      "violent": 45,
+      "wholesome": 65,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 30,
+      "emotional": 70,
+      "exciting": 80,
+      "funny": 40,
+      "happy": 60,
+      "hopeful": 75,
+      "intense": 70,
+      "mysterious": 80,
+      "nostalgic": 50,
+      "relaxing": 40,
+      "romantic": 40,
+      "scary": 60,
+      "tragic": 30,
+      "violent": 50,
+      "wholesome": 65,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 35,
+        "judge": 80,
+        "diff": 45
+      },
+      "scary": {
+        "worker": 20,
+        "judge": 60,
+        "diff": 40
+      },
+      "cognitive_load": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Physician",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 40,
+      "emotional": 70,
+      "exciting": 50,
+      "funny": 20,
+      "happy": 40,
+      "hopeful": 65,
+      "intense": 65,
+      "mysterious": 35,
+      "nostalgic": 25,
+      "relaxing": 30,
+      "romantic": 35,
+      "scary": 25,
+      "tragic": 55,
+      "violent": 20,
+      "wholesome": 55,
+      "cognitive_load": 70
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 70,
+      "exciting": 50,
+      "funny": 30,
+      "happy": 70,
+      "hopeful": 80,
+      "intense": 60,
+      "mysterious": 30,
+      "nostalgic": 40,
+      "relaxing": 50,
+      "romantic": 30,
+      "scary": 30,
+      "tragic": 50,
+      "violent": 20,
+      "wholesome": 85,
+      "cognitive_load": 80
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 40,
+        "judge": 70,
+        "diff": 30
+      },
+      "wholesome": {
+        "worker": 55,
+        "judge": 85,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Principal",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 20,
+      "emotional": 30,
+      "exciting": 20,
+      "funny": 45,
+      "happy": 30,
+      "hopeful": 35,
+      "intense": 25,
+      "mysterious": 30,
+      "nostalgic": 45,
+      "relaxing": 30,
+      "romantic": 15,
+      "scary": 25,
+      "tragic": 15,
+      "violent": 15,
+      "wholesome": 40,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 35,
+      "emotional": 55,
+      "exciting": 45,
+      "funny": 30,
+      "happy": 50,
+      "hopeful": 55,
+      "intense": 60,
+      "mysterious": 30,
+      "nostalgic": 30,
+      "relaxing": 25,
+      "romantic": 35,
+      "scary": 30,
+      "tragic": 40,
+      "violent": 30,
+      "wholesome": 45,
+      "cognitive_load": 75
+    },
+    "disagreements": {
+      "emotional": {
+        "worker": 30,
+        "judge": 55,
+        "diff": 25
+      },
+      "exciting": {
+        "worker": 20,
+        "judge": 45,
+        "diff": 25
+      },
+      "intense": {
+        "worker": 25,
+        "judge": 60,
+        "diff": 35
+      },
+      "tragic": {
+        "worker": 15,
+        "judge": 40,
+        "diff": 25
+      },
+      "cognitive_load": {
+        "worker": 35,
+        "judge": 75,
+        "diff": 40
+      }
+    }
+  },
+  {
+    "name": "Ranger",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 40,
+      "exciting": 70,
+      "funny": 30,
+      "happy": 40,
+      "hopeful": 50,
+      "intense": 55,
+      "mysterious": 40,
+      "nostalgic": 35,
+      "relaxing": 45,
+      "romantic": 35,
+      "scary": 30,
+      "tragic": 30,
+      "violent": 45,
+      "wholesome": 50,
+      "cognitive_load": 40
+    },
+    "judgeScores": {
+      "dark": 45,
+      "emotional": 55,
+      "exciting": 80,
+      "funny": 35,
+      "happy": 55,
+      "hopeful": 60,
+      "intense": 70,
+      "mysterious": 55,
+      "nostalgic": 40,
+      "relaxing": 30,
+      "romantic": 45,
+      "scary": 45,
+      "tragic": 40,
+      "violent": 70,
+      "wholesome": 40,
+      "cognitive_load": 60
+    },
+    "disagreements": {
+      "violent": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Sage",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 50,
+      "exciting": 50,
+      "funny": 30,
+      "happy": 45,
+      "hopeful": 65,
+      "intense": 55,
+      "mysterious": 70,
+      "nostalgic": 50,
+      "relaxing": 50,
+      "romantic": 25,
+      "scary": 25,
+      "tragic": 40,
+      "violent": 30,
+      "wholesome": 55,
+      "cognitive_load": 70
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 50,
+      "exciting": 30,
+      "funny": 20,
+      "happy": 60,
+      "hopeful": 80,
+      "intense": 30,
+      "mysterious": 70,
+      "nostalgic": 60,
+      "relaxing": 80,
+      "romantic": 20,
+      "scary": 10,
+      "tragic": 20,
+      "violent": 10,
+      "wholesome": 85,
+      "cognitive_load": 85
+    },
+    "disagreements": {
+      "intense": {
+        "worker": 55,
+        "judge": 30,
+        "diff": 25
+      },
+      "relaxing": {
+        "worker": 50,
+        "judge": 80,
+        "diff": 30
+      },
+      "wholesome": {
+        "worker": 55,
+        "judge": 85,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Samurai",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 50,
+      "emotional": 60,
+      "exciting": 75,
+      "funny": 25,
+      "happy": 30,
+      "hopeful": 45,
+      "intense": 80,
+      "mysterious": 35,
+      "nostalgic": 55,
+      "relaxing": 30,
+      "romantic": 30,
+      "scary": 35,
+      "tragic": 60,
+      "violent": 75,
+      "wholesome": 35,
+      "cognitive_load": 50
+    },
+    "judgeScores": {
+      "dark": 65,
+      "emotional": 70,
+      "exciting": 70,
+      "funny": 15,
+      "happy": 40,
+      "hopeful": 60,
+      "intense": 85,
+      "mysterious": 50,
+      "nostalgic": 70,
+      "relaxing": 30,
+      "romantic": 40,
+      "scary": 60,
+      "tragic": 55,
+      "violent": 85,
+      "wholesome": 55,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "scary": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Savage",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 65,
+      "emotional": 35,
+      "exciting": 70,
+      "funny": 20,
+      "happy": 20,
+      "hopeful": 25,
+      "intense": 80,
+      "mysterious": 35,
+      "nostalgic": 20,
+      "relaxing": 15,
+      "romantic": 20,
+      "scary": 60,
+      "tragic": 45,
+      "violent": 85,
+      "wholesome": 15,
+      "cognitive_load": 35
+    },
+    "judgeScores": {
+      "dark": 80,
+      "emotional": 55,
+      "exciting": 85,
+      "funny": 5,
+      "happy": 5,
+      "hopeful": 5,
+      "intense": 90,
+      "mysterious": 50,
+      "nostalgic": 10,
+      "relaxing": 5,
+      "romantic": 5,
+      "scary": 80,
+      "tragic": 70,
+      "violent": 90,
+      "wholesome": 2,
+      "cognitive_load": 55
+    },
+    "disagreements": {
+      "tragic": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Scout",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 40,
+      "exciting": 70,
+      "funny": 30,
+      "happy": 35,
+      "hopeful": 45,
+      "intense": 65,
+      "mysterious": 55,
+      "nostalgic": 30,
+      "relaxing": 30,
+      "romantic": 25,
+      "scary": 30,
+      "tragic": 35,
+      "violent": 45,
+      "wholesome": 35,
+      "cognitive_load": 60
+    },
+    "judgeScores": {
+      "dark": 20,
+      "emotional": 40,
+      "exciting": 80,
+      "funny": 30,
+      "happy": 60,
+      "hopeful": 70,
+      "intense": 60,
+      "mysterious": 50,
+      "nostalgic": 40,
+      "relaxing": 30,
+      "romantic": 30,
+      "scary": 30,
+      "tragic": 20,
+      "violent": 30,
+      "wholesome": 60,
+      "cognitive_load": 60
+    },
+    "disagreements": {
+      "happy": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      },
+      "hopeful": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Sphinx",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 35,
+      "emotional": 25,
+      "exciting": 55,
+      "funny": 20,
+      "happy": 20,
+      "hopeful": 30,
+      "intense": 50,
+      "mysterious": 85,
+      "nostalgic": 30,
+      "relaxing": 20,
+      "romantic": 15,
+      "scary": 40,
+      "tragic": 25,
+      "violent": 35,
+      "wholesome": 15,
+      "cognitive_load": 70
+    },
+    "judgeScores": {
+      "dark": 55,
+      "emotional": 45,
+      "exciting": 60,
+      "funny": 15,
+      "happy": 30,
+      "hopeful": 40,
+      "intense": 55,
+      "mysterious": 90,
+      "nostalgic": 25,
+      "relaxing": 20,
+      "romantic": 20,
+      "scary": 50,
+      "tragic": 35,
+      "violent": 30,
+      "wholesome": 20,
+      "cognitive_load": 95
+    },
+    "disagreements": {
+      "cognitive_load": {
+        "worker": 70,
+        "judge": 95,
+        "diff": 25
+      }
+    }
+  },
+  {
+    "name": "Stepmother",
+    "type": "archetype",
+    "workerScores": {
+      "dark": 55,
+      "emotional": 65,
+      "exciting": 40,
+      "funny": 25,
+      "happy": 30,
+      "hopeful": 45,
+      "intense": 55,
+      "mysterious": 30,
+      "nostalgic": 25,
+      "relaxing": 25,
+      "romantic": 25,
+      "scary": 40,
+      "tragic": 45,
+      "violent": 25,
+      "wholesome": 45,
+      "cognitive_load": 45
+    },
+    "judgeScores": {
+      "dark": 70,
+      "emotional": 75,
+      "exciting": 50,
+      "funny": 20,
+      "happy": 10,
+      "hopeful": 30,
+      "intense": 65,
+      "mysterious": 60,
+      "nostalgic": 40,
+      "relaxing": 10,
+      "romantic": 15,
+      "scary": 55,
+      "tragic": 60,
+      "violent": 50,
+      "wholesome": 10,
+      "cognitive_load": 60
+    },
+    "disagreements": {
+      "mysterious": {
+        "worker": 30,
+        "judge": 60,
+        "diff": 30
+      },
+      "violent": {
+        "worker": 25,
+        "judge": 50,
+        "diff": 25
+      },
+      "wholesome": {
+        "worker": 45,
+        "judge": 10,
+        "diff": 35
+      }
+    }
+  },
+  {
+    "name": "Rebuilding",
+    "type": "plot_device",
+    "workerScores": {
+      "dark": 25,
+      "emotional": 65,
+      "exciting": 55,
+      "funny": 30,
+      "happy": 70,
+      "hopeful": 90,
+      "intense": 45,
+      "mysterious": 20,
+      "nostalgic": 45,
+      "relaxing": 50,
+      "romantic": 30,
+      "scary": 15,
+      "tragic": 35,
+      "violent": 20,
+      "wholesome": 80,
+      "cognitive_load": 40
+    },
+    "judgeScores": {
+      "dark": 25,
+      "emotional": 80,
+      "exciting": 50,
+      "funny": 30,
+      "happy": 70,
+      "hopeful": 90,
+      "intense": 60,
+      "mysterious": 30,
+      "nostalgic": 70,
+      "relaxing": 60,
+      "romantic": 40,
+      "scary": 20,
+      "tragic": 40,
+      "violent": 30,
+      "wholesome": 80,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "nostalgic": {
+        "worker": 45,
+        "judge": 70,
+        "diff": 25
+      },
+      "cognitive_load": {
+        "worker": 40,
+        "judge": 70,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Remote Island",
+    "type": "plot_device",
+    "workerScores": {
+      "dark": 60,
+      "emotional": 45,
+      "exciting": 70,
+      "funny": 30,
+      "happy": 35,
+      "hopeful": 40,
+      "intense": 75,
+      "mysterious": 85,
+      "nostalgic": 35,
+      "relaxing": 40,
+      "romantic": 40,
+      "scary": 70,
+      "tragic": 45,
+      "violent": 60,
+      "wholesome": 35,
+      "cognitive_load": 55
+    },
+    "judgeScores": {
+      "dark": 40,
+      "emotional": 60,
+      "exciting": 70,
+      "funny": 30,
+      "happy": 50,
+      "hopeful": 55,
+      "intense": 60,
+      "mysterious": 70,
+      "nostalgic": 65,
+      "relaxing": 70,
+      "romantic": 40,
+      "scary": 50,
+      "tragic": 40,
+      "violent": 30,
+      "wholesome": 55,
+      "cognitive_load": 60
+    },
+    "disagreements": {
+      "nostalgic": {
+        "worker": 35,
+        "judge": 65,
+        "diff": 30
+      },
+      "relaxing": {
+        "worker": 40,
+        "judge": 70,
+        "diff": 30
+      },
+      "violent": {
+        "worker": 60,
+        "judge": 30,
+        "diff": 30
+      }
+    }
+  },
+  {
+    "name": "Renaissance",
+    "type": "plot_device",
+    "workerScores": {
+      "dark": 30,
+      "emotional": 55,
+      "exciting": 65,
+      "funny": 25,
+      "happy": 60,
+      "hopeful": 80,
+      "intense": 55,
+      "mysterious": 45,
+      "nostalgic": 50,
+      "relaxing": 40,
+      "romantic": 35,
+      "scary": 20,
+      "tragic": 25,
+      "violent": 30,
+      "wholesome": 60,
+      "cognitive_load": 60
+    },
+    "judgeScores": {
+      "dark": 30,
+      "emotional": 65,
+      "exciting": 60,
+      "funny": 40,
+      "happy": 70,
+      "hopeful": 80,
+      "intense": 55,
+      "mysterious": 40,
+      "nostalgic": 85,
+      "relaxing": 55,
+      "romantic": 60,
+      "scary": 20,
+      "tragic": 30,
+      "violent": 35,
+      "wholesome": 70,
+      "cognitive_load": 70
+    },
+    "disagreements": {
+      "nostalgic": {
+        "worker": 50,
+        "judge": 85,
+        "diff": 35
+      },
+      "romantic": {
+        "worker": 35,
+        "judge": 60,
+        "diff": 25
+      }
+    }
+  }
+]
