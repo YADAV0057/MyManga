@@ -80,7 +80,7 @@ async function callGemini(model, apiKey, items) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts: [{ text: buildPrompt(items) }] }],
-      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 8192 },
+      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 16384 },
     }),
   });
   const json = await res.json();
@@ -121,17 +121,8 @@ async function callOpenAICompatible(baseUrl, model, apiKey, items, extraHeaders 
 function buildLanes() {
   return [
     {
-      id: 'gemini-2.5-flash',
-      batchSize: 40,
-      dailyLimitType: 'requests',
-      dailyLimit: 15,
-      rpmSpacingMs: 6500,
-      enabled: !!process.env.GOOGLE_API_KEY,
-      call: (items) => callGemini('gemini-2.5-flash', process.env.GOOGLE_API_KEY, items),
-    },
-    {
       id: 'gemini-3.5-flash',
-      batchSize: 40,
+      batchSize: 20,
       dailyLimitType: 'requests',
       dailyLimit: 15,
       rpmSpacingMs: 30000,
@@ -139,17 +130,8 @@ function buildLanes() {
       call: (items) => callGemini('gemini-3.5-flash', process.env.GOOGLE_API_KEY, items),
     },
     {
-      id: 'gemini-2.5-flash-gemini-acct',
-      batchSize: 40,
-      dailyLimitType: 'requests',
-      dailyLimit: 15,
-      rpmSpacingMs: 6500,
-      enabled: !!process.env.GEMINI_ACCT_KEY,
-      call: (items) => callGemini('gemini-2.5-flash', process.env.GEMINI_ACCT_KEY, items),
-    },
-    {
       id: 'gemini-3.5-flash-gemini-acct',
-      batchSize: 40,
+      batchSize: 20,
       dailyLimitType: 'requests',
       dailyLimit: 15,
       rpmSpacingMs: 30000,
@@ -157,17 +139,8 @@ function buildLanes() {
       call: (items) => callGemini('gemini-3.5-flash', process.env.GEMINI_ACCT_KEY, items),
     },
     {
-      id: 'gemini-2.5-flash-monkey-acct',
-      batchSize: 40,
-      dailyLimitType: 'requests',
-      dailyLimit: 15,
-      rpmSpacingMs: 6500,
-      enabled: !!process.env.MONKEY_ACCT_KEY,
-      call: (items) => callGemini('gemini-2.5-flash', process.env.MONKEY_ACCT_KEY, items),
-    },
-    {
       id: 'gemini-3.5-flash-monkey-acct',
-      batchSize: 40,
+      batchSize: 20,
       dailyLimitType: 'requests',
       dailyLimit: 15,
       rpmSpacingMs: 30000,
@@ -281,8 +254,9 @@ async function main() {
         console.log(`[${lane.id}] +${valid.length} scored (${results.length - valid.length} malformed dropped)`);
       } catch (err) {
         const isQuota = err.status === 429 || /quota|rate.?limit/i.test(err.message);
-        console.log(`[${lane.id}] failed: ${err.message}${isQuota ? ' — disabling lane for today' : ''}`);
-        if (isQuota) usage.disabled = true;
+        const isGone = err.status === 404 || /no longer available/i.test(err.message);
+        console.log(`[${lane.id}] failed: ${err.message}${isQuota || isGone ? ' — disabling lane for today' : ' — will retry lane next round'}`);
+        if (isQuota || isGone) usage.disabled = true;
         // Non-quota errors: don't disable the lane, just move on — next
         // round-robin pass will retry this lane with a fresh batch.
       }
