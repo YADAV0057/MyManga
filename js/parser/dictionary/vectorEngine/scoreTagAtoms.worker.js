@@ -1,183 +1,268 @@
 // js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js
 //
-// Job 2 — worker pass. Scores every item in a taxonomy input file 1-100
-// against every atom in ATOMS.js, via the Google Gemini API. This is the
-// "one model scores" half of the worker+judge pipeline described in the
-// plan doc (Section 1's job-runner skeleton pattern, cloned from
-// backfillMoodWeights.js's rewrite-a-file/commit shape — but this one
-// makes real network calls, so it's meant to run inside the GitHub Action,
-// not locally without a key).
+// Job 2 worker — multi-provider round robin (4 lanes).
 //
-// Item-list agnostic on purpose: doesn't hardcode whether Job 2 is the
-// 965-item (tags/themes only) or 1,427-item (+ archetypes) scope — that's
-// still an open question (plan doc Section 9.1). Point INPUT_PATH at
-// whichever taxonomy file you've decided on when you run this.
+// Rewritten after gemini-flash-latest silently drifted to a stricter
+// free-tier model (resolved to gemini-3.5-flash, ~20 req/window) and blew
+// through quota mid-run on the single-provider version. Splitting the
+// taxonomy 4 ways across independent free-tier accounts means no single
+// provider's quota can stall the whole job — each lane runs concurrently
+// against its own quota pool.
 //
-// Input file shape (JSON array):
-//   [{ "name": "Enemies to Lovers", "type": "romance_trope" },
-//    { "name": "Time Skip", "type": "plot_device" }, ...]
-// `type` is carried through untouched — it's not used for scoring, just
-// preserved so the output can be split back into properties.js's
-// genre/theme/etc. shape later if needed.
+// Lanes:
+//   1. Gemini      — pinned to gemini-2.5-flash (not an alias, see postmortem above)
+//   2. Groq        — llama-3.3-70b-versatile
+//   3. OpenRouter #1 — meta-llama/llama-3.3-70b-instruct:free
+//   4. OpenRouter #2 — same model, second account, doubles that lane's headroom
 //
-// Output: vectorEngine/job2_scored_raw.json — one entry per input item:
-//   { "name": ..., "type": ..., "scores": { "dark": 72, "funny": 5, ... } }
-//
-//   GOOGLE_API_KEY=... node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js path/to/taxonomy.json
+// Usage: node scoreTagAtoms.worker.js <taxonomy.json>
+// Writes: job2_scored_raw.json (in the same directory as the taxonomy file)
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { ATOMS } from './atoms.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const INPUT_PATH = process.argv[2];
-const OUTPUT_PATH = path.join(__dirname, 'job2_scored_raw.json');
-
-// gemini-flash-latest is Google's auto-updated alias for their current
-// GA flash-tier model (points at gemini-3.5-flash as of this pass) —
-// deliberately using the alias, not a pinned dated snapshot, so this
-// script doesn't silently start failing the next time Google retires a
-// specific model id (this repo has already been bitten once by a stale
-// hardcoded reference — see MoodConfig.js's absence, Section 7 q2).
-const MODEL = process.env.GEMINI_MODEL || 'gemini-flash-latest';
-const API_KEY = process.env.GOOGLE_API_KEY;
-const BATCH_SIZE = 20;          // items per API call — keeps prompts + JSON responses manageable
-
-// Free-tier pacing. Gemini Flash's free tier is ~10-15 RPM (checked live,
-// not assumed) — well under what 3 concurrent workers would burn through.
-// CONCURRENCY=1 + a fixed delay between requests keeps this under the cap
-// by construction instead of firing as fast as possible and leaning on
-// 429 retries to sort it out after the fact (retries still exist below as
-// a safety net, not as the primary pacing strategy).
-// Set GEMINI_RPM higher (e.g. 60+) once billing is enabled on the project
-// — this script will run proportionally faster with no other changes.
-const RPM = parseInt(process.env.GEMINI_RPM, 10) || 10;
-const REQUEST_SPACING_MS = Math.ceil(60000 / RPM);
-const RETRY_LIMIT = 3;
-const RATE_LIMIT_BACKOFF_MS = 20000; // 429s get a much longer wait than other transient errors
-
-if (!API_KEY) {
-    console.error('[Fatal] GOOGLE_API_KEY not set.');
-    process.exit(1);
-}
-if (!INPUT_PATH || !fs.existsSync(INPUT_PATH)) {
-    console.error('[Fatal] Usage: node scoreTagAtoms.worker.js <taxonomy.json>. File not found:', INPUT_PATH);
-    process.exit(1);
+const TAXONOMY_PATH = process.argv[2];
+if (!TAXONOMY_PATH || !fs.existsSync(TAXONOMY_PATH)) {
+  console.error(`[Fatal] Usage: node scoreTagAtoms.worker.js <taxonomy.json>. File not found: ${TAXONOMY_PATH}`);
+  process.exit(1);
 }
 
-function chunk(arr, size) {
-    const out = [];
-    for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-    return out;
-}
+const taxonomy = JSON.parse(fs.readFileSync(TAXONOMY_PATH, 'utf8'));
+const OUTPUT_PATH = path.join(path.dirname(TAXONOMY_PATH), 'job2_scored_raw.json');
+
+const BATCH_SIZE = 20;
+const MAX_RETRIES = 3;
+
+// ---------------------------------------------------------------------------
+// Provider configs
+// ---------------------------------------------------------------------------
+// Each provider gets its own pacing tuned conservatively below its documented
+// free-tier RPM (padding built in since free-tier numbers drift — see the
+// gemini-flash-latest incident this rewrite is responding to). Providers run
+// concurrently; one provider's 429 backoff never blocks another's progress.
+
+const PROVIDERS = [
+  {
+    name: 'gemini',
+    envKey: 'GOOGLE_API_KEY',
+    model: 'gemini-2.5-flash',
+    rpm: 10,
+    call: callGemini,
+  },
+  {
+    name: 'groq',
+    // Secret is named GORQ in the repo (typo kept as-is, do not rename
+    // without updating this file and the workflow's env mapping).
+    envKey: 'GORQ',
+    model: 'llama-3.3-70b-versatile',
+    rpm: 25,
+    call: callOpenAICompatible('https://api.groq.com/openai/v1/chat/completions'),
+  },
+  {
+    name: 'openrouter_1',
+    envKey: 'OPEN_ROUTER',
+    model: 'meta-llama/llama-3.3-70b-instruct:free',
+    rpm: 15,
+    call: callOpenAICompatible('https://openrouter.ai/api/v1/chat/completions'),
+  },
+  {
+    name: 'openrouter_2',
+    // Secret is named YOUR_SECERET_NAME in the repo — a naming accident kept
+    // as-is since GitHub secrets can't be renamed in place. This is
+    // OpenRouter account #2 (separate account from OPEN_ROUTER above), not a
+    // different provider. Do not rename without updating this file.
+    envKey: 'YOUR_SECERET_NAME',
+    model: 'meta-llama/llama-3.3-70b-instruct:free',
+    rpm: 15,
+    call: callOpenAICompatible('https://openrouter.ai/api/v1/chat/completions'),
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Prompt construction — shared across all providers
+// ---------------------------------------------------------------------------
 
 function buildPrompt(items) {
-    return `You are scoring manga/manhwa plot devices, romance tropes, and character archetypes against a fixed set of "mood atoms" for a recommendation engine.
+  const atomList = ATOMS.join(', ');
+  const itemNames = items.map((it) => `${it.name} (${it.type})`).join('\n');
+  return `You are scoring manga/story concepts against a fixed list of mood/emotion atoms.
 
-For EACH item below, score 1-100 how strongly that item's presence in a story signals EACH of these atoms. Ties across items are fine and expected — this is not a ranking, it's independent per-atom scoring. A low score (near 1) means "this item carries basically no signal for this atom," not "this item opposes it" — there is no negative direction, 1 is the floor.
+Atoms (score each item against ALL of these): ${atomList}
 
-Atoms (score all of these for every item): ${ATOMS.join(', ')}
+For each concept below, return an integer 1-100 for EVERY atom, reflecting how
+strongly that concept evokes that atom. Ties across atoms are fine and expected.
 
-Items to score:
-${items.map((it, i) => `${i + 1}. "${it.name}" (${it.type})`).join('\n')}
+Concepts:
+${itemNames}
 
-Respond with ONLY a JSON array, one object per item, in the same order, no markdown fences, no commentary:
-[{"name": "<exact item name>", "scores": {${ATOMS.map(a => `"${a}": <1-100>`).join(', ')}}}, ...]`;
+Return ONLY a JSON array, no prose, no markdown fences. Shape:
+[{"name": "<exact concept name>", "scores": {"<atom>": <1-100>, ...}}, ...]
+One object per concept, in the same order given above.`;
 }
 
-async function callGemini(prompt) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
-    const body = {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.2, responseMimeType: 'application/json' }
-    };
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+function parseModelJSON(raw) {
+  // Strip markdown fences some models add despite instructions.
+  const cleaned = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(cleaned);
+}
+
+// ---------------------------------------------------------------------------
+// Provider call implementations
+// ---------------------------------------------------------------------------
+
+async function callGemini(prompt, apiKey, model) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json' },
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(data));
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Empty Gemini response');
+  return parseModelJSON(text);
+}
+
+function callOpenAICompatible(endpoint) {
+  return async function (prompt, apiKey, model) {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' },
+      }),
     });
-    if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        const err = new Error(`Gemini ${res.status}: ${text.slice(0, 500)}`);
-        err.isRateLimit = (res.status === 429);
-        throw err;
-    }
     const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error('Gemini response had no text content: ' + JSON.stringify(data).slice(0, 500));
-    return JSON.parse(text);
+    if (!res.ok) throw new Error(JSON.stringify(data));
+    const text = data.choices?.[0]?.message?.content;
+    if (!text) throw new Error('Empty response');
+    // Some OpenAI-compatible providers require an object schema for
+    // response_format; if the model wraps the array under a key, unwrap it.
+    const parsed = parseModelJSON(text);
+    return Array.isArray(parsed) ? parsed : parsed.items || parsed.results || parsed;
+  };
 }
 
-function validateScores(entry) {
-    if (!entry || typeof entry.name !== 'string' || !entry.scores) return false;
-    return ATOMS.every(atom => {
-        const v = entry.scores[atom];
-        return typeof v === 'number' && Number.isFinite(v) && v >= 1 && v <= 100;
-    });
+// ---------------------------------------------------------------------------
+// Per-provider queue runner
+// ---------------------------------------------------------------------------
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function scoreBatch(items, attempt = 1) {
-    const prompt = buildPrompt(items);
-    try {
-        const parsed = await callGemini(prompt);
-        if (!Array.isArray(parsed) || parsed.length !== items.length) {
-            throw new Error(`Expected ${items.length} scored items, got ${Array.isArray(parsed) ? parsed.length : typeof parsed}`);
-        }
-        return parsed.map((entry, i) => {
-            if (!validateScores(entry)) {
-                throw new Error(`Malformed/out-of-range scores for "${items[i].name}": ${JSON.stringify(entry).slice(0, 200)}`);
-            }
-            return { name: items[i].name, type: items[i].type, scores: entry.scores };
-        });
-    } catch (err) {
-        if (attempt >= RETRY_LIMIT) {
-            console.error(`[Batch failed after ${RETRY_LIMIT} attempts] ${items.map(i => i.name).join(', ')} — ${err.message}`);
-            // Fail loud but don't kill the whole run — mark these for manual re-run.
-            return items.map(it => ({ name: it.name, type: it.type, scores: null, error: err.message }));
-        }
-        const wait = err.isRateLimit ? RATE_LIMIT_BACKOFF_MS * attempt : 1000 * attempt;
-        console.warn(`[Retry ${attempt}/${RETRY_LIMIT}, waiting ${wait}ms] ${err.message}`);
-        await new Promise(r => setTimeout(r, wait));
-        return scoreBatch(items, attempt + 1);
+async function runProviderQueue(provider, items) {
+  const apiKey = process.env[provider.envKey];
+  if (!apiKey) {
+    console.error(`[${provider.name}] Missing env var ${provider.envKey} — skipping this lane entirely.`);
+    return { scored: [], failed: items.map((it) => it.name) };
+  }
+
+  const batches = [];
+  for (let i = 0; i < items.length; i += BATCH_SIZE) {
+    batches.push(items.slice(i, i + BATCH_SIZE));
+  }
+
+  const requestSpacingMs = Math.ceil(60000 / provider.rpm);
+  const scored = [];
+  const failed = [];
+
+  console.log(
+    `[${provider.name}] ${items.length} items, ${batches.length} batches, model=${provider.model}, paced at ${provider.rpm} RPM (${requestSpacingMs}ms/request)`
+  );
+
+  for (let b = 0; b < batches.length; b++) {
+    const batch = batches[b];
+    console.log(`[${provider.name}] Batch ${b + 1}/${batches.length} scoring ${batch.length} items...`);
+
+    let attempt = 0;
+    let success = false;
+    while (attempt < MAX_RETRIES && !success) {
+      attempt++;
+      try {
+        const prompt = buildPrompt(batch);
+        const result = await provider.call(prompt, apiKey, provider.model);
+        scored.push(...result);
+        success = true;
+      } catch (err) {
+        const is429 = /429|RESOURCE_EXHAUSTED|rate.?limit/i.test(err.message);
+        const waitMs = is429 ? 20000 * attempt : 1000 * attempt;
+        console.log(`[${provider.name}] [Retry ${attempt}/${MAX_RETRIES}, waiting ${waitMs}ms] ${err.message.slice(0, 200)}`);
+        if (attempt < MAX_RETRIES) await sleep(waitMs);
+      }
     }
-}
 
-async function runPaced(batches) {
-    const results = [];
-    for (let i = 0; i < batches.length; i++) {
-        console.log(`[Batch ${i + 1}/${batches.length}] scoring ${batches[i].length} items...`);
-        const start = Date.now();
-        results.push(await scoreBatch(batches[i]));
-        const elapsed = Date.now() - start;
-        const remaining = REQUEST_SPACING_MS - elapsed;
-        if (remaining > 0 && i < batches.length - 1) {
-            await new Promise(r => setTimeout(r, remaining));
-        }
+    if (!success) {
+      const names = batch.map((it) => it.name);
+      console.log(`[${provider.name}] [Batch failed after ${MAX_RETRIES} attempts] ${names.join(', ')}`);
+      failed.push(...names);
     }
-    return results.flat();
+
+    if (b < batches.length - 1) await sleep(requestSpacingMs);
+  }
+
+  return { scored, failed };
 }
 
-async function run() {
-    const items = JSON.parse(fs.readFileSync(INPUT_PATH, 'utf8'));
-    const batches = chunk(items, BATCH_SIZE);
-    const etaMinutes = Math.ceil((batches.length * REQUEST_SPACING_MS) / 60000);
-    console.log(`[Job 2 worker] ${items.length} items, ${ATOMS.length} atoms, model=${MODEL}, batch=${BATCH_SIZE}, ` +
-        `paced at ${RPM} RPM (${REQUEST_SPACING_MS}ms/request) — ${batches.length} requests, ~${etaMinutes} min ETA.`);
+// ---------------------------------------------------------------------------
+// Main — split taxonomy 4 ways, run all lanes concurrently
+// ---------------------------------------------------------------------------
 
-    const scored = await runPaced(batches);
+function splitEvenly(arr, n) {
+  const chunks = Array.from({ length: n }, () => []);
+  arr.forEach((item, i) => chunks[i % n].push(item));
+  return chunks;
+}
 
-    const failed = scored.filter(s => s.scores === null);
-    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(scored, null, 2));
-    console.log(`[Done] Wrote ${scored.length} scored items to ${OUTPUT_PATH}.`);
-    if (failed.length > 0) {
-        console.warn(`[Warning] ${failed.length} item(s) failed all retries and have scores: null — re-run just those before proceeding to the judge pass: ${failed.map(f => f.name).join(', ')}`);
+async function main() {
+  const chunks = splitEvenly(taxonomy, PROVIDERS.length);
+
+  console.log(
+    `[Job 2 worker] ${taxonomy.length} items, 16 atoms, ${PROVIDERS.length}-way split (${chunks.map((c) => c.length).join('/')}) across: ${PROVIDERS.map((p) => p.name).join(', ')}`
+  );
+
+  const results = await Promise.allSettled(
+    PROVIDERS.map((provider, i) => runProviderQueue(provider, chunks[i]))
+  );
+
+  const allScored = [];
+  const allFailed = [];
+
+  results.forEach((result, i) => {
+    if (result.status === 'fulfilled') {
+      allScored.push(...result.value.scored);
+      allFailed.push(...result.value.failed);
+    } else {
+      console.error(`[${PROVIDERS[i].name}] Lane crashed entirely: ${result.reason}`);
+      allFailed.push(...chunks[i].map((it) => it.name));
     }
+  });
+
+  // Failed items get a null-score placeholder rather than silently vanishing,
+  // matching the original single-provider behavior.
+  allFailed.forEach((name) => {
+    allScored.push({ name, scores: null });
+  });
+
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(allScored, null, 2));
+  console.log(`[Job 2 worker] Done. ${allScored.length - allFailed.length} scored, ${allFailed.length} failed. Written to ${OUTPUT_PATH}`);
+
+  if (allFailed.length > 0) {
+    console.log(`[Job 2 worker] Failed items: ${allFailed.join(', ')}`);
+  }
 }
 
-run().catch(err => {
-    console.error('[Fatal]', err);
-    process.exit(1);
+main().catch((err) => {
+  console.error('[Fatal]', err);
+  process.exit(1);
 });
