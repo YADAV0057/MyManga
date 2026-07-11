@@ -39,13 +39,23 @@ export class HarvesterAPI {
                 this.fetchAliases(cleanTag)
             ]);
 
-            // Calculate confidence: 0.25 per successful API source
-            let successCount = 0;
-            if (annData.genres.length > 0 || annData.themes.length > 0) successCount++;
-            if (aniListData.genres.length > 0 || aniListData.themes.length > 0) successCount++;
-            if (jikanData.genres.length > 0 || jikanData.themes.length > 0) successCount++;
-            if (synonyms.length > 0) successCount++;
-            const calculatedConfidenceScore = successCount * 0.25;
+            // Calculate confidence: 0.25 per successful API source.
+            //
+            // FIX: `sources` used to be a hardcoded ["ANN", "AniList", "Jikan",
+            // "Datamuse"] regardless of what actually returned data.
+            // fetchFromANN() is currently an unimplemented stub (always
+            // returns empty genres/themes — the XML response is fetched but
+            // never parsed), so "ANN" was always listed as a queried source
+            // even though it never contributed anything. Now `sources` is
+            // built from the same per-source success checks that drive the
+            // confidence score, so it only lists a source once it has
+            // actually contributed data for this concept.
+            const usedSources = [];
+            if (annData.genres.length > 0 || annData.themes.length > 0) usedSources.push("ANN");
+            if (aniListData.genres.length > 0 || aniListData.themes.length > 0) usedSources.push("AniList");
+            if (jikanData.genres.length > 0 || jikanData.themes.length > 0) usedSources.push("Jikan");
+            if (synonyms.length > 0) usedSources.push("Datamuse");
+            const calculatedConfidenceScore = usedSources.length * 0.25;
 
             const mergedGenres = new Map();
             [...annData.genres, ...aniListData.genres, ...jikanData.genres].forEach(g => {
@@ -107,7 +117,7 @@ export class HarvesterAPI {
                 // this function.
                 id: cleanTag,
                 metadata: {
-                    sources: ["ANN", "AniList", "Jikan", "Datamuse"],
+                    sources: usedSources,
                     generatedAt: new Date().toISOString(),
                     confidence: calculatedConfidenceScore,
                     version: "1.0.0"
