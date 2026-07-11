@@ -32,7 +32,18 @@ const WEIGHTS = {
     // and null when there's no signal (see components.filter below), so
     // this is purely additive: a concept with no entities/opposite data
     // yet scores byte-identical to before this change.
-    entity: 0.05
+    entity: 0.05,
+    // NEW — fallback signal for concepts with no moodWeights (the "root
+    // structural gap": AniList has no genre/tag equivalent for an invented/
+    // compound trope name, so calculateMood() could never produce a
+    // mood-atom vector for it — see PARSER_DICTIONARY_BUG_FINDINGS.md
+    // Section 1). Rather than leaving such a concept invisible to scoring,
+    // this uses the two things every concept has regardless of AniList
+    // coverage — its own `excludes` and `boosts` — as a substitute signal.
+    // Null (not 0) whenever no moodless concept was actually matched, so
+    // this never touches scoring for concepts that already have real
+    // moodWeights.
+    conceptSignal: 0.08
 };
 
 // A query word matches MOOD_DICTIONARY by the concept's own id (see
@@ -48,6 +59,27 @@ function matchedConcepts(intent, conceptDictionary) {
     return intent.moods
         .map(id => conceptDictionary[id])
         .filter(Boolean);
+}
+
+/**
+ * A concept's `boosts` array is a list of trope/mood-id strings (e.g.
+ * ["dark", "survival", "antihero"]) — plain keywords, not genre/theme
+ * names. Some of those ids happen to BE other concepts in the same
+ * dictionary (harvested or hand-curated), which DO carry real genres/
+ * themes. This resolves each boost id through the dictionary and returns
+ * the union of whatever genre/theme names those sibling concepts have —
+ * a proxy signal for a concept that has none of its own.
+ * @returns {Set<string>}
+ */
+function resolveBoostGenres(concept, conceptDictionary) {
+    const names = new Set();
+    (concept.boosts || []).forEach(boostId => {
+        const boostConcept = conceptDictionary?.[String(boostId).toLowerCase()];
+        if (!boostConcept) return;
+        (boostConcept.genres || []).forEach(g => g?.name && names.add(g.name));
+        (boostConcept.themes || []).forEach(t => t?.name && names.add(t.name));
+    });
+    return names;
 }
 
 const NEUTRAL = 0.6; // score used when a signal has nothing to compare against
@@ -131,7 +163,7 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
         reasons.push({ ok: true, text: 'Exact title match' });
         return {
             matchScore: 100,
-            matchBreakdown: { mood: 100, genre: 100, theme: 100, demographic: 100, constraint: 100, popularity: 100, rating: 100, entity: 100 },
+            matchBreakdown: { mood: 100, genre: 100, theme: 100, demographic: 100, constraint: 100, popularity: 100, rating: 100, entity: 100, conceptSignal: 100 },
             matchReasons: dedupeReasons(reasons).slice(0, 6)
         };
     }
@@ -236,6 +268,48 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
     });
     constraintScore = Math.max(0, constraintScore);
 
+    // --- Concept signal fallback (NEW) — the "root structural gap" fix.
+    // Concepts whose name has no AniList genre/tag equivalent (invented or
+    // compound tropes, e.g. "Academic Rivalry") get moodWeights: {} forever
+    // — calculateMood() has nothing to build a mood-atom vector from, so
+    // buildMoodVector() in moodEngine.js silently skips them and they never
+    // influence intent.moodVector or the mood score above. That doesn't
+    // mean the concept has NO usable data, though: it still has `excludes`
+    // (real genre/theme names, hand-authored or synopsis-derived) and
+    // `boosts` (trope/mood-id strings, some of which resolve to sibling
+    // concepts that DO have real genres/themes — see resolveBoostGenres()).
+    // This uses both as a substitute recall signal, active only when a
+    // matched concept actually has empty moodWeights — a concept with real
+    // moodWeights is scored by the mood component above as before, so this
+    // never double-counts or changes existing scoring.
+    let conceptSignalScore = null;
+    const moodlessMatches = matchedConcepts(intent, conceptDictionary)
+        .filter(c => !c.moodWeights || Object.keys(c.moodWeights).length === 0);
+    if (moodlessMatches.length > 0) {
+        let hits = 0, total = 0;
+        moodlessMatches.forEach(concept => {
+            // Own excludes — same polarity as the plan-level excludedGenres/
+            // excludedThemes check above: absence of an excluded name is
+            // the desired case.
+            [...(concept.excludes?.genres || []), ...(concept.excludes?.themes || [])].forEach(ex => {
+                total++;
+                if (!itemHas.has(ex.toLowerCase())) hits++;
+            });
+            // Boosts resolved through sibling concepts' real genre/theme data.
+            resolveBoostGenres(concept, conceptDictionary).forEach(name => {
+                total++;
+                if (itemHas.has(name.toLowerCase())) hits++;
+            });
+        });
+        if (total > 0) {
+            conceptSignalScore = hits / total;
+            if (conceptSignalScore >= 0.7) {
+                const label = moodlessMatches[0].id || intent.moods?.[0];
+                reasons.push({ ok: true, text: `Fits "${label}" trope signature` });
+            }
+        }
+    }
+
     // --- Entity match (5%, NEW) — is this item one of the specific manga
     // curated for the matched concept (entityRelations.js, 2+ independent
     // sources agreeing)? A stronger, catalog-verified signal than genre/
@@ -280,7 +354,8 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
         { score: constraintScore, weight: WEIGHTS.constraint },
         { score: popularityScore, weight: WEIGHTS.popularity },
         { score: ratingScore, weight: WEIGHTS.rating },
-        { score: entityScore, weight: WEIGHTS.entity }
+        { score: entityScore, weight: WEIGHTS.entity },
+        { score: conceptSignalScore, weight: WEIGHTS.conceptSignal }
     ].filter(c => c.score !== null && c.score !== undefined);
 
     const weightSum = components.reduce((sum, c) => sum + c.weight, 0);
@@ -298,7 +373,8 @@ function scoreOne(item, intent, plan, normPopularity, mangaProfile, conceptDicti
             constraint: Math.round(constraintScore * 100),
             popularity: Math.round(popularityScore * 100),
             rating: Math.round(ratingScore * 100),
-            entity: entityScore !== null ? Math.round(entityScore * 100) : null
+            entity: entityScore !== null ? Math.round(entityScore * 100) : null,
+            conceptSignal: conceptSignalScore !== null ? Math.round(conceptSignalScore * 100) : null
         },
         // De-duped, ✓ first then ✗, capped so cards don't get a wall of text.
         matchReasons: dedupeReasons(reasons).slice(0, 6)
@@ -340,7 +416,7 @@ export async function scoreResults(unifiedResults, intent, plan, conceptDictiona
 
     const profileEntries = await Promise.all(
         unifiedResults.map(item => {
-            // OPTIMIZATION: Skip the Firestore round-trip entirely if there is no mood profile vector to score against[span_1](start_span)[span_1](end_span)
+            // OPTIMIZATION: skip the Firestore round-trip entirely if there is no mood profile vector to score against.
             if (!intent.moodVector || Object.keys(intent.moodVector).length === 0) {
                 return Promise.resolve([profileKey(item), {}]);
             }
