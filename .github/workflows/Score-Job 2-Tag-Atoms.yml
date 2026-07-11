@@ -10,13 +10,9 @@ on:
         description: 'Fraction of items the judge re-scores (0-1)'
         required: false
         default: '0.15'
-      gemini_rpm:
-        description: 'Gemini requests/minute to pace the worker at (free tier ~10-15; raise once billing is enabled)'
-        required: false
-        default: '10'
-  # Manual trigger only — same reasoning as every other job in this
-  # family (backfill-moodweights.yml etc.): this costs real API calls and
-  # real money, it should never auto-fire on push.
+# Manual trigger only — same reasoning as every other job in this
+# family (backfill-moodweights.yml etc.): this costs real API calls and
+# real money, it should never auto-fire on push.
 
 permissions:
   contents: write
@@ -35,10 +31,23 @@ jobs:
 
       - run: npm install
 
-      - name: Worker pass (Google Gemini scores every item)
+      - name: Worker pass (4-lane round robin — GitHub Models, Groq, 2x OpenRouter)
         env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          GEMINI_RPM: ${{ github.event.inputs.gemini_rpm }}
+          # Lane 1: GitHub Models. Requires a fine-grained PAT with the
+          # models:read scope — a plain classic token will 403. GitHub
+          # Models retires 2026-07-30; fine for this run, don't depend on
+          # it past that date.
+          GIT_HUB_KEY: ${{ secrets.GIT_HUB_KEY }}
+          # Lane 2: Groq. Secret name kept as GORQ (typo, do not rename
+          # without also updating scoreTagAtoms.worker.js).
+          GORQ: ${{ secrets.GORQ }}
+          # Lane 3: OpenRouter account #1.
+          OPEN_ROUTER: ${{ secrets.OPEN_ROUTER }}
+          # Lane 4: OpenRouter account #2. Secret name kept as
+          # YOUR_SECERET_NAME (naming accident, GitHub secrets can't be
+          # renamed in place — do not rename without also updating
+          # scoreTagAtoms.worker.js).
+          YOUR_SECERET_NAME: ${{ secrets.YOUR_SECERET_NAME }}
         run: node js/parser/dictionary/vectorEngine/scoreTagAtoms.worker.js "${{ github.event.inputs.taxonomy_path }}"
 
       - name: Judge pass (Cerebras QCs a sample)
@@ -56,5 +65,5 @@ jobs:
                   js/parser/dictionary/vectorEngine/job2_final.json \
                   js/parser/dictionary/vectorEngine/job2_review_queue.json
 
-          git commit -m "Job 2: score tag/theme atoms (worker: Gemini, judge: Cerebras)" || echo "No changes to commit"
+          git commit -m "Job 2: score tag/theme atoms (worker: GitHub Models+Groq+OpenRouter x2, judge: Cerebras)" || echo "No changes to commit"
           git push
