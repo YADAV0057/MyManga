@@ -1,0 +1,2057 @@
+[
+  {
+    "name": "Adventure",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Romance",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Shoujo",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Male Harem",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Action",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Fantasy",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Seinen",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Age Regression",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Full Color",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Male Protagonist",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Magic",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Dungeon",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Found Family",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Heterosexual",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Comedy",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Hentai",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Psychological",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Supernatural",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Demons",
+    "type": "tag",
+    "discoveredVia": "Adventurer"
+  },
+  {
+    "name": "Slice of Life",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Yuri",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Age Gap",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Incest",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Primarily Female Cast",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Female Protagonist",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Family Life",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Boys' Love",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Time Skip",
+    "type": "tag",
+    "discoveredVia": "Age Gap"
+  },
+  {
+    "name": "Drama",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Alchemy",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Ecchi",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Nudity",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Slavery",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Isekai",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Reincarnation",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Elf",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Conspiracy",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Politics",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Philosophy",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Military",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "War",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Tragedy",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Shounen",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Disability",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Travel",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Steampunk",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Ensemble Cast",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Body Horror",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Super Power",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Lost Civilization",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Chimera",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Primarily Male Cast",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Shapeshifting",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Primarily Adult Cast",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Guns",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Gore",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Historical",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Cars",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Tsundere",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Kuudere",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Tomboy",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Trains",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Human Experimentation",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Urban Fantasy",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Martial Arts",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Cultivation",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Revenge",
+    "type": "tag",
+    "discoveredVia": "Alchemist"
+  },
+  {
+    "name": "Sci-Fi",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Aliens",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Horror",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Denpa",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Coming of Age",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Primarily Child Cast",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "School",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Surreal Comedy",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Cosmic Horror",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Proxy Battle",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Teacher",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Idol",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "LGBTQ+ Themes",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Tanned Skin",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Otaku Culture",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Educational",
+    "type": "tag",
+    "discoveredVia": "Alien"
+  },
+  {
+    "name": "Clone",
+    "type": "tag",
+    "discoveredVia": "Alter Ego"
+  },
+  {
+    "name": "Long Strip",
+    "type": "tag",
+    "discoveredVia": "Alter Ego"
+  },
+  {
+    "name": "Amnesia",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Female Harem",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Nakadashi",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Boobjob",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Irrumatio",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Fellatio",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Defloration",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Virginity",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Large Breasts",
+    "type": "tag",
+    "discoveredVia": "Amnesiac"
+  },
+  {
+    "name": "Mystery",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Anthology",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Tokusatsu",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Artificial Intelligence",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Robots",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Twins",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Henshin",
+    "type": "tag",
+    "discoveredVia": "Android"
+  },
+  {
+    "name": "Josei",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Angels",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Episodic",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Bar",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Animals",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Bullying",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Suicide",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Sports",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Cycling",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Delinquents",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Ero Guro",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Rural",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Primarily Teen Cast",
+    "type": "tag",
+    "discoveredVia": "Angel"
+  },
+  {
+    "name": "Parenthood",
+    "type": "tag",
+    "discoveredVia": "Anti-Hero"
+  },
+  {
+    "name": "Swordplay",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Werewolf",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Royal Affairs",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Medicine",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Zombie",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Necromancy",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Parody",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Detective",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Foreign",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Drugs",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Work",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Crime",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Maids",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Adoption",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Asexual",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Chibi",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Ojou-sama",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Religion",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Desert",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Aromantic",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Agriculture",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Ancient China",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Go",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Crossdressing",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Economics",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Pregnancy",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Meta",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Natural Disaster",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Shogi",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Rape",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Rehabilitation",
+    "type": "tag",
+    "discoveredVia": "Apothecary"
+  },
+  {
+    "name": "Archery",
+    "type": "tag",
+    "discoveredVia": "Archer"
+  },
+  {
+    "name": "Classic Literature",
+    "type": "tag",
+    "discoveredVia": "Archer"
+  },
+  {
+    "name": "Anti-Hero",
+    "type": "tag",
+    "discoveredVia": "Aristocrat"
+  },
+  {
+    "name": "Inseki",
+    "type": "tag",
+    "discoveredVia": "Aristocrat"
+  },
+  {
+    "name": "Thriller",
+    "type": "tag",
+    "discoveredVia": "Assassin"
+  },
+  {
+    "name": "Writing",
+    "type": "tag",
+    "discoveredVia": "Author"
+  },
+  {
+    "name": "Villainess",
+    "type": "tag",
+    "discoveredVia": "Author"
+  },
+  {
+    "name": "Yandere",
+    "type": "tag",
+    "discoveredVia": "Author"
+  },
+  {
+    "name": "Video Games",
+    "type": "tag",
+    "discoveredVia": "Avatar"
+  },
+  {
+    "name": "Virtual World",
+    "type": "tag",
+    "discoveredVia": "Avatar"
+  },
+  {
+    "name": "E-Sports",
+    "type": "tag",
+    "discoveredVia": "Avatar"
+  },
+  {
+    "name": "Gender Bending",
+    "type": "tag",
+    "discoveredVia": "Avatar"
+  },
+  {
+    "name": "Acting",
+    "type": "tag",
+    "discoveredVia": "Bad Boy"
+  },
+  {
+    "name": "Drawing",
+    "type": "tag",
+    "discoveredVia": "Baker"
+  },
+  {
+    "name": "Food",
+    "type": "tag",
+    "discoveredVia": "Baker"
+  },
+  {
+    "name": "Cohabitation",
+    "type": "tag",
+    "discoveredVia": "Baker"
+  },
+  {
+    "name": "Bisexual",
+    "type": "tag",
+    "discoveredVia": "Baker"
+  },
+  {
+    "name": "Iyashikei",
+    "type": "tag",
+    "discoveredVia": "Baker"
+  },
+  {
+    "name": "Police",
+    "type": "tag",
+    "discoveredVia": "Bandit"
+  },
+  {
+    "name": "Biographical",
+    "type": "tag",
+    "discoveredVia": "Bandit"
+  },
+  {
+    "name": "Samurai",
+    "type": "tag",
+    "discoveredVia": "Barbarian"
+  },
+  {
+    "name": "Mythology",
+    "type": "tag",
+    "discoveredVia": "Barbarian"
+  },
+  {
+    "name": "Language Barrier",
+    "type": "tag",
+    "discoveredVia": "Barbarian"
+  },
+  {
+    "name": "Medieval",
+    "type": "tag",
+    "discoveredVia": "Barbarian"
+  },
+  {
+    "name": "Elderly Protagonist",
+    "type": "tag",
+    "discoveredVia": "Bard"
+  },
+  {
+    "name": "Anthropomorphism",
+    "type": "tag",
+    "discoveredVia": "Baron"
+  },
+  {
+    "name": "Nekomimi",
+    "type": "tag",
+    "discoveredVia": "Baron"
+  },
+  {
+    "name": "Mafia",
+    "type": "tag",
+    "discoveredVia": "Beast"
+  },
+  {
+    "name": "Alternate Universe",
+    "type": "tag",
+    "discoveredVia": "Beast"
+  },
+  {
+    "name": "Monster Boy",
+    "type": "tag",
+    "discoveredVia": "Beast"
+  },
+  {
+    "name": "Cannibalism",
+    "type": "tag",
+    "discoveredVia": "Beast"
+  },
+  {
+    "name": "Assassins",
+    "type": "tag",
+    "discoveredVia": "Beast"
+  },
+  {
+    "name": "Yakuza",
+    "type": "tag",
+    "discoveredVia": "Beast"
+  },
+  {
+    "name": "Public Sex",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "College",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Monster Girl",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Body Image",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Curses",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Fairy Tale",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Love Triangle",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Mermaid",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Witch",
+    "type": "tag",
+    "discoveredVia": "Beauty and the Beast"
+  },
+  {
+    "name": "Cunnilingus",
+    "type": "tag",
+    "discoveredVia": "Berserker"
+  },
+  {
+    "name": "Arranged Marriage",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Dragons",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Gods",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Anal Sex",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Youkai",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Marriage",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Kemonomimi",
+    "type": "tag",
+    "discoveredVia": "Betrothed"
+  },
+  {
+    "name": "Hikikomori",
+    "type": "tag",
+    "discoveredVia": "Billionaire"
+  },
+  {
+    "name": "Urban",
+    "type": "tag",
+    "discoveredVia": "Billionaire"
+  },
+  {
+    "name": "Short-Form Chapter",
+    "type": "tag",
+    "discoveredVia": "Billionaire"
+  },
+  {
+    "name": "4-koma",
+    "type": "tag",
+    "discoveredVia": "Billionaire"
+  },
+  {
+    "name": "Femdom",
+    "type": "tag",
+    "discoveredVia": "Bipolar"
+  },
+  {
+    "name": "Bondage",
+    "type": "tag",
+    "discoveredVia": "Blind"
+  },
+  {
+    "name": "Sadism",
+    "type": "tag",
+    "discoveredVia": "Blind"
+  },
+  {
+    "name": "Sex Toys",
+    "type": "tag",
+    "discoveredVia": "Blind"
+  },
+  {
+    "name": "Tentacles",
+    "type": "tag",
+    "discoveredVia": "Blind"
+  },
+  {
+    "name": "MILF",
+    "type": "tag",
+    "discoveredVia": "Bodyguard"
+  },
+  {
+    "name": "Flat Chest",
+    "type": "tag",
+    "discoveredVia": "Bounty Hunter"
+  },
+  {
+    "name": "Basketball",
+    "type": "tag",
+    "discoveredVia": "Brat"
+  },
+  {
+    "name": "School Club",
+    "type": "tag",
+    "discoveredVia": "Brat"
+  },
+  {
+    "name": "Group Sex",
+    "type": "tag",
+    "discoveredVia": "Bully"
+  },
+  {
+    "name": "Butler",
+    "type": "tag",
+    "discoveredVia": "Butler"
+  },
+  {
+    "name": "Omegaverse",
+    "type": "tag",
+    "discoveredVia": "Butler"
+  },
+  {
+    "name": "Body Swapping",
+    "type": "tag",
+    "discoveredVia": "Cafe Owner"
+  },
+  {
+    "name": "Teens' Love",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Handjob",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Fingering",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Sumata",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Masturbation",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Threesome",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Futanari",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Scat",
+    "type": "tag",
+    "discoveredVia": "Catgirl"
+  },
+  {
+    "name": "Post-Apocalyptic",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Centaur",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Satire",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Terrorism",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Cute Girls Doing Cute Things",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Espionage",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Matriarchy",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Gangs",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Kaiju",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Athletics",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Environmental",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Shrine Maiden",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Exorcism",
+    "type": "tag",
+    "discoveredVia": "Centaur"
+  },
+  {
+    "name": "Space",
+    "type": "tag",
+    "discoveredVia": "Changeling"
+  },
+  {
+    "name": "Gyaru",
+    "type": "tag",
+    "discoveredVia": "Charismatic"
+  },
+  {
+    "name": "Facial",
+    "type": "tag",
+    "discoveredVia": "Charismatic"
+  },
+  {
+    "name": "Ahegao",
+    "type": "tag",
+    "discoveredVia": "Charismatic"
+  },
+  {
+    "name": "Prostitution",
+    "type": "tag",
+    "discoveredVia": "Charismatic"
+  },
+  {
+    "name": "Vampire",
+    "type": "tag",
+    "discoveredVia": "Chef"
+  },
+  {
+    "name": "Cult",
+    "type": "tag",
+    "discoveredVia": "Chevalier"
+  },
+  {
+    "name": "Squirting",
+    "type": "tag",
+    "discoveredVia": "Childhood Friend"
+  },
+  {
+    "name": "Oyakodon",
+    "type": "tag",
+    "discoveredVia": "Childhood Friend"
+  },
+  {
+    "name": "Masochism",
+    "type": "tag",
+    "discoveredVia": "Childhood Friend"
+  },
+  {
+    "name": "Wuxia",
+    "type": "tag",
+    "discoveredVia": "Chosen One"
+  },
+  {
+    "name": "Chuunibyou",
+    "type": "tag",
+    "discoveredVia": "Chuunibyou"
+  },
+  {
+    "name": "POV",
+    "type": "tag",
+    "discoveredVia": "Chuunibyou"
+  },
+  {
+    "name": "Criminal Organization",
+    "type": "tag",
+    "discoveredVia": "Cleric"
+  },
+  {
+    "name": "Zoophilia",
+    "type": "tag",
+    "discoveredVia": "College Student"
+  },
+  {
+    "name": "Succubus",
+    "type": "tag",
+    "discoveredVia": "College Student"
+  },
+  {
+    "name": "Afterlife",
+    "type": "tag",
+    "discoveredVia": "Companion"
+  },
+  {
+    "name": "Time Manipulation",
+    "type": "tag",
+    "discoveredVia": "Companion"
+  },
+  {
+    "name": "Ghost",
+    "type": "tag",
+    "discoveredVia": "Companion"
+  },
+  {
+    "name": "Netori",
+    "type": "tag",
+    "discoveredVia": "Concubine"
+  },
+  {
+    "name": "Matchmaking",
+    "type": "tag",
+    "discoveredVia": "Concubine"
+  },
+  {
+    "name": "Cyberpunk",
+    "type": "tag",
+    "discoveredVia": "Cop"
+  },
+  {
+    "name": "Cyborg",
+    "type": "tag",
+    "discoveredVia": "Cop"
+  },
+  {
+    "name": "Motorcycles",
+    "type": "tag",
+    "discoveredVia": "Cop"
+  },
+  {
+    "name": "Slapstick",
+    "type": "tag",
+    "discoveredVia": "Cop"
+  },
+  {
+    "name": "Vocal Synth",
+    "type": "tag",
+    "discoveredVia": "Coward"
+  },
+  {
+    "name": "Skeleton",
+    "type": "tag",
+    "discoveredVia": "Crafter"
+  },
+  {
+    "name": "Dissociative Identities",
+    "type": "tag",
+    "discoveredVia": "Criminal"
+  },
+  {
+    "name": "Agender",
+    "type": "tag",
+    "discoveredVia": "Crossdresser"
+  },
+  {
+    "name": "Transgender",
+    "type": "tag",
+    "discoveredVia": "Crossdresser"
+  },
+  {
+    "name": "Dystopian",
+    "type": "tag",
+    "discoveredVia": "Dancer"
+  },
+  {
+    "name": "Dancing",
+    "type": "tag",
+    "discoveredVia": "Dancer"
+  },
+  {
+    "name": "Ballet",
+    "type": "tag",
+    "discoveredVia": "Dancer"
+  },
+  {
+    "name": "Watersports",
+    "type": "tag",
+    "discoveredVia": "Dark Elf"
+  },
+  {
+    "name": "Sweat",
+    "type": "tag",
+    "discoveredVia": "Dark Elf"
+  },
+  {
+    "name": "DILF",
+    "type": "tag",
+    "discoveredVia": "Daughter"
+  },
+  {
+    "name": "Blackmail",
+    "type": "tag",
+    "discoveredVia": "Daughter"
+  },
+  {
+    "name": "Netorare",
+    "type": "tag",
+    "discoveredVia": "Daughter"
+  },
+  {
+    "name": "Reverse Isekai",
+    "type": "tag",
+    "discoveredVia": "Delinquent"
+  },
+  {
+    "name": "Fugitive",
+    "type": "tag",
+    "discoveredVia": "Demi-Human"
+  },
+  {
+    "name": "Torture",
+    "type": "tag",
+    "discoveredVia": "Demi-Human"
+  },
+  {
+    "name": "Mixed Gender Harem",
+    "type": "tag",
+    "discoveredVia": "Demi-Human"
+  },
+  {
+    "name": "Polyamorous",
+    "type": "tag",
+    "discoveredVia": "Demi-Human"
+  },
+  {
+    "name": "Exhibitionism",
+    "type": "tag",
+    "discoveredVia": "Demi-Human"
+  },
+  {
+    "name": "Snowscape",
+    "type": "tag",
+    "discoveredVia": "Demon Lord"
+  },
+  {
+    "name": "Dinosaurs",
+    "type": "tag",
+    "discoveredVia": "Demon Lord"
+  },
+  {
+    "name": "Achronological Order",
+    "type": "tag",
+    "discoveredVia": "Devil"
+  },
+  {
+    "name": "Estranged Family",
+    "type": "tag",
+    "discoveredVia": "Devil"
+  },
+  {
+    "name": "Office",
+    "type": "tag",
+    "discoveredVia": "Director"
+  },
+  {
+    "name": "Deepthroat",
+    "type": "tag",
+    "discoveredVia": "Disciple"
+  },
+  {
+    "name": "Rimjob",
+    "type": "tag",
+    "discoveredVia": "Disciple"
+  },
+  {
+    "name": "Voyeur",
+    "type": "tag",
+    "discoveredVia": "Disciple"
+  },
+  {
+    "name": "Human Pet",
+    "type": "tag",
+    "discoveredVia": "Dog Girl"
+  },
+  {
+    "name": "Pet Play",
+    "type": "tag",
+    "discoveredVia": "Dog Girl"
+  },
+  {
+    "name": "Volleyball",
+    "type": "tag",
+    "discoveredVia": "Dog Girl"
+  },
+  {
+    "name": "Ninja",
+    "type": "tag",
+    "discoveredVia": "Doll"
+  },
+  {
+    "name": "Survival",
+    "type": "tag",
+    "discoveredVia": "Doppelganger"
+  },
+  {
+    "name": "Gekiga",
+    "type": "tag",
+    "discoveredVia": "Duke"
+  },
+  {
+    "name": "Dullahan",
+    "type": "tag",
+    "discoveredVia": "Dullahan"
+  },
+  {
+    "name": "Circus",
+    "type": "tag",
+    "discoveredVia": "Dwarf"
+  },
+  {
+    "name": "Anachronism",
+    "type": "tag",
+    "discoveredVia": "Dwarf"
+  },
+  {
+    "name": "Fairy",
+    "type": "tag",
+    "discoveredVia": "Earl"
+  },
+  {
+    "name": "Class Struggle",
+    "type": "tag",
+    "discoveredVia": "Emperor"
+  },
+  {
+    "name": "Office Lady",
+    "type": "tag",
+    "discoveredVia": "Enemy"
+  },
+  {
+    "name": "Swimming",
+    "type": "tag",
+    "discoveredVia": "Enemy"
+  },
+  {
+    "name": "Mecha",
+    "type": "tag",
+    "discoveredVia": "Engineer"
+  },
+  {
+    "name": "Software Development",
+    "type": "tag",
+    "discoveredVia": "Engineer"
+  },
+  {
+    "name": "Asphyxiation",
+    "type": "tag",
+    "discoveredVia": "Engineer"
+  },
+  {
+    "name": "Kingdom Management",
+    "type": "tag",
+    "discoveredVia": "Engineer"
+  },
+  {
+    "name": "Cosplay",
+    "type": "tag",
+    "discoveredVia": "Esper"
+  },
+  {
+    "name": "Ashikoki",
+    "type": "tag",
+    "discoveredVia": "Esper"
+  },
+  {
+    "name": "Advertisement",
+    "type": "tag",
+    "discoveredVia": "Esper"
+  },
+  {
+    "name": "Prison",
+    "type": "tag",
+    "discoveredVia": "Executioner"
+  },
+  {
+    "name": "Orphan",
+    "type": "tag",
+    "discoveredVia": "Executioner"
+  },
+  {
+    "name": "Goblin",
+    "type": "tag",
+    "discoveredVia": "Executioner"
+  },
+  {
+    "name": "Restaurant",
+    "type": "tag",
+    "discoveredVia": "Exiled"
+  },
+  {
+    "name": "Music",
+    "type": "tag",
+    "discoveredVia": "Explorer"
+  },
+  {
+    "name": "Jazz Music",
+    "type": "tag",
+    "discoveredVia": "Explorer"
+  },
+  {
+    "name": "Femboy",
+    "type": "tag",
+    "discoveredVia": "Extra"
+  },
+  {
+    "name": "Death Game",
+    "type": "tag",
+    "discoveredVia": "Extra"
+  },
+  {
+    "name": "Spearplay",
+    "type": "tag",
+    "discoveredVia": "Extra"
+  },
+  {
+    "name": "Autobiographical",
+    "type": "tag",
+    "discoveredVia": "Farmer"
+  },
+  {
+    "name": "Horticulture",
+    "type": "tag",
+    "discoveredVia": "Farmer"
+  },
+  {
+    "name": "Boarding School",
+    "type": "tag",
+    "discoveredVia": "Femme Fatale"
+  },
+  {
+    "name": "Firefighters",
+    "type": "tag",
+    "discoveredVia": "Firefighter"
+  },
+  {
+    "name": "Rescue",
+    "type": "tag",
+    "discoveredVia": "Firefighter"
+  },
+  {
+    "name": "Outdoor Activities",
+    "type": "tag",
+    "discoveredVia": "Firefighter"
+  },
+  {
+    "name": "Inn",
+    "type": "tag",
+    "discoveredVia": "Fox Spirit"
+  },
+  {
+    "name": "Memory Manipulation",
+    "type": "tag",
+    "discoveredVia": "Fox Spirit"
+  },
+  {
+    "name": "Brainwashing",
+    "type": "tag",
+    "discoveredVia": "Fox Spirit"
+  },
+  {
+    "name": "Battle Royale",
+    "type": "tag",
+    "discoveredVia": "Gamer"
+  },
+  {
+    "name": "Gambling",
+    "type": "tag",
+    "discoveredVia": "Gamer"
+  },
+  {
+    "name": "Baseball",
+    "type": "tag",
+    "discoveredVia": "General"
+  },
+  {
+    "name": "Band",
+    "type": "tag",
+    "discoveredVia": "Giant"
+  },
+  {
+    "name": "Tennis",
+    "type": "tag",
+    "discoveredVia": "Giant"
+  },
+  {
+    "name": "Super Robot",
+    "type": "tag",
+    "discoveredVia": "Giant"
+  },
+  {
+    "name": "Real Robot",
+    "type": "tag",
+    "discoveredVia": "Gladiator"
+  },
+  {
+    "name": "Scissoring",
+    "type": "tag",
+    "discoveredVia": "Goddess"
+  },
+  {
+    "name": "Fake Relationship",
+    "type": "tag",
+    "discoveredVia": "Grand Duke"
+  },
+  {
+    "name": "Time Loop",
+    "type": "tag",
+    "discoveredVia": "Half-Demon"
+  },
+  {
+    "name": "Photography",
+    "type": "tag",
+    "discoveredVia": "Harpy"
+  },
+  {
+    "name": "Cowboys",
+    "type": "tag",
+    "discoveredVia": "Heir"
+  },
+  {
+    "name": "Psychosexual",
+    "type": "tag",
+    "discoveredVia": "Homunculus"
+  },
+  {
+    "name": "Homeless",
+    "type": "tag",
+    "discoveredVia": "Homunculus"
+  },
+  {
+    "name": "Cheating",
+    "type": "tag",
+    "discoveredVia": "Housewife"
+  },
+  {
+    "name": "Ships",
+    "type": "tag",
+    "discoveredVia": "Hunter"
+  },
+  {
+    "name": "Card Battle",
+    "type": "tag",
+    "discoveredVia": "Hunter"
+  },
+  {
+    "name": "Mating Press",
+    "type": "tag",
+    "discoveredVia": "Husband"
+  },
+  {
+    "name": "Ice Skating",
+    "type": "tag",
+    "discoveredVia": "Ice Queen"
+  },
+  {
+    "name": "Unrequited Love",
+    "type": "tag",
+    "discoveredVia": "Ice Queen"
+  },
+  {
+    "name": "Noir",
+    "type": "tag",
+    "discoveredVia": "Immortal"
+  },
+  {
+    "name": "Nun",
+    "type": "tag",
+    "discoveredVia": "Incubus"
+  },
+  {
+    "name": "Rugby",
+    "type": "tag",
+    "discoveredVia": "Invincible"
+  },
+  {
+    "name": "Mahjong",
+    "type": "tag",
+    "discoveredVia": "Invincible"
+  },
+  {
+    "name": "Board Game",
+    "type": "tag",
+    "discoveredVia": "Invincible"
+  },
+  {
+    "name": "Coastal",
+    "type": "tag",
+    "discoveredVia": "Lady"
+  },
+  {
+    "name": "Armpits",
+    "type": "tag",
+    "discoveredVia": "Landlord"
+  },
+  {
+    "name": "Feet",
+    "type": "tag",
+    "discoveredVia": "Landlord"
+  },
+  {
+    "name": "Netorase",
+    "type": "tag",
+    "discoveredVia": "Librarian"
+  },
+  {
+    "name": "Mahou Shoujo",
+    "type": "tag",
+    "discoveredVia": "Magic Knight"
+  },
+  {
+    "name": "Veterinarian",
+    "type": "tag",
+    "discoveredVia": "Magical Beast"
+  },
+  {
+    "name": "Superhero",
+    "type": "tag",
+    "discoveredVia": "Magical Girl"
+  },
+  {
+    "name": "Tanks",
+    "type": "tag",
+    "discoveredVia": "Minion"
+  },
+  {
+    "name": "Modeling",
+    "type": "tag",
+    "discoveredVia": "Model"
+  },
+  {
+    "name": "No Dialogue",
+    "type": "tag",
+    "discoveredVia": "Monster Girl"
+  },
+  {
+    "name": "Creature Taming",
+    "type": "tag",
+    "discoveredVia": "Monster Tamer"
+  },
+  {
+    "name": "Acrobatics",
+    "type": "tag",
+    "discoveredVia": "Muse"
+  },
+  {
+    "name": "Fitness",
+    "type": "tag",
+    "discoveredVia": "Nerd"
+  },
+  {
+    "name": "Lactation",
+    "type": "tag",
+    "discoveredVia": "Orphan"
+  },
+  {
+    "name": "Boxing",
+    "type": "tag",
+    "discoveredVia": "Outcast"
+  },
+  {
+    "name": "Triads",
+    "type": "tag",
+    "discoveredVia": "Outlaw"
+  },
+  {
+    "name": "Pirates",
+    "type": "tag",
+    "discoveredVia": "Outlaw"
+  },
+  {
+    "name": "Space Opera",
+    "type": "tag",
+    "discoveredVia": "Pacifist"
+  },
+  {
+    "name": "Crossover",
+    "type": "tag",
+    "discoveredVia": "Possessed"
+  },
+  {
+    "name": "Classical Music",
+    "type": "tag",
+    "discoveredVia": "Prodigy"
+  },
+  {
+    "name": "Aviation",
+    "type": "tag",
+    "discoveredVia": "Relative"
+  },
+  {
+    "name": "Astronomy",
+    "type": "tag",
+    "discoveredVia": "Sailor"
+  },
+  {
+    "name": "Primarily Animal Cast",
+    "type": "tag",
+    "discoveredVia": "Salaryman"
+  },
+  {
+    "name": "Rock Music",
+    "type": "tag",
+    "discoveredVia": "Samurai"
+  },
+  {
+    "name": "Calligraphy",
+    "type": "tag",
+    "discoveredVia": "Scholar"
+  },
+  {
+    "name": "Cute Boys Doing Cute Things",
+    "type": "tag",
+    "discoveredVia": "Shota"
+  },
+  {
+    "name": "Pandemic",
+    "type": "tag",
+    "discoveredVia": "Surgeon"
+  },
+  {
+    "name": "Kids",
+    "type": "tag",
+    "discoveredVia": "Survivor"
+  },
+  {
+    "name": "Table Tennis",
+    "type": "tag",
+    "discoveredVia": "Twins"
+  },
+  {
+    "name": "Vikings",
+    "type": "tag",
+    "discoveredVia": "Worker"
+  },
+  {
+    "name": "Mountaineering",
+    "type": "tag",
+    "discoveredVia": "Confession"
+  },
+  {
+    "name": "Double Penetration",
+    "type": "tag",
+    "discoveredVia": "Dating"
+  },
+  {
+    "name": "Fashion",
+    "type": "tag",
+    "discoveredVia": "Divorce"
+  },
+  {
+    "name": "Hypersexuality",
+    "type": "tag",
+    "discoveredVia": "Jealousy"
+  },
+  {
+    "name": "Makeup",
+    "type": "tag",
+    "discoveredVia": "Office Romance"
+  },
+  {
+    "name": "Male Pregnancy",
+    "type": "tag",
+    "discoveredVia": "Pregnancy"
+  },
+  {
+    "name": "Camping",
+    "type": "tag",
+    "discoveredVia": "Camping"
+  },
+  {
+    "name": "Poker",
+    "type": "tag",
+    "discoveredVia": "Casino"
+  },
+  {
+    "name": "American Football",
+    "type": "tag",
+    "discoveredVia": "Catastrophe"
+  },
+  {
+    "name": "Judo",
+    "type": "tag",
+    "discoveredVia": "Coming of Age"
+  },
+  {
+    "name": "Hair Pulling",
+    "type": "tag",
+    "discoveredVia": "Cult"
+  },
+  {
+    "name": "Musical Theater",
+    "type": "tag",
+    "discoveredVia": "Exile"
+  },
+  {
+    "name": "Fishing",
+    "type": "tag",
+    "discoveredVia": "Expedition"
+  },
+  {
+    "name": "Wilderness",
+    "type": "tag",
+    "discoveredVia": "Exploration"
+  },
+  {
+    "name": "Golf",
+    "type": "tag",
+    "discoveredVia": "Gambling"
+  },
+  {
+    "name": "Non-fiction",
+    "type": "tag",
+    "discoveredVia": "Growing Up"
+  },
+  {
+    "name": "Indigenous Cultures",
+    "type": "tag",
+    "discoveredVia": "Gunfight"
+  },
+  {
+    "name": "Oiran",
+    "type": "tag",
+    "discoveredVia": "Imprisonment"
+  },
+  {
+    "name": "Shimaidon",
+    "type": "tag",
+    "discoveredVia": "Lockdown"
+  },
+  {
+    "name": "Wrestling",
+    "type": "tag",
+    "discoveredVia": "Loyalty"
+  },
+  {
+    "name": "Filmmaking",
+    "type": "tag",
+    "discoveredVia": "Monologue"
+  },
+  {
+    "name": "Achromatic",
+    "type": "tag",
+    "discoveredVia": "Pet"
+  },
+  {
+    "name": "Konbini",
+    "type": "tag",
+    "discoveredVia": "Play"
+  },
+  {
+    "name": "Football",
+    "type": "tag",
+    "discoveredVia": "Pride"
+  },
+  {
+    "name": "Cumflation",
+    "type": "tag",
+    "discoveredVia": "Remake"
+  },
+  {
+    "name": "Surfing",
+    "type": "tag",
+    "discoveredVia": "Surfing"
+  },
+  {
+    "name": "Airsoft",
+    "type": "tag",
+    "discoveredVia": "Survival Game"
+  },
+  {
+    "name": "Erotic Piercings",
+    "type": "tag",
+    "discoveredVia": "Throne"
+  },
+  {
+    "name": "Mopeds",
+    "type": "tag",
+    "discoveredVia": "Trait"
+  },
+  {
+    "name": "Bowling",
+    "type": "tag",
+    "discoveredVia": "Transfer Student"
+  },
+  {
+    "name": "Amputation",
+    "type": "tag",
+    "discoveredVia": "Uprising"
+  },
+  {
+    "name": "VTuber",
+    "type": "tag",
+    "discoveredVia": "Viral"
+  }
+]

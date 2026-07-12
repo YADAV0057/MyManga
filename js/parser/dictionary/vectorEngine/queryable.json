@@ -1,0 +1,7898 @@
+[
+  {
+    "name": "Adventurer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Age Gap",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Alchemist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Alien",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Alter Ego",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Amnesiac",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Android",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Angel",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Animal Companion",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Anti-Hero",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Apothecary",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Archer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Aristocrat",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Artificial Intelligence",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Assassin",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Athlete",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Author",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Avatar",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bad Boy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Baker",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bandit",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Barbarian",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bard",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Baron",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bartender",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Beast",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Beastkin",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Beauty and the Beast",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Beggar",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Berserker",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Betrothed",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Billionaire",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bipolar",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bird Girl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Blind",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bodyguard",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Boss",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bounty Hunter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Boy Next Door",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Brat",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bully",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Butler",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cafe Owner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Caretaker",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Catgirl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Catboy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Celebrity",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Centaur",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "CEO",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Changeling",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Charismatic",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Chef",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Chevalier",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Childhood Friend",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Chimera",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Chosen One",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Chuunibyou",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cleric",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Clone",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Clumsy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Coach",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Collector",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "College Student",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Commander",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Commoner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Companion",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Con Artist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Concubine",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cook",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cop",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Counselor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Courier",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Coward",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Crafter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Criminal",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Crossdresser",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cultist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cyborg",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dancer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dark Elf",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dark Lord",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Daughter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Deaf",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Delinquent",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Demi-God",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Demi-Human",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Demon",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Demon King",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Demon Lord",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Detective",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Devil",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Director",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Disabled",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Disciple",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Doctor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dog Girl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dog Boy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Doll",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Doppelganger",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dragon",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dragon Rider",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Druid",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Duke",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dullahan",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dwarf",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Earl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Eccentric",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Elf",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Emperor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Empress",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Enchanter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Enemy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Engineer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Entity",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Esper",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Eunuch",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Evil God",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Executioner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Exiled",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Explorer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Extra",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fairy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fallen Angel",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Familiar",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fanatic",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Farmer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Father",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Femme Fatale",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Feral",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fighter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Firefighter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "First Love",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fox Spirit",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Freeloader",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fugitive",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Furry",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gamer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gangster",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gargoyle",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gary Stu",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Geek",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "General",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Genius",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ghost",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Giant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gladiator",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "God",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Goddess",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Golem",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Good Girl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Grand Duke",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Grandfather",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Grandmother",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Grim Reaper",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Guard",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Guardian",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Guild Master",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gunner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hacker",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Half-Blood",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Half-Demon",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Half-Elf",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Harpy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Healer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Heir",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Heiress",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hero",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "High Priest",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hitman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Homunculus",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hooligan",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Host",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hostess",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Housewife",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Househusband",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Human Weapon",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hunter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Husband",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hybrid",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ice Queen",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Idol",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Illusionist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Immortal",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Imperial",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Incubus",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Infamous",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Informant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Inspector",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Instructor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Inventor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Investigator",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Invincible",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Invisible Person",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Janitor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Jester",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Journalist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Judge",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Kitsune",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Knight",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Kuudere",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lady",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lancer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Landlord",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lawyer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Leader",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Librarian",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lich",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Loli",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Loner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lord",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lover",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mage",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magic Knight",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magical Beast",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magical Girl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magical Boy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magician",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Maid",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Manager",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Manipulator",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Martial Artist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Martyr",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mary Sue",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Master",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mastermind",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mechanic",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Medic",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Medium",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mercenary",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Merchant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mermaid",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Merman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Messenger",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Military",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Minion",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Minister",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Miko",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Misanthrope",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mob Character",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Model",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monk",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monster",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monster Girl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monster Boy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monster Tamer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mother",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mummy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Murderer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Muse",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mutant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mute",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nanny",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Necromancer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "NEET",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nerd",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ninja",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Noble",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Non-Human",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nun",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nurse",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nymph",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Obsessive",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Officer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ogre",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Old Man",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ojou-sama",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Oni",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Oracle",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Orc",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Orphan",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Otaku",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Outcast",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Outlaw",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Overlord",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Overpowered",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pacifist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Paladin",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Parasite",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Parent",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pariah",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Partner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pastor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Patient",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Patron",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Phantom",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Philosopher",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Physician",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pilot",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pirate",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Playboy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Player",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Poet",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Police",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Politician",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pope",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Possessed",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Postman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Priest",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Priestess",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prince",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Princess",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Principal",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prisoner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prodigy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Professor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Programmer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prostitute",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Protagonist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Proxy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Psychiatrist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Psychic",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Psychopath",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Publisher",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Puppeteer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Queen",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ranger",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rebel",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Receptionist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reincarnated",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Relative",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reporter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Researcher",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Retainer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Returner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Revenant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rogue",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Royalty",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ruler",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Runner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sage",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sailor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Saint",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Saintess",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Salaryman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Samurai",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Savage",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scholar",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scientist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scout",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scum",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secretary",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Seductress",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Seer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sempai",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Kohai",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Serial Killer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Servant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shaman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shapeshifter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shinigami",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shota",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shrine Maiden",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Siblings",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sister",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Skeleton",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Slave",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Slime",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sniper",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Social Outcast",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Soldier",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sorcerer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Soul",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spearman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Specter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sphinx",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spirit",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Squire",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stalker",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Step-family",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stepmother",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Streamer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Student",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Student Council",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Succubus",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Summoner",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Superhero",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Supervillain",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Surgeon",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Survivor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Swordsman",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sylph",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tamer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Teacher",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Team",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Teenager",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Telepath",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tengu",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Thief",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Thug",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Time Traveler",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Titan",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tomboy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tourist",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trader",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Traitor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Transmigrator",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trash",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Traveler",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trickster",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tsundere",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tutor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Twins",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tyrant",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Undead",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Undercover",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Unlucky",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vampire",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vassal",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Veteran",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vigilante",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Villain",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Villainess",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Virgin",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vlogger",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Voice Actor",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Waiter",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Waitress",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Warlock",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Warrior",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Weak",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wealthy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Weapon Master",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Werewolf",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Widow",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Widower",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wife",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Witch",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wizard",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wolf Girl",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wolf Boy",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Worker",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Writer",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Yakuza",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Yandere",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Yokai",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Young Master",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Zombie",
+    "type": "archetype",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Accidental Kiss",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Affectionate",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Arranged Marriage",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Blind Date",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Broken Engagement",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cheating",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cohabitation",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Confession",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Contract Marriage",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Crush",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dating",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Divorce",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Doting",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Elopement",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fake Relationship",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Falling in Love",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fate",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "First Kiss",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Flirting",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Forbidden Love",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Forced Marriage",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Friends to Lovers",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Harem",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Heartbreak",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Jealousy",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Long Distance Relationship",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Love at First Sight",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Love Potion",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Love Triangle",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lovers Reunited",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Marriage of Convenience",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Matchmaker",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Office Romance",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "One-Sided Love",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Opposites Attract",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Past Love",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Polyamory",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Potion",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pregnancy",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Proposal",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rebound",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rejection",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reunion",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reverse Harem",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Romeo and Juliet",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Admirer",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Crush",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Seduction",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Separation",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Slow Burn",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Soulmates",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Teacher-Student Relationship",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tragic Romance",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Unrequited Love",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wedding",
+    "type": "romance_trope",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Abandonment",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Abduction",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Abuse",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Adoption",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Adventure",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Alice in Wonderland",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Alliance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Alternate Universe",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Amnesia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Amulet",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Apocalypse",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Artifact",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Auction",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Awakening",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Backstory",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bad Ending",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Banishment",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Battle Academy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Battle Royale",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Betrayal",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Black Market",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Blackmail",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bloodline",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bloodshed",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Boarding School",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Body Double",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Body Swap",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Brainwashing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Breakup",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Bullying",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Camping",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Captive",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Capture",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Casino",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Castle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cataclysm",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Catastrophe",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Championship",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cheat System",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cleansing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Climax",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Clue",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "College Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Colony",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Coma",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Coming of Age",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Competition",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Conspiracy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Contract",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cooking",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Corruption",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cosmic Horror",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Crime Syndicate",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cross-dressing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Cult",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Curse",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Daily Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dark Secret",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Death",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Death Game",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Debt",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Deduction",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Defeat",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Demon Lord Defeat",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Destiny",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Diary",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Disaster",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Discovery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Disease",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Disguise",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Divine Intervention",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dream World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Dungeon Master",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Economy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Election",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Elements",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Empire Building",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Encounter",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "End of the World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Epidemic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Escape",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Espionage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Evil Organization",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Evolution",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Exam",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Execution",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Exile",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Exorcism",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Expedition",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Experiment",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Exploration",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Expose",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Extortion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fall from Grace",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fallen Kingdom",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "False Accusation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Family Secret",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Famine",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fantasy World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Farming",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fear",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Festival",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Feud",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Fighting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "First Contact",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Flashback",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Flight",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Folk Tale",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Foreign Land",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Forest",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Forgetful",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Forgiveness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Found Family",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Framing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Friendship",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Future",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Galactic Empire",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gambling",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Game World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gateway",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gathering",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gender Bender",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Generations",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Genie",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Genocide",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ghost Story",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Godhood",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Graduation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Grief",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Grinding",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Growing Up",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Guarding",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Gunfight",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hallucination",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Haunting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Healing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Heaven",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Heirloom",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hell",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hero's Journey",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hijack",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Holiday",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Holy Sword",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Homeland",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Homicide",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hope",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hostage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Hunting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ideology",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Idol Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Illusion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Immortality",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Imperial Court",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Imposter",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Imprisonment",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Improvement",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Infiltration",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Inheritance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Initiation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Injustice",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Insanity",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Inspection",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Inspiration",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Instant Death",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Instruction",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Insurrection",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Intelligence",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Interdimensional",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Intergalactic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Interrogation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Intervention",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Interview",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Intoxication",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Intrigue",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Invasion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Investigation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Invisible",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Invitation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Isekai",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Island Survival",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Isolation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Jailbreak",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Journey",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Jungle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Justice",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Karma",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Kidnapping",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Kingmaker",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Labyrinth",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Laser",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Late Bloomer",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Leadership",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Legacy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Legend",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Leveling Up",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Liberation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lies",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Life and Death",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lineage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lockdown",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Loneliness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lords",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lore",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Lost Memory",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Loyalty",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Luck",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Madness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mafia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magic Academy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magic Beast",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magic Circle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magic Items",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magic Research",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Magical Contract",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Management",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Manipulation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Manor",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mansion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Market",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Massacre",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Master-Disciple",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Matchmaking",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Maze",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Medieval",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Meditation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Memories",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Memory Loss",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Men in Black",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mental Illness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Merging",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Metafiction",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mind Control",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mind Reading",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Misunderstanding",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Modern Knowledge",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Modern Weapons",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Money",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monologue",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monster Evolution",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Monster Society",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Moon",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mountain",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Moving",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Multiverse",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Murder Mystery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Music",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mutiny",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mythical Beasts",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Mythology",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Negotiation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Network",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "New World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nightmares",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nobility",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nomads",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Nostalgia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Oath",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Obsession",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Occult",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ocean",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Old Age",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Omen",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Omegaverse",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Online Game",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Oppression",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Orbit",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Organization",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Origin Story",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Orphanage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Outbreak",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Overcoming Trauma",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Overthrow",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pain",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pandemic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Parallel World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Paranoia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Parenting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Past Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Patriarch",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Patriotism",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Peace",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Penalty",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Penance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Performance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Persecution",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Personality Change",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pet",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Philosophy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Phobia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Photo",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pickpocket",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Piloting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Piracy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Plague",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Plan",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Play",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Poisoning",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Policy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Politics",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Portal Fantasy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Post-Apocalyptic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Poverty",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Power Couple",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prejudice",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Preparation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prequel",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pressure",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pretending",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Pride",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prison",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Privilege",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prophecy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prostitution",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Protection",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Prototype",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Psyche",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Psychological",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Purgatory",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Purification",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Puzzle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Quarantine",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Quest",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Radiation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Raid",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rain",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ransom",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Real Estate",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rebellion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rebirth",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rebuilding",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Recipe",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reckless",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reconstruction",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Record",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Recovery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Red String of Fate",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Redemption",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reincarnation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Relic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Religion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Remake",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Remembering",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Remote Island",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Renaissance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rent",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rescue",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Research",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reset",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Resistance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Restaurant",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Restoration",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Resurrection",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Retelling",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Retirement",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Return",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reunion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Revenge",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Revolution",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Reward",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rich to Poor",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Riddle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rift",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Righteousness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ring",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Riot",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rise to Power",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ritual",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rivalry",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Robbery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Robot",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rock Band",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ruin",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rule",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rumor",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Runaway",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rune",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Rural",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sabotage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sacrifice",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Safari",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sailing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Salvation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sanity",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Saving the World",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scandal",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scapegoat",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scar",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scavenger",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scheme",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "School Bullying",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "School Club",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "School Festival",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "School Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "School Trip",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Science",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Score",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Scout",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sealing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Search",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Second Chance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Base",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Mission",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Organization",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Relationship",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Secret Society",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sect",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Security",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Seed",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sentai",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sequel",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Servitude",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Settlement",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Setup",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Seven Deadly Sins",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sex Work",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shelter",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shipwreck",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shopping",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Showbiz",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Shrine",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Siege",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Simulation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sin",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sibling Rivalry",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Singer",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Single Parent",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sinner",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sky City",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Slavery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Slice of Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Slum",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Smartphone",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Snow",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Social Media",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Society",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Solar System",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Solo Player",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sorcery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Space Battle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Space Opera",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Space Pirates",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Space Travel",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Special Abilities",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Special Forces",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spell",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spies",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spirit Possession",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spiritual",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spoilers",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Spy Mission",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stalking",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stealing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Steampunk",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stigma",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stock Market",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Storm",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Strategy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Street Fight",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Strength",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Stress",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Strike",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Strong to Weak",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Student Council Arc",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Study",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Subconscious",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Submarine",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Substitute",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Summer Camp",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Summer Vacation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Summoning",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Super Power",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Suppress",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Surfing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Surgery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Surprise",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Surreal",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Surrender",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Survival",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Survival Game",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Survivor Guilt",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Suspension",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Suspicion",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sword and Magic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Sword Mastery",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Symbiosis",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Symbol",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Syndicate",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "System",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Taboo",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tactics",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Taming",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Target",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Task",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tavern",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tax",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Teacher Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Technology",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Teleportation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Temple",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Temptation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Terminal Illness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Terrorism",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Test",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Test of Courage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Theater",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Theft",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Theory",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Therapy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Thriller",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Throne",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Time Loop",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Time Paradox",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Time Travel",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Time Limit",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "To the Rescue",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Torture",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tournament",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tower",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tower Climbing",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Toy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trade",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tradition",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Traffic",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tragedy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trait",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Transfer Student",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Transformation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Translation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Transmigration",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trap",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trauma",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Treason",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Treasure Hunting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Treaty",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trial",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tribe",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trigger",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trivia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Troll",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trophy",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tropical Island",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "True Form",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Trust",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Truth",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tsunami",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Two-Faced",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tycoon",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Tyranny",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "UFO",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ugly Duckling",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Ultimatum",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Unbeatable",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Unforgivable",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Unification",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Universe",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "University",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Unknown",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Untouchable",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Upgrade",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Uprising",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Urban Legend",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Utopia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vacation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vaccine",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Valedictorian",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Valley",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vanish",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vanity",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vehicle",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vengeance",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Venom",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Verdict",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vestige",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Victim",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Victory",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Video Games",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Violence",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Viral",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Virtual Reality",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Virus",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vision",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Visiting",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vocation",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Voice",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Void",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Volcano",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Voodoo",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vow",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Voyage",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "VRMMO",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Vulnerability",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "War",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Warlord",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Warmonger",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Warning",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wasteland",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Watcher",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Water",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wealth",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Web Novel",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Weight Loss",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Weird",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Werebeast",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "West",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Western",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wild",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Will",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Willpower",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wind",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Window",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Winter",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wisdom",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wish",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Witchcraft",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Witness",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wizardry",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wonderland",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Woods",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Work",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Workplace",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Workshop",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "World Tree",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "World War",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wounded",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wrath",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wrestling",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Writer Life",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Wuxia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Xianxia",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Yearning",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Youth",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Zero to Hero",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Zodiac",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  },
+  {
+    "name": "Zombie Apocalypse",
+    "type": "plot_device",
+    "sources": [
+      "anilist"
+    ]
+  }
+]

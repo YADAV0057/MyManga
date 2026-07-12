@@ -1,0 +1,1198 @@
+[
+  {
+    "name": "Abrasive Protagonist",
+    "type": "archetype"
+  },
+  {
+    "name": "Adopted Child",
+    "type": "archetype"
+  },
+  {
+    "name": "Anti-Villain",
+    "type": "archetype"
+  },
+  {
+    "name": "Badass Normal",
+    "type": "archetype"
+  },
+  {
+    "name": "Bird Boy",
+    "type": "archetype"
+  },
+  {
+    "name": "Character Growth",
+    "type": "archetype"
+  },
+  {
+    "name": "Childhood Promise",
+    "type": "archetype"
+  },
+  {
+    "name": "Cold Protagonist",
+    "type": "archetype"
+  },
+  {
+    "name": "Cosmic Entity",
+    "type": "archetype"
+  },
+  {
+    "name": "Dandere",
+    "type": "archetype"
+  },
+  {
+    "name": "Diplomat",
+    "type": "archetype"
+  },
+  {
+    "name": "Dumb Muscle",
+    "type": "archetype"
+  },
+  {
+    "name": "Evil Twins",
+    "type": "archetype"
+  },
+  {
+    "name": "Half-Monster",
+    "type": "archetype"
+  },
+  {
+    "name": "Himbo",
+    "type": "archetype"
+  },
+  {
+    "name": "Hologram",
+    "type": "archetype"
+  },
+  {
+    "name": "Inquisitor",
+    "type": "archetype"
+  },
+  {
+    "name": "Kamidere",
+    "type": "archetype"
+  },
+  {
+    "name": "Lovable Rogue",
+    "type": "archetype"
+  },
+  {
+    "name": "Peasant",
+    "type": "archetype"
+  },
+  {
+    "name": "Shieldbearer",
+    "type": "archetype"
+  },
+  {
+    "name": "Sleepyhead",
+    "type": "archetype"
+  },
+  {
+    "name": "Super Soldier",
+    "type": "archetype"
+  },
+  {
+    "name": "Visually Impaired",
+    "type": "archetype"
+  },
+  {
+    "name": "Bickering Couple",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Childhood Friends to Lovers",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Co-Workers",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Couple Growth",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Enemies to Lovers",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Established Relationship",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Fake Dating",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Family Opposition",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Fated Lovers",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Forced Cohabitation",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Hidden Relationship",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Interracial Romance",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Mutual Pining",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Online Romance",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Reluctant Allies to Lovers",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Rivalry to Love",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Star-Crossed Lovers",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Tsundere Romance",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Yandere Romance",
+    "type": "romance_trope"
+  },
+  {
+    "name": "Accidental Murder",
+    "type": "plot_device"
+  },
+  {
+    "name": "Alien Abduction",
+    "type": "plot_device"
+  },
+  {
+    "name": "Alternate History",
+    "type": "plot_device"
+  },
+  {
+    "name": "Ancient Bloodline",
+    "type": "plot_device"
+  },
+  {
+    "name": "Ancient Civilization",
+    "type": "plot_device"
+  },
+  {
+    "name": "Artificial Intelligence Rebellion",
+    "type": "plot_device"
+  },
+  {
+    "name": "Assassination Attempt",
+    "type": "plot_device"
+  },
+  {
+    "name": "Bank Robbery",
+    "type": "plot_device"
+  },
+  {
+    "name": "Beast Transformation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Body Sharing",
+    "type": "plot_device"
+  },
+  {
+    "name": "Bounties",
+    "type": "plot_device"
+  },
+  {
+    "name": "Cave Exploration",
+    "type": "plot_device"
+  },
+  {
+    "name": "Changing History",
+    "type": "plot_device"
+  },
+  {
+    "name": "Character Death",
+    "type": "plot_device"
+  },
+  {
+    "name": "Choosing the Lesser Evil",
+    "type": "plot_device"
+  },
+  {
+    "name": "Class Conflict",
+    "type": "plot_device"
+  },
+  {
+    "name": "Clan Dispute",
+    "type": "plot_device"
+  },
+  {
+    "name": "Clean Slate",
+    "type": "plot_device"
+  },
+  {
+    "name": "Combat Tournament",
+    "type": "plot_device"
+  },
+  {
+    "name": "Concealed Identity",
+    "type": "plot_device"
+  },
+  {
+    "name": "Contests",
+    "type": "plot_device"
+  },
+  {
+    "name": "Covert Operation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Cursed Object",
+    "type": "plot_device"
+  },
+  {
+    "name": "Cyber Attack",
+    "type": "plot_device"
+  },
+  {
+    "name": "Cybernetics",
+    "type": "plot_device"
+  },
+  {
+    "name": "Descent into Madness",
+    "type": "plot_device"
+  },
+  {
+    "name": "Destructive Power",
+    "type": "plot_device"
+  },
+  {
+    "name": "Detective Work",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dimensional Rift",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dimensional Travel",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dismemberment",
+    "type": "plot_device"
+  },
+  {
+    "name": "Disownment",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dispute",
+    "type": "plot_device"
+  },
+  {
+    "name": "Documentation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Doppelganger Plot",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dragon Slaying",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dream Manipulation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Drug Abuse",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dungeon Crawl",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dying Earth",
+    "type": "plot_device"
+  },
+  {
+    "name": "Dystopian Society",
+    "type": "plot_device"
+  },
+  {
+    "name": "Eavesdropping",
+    "type": "plot_device"
+  },
+  {
+    "name": "Enemy Within",
+    "type": "plot_device"
+  },
+  {
+    "name": "Epic Battle",
+    "type": "plot_device"
+  },
+  {
+    "name": "Existential Crisis",
+    "type": "plot_device"
+  },
+  {
+    "name": "Faction War",
+    "type": "plot_device"
+  },
+  {
+    "name": "Faded Memory",
+    "type": "plot_device"
+  },
+  {
+    "name": "Fairy Tale Retelling",
+    "type": "plot_device"
+  },
+  {
+    "name": "Fake Identity",
+    "type": "plot_device"
+  },
+  {
+    "name": "Family Conflict",
+    "type": "plot_device"
+  },
+  {
+    "name": "Fast Paced",
+    "type": "plot_device"
+  },
+  {
+    "name": "Fated Battle",
+    "type": "plot_device"
+  },
+  {
+    "name": "Financial Crisis",
+    "type": "plot_device"
+  },
+  {
+    "name": "Finding Family",
+    "type": "plot_device"
+  },
+  {
+    "name": "Finding Purpose",
+    "type": "plot_device"
+  },
+  {
+    "name": "Floating Island",
+    "type": "plot_device"
+  },
+  {
+    "name": "Fugitive Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Game Elements",
+    "type": "plot_device"
+  },
+  {
+    "name": "Gang War",
+    "type": "plot_device"
+  },
+  {
+    "name": "Gauntlet",
+    "type": "plot_device"
+  },
+  {
+    "name": "Gladiator Fight",
+    "type": "plot_device"
+  },
+  {
+    "name": "Global Warming",
+    "type": "plot_device"
+  },
+  {
+    "name": "Good vs Evil",
+    "type": "plot_device"
+  },
+  {
+    "name": "Groundhog Day",
+    "type": "plot_device"
+  },
+  {
+    "name": "Guilds",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hacker Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hegemony",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hidden Ability",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hidden Base",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hidden Enemy",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hidden Plot",
+    "type": "plot_device"
+  },
+  {
+    "name": "Historical Event",
+    "type": "plot_device"
+  },
+  {
+    "name": "Hologame",
+    "type": "plot_device"
+  },
+  {
+    "name": "Horror Elements",
+    "type": "plot_device"
+  },
+  {
+    "name": "Immortal Protagonist",
+    "type": "plot_device"
+  },
+  {
+    "name": "Injury",
+    "type": "plot_device"
+  },
+  {
+    "name": "Inner Demon",
+    "type": "plot_device"
+  },
+  {
+    "name": "Inner Monologue",
+    "type": "plot_device"
+  },
+  {
+    "name": "Insect Swarm",
+    "type": "plot_device"
+  },
+  {
+    "name": "Instability",
+    "type": "plot_device"
+  },
+  {
+    "name": "Instrumentation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Item Box",
+    "type": "plot_device"
+  },
+  {
+    "name": "Item Crafting",
+    "type": "plot_device"
+  },
+  {
+    "name": "Jealousy Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Killing Spree",
+    "type": "plot_device"
+  },
+  {
+    "name": "Land Development",
+    "type": "plot_device"
+  },
+  {
+    "name": "Language Barrier",
+    "type": "plot_device"
+  },
+  {
+    "name": "Law Enforcement",
+    "type": "plot_device"
+  },
+  {
+    "name": "Level System",
+    "type": "plot_device"
+  },
+  {
+    "name": "Looting",
+    "type": "plot_device"
+  },
+  {
+    "name": "Losing Sanity",
+    "type": "plot_device"
+  },
+  {
+    "name": "Lost Ancient Tech",
+    "type": "plot_device"
+  },
+  {
+    "name": "Lost Civilization",
+    "type": "plot_device"
+  },
+  {
+    "name": "Lost Relic",
+    "type": "plot_device"
+  },
+  {
+    "name": "Love Potion Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Magic Formations",
+    "type": "plot_device"
+  },
+  {
+    "name": "Magical Disease",
+    "type": "plot_device"
+  },
+  {
+    "name": "Magical Technology",
+    "type": "plot_device"
+  },
+  {
+    "name": "Martial Arts Tournament",
+    "type": "plot_device"
+  },
+  {
+    "name": "Matriarchy",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mech Battle",
+    "type": "plot_device"
+  },
+  {
+    "name": "Medical Emergency",
+    "type": "plot_device"
+  },
+  {
+    "name": "Meets the Family",
+    "type": "plot_device"
+  },
+  {
+    "name": "Memory Manipulation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mental Breakdown",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mental Trauma",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mercenary Work",
+    "type": "plot_device"
+  },
+  {
+    "name": "Merchant Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Military Camp",
+    "type": "plot_device"
+  },
+  {
+    "name": "Military Strategy",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mind Games",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mob Action",
+    "type": "plot_device"
+  },
+  {
+    "name": "Monster Wave",
+    "type": "plot_device"
+  },
+  {
+    "name": "Morally Ambiguous",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mudder",
+    "type": "plot_device"
+  },
+  {
+    "name": "Mutual Destruction",
+    "type": "plot_device"
+  },
+  {
+    "name": "Nameless Protagonist",
+    "type": "plot_device"
+  },
+  {
+    "name": "Natural Disaster",
+    "type": "plot_device"
+  },
+  {
+    "name": "Naval Battle",
+    "type": "plot_device"
+  },
+  {
+    "name": "Neo-Tokyo",
+    "type": "plot_device"
+  },
+  {
+    "name": "Ninja Village",
+    "type": "plot_device"
+  },
+  {
+    "name": "Noble Faction",
+    "type": "plot_device"
+  },
+  {
+    "name": "Nuclear War",
+    "type": "plot_device"
+  },
+  {
+    "name": "Office Politics",
+    "type": "plot_device"
+  },
+  {
+    "name": "Omni-competent",
+    "type": "plot_device"
+  },
+  {
+    "name": "Omnipotence",
+    "type": "plot_device"
+  },
+  {
+    "name": "Open Ending",
+    "type": "plot_device"
+  },
+  {
+    "name": "Optimism",
+    "type": "plot_device"
+  },
+  {
+    "name": "Overcoming Hardship",
+    "type": "plot_device"
+  },
+  {
+    "name": "Pacts",
+    "type": "plot_device"
+  },
+  {
+    "name": "Parasite Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Past Trauma",
+    "type": "plot_device"
+  },
+  {
+    "name": "Peak Human",
+    "type": "plot_device"
+  },
+  {
+    "name": "Perfect Memory",
+    "type": "plot_device"
+  },
+  {
+    "name": "Personal Growth",
+    "type": "plot_device"
+  },
+  {
+    "name": "Pestilence",
+    "type": "plot_device"
+  },
+  {
+    "name": "Planetary Destruction",
+    "type": "plot_device"
+  },
+  {
+    "name": "Platonic Relationship",
+    "type": "plot_device"
+  },
+  {
+    "name": "Police Brutality",
+    "type": "plot_device"
+  },
+  {
+    "name": "Political Intrigue",
+    "type": "plot_device"
+  },
+  {
+    "name": "Pollution",
+    "type": "plot_device"
+  },
+  {
+    "name": "Portals",
+    "type": "plot_device"
+  },
+  {
+    "name": "Power Fantasy",
+    "type": "plot_device"
+  },
+  {
+    "name": "Power Struggle",
+    "type": "plot_device"
+  },
+  {
+    "name": "Power Trip",
+    "type": "plot_device"
+  },
+  {
+    "name": "Pregnancy Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Preservation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Priesthood",
+    "type": "plot_device"
+  },
+  {
+    "name": "Prison Camp",
+    "type": "plot_device"
+  },
+  {
+    "name": "Private Military",
+    "type": "plot_device"
+  },
+  {
+    "name": "Pro Gaming",
+    "type": "plot_device"
+  },
+  {
+    "name": "Protégé",
+    "type": "plot_device"
+  },
+  {
+    "name": "Pseudo-Science",
+    "type": "plot_device"
+  },
+  {
+    "name": "Psychopath Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Public Speaking",
+    "type": "plot_device"
+  },
+  {
+    "name": "Racism",
+    "type": "plot_device"
+  },
+  {
+    "name": "Rape (Trigger Warning)",
+    "type": "plot_device"
+  },
+  {
+    "name": "Recruitment",
+    "type": "plot_device"
+  },
+  {
+    "name": "Relocation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Resource Management",
+    "type": "plot_device"
+  },
+  {
+    "name": "Road Trip",
+    "type": "plot_device"
+  },
+  {
+    "name": "Romance Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Royalty Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Sad Past",
+    "type": "plot_device"
+  },
+  {
+    "name": "Safe House",
+    "type": "plot_device"
+  },
+  {
+    "name": "Satire",
+    "type": "plot_device"
+  },
+  {
+    "name": "Schizophrenia",
+    "type": "plot_device"
+  },
+  {
+    "name": "Secret Identity",
+    "type": "plot_device"
+  },
+  {
+    "name": "Secular",
+    "type": "plot_device"
+  },
+  {
+    "name": "Seduction Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Seeking Truth",
+    "type": "plot_device"
+  },
+  {
+    "name": "Segregation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Sentient Weapon",
+    "type": "plot_device"
+  },
+  {
+    "name": "Separation Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Serial Murder",
+    "type": "plot_device"
+  },
+  {
+    "name": "Shadow Organization",
+    "type": "plot_device"
+  },
+  {
+    "name": "Shamanism",
+    "type": "plot_device"
+  },
+  {
+    "name": "Sleepwalking",
+    "type": "plot_device"
+  },
+  {
+    "name": "Smuggling",
+    "type": "plot_device"
+  },
+  {
+    "name": "Social Climbing",
+    "type": "plot_device"
+  },
+  {
+    "name": "Soul Bond",
+    "type": "plot_device"
+  },
+  {
+    "name": "Soul Catching",
+    "type": "plot_device"
+  },
+  {
+    "name": "Soul Transfer",
+    "type": "plot_device"
+  },
+  {
+    "name": "Space Colony",
+    "type": "plot_device"
+  },
+  {
+    "name": "Space Exploration",
+    "type": "plot_device"
+  },
+  {
+    "name": "Space Fleet",
+    "type": "plot_device"
+  },
+  {
+    "name": "Space Station",
+    "type": "plot_device"
+  },
+  {
+    "name": "Spatial Manipulation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Species Coexistence",
+    "type": "plot_device"
+  },
+  {
+    "name": "Split Personality",
+    "type": "plot_device"
+  },
+  {
+    "name": "Spontaneous Generation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Sports Event",
+    "type": "plot_device"
+  },
+  {
+    "name": "Starvation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Status Screen",
+    "type": "plot_device"
+  },
+  {
+    "name": "Stereotype",
+    "type": "plot_device"
+  },
+  {
+    "name": "Storytelling",
+    "type": "plot_device"
+  },
+  {
+    "name": "Streamer Life",
+    "type": "plot_device"
+  },
+  {
+    "name": "Street Racing",
+    "type": "plot_device"
+  },
+  {
+    "name": "Subversion",
+    "type": "plot_device"
+  },
+  {
+    "name": "Succubus Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Succession War",
+    "type": "plot_device"
+  },
+  {
+    "name": "Sudden Wealth",
+    "type": "plot_device"
+  },
+  {
+    "name": "Suffocation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Suicide (Trigger Warning)",
+    "type": "plot_device"
+  },
+  {
+    "name": "Super Soldier Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Supernatural Phenomenon",
+    "type": "plot_device"
+  },
+  {
+    "name": "Supersense",
+    "type": "plot_device"
+  },
+  {
+    "name": "Supreme Being",
+    "type": "plot_device"
+  },
+  {
+    "name": "Teamwork",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tearjerker",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tech Noir",
+    "type": "plot_device"
+  },
+  {
+    "name": "Telekinesis Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tenacity",
+    "type": "plot_device"
+  },
+  {
+    "name": "Theology",
+    "type": "plot_device"
+  },
+  {
+    "name": "Ticking Clock",
+    "type": "plot_device"
+  },
+  {
+    "name": "Time Skip",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tomb Raiding",
+    "type": "plot_device"
+  },
+  {
+    "name": "Totalitarian",
+    "type": "plot_device"
+  },
+  {
+    "name": "Toxic Relationship",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tracking",
+    "type": "plot_device"
+  },
+  {
+    "name": "Training Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Transgender",
+    "type": "plot_device"
+  },
+  {
+    "name": "Trickery",
+    "type": "plot_device"
+  },
+  {
+    "name": "True Identity",
+    "type": "plot_device"
+  },
+  {
+    "name": "Trust Issues",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tumor",
+    "type": "plot_device"
+  },
+  {
+    "name": "Tutor Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Twins Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Twisted Personality",
+    "type": "plot_device"
+  },
+  {
+    "name": "Undiscovered",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unethical Experiment",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unexpected Event",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unique Weapon",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unlucky Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unpredictable",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unreliable Narrator",
+    "type": "plot_device"
+  },
+  {
+    "name": "Unrequited Love Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Urban Fantasy",
+    "type": "plot_device"
+  },
+  {
+    "name": "Vampirism",
+    "type": "plot_device"
+  },
+  {
+    "name": "Vandalism",
+    "type": "plot_device"
+  },
+  {
+    "name": "Variance",
+    "type": "plot_device"
+  },
+  {
+    "name": "Veteran Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Vigilante Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Villainess Rehabilitation",
+    "type": "plot_device"
+  },
+  {
+    "name": "Vlogging",
+    "type": "plot_device"
+  },
+  {
+    "name": "Weaponry",
+    "type": "plot_device"
+  },
+  {
+    "name": "Weather Control",
+    "type": "plot_device"
+  },
+  {
+    "name": "Wedding Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Whaling",
+    "type": "plot_device"
+  },
+  {
+    "name": "Wilderness Survival",
+    "type": "plot_device"
+  },
+  {
+    "name": "Winter Camp",
+    "type": "plot_device"
+  },
+  {
+    "name": "Wipeout",
+    "type": "plot_device"
+  },
+  {
+    "name": "Withdrawal",
+    "type": "plot_device"
+  },
+  {
+    "name": "Working Adult",
+    "type": "plot_device"
+  },
+  {
+    "name": "Yandere Arc",
+    "type": "plot_device"
+  },
+  {
+    "name": "Yokai Arc",
+    "type": "plot_device"
+  }
+]
