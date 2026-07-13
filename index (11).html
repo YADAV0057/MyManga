@@ -1,0 +1,235 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaMood 🔮 - Discovery Portal</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/cards.css">
+    <link rel="stylesheet" href="./css/detail.css">
+    <link rel="stylesheet" href="./css/mixer.css">
+    <link rel="stylesheet" href="./css/mylist.css">
+    <link rel="stylesheet" href="./css/results.css">
+    <link rel="stylesheet" href="./css/results.css">
+    <link rel="stylesheet" href="./css/menu.css"> <!-- ADD THIS LINE -->
+    
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Loading Bar Indicator -->
+<div id="loading-bar"></div>
+
+<!-- =========================
+    TOP BAR
+========================= -->
+<nav class="topbar">
+    <span class="topbar-brand">MangaMood</span>
+
+    <div class="view-toggle">
+        <button id="nav-favorites-btn" class="tab-btn" title="My List">♡</button>
+        <button id="more-btn-icon" class="tab-btn" title="Menu" onclick="window.openMenu && window.openMenu()">☰</button>
+    </div>
+</nav>
+
+<!-- =========================
+    HEADER SEARCH + AI PANEL
+========================= -->
+<header>
+
+    <div class="mood-orb-wrap">
+        <div class="mood-orb"></div>
+        <div class="mood-orb-stem"></div>
+    </div>
+
+    <h2 class="tagline">What's the vibe today?</h2>
+    <p class="tagline-sub">Stack up to 2 moods and we'll blend your match</p>
+
+    <div class="search-container">
+
+        <input
+            id="manga-search-input"
+            type="text"
+            placeholder="e.g. something slow-burn and heartbreaking..."
+        >
+
+        <button id="search-submit-btn" class="vibe-btn full-width">
+            Find My Vibe
+        </button>
+
+    </div>
+
+    <!-- =========================
+        🧠 AI SEARCH INTELLIGENCE
+        Integrated directly into the search flow (was previously a
+        separate "Mood Intelligence Preview" section above the app).
+        Hidden until the first search runs; see js/aiPanel.js.
+    ========================= -->
+    <section id="ai-panel" class="ai-panel hidden">
+
+        <!-- shown only while a search is actively running -->
+        <div id="ai-panel-live" class="ai-panel-live hidden"></div>
+
+        <!-- compact bar shown once a search has completed -->
+        <div id="ai-panel-summary" class="ai-panel-summary hidden">
+            <div class="ai-panel-summary-left">
+                <span class="ai-panel-icon">🧠</span>
+                <span class="ai-panel-title">AI Search Intelligence</span>
+            </div>
+            <div class="ai-panel-summary-right">
+                <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
+                <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
+            </div>
+        </div>
+
+        <!-- full breakdown, collapsed by default -->
+        <div id="ai-panel-details" class="ai-panel-details hidden"></div>
+
+    </section>
+
+</header>
+
+<!-- =========================
+    MAIN APP
+========================= -->
+<main class="container">
+
+    <!-- MOOD TAGS -->
+    <section class="vibe-panel-container">
+
+       
+
+    </section>
+
+    <!-- Mount point for the Trending Today / Hidden Gems rows.
+         See js/landing/index.js — it finds this, injects its own
+         stylesheet, and renders both carousels here. -->
+    <div data-landing-mount></div>
+
+    <!-- Quick filter chips (decorative, matches design mockup) -->
+    <div class="quick-filters">
+        <button class="qf-chip" data-quick-filter="finish-tonight">🔁 Finish tonight</button>
+        <button class="qf-chip" data-quick-filter="long-binge">📚 Long binge</button>
+        <button class="qf-chip qf-done" data-quick-filter="completed">✅ Completed</button>
+    </div>
+
+    <!-- RESULTS -->
+    <section id="results-area">
+
+        <div class="section-eyebrow">
+            <span class="eyebrow-label">Editor's selection · Updated daily</span>
+        </div>
+
+        <div class="results-header">
+
+            <h2 id="results-title">✨ Today's Top Picks</h2>
+
+            <button id="refresh-btn" class="vibe-btn refresh-btn" style="display:none;">
+                🎲 Reroll
+            </button>
+
+        </div>
+
+        <div class="grid" id="community-grid"></div>
+
+    </section>
+
+</main>
+
+<!-- =========================
+    FOOTER
+========================= -->
+<footer>
+    <p>Data powered by AniList · MangaDex · Kitsu</p>
+</footer>
+
+<!-- =========================
+    BOTTOM NAV (mobile-style)
+========================= -->
+<nav class="bottom-nav">
+    <button class="bn-item active" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <span class="bn-icon">🏠</span>Home
+    </button>
+    <button class="bn-item" onclick="window.openMixerPage && window.openMixerPage()">
+        <span class="bn-icon">🔮</span>Mixer
+    </button>
+    <button class="bn-item" onclick="document.getElementById('manga-search-input')?.focus()">
+        <span class="bn-icon">🔍</span>Search
+    </button>
+    <button class="bn-item" onclick="window.openMyListPage && window.openMyListPage()">
+        <span class="bn-icon">♡</span>My List
+    </button>
+    <button class="bn-item">
+        <span class="bn-icon">😊</span>Profile
+    </button>
+    <button class="bn-item" onclick="window.openAdvancedFilter && window.openAdvancedFilter()">
+    <span class="bn-icon">🔎</span>Filter
+    </button>
+</nav>
+
+<!-- =========================
+    SLIDE-OUT MENU DRAWER
+========================= -->
+<div id="menu-overlay" class="menu-overlay" onclick="window.closeMenu && window.closeMenu()"></div>
+<nav id="menu-drawer" class="menu-drawer">
+    <div class="menu-header">
+        <h2>Menu</h2>
+        <button class="menu-close-btn" aria-label="Close menu" onclick="window.closeMenu && window.closeMenu()">×</button>
+    </div>
+    <div class="menu-links">
+        <button class="menu-item" onclick="window.closeMenu(); window.scrollTo({top:0,behavior:'smooth'})">
+            <span class="menu-icon">🏠</span> Home
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); window.openMixerPage && window.openMixerPage()">
+            <span class="menu-icon">🔮</span> Mood Mixer
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); window.openMyListPage && window.openMyListPage()">
+            <span class="menu-icon">♡</span> My List
+        </button>
+        <button class="menu-item" onclick="window.closeMenu(); document.getElementById('manga-search-input')?.focus()">
+            <span class="menu-icon">🔍</span> Search
+        </button>
+
+        <div class="menu-divider"></div>
+        
+        <button class="menu-item" onclick="window.cycleTheme && window.cycleTheme()">
+            <span class="menu-icon">🎨</span> Toggle Theme
+        </button>
+
+        <button class="menu-item" onclick="window.closeMenu(); window.openAdvancedFilter && window.openAdvancedFilter()">
+    <span class="menu-icon">🔎</span> Advanced Filter
+        </button>
+
+        <div class="menu-divider"></div>
+        
+        <div class="menu-about">
+            <strong>Powered By</strong>
+            AniList · MangaDex<br>
+            Kitsu · Jikan
+        </div>
+    </div>
+</nav>
+    
+
+    
+<!-- =========================
+    SCRIPT
+========================= -->
+<script type="module" src="./js/main.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
