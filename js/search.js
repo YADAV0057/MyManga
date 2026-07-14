@@ -58,7 +58,7 @@
 
 import { CONFIG } from './config.js';
 import { normalizeResult } from './resultNormalizer.js';
-import { renderMangaCard } from './renderer.js';
+import { getMangaCardHTML } from './renderer.js';
 
 const GRID_ID = 'community-grid';
 const PAGE_SIZE = 10; // mirrors the old CONFIG.SEARCH_LIMIT default; sent as filters.perPage
@@ -173,7 +173,13 @@ export async function triggerSearch(query, page = 1, appendMode = false, extraFi
 
     normalized.forEach(item => {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = renderMangaCard(item).trim();
+        // BUGFIX: renderMangaCard() has no return value — it finds
+        // #community-grid itself and appends the card directly, which
+        // both double-renders here AND made `.trim()` crash on undefined
+        // (the original "Cannot read properties of undefined (reading
+        // 'trim')" bug). getMangaCardHTML() is the pure string version
+        // renderer.js already exports for exactly this kind of caller.
+        wrapper.innerHTML = getMangaCardHTML(item).trim();
         if (wrapper.firstElementChild) grid.appendChild(wrapper.firstElementChild);
     });
 
