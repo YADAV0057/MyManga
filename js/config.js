@@ -17,6 +17,7 @@ export const CONFIG = {
     RETRY_COUNT: 3,
 
     VIBE_ROTATION_TIME: 30000,
+    SEARCH_ENGINE_URL: 'https://uvperhzhnosjtkwxxnte.supabase.co/functions/v1/search',
 
     IMAGE_FALLBACK:
         "images/no-cover.png",
