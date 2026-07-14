@@ -10,14 +10,15 @@
 // Data contract: this file accepts either a full factSheet-shaped object
 // (already carrying readLinks, from renderer.js/search.js) or a lighter
 // UnifiedResult from the landing carousels (no readLinks yet). In the
-// latter case it lazily resolves links the same way search.js does,
-// via mangadex.js's resolveReadLinks()/getFallbackLinks().
+// latter case it builds links itself from readLinks/sources.js's
+// READ_LINK_SOURCES registry.
 //
-// Isolation note: only import here is escapeHTML (utils.js, pure string
-// helper) and resolveReadLinks/getFallbackLinks (mangadex.js, no DOM
-// coupling). This file owns its own cache and DOM node, so any other
-// part of the app can call cacheMangaForDetail() + openMangaDetail(id)
-// without needing to know this module's internals.
+// Isolation note: only imports here are escapeHTML (utils.js, pure string
+// helper) and READ_LINK_SOURCES (readLinks/sources.js, no DOM coupling,
+// no network calls -- buildUrl() is a pure string builder). This file owns
+// its own cache and DOM node, so any other part of the app can call
+// cacheMangaForDetail() + openMangaDetail(id) without needing to know this
+// module's internals.
 //
 // CHANGED (moved from cards to detail page): rating/reading-time/confidence
 // badges, mood tags, and the "Similar Titles"/"Share" quick actions were
@@ -34,13 +35,21 @@
 
 // REVERTED: Step 9's "Search Results" section (js/braveSearch.js +
 // netlify/functions/searchManga.js, Brave Search API) has been removed --
-// no working Brave API key was available. Read Now is back to just
-// MangaDex (Verified) + Google Search; see js/mangadex.js and
-// js/readLinks/sources.js for that revert. braveSearch.js and the Netlify
+// no working Brave API key was available. braveSearch.js and the Netlify
 // function are no longer imported/used anywhere and can be deleted from
 // the repo.
+//
+// REVERTED AGAIN (product decision, moodmanga.in "wiring search engine"
+// Notion log Entry 13): Read Now's MangaDex verified-existence check has
+// also been removed -- js/mangadex.js and js/comick.js are deleted from
+// the repo entirely. Read Now is now just a single "Search on Google"
+// button, built synchronously from readLinks/sources.js's
+// READ_LINK_SOURCES registry -- no existence check, no network call, no
+// isValidated distinction (every link renders with the same
+// not-validated styling renderLinksHTML already handles for a
+// "Google Search"-named entry).
 import { escapeHTML } from './utils.js';
-import { resolveReadLinks, getFallbackLinks } from './mangadex.js';
+import { READ_LINK_SOURCES } from './readLinks/sources.js';
 
 const VIEW_ID = 'manga-detail-view';
 const detailCache = {};
@@ -282,30 +291,33 @@ function buildMarkup(item) {
     `;
 }
 
-async function loadLinksIfNeeded(item) {
-    if (item.readLinks) return;
-    // item.author (Step 8, AniList staff data) sharpens the Google fallback
-    // query when available. item.altTitle (Step 4) is still passed through
-    // but has no active consumer since Manganato/Bato.to were removed --
-    // harmless to keep forwarding it in case a guessable-URL source is ever
-    // added back to the registry.
+// Builds the Read Now links array from readLinks/sources.js's registry.
+// Pure/synchronous -- buildUrl() just assembles a search URL string, no
+// network call, no existence check (that was mangadex.js's job, and it's
+// been removed entirely per the product decision in Entry 13). item.author
+// (Step 8, AniList staff data) sharpens the Google query when available.
+// item.altTitle is still passed through in meta but has no active consumer
+// since Manganato/Bato.to were removed -- harmless to keep forwarding it in
+// case a guessable-URL source is ever added back to the registry.
+function buildReadLinks(item) {
     const meta = { author: item.author, altTitle: item.altTitle };
-    let links;
-    try {
-        links = await Promise.race([
-            resolveReadLinks(item.title, meta).catch(() => getFallbackLinks(item.title, meta)),
-            new Promise(resolve => setTimeout(() => resolve(getFallbackLinks(item.title, meta)), 2500))
-        ]);
-    } catch (e) {
-        links = getFallbackLinks(item.title, meta);
-    }
-    item.readLinks = links;
+    return READ_LINK_SOURCES.map(source => ({
+        name: source.name,
+        url: source.buildUrl(item.title, meta),
+        isValidated: false
+    }));
+}
+
+function loadLinksIfNeeded(item) {
+    if (item.readLinks) return;
+
+    item.readLinks = buildReadLinks(item);
     cacheMangaForDetail(item);
 
     const view = document.getElementById(VIEW_ID);
     if (view && view.dataset.openId === String(item.id)) {
         const row = document.getElementById('detail-links-row');
-        if (row) row.innerHTML = renderLinksHTML(links);
+        if (row) row.innerHTML = renderLinksHTML(item.readLinks);
     }
 }
 
