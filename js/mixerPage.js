@@ -1,5 +1,5 @@
 // ==========================================
-// MOOD MIXER PAGE (js/mixerPage.js) 
+// MOOD MIXER PAGE (js/mixerPage.js)
 // ==========================================
 // STEP 2: the homepage "Mood Mixer" panel now only decides which 1-2 moods
 // are actively being blended for an *instant* search (see moods.js, Step 1).
@@ -8,13 +8,8 @@
 // full grid of matches — instead of every tap re-searching immediately.
 //
 // STEP 2 FIX (too-few-results bug): only each selected mood's own genre
-// pair goes into AniList's genre_in filter (usually 2, rarely 4 genres).
-// Manually-picked genre chips are never sent to AniList as a hard filter.
-//
-// STEP 3: Mixer results run through the same recommendationScorer.js used
-// by the main search flow — manual genre chips go in as intent.boosts.genres
-// (extra signal, not a hard filter). Cards get the same ⭐ match % badge and
-// "Why?" panel as normal search results.
+// pair goes into the hard genre filter (usually 2, rarely 4 genres).
+// Manually-picked genre chips are never sent as a hard filter.
 //
 // STEP 6: picking mood(s) blends their theme.js colors into the page's own
 // background (separate from the site-wide --bg-dark), and selected chips
@@ -28,18 +23,44 @@
 // never re-fires for a repeat combo, same pattern as favorites.js's local
 // persistence.
 //
+// REWIRED (search-engine cutover), per "wiring search engine" Notion log
+// Entry 16's Phase 3 decision:
+//   - STEP 3 (the old ⭐ match-%/"Why?" panel scoring) is REMOVED, not
+//     faked. The engine's per-result scoring exists (rankResults.js), but
+//     for Mixer's request shape (hard filters.genres + no free text) the
+//     emotionMatch/genreMatch signals saturate to 1/0 and collapse to a
+//     popularity sort dressed up as a mood match (confirmed live, Entry
+//     26). Showing a match % badge backed by a saturated/meaningless
+//     number would be worse than not showing one. renderer.js's
+//     getMangaCardHTML() already renders gracefully with no matchScore
+//     (Entry 15), so no downstream change was needed for this.
+//   - The whole old-engine scorer chain (recommendationScorer.js,
+//     MangaIntent, CONCEPT_PROPERTIES/harvested_knowledge.js) is gone —
+//     none of it exists in the new engine anyway (rip-out list, Entry 14).
+//   - Fetch now goes to CONFIG.SEARCH_ENGINE_URL. Selected mood genres
+//     still go in as a hard filters.genres (matching the old "only mood
+//     genres are a hard filter" rule above). Selected mood LABELS (not
+//     genres) plus manually-picked genre chips are sent as the free-text
+//     query — partly to satisfy the engine's non-empty-query requirement
+//     (confirmed 400 on empty query, Entry 26), partly so the engine's own
+//     classifier/mood pipeline still gets real signal to work with even
+//     though this page no longer reads a score back from it.
+//   - Chapter-range filtering stays client-side, unchanged — engine's
+//     filters.maxChapters is accepted but confirmed dead server-side
+//     (Entry 17), same as it always needed a client-side pass.
+// Tracked in the "Backend Update List — search engine" Notion page:
+// restoring real Mixer match scoring needs either genreMatch computed
+// against filters.genres directly, or a separate scoring lever for this
+// no-free-text flow.
+//
 // Isolation note: self-contained like landing/, using the same "fixed
 // overlay toggled by a .open class" pattern as mangaDetail.js (no router
 // needed).
 
 import { allMoods } from './moods.js';
-import { buildPlanFromGenreList } from './parser/searchPlanner.js';
-import { fetchFromAniListUnified } from './anilist.js';
+import { CONFIG } from './config.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { getMangaCardHTML } from './renderer.js';
-import { scoreResults } from './parser/recommendationScorer.js';
-import { MangaIntent } from './parser/intentSchema.js';
-import { CONCEPT_PROPERTIES } from './parser/dictionary/properties.js';
 import { blendMoodColors } from './theme.js';
 import { getBlendInfo } from './mixerBlends.js';
 
@@ -65,16 +86,6 @@ const LENGTH_OPTIONS = [
     { value: 'medium', label: 'Medium (50–200 chapters)' },
     { value: 'long', label: 'Long (200+ chapters)' }
 ];
-
-let CONCEPT_DICTIONARY = { ...CONCEPT_PROPERTIES };
-const dictionaryLoadPromise = (async () => {
-    try {
-        const mod = await import('./parser/dictionary/harvested_knowledge.js');
-        CONCEPT_DICTIONARY = { ...mod.HARVESTED_RULES, ...CONCEPT_PROPERTIES };
-    } catch (e) {
-        console.warn('[mixerPage.js] harvested_knowledge.js not available, using base properties.', e.message);
-    }
-})();
 
 // STEP 8: which mood pairs (sorted "labelA+labelB" keys) this device has
 // already mixed at least once. Local-only, no Firestore — this is a small
@@ -196,17 +207,17 @@ function updateMixerBlend() {
 
 // STEP 7: live preview line, only shown once exactly 2 moods are picked.
 function updateBlendPreview() {
-    const el = document.getElementById('mixer-blend-preview');
-    if (!el) return;
+    const preview = document.getElementById('mixer-blend-preview');
+    if (!preview) return;
     if (selectedMoodIndexes.length !== 2) {
-        el.classList.remove('visible');
-        el.innerHTML = '';
+        preview.textContent = '';
+        preview.classList.remove('visible');
         return;
     }
     const [a, b] = selectedMoodIndexes.map(i => allMoods[i].label);
     const info = getBlendInfo(a, b);
-    el.innerHTML = `You're mixing <strong>${info.name}</strong> — ${info.blurb}`;
-    el.classList.add('visible');
+    preview.textContent = `✨ ${info.name} — ${info.blurb}`;
+    preview.classList.add('visible');
 }
 
 function wireEvents(root) {
@@ -236,8 +247,10 @@ function wireEvents(root) {
         });
     });
 
-    // Genre chips — unlimited multi-select. Not sent to AniList's genre_in
-    // (that's mood-only) — these feed the scorer as extra boost signal.
+    // Genre chips — unlimited multi-select. Not sent as a hard filter
+    // (that's mood-only, see file header) — folded into the free-text
+    // query as soft signal instead, now that there's no scorer to feed
+    // them into as boosts.
     root.querySelectorAll('.mixer-chip[data-genre]').forEach(chip => {
         chip.addEventListener('click', () => {
             const genre = chip.dataset.genre;
@@ -259,18 +272,6 @@ function collectMoodGenres() {
         allMoods[i].query.split(',').map(s => s.trim())
     );
     return Array.from(new Set(fromMoods)).filter(Boolean);
-}
-
-function buildMixerIntent(moodGenres, extraGenres) {
-    const intent = new MangaIntent();
-    intent.originalQuery = [...moodGenres, ...extraGenres].join(', ');
-    intent.confidence = 1.0;
-    intent.genres = moodGenres.map(name => ({ name, confidence: 1.0 }));
-    intent.moods = selectedMoodIndexes.map(i => allMoods[i].label);
-    if (extraGenres.length > 0) {
-        intent.boosts.genres = extraGenres.map(name => ({ name, confidence: 1.0 }));
-    }
-    return intent;
 }
 
 function chapterRangeFor(lengthValue) {
@@ -313,6 +314,27 @@ function showMixerToast(message) {
     toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3200);
 }
 
+// Small local fetch-with-timeout wrapper, same pattern used across the
+// other rewired files.
+async function postToSearchEngine(body, timeoutMs = CONFIG.REQUEST_TIMEOUT) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const res = await fetch(CONFIG.SEARCH_ENGINE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`Search engine responded ${res.status}`);
+        return await res.json();
+    } catch (e) {
+        clearTimeout(timeout);
+        throw e;
+    }
+}
+
 async function runMixerSearch() {
     const grid = document.getElementById('mixer-results-grid');
     const section = document.getElementById('mixer-results-section');
@@ -323,6 +345,7 @@ async function runMixerSearch() {
     checkNewBlend();
 
     const moodGenres = collectMoodGenres();
+    const moodLabels = selectedMoodIndexes.map(i => allMoods[i].label);
     const extraGenres = Array.from(selectedGenres);
     const statusValue = document.getElementById('mixer-status-select')?.value || '';
     const lengthValue = document.getElementById('mixer-length-select')?.value || '';
@@ -336,11 +359,26 @@ async function runMixerSearch() {
     section.scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const plan = buildPlanFromGenreList(moodGenres.length ? moodGenres : ['']);
-        if (statusValue) plan.filters.statusFilter = statusValue;
+        // NOTE: the engine hard-rejects an empty query string with a 400
+        // (Entry 26). Mood labels + any extra genre chips become the
+        // free-text query — real signal for the engine's own
+        // classifier/mood pipeline, even though this page no longer reads
+        // a per-result score back out of it (see file header).
+        const query = [...moodLabels, ...extraGenres].join(' ') || 'manga';
 
-        const raw = await fetchFromAniListUnified(plan, 1, false, 30);
-        let results = raw.map(m => normalizeResult(m, 'AniList'));
+        const data = await postToSearchEngine({
+            domain: 'manga',
+            query,
+            filters: {
+                genres: moodGenres,
+                status: statusValue || undefined,
+                page: 1,
+                perPage: 30
+            }
+        });
+
+        const raw = data.results || [];
+        let results = raw.map(m => normalizeResult(m, m.source || 'AniList'));
 
         results = results.filter(m => {
             const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
@@ -349,12 +387,6 @@ async function runMixerSearch() {
             if (typeof maxChapters === 'number' && ch > maxChapters) return false;
             return true;
         });
-
-        if (results.length > 0) {
-            const intent = buildMixerIntent(moodGenres, extraGenres);
-            await dictionaryLoadPromise;
-            results = await scoreResults(results, intent, plan, CONCEPT_DICTIONARY);
-        }
 
         grid.innerHTML = '';
         if (results.length === 0) {
