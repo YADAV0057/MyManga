@@ -10,17 +10,23 @@
 // window pattern as topPicks.js, just a 1-hour window instead of 12), with
 // a "Recommend More" button to force a fresh batch on demand.
 //
+// REWIRED (search-engine cutover): fetchRecommendations()'s fetch call now
+// goes to the new Supabase search engine (CONFIG.SEARCH_ENGINE_URL) instead
+// of anilist.js directly. Everything else — Firestore caching, hour-window
+// seeding, favorites filtering, DOM/rendering — is unchanged. Confirmed
+// against the "wiring search engine" Notion log Entry 24: plain popularity
+// browse (no genres, no sort override) has no engine gaps.
+//
 // Isolation note: same self-contained pattern as topPicks.js/mixerPage.js.
-// Only imports project infrastructure (firebase.js, anilist.js,
-// resultNormalizer.js, searchPlanner.js), favorites.js's getAllFavorites
-// (pure data read), and renderer.js's getMangaCardHTML (pure string
-// builder — used instead of renderMangaCard since this page has two
-// separate grids, not the single #community-grid renderMangaCard targets).
+// Only imports project infrastructure (firebase.js, config.js,
+// resultNormalizer.js), favorites.js's getAllFavorites (pure data read),
+// and renderer.js's getMangaCardHTML (pure string builder — used instead of
+// renderMangaCard since this page has two separate grids, not the single
+// #community-grid renderMangaCard targets).
 
 import { db, doc, getDoc, setDoc } from './firebase.js';
-import { fetchFromAniListUnified } from './anilist.js';
+import { CONFIG } from './config.js';
 import { normalizeResult } from './resultNormalizer.js';
-import { buildPlanFromGenreList } from './parser/searchPlanner.js';
 import { getMangaCardHTML } from './renderer.js';
 import { getAllFavorites } from './favorites.js';
 
@@ -67,6 +73,28 @@ async function writeCache(key, results) {
     }
 }
 
+// Small local fetch-with-timeout wrapper, same pattern used across the
+// other rewired files (topPicks.js) — uses CONFIG.REQUEST_TIMEOUT now that
+// config.js's real shape is confirmed to have it (8000ms).
+async function postToSearchEngine(body, timeoutMs = CONFIG.REQUEST_TIMEOUT) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const res = await fetch(CONFIG.SEARCH_ENGINE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`Search engine responded ${res.status}`);
+        return await res.json();
+    } catch (e) {
+        clearTimeout(timeout);
+        throw e;
+    }
+}
+
 /**
  * @param {boolean} forceNew - true when the user tapped "Recommend More":
  *   skips the cache read and picks a genuinely random page instead of the
@@ -81,15 +109,29 @@ async function fetchRecommendations(forceNew = false) {
         if (cached) return cached;
     }
 
-    const plan = buildPlanFromGenreList([]); // plain popularity browse
     const page = forceNew ? (Math.floor(Math.random() * PAGE_POOL) + 1) : seededPage(key);
 
     let results = [];
     try {
-        // fetch a few extra so filtering out already-favorited titles below
-        // still leaves a full row
-        const raw = await fetchFromAniListUnified(plan, page, false, REC_COUNT + 6);
-        results = raw.map(m => normalizeResult(m, 'AniList'));
+        // NOTE: the engine hard-rejects an empty query string with a 400
+        // (confirmed live — "wiring search engine" Notion log, Entry 26).
+        // This is a plain popularity browse with no genres/mood to derive
+        // a query from, so a fixed non-empty term is sent instead. No
+        // filters.genres are set here, so it can't trigger the genre/query
+        // saturation issue flagged for Mixer.
+        // Fetch a few extra so filtering out already-favorited titles
+        // below still leaves a full row.
+        const data = await postToSearchEngine({
+            domain: 'manga',
+            query: 'popular manga',
+            filters: {
+                page,
+                perPage: REC_COUNT + 6
+            }
+        });
+
+        const raw = data.results || [];
+        results = raw.map(m => normalizeResult(m, m.source || 'AniList'));
     } catch (e) {
         console.warn('[myListPage.js] fetchRecommendations failed:', e.message);
         return [];
