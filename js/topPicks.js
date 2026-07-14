@@ -14,21 +14,28 @@
 // not truly random) set, without needing any kind of live in-page timer
 // that could clobber an active search.
 //
+// REWIRED (search-engine cutover): the fetch call now goes to the new
+// Supabase search engine (CONFIG.SEARCH_ENGINE_URL) instead of anilist.js
+// directly. Everything else — Firestore caching, window/page seeding,
+// grid rendering — is unchanged. Confirmed against the "wiring search
+// engine" Notion log Entries 17/20/24: sort:'rating' + no genres is
+// already fully supported, no engine gaps for this file.
+//
 // Isolation note: self-contained like landing/ and mixerPage.js — only
-// imports project infrastructure (firebase.js, anilist.js,
-// resultNormalizer.js, searchPlanner.js) and renderer.js's renderMangaCard
-// (which already knows how to append into #community-grid).
+// imports project infrastructure (firebase.js, config.js,
+// resultNormalizer.js) and renderer.js's renderMangaCard (which already
+// knows how to append into #community-grid).
 
 import { db, doc, getDoc, setDoc } from './firebase.js';
-import { fetchFromAniListUnified } from './anilist.js';
+import { CONFIG } from './config.js';
 import { normalizeResult } from './resultNormalizer.js';
-import { buildPlanFromGenreList } from './parser/searchPlanner.js';
 import { renderMangaCard } from './renderer.js';
 import { renderSkeletonLoaders } from './search.js';
 
 const CACHE_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours
 const PICKS_COUNT = 15;
-const PAGE_POOL = 15; // how many AniList pages of "top rated" we rotate across
+const PAGE_POOL = 15; // how many result-pages of "top rated" we rotate across
+const FETCH_TIMEOUT_MS = 8000;
 
 // e.g. "topPicks:2026-07-09:AM" / "topPicks:2026-07-09:PM" — changes at
 // midnight and again at noon (local time), giving the promised 2x/day rotation.
@@ -73,25 +80,62 @@ async function writeCache(key, results) {
     }
 }
 
+// Small local fetch-with-timeout wrapper, same pattern landing/fetch.js's
+// queryAniList() already uses — kept local rather than assuming a shared
+// utils.js helper's exact signature, since that hasn't been confirmed.
+async function postToSearchEngine(body, timeoutMs = FETCH_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const res = await fetch(CONFIG.SEARCH_ENGINE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`Search engine responded ${res.status}`);
+        return await res.json();
+    } catch (e) {
+        clearTimeout(timeout);
+        throw e;
+    }
+}
+
 export async function fetchTodaysTopPicks(limit = PICKS_COUNT) {
     const key = currentWindowKey();
     const cached = await readCache(key);
     if (cached) return cached;
 
-    // Plain "top rated" browse — no genres, no free text — sorted by
-    // SCORE_DESC (anilist.js maps plan.filters.sort === 'rating' to that).
-    // Deliberately no popularity ceiling here (unlike landing/fetch.js's
-    // Hidden Gems), so this reads as "the best of everything" rather than
-    // duplicating either the Trending or Hidden Gems rows.
-    const plan = buildPlanFromGenreList([]);
-    plan.filters.sort = 'rating';
-
     const page = seededPage(key);
 
     let results = [];
     try {
-        const raw = await fetchFromAniListUnified(plan, page, false, limit);
-        results = raw.map(m => normalizeResult(m, 'AniList'));
+        // NOTE: the engine hard-rejects an empty query string with a 400
+        // (confirmed live — "wiring search engine" Notion log, Entry 26).
+        // This browse has no genres/mood to derive a query from, so we
+        // send a fixed non-empty term. It isn't paired with any
+        // filters.genres here, so it can't trigger the genre/query
+        // saturation issue flagged for Mixer (Entry 26) — sort:'rating'
+        // does all the real work.
+        const data = await postToSearchEngine({
+            domain: 'manga',
+            query: 'top rated manga',
+            filters: {
+                sort: 'rating',
+                page,
+                perPage: limit
+            }
+        });
+
+        const raw = data.results || [];
+
+        // Engine results are still raw per-source shapes (AniList/Jikan/
+        // Kitsu/MangaDex) with finalScore/_rankDebug attached by the
+        // backend's rankResults.js — normalizeResult() maps them into the
+        // same UnifiedResult shape as before, just ignoring those two
+        // extra fields (resultNormalizer.js doesn't read them).
+        results = raw.map(m => normalizeResult(m, m.source || 'AniList'));
     } catch (e) {
         console.warn('[topPicks.js] fetchTodaysTopPicks failed:', e.message);
         return [];
