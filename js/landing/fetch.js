@@ -1,20 +1,46 @@
 // ==========================================
 // landing/fetch.js
 // ==========================================
-// Pure data layer for the landing page's always-visible rows. 
+// Pure data layer for the landing page's always-visible rows.
 // No DOM access here — this file only ever returns arrays of
 // normalized manga objects (or throws/logs and returns []).
 //
 // Isolation note: everything this file imports comes from OUTSIDE
-// the landing/ folder (../firebase.js, ../resultNormalizer.js — the
-// shared project infrastructure). Everything it EXPORTS is only ever
-// consumed by other files inside landing/. If AniList changes its API
-// or caching breaks, the blast radius is contained to this folder.
+// the landing/ folder (../firebase.js, ../config.js, ../resultNormalizer.js
+// — the shared project infrastructure). Everything it EXPORTS is only ever
+// consumed by other files inside landing/. If the search engine changes
+// its API or caching breaks, the blast radius is contained to this folder.
+//
+// REWIRED (search-engine cutover): all 5 feeds now call the new Supabase
+// engine (CONFIG.SEARCH_ENGINE_URL) instead of AniList directly. Caching
+// (2-tier: LocalStorage then Firestore, 6h TTL) is unchanged.
+//
+// Per-feed status against the confirmed engine contract (see
+// "Backend Update List — search engine" in Notion for the authoritative,
+// up-to-date version of this list):
+//   - Trending Today  — engine has no trending signal. Approximated with
+//     a broader fetch + client-side sort by `popularity` (a real field on
+//     every UnifiedResult), not faked. Not a true "trending" signal, but
+//     not degraded to nothing either.
+//   - Hidden Gems     — engine has no minScore/maxPopularity filter.
+//     Fixed client-side: fetch a wider pool sorted by rating, then filter
+//     by `globalScore`/`popularity` locally (both real fields).
+//   - New Releases    — GENUINELY DEGRADED. UnifiedResult has no release
+//     date field at all, so "newest first" can't be reconstructed
+//     client-side. Falls back to `filters.status: 'RELEASING'` only, no
+//     ordering guarantee. Needs either a date field in the engine
+//     response or a real date-sort — tracked in the Backend Update List.
+//   - Most Awaited    — engine only recognizes sort:'rating', not
+//     'popularity'. Fixed client-side: fetch a wider
+//     `status: 'NOT_YET_RELEASED'` pool, then sort by `popularity` locally.
+//   - Short Reads     — engine accepts but doesn't apply `maxChapters`
+//     (dead field server-side, confirmed). Fixed client-side: fetch a
+//     wider pool, filter by parsed `chapters` locally.
 
 import { db, doc, getDoc, setDoc } from '../firebase.js';
+import { CONFIG } from '../config.js';
 import { normalizeResult } from '../resultNormalizer.js';
 
-const ANILIST_API = 'https://graphql.anilist.co';
 const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
 
 function todayCacheKey(name) {
@@ -44,12 +70,12 @@ async function readCache(key) {
         if (!snap.exists()) return null;
         const data = snap.data();
         if (Date.now() - data.cachedAt > CACHE_TTL_MS) return null;
-        
+
         // Backfill into LocalStorage so the next load is immediate
         try {
             localStorage.setItem(`local_${key}`, JSON.stringify({ results: data.results, cachedAt: data.cachedAt }));
-        } catch (localErr) { 
-            /* Silently catch if storage is full or in private browsing mode */ 
+        } catch (localErr) {
+            /* Silently catch if storage is full or in private browsing mode */
         }
 
         console.log(`[Cache Hit] Tier 1 Firestore for: ${key}`);
@@ -62,7 +88,7 @@ async function readCache(key) {
 
 async function writeCache(key, results) {
     const now = Date.now();
-    
+
     // Save to LocalStorage instantly
     try {
         localStorage.setItem(`local_${key}`, JSON.stringify({ results, cachedAt: now }));
@@ -79,101 +105,100 @@ async function writeCache(key, results) {
     }
 }
 
-
-async function queryAniList(query, variables, timeoutMs = 4000) {
+// Small local fetch-with-timeout wrapper, same pattern used across the
+// other rewired files.
+async function postToSearchEngine(body, timeoutMs = CONFIG.REQUEST_TIMEOUT) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
     try {
-        const res = await fetch(ANILIST_API, {
+        const res = await fetch(CONFIG.SEARCH_ENGINE_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query, variables }),
+            body: JSON.stringify(body),
             signal: controller.signal
         });
         clearTimeout(timeout);
-        if (!res.ok) throw new Error(`AniList responded ${res.status}`);
-        const json = await res.json();
-        return json?.data?.Page?.media ?? [];
+        if (!res.ok) throw new Error(`Search engine responded ${res.status}`);
+        return await res.json();
     } catch (e) {
         clearTimeout(timeout);
         throw e;
     }
 }
 
-const MEDIA_FIELDS = `
-    id
-    title { romaji english }
-    coverImage { large color }
-    genres
-    averageScore
-    popularity
-    status
-    chapters
-    description(asHtml: false)
-`;
+// Shared fetch+normalize step for every feed below.
+async function fetchAndNormalize(query, filters) {
+    const data = await postToSearchEngine({ domain: 'manga', query, filters });
+    const raw = data.results || [];
+    return raw.map(m => normalizeResult(m, m.source || 'AniList'));
+}
 
-// NOTE: normalizeResult's exact expected input shape should be verified
-// against the real resultNormalizer.js before shipping. If it needs a
-// differently-shaped object than a raw AniList `media` node, adjust the
-// .map() calls below — that's the only place a shape mismatch would surface.
+function byPopularityDesc(a, b) {
+    return (b.popularity || 0) - (a.popularity || 0);
+}
+
+function parseChapters(m) {
+    const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
+    return isNaN(ch) ? null : ch;
+}
 
 export async function fetchTrendingToday(limit = 10) {
     const cacheKey = todayCacheKey('trending');
     const cached = await readCache(cacheKey);
     if (cached) return cached;
 
-    const query = `
-        query ($perPage: Int) {
-            Page(perPage: $perPage) {
-                media(type: MANGA, sort: TRENDING_DESC, isAdult: false) {
-                    ${MEDIA_FIELDS}
-                    trending
-                }
-            }
-        }
-    `;
-
+    let results = [];
     try {
-        const raw = await queryAniList(query, { perPage: limit });
-        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        // No trending signal exists server-side — fetch a wider pool and
+        // approximate with popularity, a real UnifiedResult field.
+        const pool = await fetchAndNormalize('trending manga', { page: 1, perPage: Math.max(limit * 3, 30) });
+        results = pool.slice().sort(byPopularityDesc).slice(0, limit);
         await writeCache(cacheKey, results);
-        return results;
     } catch (e) {
         console.warn('[landing/fetch.js] fetchTrendingToday failed:', e.message);
         return [];
     }
+    return results;
 }
 
-export async function fetchHiddenGems(limit = 10, popularityCeiling = 15000) {
+export async function fetchHiddenGems(limit = 10, popularityCeiling = 15000, scoreFloor = 80) {
     const cacheKey = todayCacheKey('hiddenGems');
     const cached = await readCache(cacheKey);
     if (cached) return cached;
 
-    const query = `
-        query ($perPage: Int) {
-            Page(perPage: $perPage) {
-                media(
-                    type: MANGA,
-                    sort: SCORE_DESC,
-                    averageScore_greater: 80,
-                    popularity_lesser: ${popularityCeiling},
-                    isAdult: false
-                ) {
-                    ${MEDIA_FIELDS}
-                }
-            }
-        }
-    `;
-
+    let results = [];
     try {
-        const raw = await queryAniList(query, { perPage: limit });
-        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        const pool = await fetchAndNormalize('acclaimed underrated manga', {
+            sort: 'rating',
+            page: 1,
+            perPage: Math.max(limit * 4, 40)
+        });
+
+        const strict = pool.filter(m =>
+            typeof m.globalScore === 'number' && m.globalScore >= scoreFloor &&
+            typeof m.popularity === 'number' && m.popularity <= popularityCeiling
+        );
+
+        // Backfill from the rest of the pool (best score first) if the
+        // strict filter came up short — better a full row than an
+        // under-filled one, same "graceful degrade" pattern used
+        // elsewhere in this project.
+        if (strict.length < limit) {
+            const usedIds = new Set(strict.map(m => m.id));
+            const backfill = pool
+                .filter(m => !usedIds.has(m.id))
+                .sort((a, b) => (b.globalScore || 0) - (a.globalScore || 0));
+            results = [...strict, ...backfill].slice(0, limit);
+        } else {
+            results = strict.slice(0, limit);
+        }
+
         await writeCache(cacheKey, results);
-        return results;
     } catch (e) {
         console.warn('[landing/fetch.js] fetchHiddenGems failed:', e.message);
         return [];
     }
+    return results;
 }
 
 export async function fetchNewReleases(limit = 10) {
@@ -181,25 +206,25 @@ export async function fetchNewReleases(limit = 10) {
     const cached = await readCache(cacheKey);
     if (cached) return cached;
 
-    const query = `
-        query ($perPage: Int) {
-            Page(perPage: $perPage) {
-                media(type: MANGA, sort: START_DATE_DESC, status: RELEASING, isAdult: false) {
-                    ${MEDIA_FIELDS}
-                }
-            }
-        }
-    `;
-
+    let results = [];
     try {
-        const raw = await queryAniList(query, { perPage: limit });
-        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        // GENUINELY DEGRADED — see file header. No date field is
+        // available client-side to sort by, so this only filters to
+        // currently-releasing titles with whatever order the engine
+        // returns; it is NOT guaranteed to be newest-first. Tracked in
+        // the Backend Update List.
+        const pool = await fetchAndNormalize('new manga releases', {
+            status: 'RELEASING',
+            page: 1,
+            perPage: limit
+        });
+        results = pool.slice(0, limit);
         await writeCache(cacheKey, results);
-        return results;
     } catch (e) {
         console.warn('[landing/fetch.js] fetchNewReleases failed:', e.message);
         return [];
     }
+    return results;
 }
 
 export async function fetchMostAwaited(limit = 10) {
@@ -207,53 +232,60 @@ export async function fetchMostAwaited(limit = 10) {
     const cached = await readCache(cacheKey);
     if (cached) return cached;
 
-    const query = `
-        query ($perPage: Int) {
-            Page(perPage: $perPage) {
-                media(type: MANGA, sort: POPULARITY_DESC, status: NOT_YET_RELEASED, isAdult: false) {
-                    ${MEDIA_FIELDS}
-                }
-            }
-        }
-    `;
-
+    let results = [];
     try {
-        const raw = await queryAniList(query, { perPage: limit });
-        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        // Engine only recognizes sort:'rating', not 'popularity' — fetch
+        // a wider not-yet-released pool and sort by popularity locally.
+        const pool = await fetchAndNormalize('most anticipated upcoming manga', {
+            status: 'NOT_YET_RELEASED',
+            page: 1,
+            perPage: Math.max(limit * 3, 30)
+        });
+        results = pool.slice().sort(byPopularityDesc).slice(0, limit);
         await writeCache(cacheKey, results);
-        return results;
     } catch (e) {
         console.warn('[landing/fetch.js] fetchMostAwaited failed:', e.message);
         return [];
     }
+    return results;
 }
 
-export async function fetchShortReads(limit = 10) {
+export async function fetchShortReads(limit = 10, minChapters = 1, maxChapters = 40) {
     const cacheKey = todayCacheKey('shortReads');
     const cached = await readCache(cacheKey);
     if (cached) return cached;
 
-    const query = `
-        query ($perPage: Int) {
-            Page(perPage: $perPage) {
-                media(type: MANGA, sort: SCORE_DESC, chapters_lesser: 40, chapters_greater: 1, isAdult: false) {
-                    ${MEDIA_FIELDS}
-                }
-            }
-        }
-    `;
-
+    let results = [];
     try {
-        const raw = await queryAniList(query, { perPage: limit });
-        const results = raw.map(m => normalizeResult(m, 'anilist'));
+        // filters.maxChapters is accepted by the engine but confirmed
+        // dead server-side (no adapter reads it) — fetch a wider pool
+        // sorted by rating and filter by parsed chapter count locally.
+        const pool = await fetchAndNormalize('short completed manga series', {
+            sort: 'rating',
+            page: 1,
+            perPage: Math.max(limit * 4, 40)
+        });
+
+        const strict = pool.filter(m => {
+            const ch = parseChapters(m);
+            return ch !== null && ch >= minChapters && ch <= maxChapters;
+        });
+
+        if (strict.length < limit) {
+            const usedIds = new Set(strict.map(m => m.id));
+            const backfill = pool.filter(m => !usedIds.has(m.id));
+            results = [...strict, ...backfill].slice(0, limit);
+        } else {
+            results = strict.slice(0, limit);
+        }
+
         await writeCache(cacheKey, results);
-        return results;
     } catch (e) {
         console.warn('[landing/fetch.js] fetchShortReads failed:', e.message);
         return [];
     }
+    return results;
 }
-
 
 export async function fetchLandingFeeds() {
     const [trending, hiddenGems, newReleases, mostAwaited, shortReads] = await Promise.all([
