@@ -37,13 +37,19 @@
 //     server-side today, not a bug in this file.
 //   - Per-result match score / reasoning trail — the engine still does not
 //     return either (response's `mood` is an AGGREGATE for the whole
-//     query, not per-title). Per Notion Entries 12/13, aiPanel.js's
-//     reasoning trail and mixerPage.js's match-% scoring are being KEPT as
-//     product requirements but are explicitly NOT YET SUPPORTED by the
-//     engine (confirmed 2026-07-14) — this file does not attempt to fake
-//     either. Cards render without a matchScore (renderer.js already
-//     handles that gracefully). aiPanel.js/mixerPage.js need their own
-//     follow-up once the engine is extended.
+//     query, not per-title). Cards render without a matchScore
+//     (renderer.js already handles that gracefully) — mixerPage.js's
+//     match-% scoring is still a follow-up once the engine is extended.
+//   - aiPanel.js IS now wired in (2026-07-17): on a fresh, non-append
+//     search this file calls runIntentAnimation() before the fetch, then
+//     finishAnimation()/settlePanel(data, query) once the response lands,
+//     following aiPanel.js's own "EXPECTED CALL CONTRACT" header comment.
+//     Append-mode (load-more) calls intentionally skip all four panel
+//     hooks — the panel reflects the query's overall intent, not each
+//     page, so re-running it on every "load more" click would just
+//     replay the same summary. setApiTierStatus() is NOT called anywhere
+//     here — it's a documented no-op in aiPanel.js now that the waterfall
+//     runs entirely server-side, so there was nothing to wire it to.
 //
 // STILL UNCONFIRMED / NOT YET DONE:
 //   1. Endpoint URL — CONFIG.SEARCH_ENGINE_URL is a NEW config.js field
@@ -59,6 +65,7 @@
 import { CONFIG } from './config.js';
 import { normalizeResult } from './resultNormalizer.js';
 import { getMangaCardHTML } from './renderer.js';
+import { runIntentAnimation, finishAnimation, settlePanel, hideAIPanel } from './aiPanel.js';
 
 const GRID_ID = 'community-grid';
 const PAGE_SIZE = 10; // mirrors the old CONFIG.SEARCH_LIMIT default; sent as filters.perPage
@@ -142,6 +149,10 @@ export async function triggerSearch(query, page = 1, appendMode = false, extraFi
 
     if (!appendMode) {
         renderSkeletonLoaders();
+        // Stage 1 — generic "thinking" indicator. No reasoning data exists
+        // yet at this point (mood/routing/classification are computed
+        // server-side, inside the same call below), see aiPanel.js header.
+        await runIntentAnimation(query || '');
     }
 
     const filters = {
@@ -155,7 +166,10 @@ export async function triggerSearch(query, page = 1, appendMode = false, extraFi
         data = await callSearchEngine(query || '', filters);
     } catch (error) {
         console.error('[search.js] Search engine call failed:', error);
-        if (!appendMode) renderEmptyState('Something went wrong searching — try again in a moment.');
+        if (!appendMode) {
+            renderEmptyState('Something went wrong searching — try again in a moment.');
+            hideAIPanel();
+        }
         return { appended: 0, hasMore: false };
     }
 
@@ -163,6 +177,15 @@ export async function triggerSearch(query, page = 1, appendMode = false, extraFi
     const source = data?.source || 'AniList';
 
     const normalized = rawResults.map(raw => normalizeResult(raw, source));
+
+    if (!appendMode) {
+        // Stage 3 — ranking + "done", then Stage 4 — collapse into the
+        // compact summary bar with the mood/routing/classification
+        // breakdown (or the graceful "no reasoning trail" state on a
+        // cache hit, handled inside settlePanel/buildPanelData).
+        await finishAnimation(normalized.length);
+        settlePanel(data || {}, query || '');
+    }
 
     if (!appendMode) grid.innerHTML = '';
 
