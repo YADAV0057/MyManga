@@ -128,6 +128,16 @@ async function initializeApp() {
             aiPanel.initAIPanel();
         });
 
+        // Load Landing Page Discovery Rows (Trending Today / New Releases /
+        // Most Awaited / Hidden Gems / Short Reads). Self-mounting — it
+        // finds <div data-landing-mount></div> in the HTML and injects its
+        // own markup/styles/rows, so nothing needs to be attached to
+        // window here. This was the missing piece: landing/index.js was
+        // never imported anywhere, so its rows never initialized even
+        // though fetch.js/render.js/carousel.js/index.js were all fully
+        // rewired and ready.
+        await loadModule("Landing", "./landing/index.js");
+
         // Load Renderer
         await loadModule("Renderer", "./renderer.js", (renderer) => {
             window.renderMangaCard = renderer.renderMangaCard;
