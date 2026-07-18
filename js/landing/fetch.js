@@ -81,6 +81,17 @@ import { normalizeResult } from '../resultNormalizer.js';
 
 const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
 
+// FIX: cache keys were only ever scoped by day, so any fix to the
+// underlying query logic (adapters, domains.js, this file) stayed
+// invisible for up to 6h per user — both the localStorage tier and the
+// shared Firestore tier kept serving pre-fix results with no way to bust
+// them short of waiting out the TTL. Bump this whenever a change here (or
+// in domains.js/an adapter) changes what a row's results should look
+// like; it changes every cache key immediately, so stale entries are
+// simply never read again (they just age out of Firestore/localStorage
+// naturally instead of needing manual deletion).
+const CACHE_VERSION = 'v2';
+
 // The engine clamps perPage to this regardless of what we ask for
 // (resolvePagination in domains.js) — request it explicitly so the
 // post-fetch filters (minScore/maxPopularity/minChapters/maxChapters) get
@@ -104,7 +115,7 @@ const BLANK_QUERY = ' ';
 
 function todayCacheKey(name) {
     const day = new Date().toISOString().slice(0, 10);
-    return `home:${name}:${day}`;
+    return `home:${name}:${CACHE_VERSION}:${day}`;
 }
 
 async function readCache(key) {
