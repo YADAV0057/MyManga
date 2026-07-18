@@ -22,6 +22,18 @@
 // that's the likely cause — a product/backend decision (e.g. an engine
 // mode that fans out and merges server-side) would fix it properly,
 // not a frontend-only fix.
+// FIXED (2026-07-18, Notion "Backend Update List" — multi-source fan-out):
+// the engine now supports a genuine parallel fan-out mode via
+// filters.fanOut. domains.js's runManga() queries all 4 adapters
+// concurrently (Promise.allSettled) and returns a `bySource` bucket per
+// adapter in the response, alongside its usual merged `results` field.
+// This restores the old pre-cutover behavior (all 4 sources queried, each
+// source's own results available to merge.js) without the fragile
+// "guess which single source answered" logic below (data.source /
+// buckets[data.source]) that only ever populated one of the four
+// buckets. That guess-based code is kept as a fallback for a moment in
+// case an older/un-redeployed engine build doesn't send bySource yet —
+// see fetchAllSources() below.
 import { CONFIG } from '../config.js';
 import { normalizeResult } from '../resultNormalizer.js';
 
@@ -75,6 +87,11 @@ export function buildEngineRequest(state, page = 1) {
             excludedGenres: state.excludeGenres || [],
             status: state.status || undefined,
             sort: state.sort === 'rating' ? 'rating' : undefined,
+            // NEW: ask the engine to query all 4 sources in parallel and
+            // return each one's own results in `bySource`, rather than
+            // stopping at whichever source the waterfall hits first. See
+            // fetchAllSources() below for how bySource is consumed.
+            fanOut: true,
             page,
             perPage: PER_SOURCE_LIMIT
         }
@@ -86,26 +103,42 @@ export function buildEngineRequest(state, page = 1) {
  * @param {number} page
  * @returns {Promise<{source: string, items: object[]}[]>} same shape as
  *   before — one entry per "source" — so merge.js needs zero changes.
- *   Only the first entry is ever populated now (see header note); the
- *   other 3 are kept as empty stubs purely for shape compatibility.
+ *   All 4 buckets are genuinely populated now (whichever sources actually
+ *   returned results), not just the one the old waterfall happened to hit.
  */
 export async function fetchAllSources(state, page = 1) {
     // Always the same 4 known source names merge.js's priority-fill order
-    // expects (AniList > Jikan > MangaDex > Kitsu) — only whichever one
-    // the engine actually served gets populated, the rest stay empty.
+    // expects (AniList > Jikan > MangaDex > Kitsu).
     const buckets = { AniList: [], Jikan: [], Kitsu: [], MangaDex: [] };
+
+    // domains.js's bySource keys are lowercase adapter names (matches
+    // MANGA_SOURCES' `name` field there) — map to the display-cased keys
+    // merge.js expects.
+    const BY_SOURCE_TO_BUCKET = { anilist: 'AniList', jikan: 'Jikan', kitsu: 'Kitsu', mangadex: 'MangaDex' };
 
     try {
         const data = await postToSearchEngine(buildEngineRequest(state, page));
-        const raw = data.results || [];
 
-        // Engine results are still raw per-source shapes with
-        // finalScore/_rankDebug attached server-side — normalizeResult()
-        // maps them into the UnifiedResult shape merge.js/render.js
-        // already expect, same as every other rewired file.
-        const items = raw.map(m => normalizeResult(m, m.source || data.source || 'AniList'));
-        const key = Object.prototype.hasOwnProperty.call(buckets, data.source) ? data.source : 'AniList';
-        buckets[key] = items;
+        if (data.bySource) {
+            // Real fan-out response — every source's own results, kept
+            // separate, no cross-source cap/dedup (that's merge.js's job).
+            for (const [key, bucketName] of Object.entries(BY_SOURCE_TO_BUCKET)) {
+                const raw = data.bySource[key] || [];
+                buckets[bucketName] = raw.map(m => normalizeResult(m, bucketName));
+            }
+        } else {
+            // Defensive fallback: an engine build that hasn't picked up
+            // filters.fanOut yet just returns the old single merged
+            // `results` + `source` shape. Same guess-one-bucket behavior
+            // as before this fix, so Advanced Filter still works (just
+            // thinner) against an un-redeployed backend instead of
+            // breaking outright.
+            console.warn('[fetchAll.js] engine response has no bySource — falling back to single-source shape (backend may not have the fan-out fix deployed yet)');
+            const raw = data.results || [];
+            const items = raw.map(m => normalizeResult(m, m.source || data.source || 'AniList'));
+            const key = Object.prototype.hasOwnProperty.call(buckets, data.source) ? data.source : 'AniList';
+            buckets[key] = items;
+        }
     } catch (e) {
         console.warn('[fetchAll.js] search engine request failed:', e.message);
     }
