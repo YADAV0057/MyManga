@@ -25,11 +25,19 @@
 //   - Hidden Gems     — engine has no minScore/maxPopularity filter.
 //     Fixed client-side: fetch a wider pool sorted by rating, then filter
 //     by `globalScore`/`popularity` locally (both real fields).
-//   - New Releases    — GENUINELY DEGRADED. UnifiedResult has no release
-//     date field at all, so "newest first" can't be reconstructed
-//     client-side. Falls back to `filters.status: 'RELEASING'` only, no
-//     ordering guarantee. Needs either a date field in the engine
-//     response or a real date-sort — tracked in the Backend Update List.
+//   - New Releases    — FIXED (was genuinely degraded). The engine now
+//     returns a `releaseDate` field (ISO "YYYY-MM-DD") on every result and
+//     recognizes `filters.sort: 'date'` as a real newest-first sort per
+//     source — confirmed live, Supabase `search` edge function v36 (all 4
+//     adapters). This now sends `sort: 'date'` so the winning waterfall
+//     source already returns newest-first, then re-sorts client-side by
+//     `releaseDate` as a belt-and-suspenders guarantee (covers any source
+//     whose native date-sort is imperfect, and pushes any result with no
+//     date to the bottom instead of trusting engine order blindly).
+//     CAVEAT NOT YET VERIFIED THIS PASS: this assumes `normalizeResult()`
+//     (resultNormalizer.js) either passes `releaseDate` through untouched
+//     or is fine being handed it separately — see the inline note below.
+//     resultNormalizer.js itself wasn't available to check in this pass.
 //   - Most Awaited    — engine only recognizes sort:'rating', not
 //     'popularity'. Fixed client-side: fetch a wider
 //     `status: 'NOT_YET_RELEASED'` pool, then sort by `popularity` locally.
@@ -208,17 +216,35 @@ export async function fetchNewReleases(limit = 10) {
 
     let results = [];
     try {
-        // GENUINELY DEGRADED — see file header. No date field is
-        // available client-side to sort by, so this only filters to
-        // currently-releasing titles with whatever order the engine
-        // returns; it is NOT guaranteed to be newest-first. Tracked in
-        // the Backend Update List.
-        const pool = await fetchAndNormalize('new manga releases', {
-            status: 'RELEASING',
-            page: 1,
-            perPage: limit
+        // FIXED — see file header. Engine now supports sort:'date' and
+        // returns releaseDate on every result (confirmed live, search v36).
+        const data = await postToSearchEngine({
+            domain: 'manga',
+            query: 'new manga releases',
+            filters: { status: 'RELEASING', sort: 'date', page: 1, perPage: limit }
         });
-        results = pool.slice(0, limit);
+        const raw = data.results || [];
+
+        // Normalize as usual, but also carry releaseDate through explicitly
+        // rather than trusting normalizeResult() to preserve an unlisted
+        // field — safer regardless of resultNormalizer.js's exact mapping
+        // logic (not confirmed in this pass, see file header caveat).
+        const normalized = raw.map(m => ({
+            ...normalizeResult(m, m.source || 'AniList'),
+            releaseDate: m.releaseDate || null
+        }));
+
+        // Belt-and-suspenders re-sort: the engine's sort:'date' should
+        // already return newest-first from whichever source won the
+        // waterfall, but re-sorting client-side costs nothing and covers
+        // any source whose native date-sort turns out to be imperfect.
+        // Results with no releaseDate (adapter couldn't determine one) are
+        // pushed to the end instead of left in whatever order they arrived.
+        const dated = normalized.filter(m => m.releaseDate);
+        const undated = normalized.filter(m => !m.releaseDate);
+        dated.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+
+        results = [...dated, ...undated].slice(0, limit);
         await writeCache(cacheKey, results);
     } catch (e) {
         console.warn('[landing/fetch.js] fetchNewReleases failed:', e.message);
