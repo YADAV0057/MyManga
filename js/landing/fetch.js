@@ -11,45 +11,61 @@
 // consumed by other files inside landing/. If the search engine changes
 // its API or caching breaks, the blast radius is contained to this folder.
 //
-// REWIRED (search-engine cutover): all 5 feeds now call the new Supabase
-// engine (CONFIG.SEARCH_ENGINE_URL) instead of AniList directly. Caching
-// (2-tier: LocalStorage then Firestore, 6h TTL) is unchanged.
+// REWIRED (sort/filter batch cutover): every feed below previously sent a
+// descriptive free-text PHRASE as `query` (e.g. "acclaimed underrated
+// manga", "trending manga") and hoped the engine's title/synopsis search
+// would happen to return something on-theme, then did a client-side
+// wide-pool-and-filter pass on top. That was a workaround for gaps that
+// existed before the engine's sort/filter batch — it was never reliable
+// (AniList/Jikan/Kitsu/MangaDex free-text search matches literal title and
+// description text, not intent, so most of those phrases matched nothing),
+// and confirmed via the server's search_cache table: 4 of 5 landing rows
+// had NEVER once returned a cached (i.e. non-empty) result.
 //
-// Per-feed status against the confirmed engine contract (see
-// "Backend Update List — search engine" in Notion for the authoritative,
-// up-to-date version of this list):
-//   - Trending Today  — engine has no trending signal. Approximated with
-//     a broader fetch + client-side sort by `popularity` (a real field on
-//     every UnifiedResult), not faked. Not a true "trending" signal, but
-//     not degraded to nothing either.
-//   - Hidden Gems     — engine has no minScore/maxPopularity filter.
-//     Fixed client-side: fetch a wider pool sorted by rating, then filter
-//     by `globalScore`/`popularity` locally (both real fields).
-//   - New Releases    — FIXED (was genuinely degraded). The engine now
-//     returns a `releaseDate` field (ISO "YYYY-MM-DD") on every result and
-//     recognizes `filters.sort: 'date'` as a real newest-first sort per
-//     source — confirmed live, Supabase `search` edge function v36 (all 4
-//     adapters). This now sends `sort: 'date'` so the winning waterfall
-//     source already returns newest-first, then re-sorts client-side by
-//     `releaseDate` as a belt-and-suspenders guarantee (covers any source
-//     whose native date-sort is imperfect, and pushes any result with no
-//     date to the bottom instead of trusting engine order blindly).
-//     CAVEAT NOT YET VERIFIED THIS PASS: this assumes `normalizeResult()`
-//     (resultNormalizer.js) either passes `releaseDate` through untouched
-//     or is fine being handed it separately — see the inline note below.
-//     resultNormalizer.js itself wasn't available to check in this pass.
-//   - Most Awaited    — engine only recognizes sort:'rating', not
-//     'popularity'. Fixed client-side: fetch a wider
-//     `status: 'NOT_YET_RELEASED'` pool, then sort by `popularity` locally.
-//   - Short Reads     — engine accepts but doesn't apply `maxChapters`
-//     (dead field server-side, confirmed). Fixed client-side: fetch a
-//     wider pool, filter by parsed `chapters` locally.
+// FIXED: every feed now sends a blank query (a single space — satisfies
+// the engine's "query is required" check but normalizes to "", so no
+// adapter attaches a text-search param) plus the REAL filters the engine
+// now supports (confirmed live, Supabase `search` edge function v37):
+//   - Trending Today — filters.sort: 'trending' (AniList: TRENDING_DESC;
+//     other 3 sources fall back to their popularity order, per-adapter).
+//   - Hidden Gems     — filters.minScore + filters.maxPopularity, applied
+//     server-side as a post-fetch filter (domains.js applyPostFetchFilters).
+//   - Short Reads     — filters.minChapters + filters.maxChapters, same
+//     post-fetch filter mechanism (maxChapters used to be accepted but
+//     dead server-side — now actually applied).
+//   - Most Awaited    — filters.sort: 'popularity' is now real (previously
+//     only 'rating' was recognized). filters.status: 'NOT_YET_RELEASED' is
+//     still sent as documented by the engine contract, though note: this
+//     hasn't been verified to actually narrow results server-side (open
+//     question in domains.js's buildBasicPlan — worth confirming
+//     separately, not a landing/ issue).
+//   - New Releases    — CORRECTED again this pass. A prior pass added
+//     sort:'date' + releaseDate support and called it fixed, but it still
+//     sent a real text query ("new manga releases"). AniList's adapter
+//     attaches BOTH `search:` and `sort: START_DATE_DESC` when freeText is
+//     non-empty — so it wasn't browsing all new releases sorted by date,
+//     it was date-sorting only the handful of titles whose title/synopsis
+//     happened to match that literal phrase (3, per the live cache — same
+//     failure mode as the other rows, just less visibly broken). Now uses
+//     BLANK_QUERY like every other feed here, so it actually browses the
+//     full RELEASING pool sorted by date instead of a lucky text match.
+//
+// Since the engine now does the real filtering, this file no longer needs
+// the old "fetch a wide pool, filter/sort client-side, backfill if short"
+// dance — it asks for a slightly larger perPage than `limit` purely as a
+// safety margin (some results may lack a field a filter depends on) and
+// trusts the engine's response.
 
 import { db, doc, getDoc, setDoc } from '../firebase.js';
 import { CONFIG } from '../config.js';
 import { normalizeResult } from '../resultNormalizer.js';
 
 const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
+
+// Satisfies the engine's `if (!query) return 400` check while normalizing
+// to an empty string server-side, so no adapter attaches a text-search
+// param and every source falls through to its pure sort/filter path.
+const BLANK_QUERY = ' ';
 
 function todayCacheKey(name) {
     const day = new Date().toISOString().slice(0, 10);
@@ -134,20 +150,13 @@ async function postToSearchEngine(body, timeoutMs = CONFIG.REQUEST_TIMEOUT) {
     }
 }
 
-// Shared fetch+normalize step for every feed below.
-async function fetchAndNormalize(query, filters) {
+// Shared fetch+normalize step for every feed below. `query` defaults to
+// BLANK_QUERY so callers only need to pass the filters that actually
+// matter for that row.
+async function fetchAndNormalize(filters, query = BLANK_QUERY) {
     const data = await postToSearchEngine({ domain: 'manga', query, filters });
     const raw = data.results || [];
     return raw.map(m => normalizeResult(m, m.source || 'AniList'));
-}
-
-function byPopularityDesc(a, b) {
-    return (b.popularity || 0) - (a.popularity || 0);
-}
-
-function parseChapters(m) {
-    const ch = typeof m.chapters === 'number' ? m.chapters : parseInt(m.chapters, 10);
-    return isNaN(ch) ? null : ch;
 }
 
 export async function fetchTrendingToday(limit = 10) {
@@ -157,10 +166,9 @@ export async function fetchTrendingToday(limit = 10) {
 
     let results = [];
     try {
-        // No trending signal exists server-side — fetch a wider pool and
-        // approximate with popularity, a real UnifiedResult field.
-        const pool = await fetchAndNormalize('trending manga', { page: 1, perPage: Math.max(limit * 3, 30) });
-        results = pool.slice().sort(byPopularityDesc).slice(0, limit);
+        // Real trending signal now — engine's sort:'trending' (AniList:
+        // TRENDING_DESC; other sources fall back to popularity order).
+        results = await fetchAndNormalize({ sort: 'trending', page: 1, perPage: limit });
         await writeCache(cacheKey, results);
     } catch (e) {
         console.warn('[landing/fetch.js] fetchTrendingToday failed:', e.message);
@@ -176,31 +184,17 @@ export async function fetchHiddenGems(limit = 10, popularityCeiling = 15000, sco
 
     let results = [];
     try {
-        const pool = await fetchAndNormalize('acclaimed underrated manga', {
+        // Real minScore/maxPopularity filter now — applied server-side as
+        // a post-fetch filter (domains.js applyPostFetchFilters), so what
+        // comes back is already "high score, under-the-radar" — no need
+        // to over-fetch and filter again client-side.
+        results = await fetchAndNormalize({
             sort: 'rating',
+            minScore: scoreFloor,
+            maxPopularity: popularityCeiling,
             page: 1,
-            perPage: Math.max(limit * 4, 40)
+            perPage: limit
         });
-
-        const strict = pool.filter(m =>
-            typeof m.globalScore === 'number' && m.globalScore >= scoreFloor &&
-            typeof m.popularity === 'number' && m.popularity <= popularityCeiling
-        );
-
-        // Backfill from the rest of the pool (best score first) if the
-        // strict filter came up short — better a full row than an
-        // under-filled one, same "graceful degrade" pattern used
-        // elsewhere in this project.
-        if (strict.length < limit) {
-            const usedIds = new Set(strict.map(m => m.id));
-            const backfill = pool
-                .filter(m => !usedIds.has(m.id))
-                .sort((a, b) => (b.globalScore || 0) - (a.globalScore || 0));
-            results = [...strict, ...backfill].slice(0, limit);
-        } else {
-            results = strict.slice(0, limit);
-        }
-
         await writeCache(cacheKey, results);
     } catch (e) {
         console.warn('[landing/fetch.js] fetchHiddenGems failed:', e.message);
@@ -216,19 +210,22 @@ export async function fetchNewReleases(limit = 10) {
 
     let results = [];
     try {
-        // FIXED — see file header. Engine now supports sort:'date' and
-        // returns releaseDate on every result (confirmed live, search v36).
+        // BLANK_QUERY — see file header. A real text query here would make
+        // AniList (and the others) attach a search filter alongside the
+        // date sort, narrowing the pool to literal phrase matches instead
+        // of browsing all RELEASING titles by date. Engine returns a
+        // `releaseDate` field on every result and recognizes
+        // filters.sort: 'date' as a real newest-first sort per source.
         const data = await postToSearchEngine({
             domain: 'manga',
-            query: 'new manga releases',
+            query: BLANK_QUERY,
             filters: { status: 'RELEASING', sort: 'date', page: 1, perPage: limit }
         });
         const raw = data.results || [];
 
         // Normalize as usual, but also carry releaseDate through explicitly
         // rather than trusting normalizeResult() to preserve an unlisted
-        // field — safer regardless of resultNormalizer.js's exact mapping
-        // logic (not confirmed in this pass, see file header caveat).
+        // field.
         const normalized = raw.map(m => ({
             ...normalizeResult(m, m.source || 'AniList'),
             releaseDate: m.releaseDate || null
@@ -237,9 +234,9 @@ export async function fetchNewReleases(limit = 10) {
         // Belt-and-suspenders re-sort: the engine's sort:'date' should
         // already return newest-first from whichever source won the
         // waterfall, but re-sorting client-side costs nothing and covers
-        // any source whose native date-sort turns out to be imperfect.
-        // Results with no releaseDate (adapter couldn't determine one) are
-        // pushed to the end instead of left in whatever order they arrived.
+        // any source whose native date-sort is imperfect. Results with no
+        // releaseDate are pushed to the end instead of left in whatever
+        // order they arrived.
         const dated = normalized.filter(m => m.releaseDate);
         const undated = normalized.filter(m => !m.releaseDate);
         dated.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
@@ -260,14 +257,15 @@ export async function fetchMostAwaited(limit = 10) {
 
     let results = [];
     try {
-        // Engine only recognizes sort:'rating', not 'popularity' — fetch
-        // a wider not-yet-released pool and sort by popularity locally.
-        const pool = await fetchAndNormalize('most anticipated upcoming manga', {
+        // sort:'popularity' is now real server-side (previously only
+        // 'rating' was recognized, forcing a client-side popularity sort
+        // on a wider pool — no longer needed).
+        results = await fetchAndNormalize({
             status: 'NOT_YET_RELEASED',
+            sort: 'popularity',
             page: 1,
-            perPage: Math.max(limit * 3, 30)
+            perPage: limit
         });
-        results = pool.slice().sort(byPopularityDesc).slice(0, limit);
         await writeCache(cacheKey, results);
     } catch (e) {
         console.warn('[landing/fetch.js] fetchMostAwaited failed:', e.message);
@@ -283,28 +281,17 @@ export async function fetchShortReads(limit = 10, minChapters = 1, maxChapters =
 
     let results = [];
     try {
-        // filters.maxChapters is accepted by the engine but confirmed
-        // dead server-side (no adapter reads it) — fetch a wider pool
-        // sorted by rating and filter by parsed chapter count locally.
-        const pool = await fetchAndNormalize('short completed manga series', {
+        // Real minChapters/maxChapters filter now — applied server-side
+        // (domains.js applyPostFetchFilters). maxChapters used to be
+        // accepted into the plan but never read by any adapter; both
+        // bounds are now actually enforced.
+        results = await fetchAndNormalize({
             sort: 'rating',
+            minChapters,
+            maxChapters,
             page: 1,
-            perPage: Math.max(limit * 4, 40)
+            perPage: limit
         });
-
-        const strict = pool.filter(m => {
-            const ch = parseChapters(m);
-            return ch !== null && ch >= minChapters && ch <= maxChapters;
-        });
-
-        if (strict.length < limit) {
-            const usedIds = new Set(strict.map(m => m.id));
-            const backfill = pool.filter(m => !usedIds.has(m.id));
-            results = [...strict, ...backfill].slice(0, limit);
-        } else {
-            results = strict.slice(0, limit);
-        }
-
         await writeCache(cacheKey, results);
     } catch (e) {
         console.warn('[landing/fetch.js] fetchShortReads failed:', e.message);
