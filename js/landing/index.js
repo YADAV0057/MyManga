@@ -21,7 +21,17 @@
 // This file builds its own two rows and inserts them there. If that
 // mount point isn't found, it logs a clear warning and does nothing
 // else — it will never throw and break the rest of the page.
-import { fetchLandingFeeds } from './fetch.js';
+//
+// ROTATION (this pass): fetch.js now returns a POOL per row (up to 25
+// items) instead of just the 10 that get displayed, and exports
+// rotatingWindow() + ROTATION_INTERVAL_MS to pick a time-based slice of
+// that pool. This file owns the setInterval that re-slices + re-renders
+// on that cadence — no new network calls, the pools are already sitting
+// in memory (and in the 6h client cache) from the initial fetch. If the
+// user leaves the tab open, the rows will visibly change every
+// ROTATION_INTERVAL_MS instead of staying frozen on the same cards for
+// the whole 6-hour cache window.
+import { fetchLandingFeeds, rotatingWindow, ROTATION_INTERVAL_MS } from './fetch.js';
 import { 
     showSkeletons, 
     renderTrendingRow, 
@@ -92,23 +102,38 @@ async function init() {
         // Show skeletons for all rows while loading
         showSkeletons(trendingEl, newReleasesEl, mostAwaitedEl, gemsEl, shortReadsEl);
 
-        const feeds = await fetchLandingFeeds();
+        // These are POOLS now (up to 25 items each), not the final
+        // displayed list — see fetch.js.
+        const pools = await fetchLandingFeeds();
 
-        renderTrendingRow(trendingEl, feeds.trending);
-        renderNewReleasesRow(newReleasesEl, feeds.newReleases);
-        renderMostAwaitedRow(mostAwaitedEl, feeds.mostAwaited);
-        renderHiddenGemsRow(gemsEl, feeds.hiddenGems);
-        renderShortReadsRow(shortReadsEl, feeds.shortReads);
+        function renderCurrentWindow() {
+            renderTrendingRow(trendingEl, rotatingWindow(pools.trending));
+            renderNewReleasesRow(newReleasesEl, rotatingWindow(pools.newReleases));
+            renderMostAwaitedRow(mostAwaitedEl, rotatingWindow(pools.mostAwaited));
+            renderHiddenGemsRow(gemsEl, rotatingWindow(pools.hiddenGems));
+            renderShortReadsRow(shortReadsEl, rotatingWindow(pools.shortReads));
 
-        // Rows start empty (skeletons) at layout time, so wait a tick for
-        // real cards to be in the DOM before measuring scrollWidth.
-        requestAnimationFrame(() => {
-            autoScrollCarousel(trendingEl);
-            autoScrollCarousel(newReleasesEl);
-            autoScrollCarousel(mostAwaitedEl);
-            autoScrollCarousel(gemsEl);
-            autoScrollCarousel(shortReadsEl);
-        });
+            // Rows start empty (skeletons) at layout time, so wait a tick
+            // for real cards to be in the DOM before measuring
+            // scrollWidth.
+            requestAnimationFrame(() => {
+                autoScrollCarousel(trendingEl);
+                autoScrollCarousel(newReleasesEl);
+                autoScrollCarousel(mostAwaitedEl);
+                autoScrollCarousel(gemsEl);
+                autoScrollCarousel(shortReadsEl);
+            });
+        }
+
+        renderCurrentWindow();
+
+        // Rotate which slice of each pool is shown every
+        // ROTATION_INTERVAL_MS. No network calls — just re-slicing +
+        // re-rendering from the pools already fetched above. If a pool
+        // only had 1-3 survivors to begin with (a thin filtered row),
+        // rotatingWindow() has nothing new to show and the row will look
+        // unchanged — that's a pool-size limitation, not a rotation bug.
+        setInterval(renderCurrentWindow, ROTATION_INTERVAL_MS);
     } catch (e) {
         console.error('[landing/index.js] Landing feature failed to initialize:', e);
         if (mount) mount.innerHTML = '';
@@ -120,4 +145,3 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
-
