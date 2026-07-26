@@ -50,17 +50,31 @@
 //     BLANK_QUERY like every other feed here, so it actually browses the
 //     full RELEASING pool sorted by date instead of a lucky text match.
 //
-// KNOWN REMAINING LIMITATION (server-side, not fixable from this file):
-// domains.js's waterfall stops at the FIRST source that returns any
-// filtered survivors — it doesn't keep going to Jikan/Kitsu/MangaDex to
-// top a thin result set back up. Combined with a strict filter (e.g.
-// maxPopularity on a sort:'rating' pool, where the highest-rated titles
-// are often also the most popular), this can leave Hidden Gems / Short
-// Reads with as few as 1–3 survivors even though other sources might have
-// had more. Mitigated here by requesting the engine's maximum raw perPage
-// (25) so the filter has the largest possible candidate pool to work
-// with — but a real fix means changing the waterfall itself to accumulate
-// across sources instead of stopping at the first non-empty one.
+// CORRECTED 2026-07-26: the note that used to live here ("domains.js's
+// waterfall stops at the FIRST source that returns any survivors") is
+// stale — checked directly against the live deployed domains.js (v121,
+// Supabase get_edge_function): the accumulation loop is
+// `for (const source of MANGA_SOURCES) { if (accumulated.length >= limit)
+// break; ... }` — it only stops once `limit` is reached, not at the first
+// source with any results, and Jikan/Kitsu both normalize their raw
+// results to the same `averageScore`/`popularity` field names AniList
+// uses, so applyPostFetchFilters() isn't silently zeroing them out either.
+// The waterfall itself is fine. Leaving this note so nobody re-diagnoses
+// the same wrong cause again.
+//
+// REAL CAUSE, found this pass: fetchHiddenGems()/fetchShortReads() always
+// requested `page: 1` with a fixed sort + fixed filter bounds and zero
+// randomization. AniList's score/popularity stats barely move day to day
+// for already-catalogued titles, so "page 1, sort:'rating', minScore:80,
+// maxPopularity:15000" returns the literal same top-N qualifying titles on
+// every single call, forever — a fresh daily cache key (todayCacheKey())
+// still re-fetches and gets back the identical set. rotatingWindow() can
+// only reshuffle WHICH of those same N titles are visible at any moment;
+// it can't surface anything beyond that fixed set, which is exactly what
+// "stuck on the same titles for days" looks like. Fixed below via
+// seededPage() — same deterministic day-hash pattern topPicks.js already
+// uses for its own 2x/day rotation — so each cache window pulls from a
+// different page of the qualifying catalog instead of always page 1.
 //
 // ROTATION (this pass): each feed now fetches and caches a POOL of up to
 // POOL_SIZE items (not just the DISPLAY_LIMIT that gets shown at once).
@@ -70,10 +84,8 @@
 // different cards over time instead of the identical top-N forever. This
 // file only computes WHICH slice to show; landing/index.js owns the timer
 // that re-renders with the new slice (this file has no DOM access).
-// Note: rotation only has something to rotate THROUGH if the pool is
-// bigger than DISPLAY_LIMIT — for a filtered row that only ever survives
-// with 1–3 items, rotation can't manufacture variety that doesn't exist;
-// see the waterfall limitation above.
+// Note: rotation only reshuffles WITHIN one day's pool — seededPage()
+// below is what makes the pool itself actually change across days.
 
 import { db, doc, getDoc, setDoc } from '../firebase.js';
 import { CONFIG } from '../config.js';
@@ -90,13 +102,43 @@ const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
 // like; it changes every cache key immediately, so stale entries are
 // simply never read again (they just age out of Firestore/localStorage
 // naturally instead of needing manual deletion).
-const CACHE_VERSION = 'v2';
+// Bumped v2 -> v3 this pass: fetchHiddenGems()/fetchShortReads() now
+// request a seeded page instead of always page 1 (see seededPage() below),
+// so a v2-cached entry would otherwise keep serving yesterday's
+// now-stale-forever page-1 pool until it aged out on its own.
+const CACHE_VERSION = 'v3';
 
 // The engine clamps perPage to this regardless of what we ask for
 // (resolvePagination in domains.js) — request it explicitly so the
 // post-fetch filters (minScore/maxPopularity/minChapters/maxChapters) get
 // the largest possible raw candidate pool to work with.
 const ENGINE_MAX_PER_PAGE = 25;
+
+// How many distinct raw pages a seeded feed can land on. Deliberately
+// small and untuned — there's no visibility from this file into how deep
+// the qualifying pool actually goes for a given filter (e.g. minScore:80 +
+// maxPopularity:15000 might have 60 real survivors across AniList alone,
+// or might thin out fast after page 2). 5 pages × up to 25 raw items each
+// gives real day-over-day variety without guessing at a number the filter
+// can't actually support; worth revisiting with a live count once this is
+// live long enough to check whether later pages are coming back thin.
+const PAGE_SEED_POOL = 5;
+
+// Deterministic (not random) page number derived from a cache key, so
+// everyone loading the site within the same window gets the same page —
+// and the next window (the next calendar day, since these two feeds use
+// todayCacheKey()) deterministically lands on a different one. Identical
+// hash function to topPicks.js's seededPage() (kept local rather than
+// shared, per this folder's isolation note — landing/ doesn't import
+// anything from outside itself except firebase.js/config.js/
+// resultNormalizer.js).
+function seededPage(key, poolSize = PAGE_SEED_POOL) {
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+        hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+    }
+    return (hash % poolSize) + 1;
+}
 
 // How many items to fetch/cache per row, vs. how many to actually show at
 // once on the page.
@@ -251,16 +293,23 @@ export async function fetchHiddenGems(popularityCeiling = 15000, scoreFloor = 80
 
     let pool = [];
     try {
-        // Real minScore/maxPopularity filter now — applied server-side as
-        // a post-fetch filter (domains.js applyPostFetchFilters). Requests
+        // Real minScore/maxPopularity filter — applied server-side as a
+        // post-fetch filter (domains.js applyPostFetchFilters). Requests
         // the engine's max perPage so the filter has as many raw
-        // candidates as possible to survive against — see the waterfall
-        // limitation noted above (this can still come back thin).
+        // candidates as possible to survive against.
+        //
+        // page: seededPage(cacheKey) instead of a hardcoded 1 — see the
+        // file header. Always fetching page 1 of a fixed sort+filter
+        // returned the literal same top-N titles forever since AniList's
+        // score/popularity barely move day to day; this pulls a different
+        // (but still deterministic, cache-key-stable) page each day so the
+        // pool itself actually changes over time, not just which slice of
+        // an unchanging pool is on screen.
         pool = await fetchAndNormalize({
             sort: 'rating',
             minScore: scoreFloor,
             maxPopularity: popularityCeiling,
-            page: 1,
+            page: seededPage(cacheKey),
             perPage: POOL_SIZE
         });
         await writeCache(cacheKey, pool);
@@ -349,16 +398,18 @@ export async function fetchShortReads(minChapters = 1, maxChapters = 40) {
 
     let pool = [];
     try {
-        // Real minChapters/maxChapters filter now — applied server-side
-        // (domains.js applyPostFetchFilters). maxChapters used to be
-        // accepted into the plan but never read by any adapter; both
-        // bounds are now actually enforced. Requests the engine's max
-        // perPage for the same reason as Hidden Gems above.
+        // Real minChapters/maxChapters filter — applied server-side
+        // (domains.js applyPostFetchFilters), both bounds enforced.
+        // Requests the engine's max perPage for the same reason as
+        // Hidden Gems above.
+        //
+        // page: seededPage(cacheKey) instead of a hardcoded 1 — same
+        // staleness fix and reasoning as Hidden Gems above.
         pool = await fetchAndNormalize({
             sort: 'rating',
             minChapters,
             maxChapters,
-            page: 1,
+            page: seededPage(cacheKey),
             perPage: POOL_SIZE
         });
         await writeCache(cacheKey, pool);
@@ -383,3 +434,6 @@ export async function fetchLandingFeeds() {
     ]);
     return { trending, hiddenGems, newReleases, mostAwaited, shortReads };
 }
+
+
+
