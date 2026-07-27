@@ -211,6 +211,3 @@ export async function loadTodaysTopPicks() {
         grid.innerHTML = '';
     }
 }
-
-
-
