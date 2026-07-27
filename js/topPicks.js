@@ -37,6 +37,16 @@ const PICKS_COUNT = 15;
 const PAGE_POOL = 15; // how many result-pages of "top rated" we rotate across
 const FETCH_TIMEOUT_MS = 8000;
 
+// Satisfies the engine's `if (!query) return 400` check while normalizing
+// to an empty string server-side, so the AniList adapter never attaches a
+// `search:` argument — see fetchTodaysTopPicks() below. Same constant,
+// same value, same reasoning as landing/fetch.js's BLANK_QUERY (kept local
+// rather than imported — this file's isolation note above says it only
+// pulls in firebase.js/config.js/resultNormalizer.js/renderer.js/
+// search.js's renderSkeletonLoaders, and a one-line string constant isn't
+// worth breaking that for).
+const BLANK_QUERY = ' ';
+
 // e.g. "topPicks:2026-07-09:AM" / "topPicks:2026-07-09:PM" — changes at
 // midnight and again at noon (local time), giving the promised 2x/day rotation.
 function currentWindowKey() {
@@ -111,16 +121,28 @@ export async function fetchTodaysTopPicks(limit = PICKS_COUNT) {
 
     let results = [];
     try {
-        // NOTE: the engine hard-rejects an empty query string with a 400
-        // (confirmed live — "wiring search engine" Notion log, Entry 26).
-        // This browse has no genres/mood to derive a query from, so we
-        // send a fixed non-empty term. It isn't paired with any
-        // filters.genres here, so it can't trigger the genre/query
-        // saturation issue flagged for Mixer (Entry 26) — sort:'rating'
-        // does all the real work.
+        // FIXED 2026-07-26: this used to send a real free-text term
+        // ('top rated manga') to satisfy the engine's non-empty-query
+        // check. That was wrong in a way that wasn't obvious from this
+        // file alone — confirmed directly against the live AniList
+        // adapter (search/adapters/anilist.js): whenever
+        // plan.cleanQuery.trim().length > 0, the adapter attaches a real
+        // `search: $search` GraphQL argument, COMPLETELY INDEPENDENTLY of
+        // what `sort` resolves to. So even though filters.sort:'rating'
+        // correctly maps to SCORE_DESC (that part was never broken), the
+        // query was still "media matching the text 'top rated manga',
+        // sorted by score" — not "browse the whole catalog by score" — a
+        // real narrowing filter, not just a hint. Same failure mode
+        // landing/fetch.js's fetchNewReleases() already hit and fixed
+        // (see that file's header) for the exact same reason: this file
+        // was never updated to match once that pattern was understood.
+        // BLANK_QUERY (a single space) satisfies the engine's non-empty
+        // check but trims to '' server-side, so freeText.length is 0 and
+        // no `search` argument gets attached at all — a real top-rated
+        // browse, same fix, same constant name as landing/fetch.js.
         const data = await postToSearchEngine({
             domain: 'manga',
-            query: 'top rated manga',
+            query: BLANK_QUERY,
             filters: {
                 sort: 'rating',
                 page,
@@ -159,8 +181,19 @@ export async function loadTodaysTopPicks() {
     try {
         const results = await fetchTodaysTopPicks();
 
-        // Bail out quietly if the user already started a real search while
-        // this was in flight — don't stomp on it with stale picks.
+        // FLAGGED 2026-07-26, not fixed here (out of scope for this pass —
+        // fixing it for real means adding a currentActiveQuery flag
+        // somewhere in search.js/searchResultsPage.js and setting it when
+        // a real search starts, which touches files this pass didn't
+        // otherwise need to change): `window.currentActiveQuery` is never
+        // actually set anywhere in the codebase (grepped the full repo —
+        // this is the only reference to it). `undefined !== undefined` is
+        // always false, so this check never returns early — it's dead,
+        // not a working guard. In practice this hasn't caused visible
+        // clobbering because loadTodaysTopPicks() is itself gated by
+        // `grid.children.length > 0` at the top of the function, and nothing
+        // else currently races it fast enough to matter — but that's
+        // incidental, not something this check is actually providing.
         if (window.currentActiveQuery !== undefined) return;
 
         grid.innerHTML = '';
@@ -178,3 +211,6 @@ export async function loadTodaysTopPicks() {
         grid.innerHTML = '';
     }
 }
+
+
+
