@@ -1,3 +1,5 @@
+FILE: index.html
+================================================
 <!DOCTYPE html> 
 <html lang="en"> 
 
@@ -65,34 +67,6 @@
 
     </div>
 
-    <!-- =========================
-        🧠 AI SEARCH INTELLIGENCE
-        Integrated directly into the search flow (was previously a
-        separate "Mood Intelligence Preview" section above the app).
-        Hidden until the first search runs; see js/aiPanel.js.
-    ========================= -->
-    <section id="ai-panel" class="ai-panel hidden">
-
-        <!-- shown only while a search is actively running -->
-        <div id="ai-panel-live" class="ai-panel-live hidden"></div>
-
-        <!-- compact bar shown once a search has completed -->
-        <div id="ai-panel-summary" class="ai-panel-summary hidden">
-            <div class="ai-panel-summary-left">
-                <span class="ai-panel-icon">🧠</span>
-                <span class="ai-panel-title">AI Search Intelligence</span>
-            </div>
-            <div class="ai-panel-summary-right">
-                <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
-                <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
-            </div>
-        </div>
-
-        <!-- full breakdown, collapsed by default -->
-        <div id="ai-panel-details" class="ai-panel-details hidden"></div>
-
-    </section>
-
 </header>
 
 <!-- =========================
@@ -135,6 +109,40 @@
             </button>
 
         </div>
+
+        <!-- =========================
+            🧠 AI SEARCH INTELLIGENCE
+            MOVED 2026-07-26: previously lived in <header>, above the
+            search box, so it always rendered before any content existed
+            regardless of whether results were on-screen. Now sits
+            directly above #community-grid instead, right where the
+            results it's describing actually render. Still hidden until
+            the first search runs; see js/aiPanel.js. Behavior/DOM ids
+            unchanged, only its position in the document moved (no CSS
+            rule here depended on being inside <header> — .ai-panel is a
+            plain block card, not position:fixed/sticky).
+        ========================= -->
+        <section id="ai-panel" class="ai-panel hidden">
+
+            <!-- shown only while a search is actively running -->
+            <div id="ai-panel-live" class="ai-panel-live hidden"></div>
+
+            <!-- compact bar shown once a search has completed -->
+            <div id="ai-panel-summary" class="ai-panel-summary hidden">
+                <div class="ai-panel-summary-left">
+                    <span class="ai-panel-icon">🧠</span>
+                    <span class="ai-panel-title">AI Search Intelligence</span>
+                </div>
+                <div class="ai-panel-summary-right">
+                    <span class="ai-confidence-pill" id="ai-confidence-pill">—</span>
+                    <button class="ai-panel-toggle" id="ai-panel-toggle" aria-expanded="false">▼ Details</button>
+                </div>
+            </div>
+
+            <!-- full breakdown, collapsed by default -->
+            <div id="ai-panel-details" class="ai-panel-details hidden"></div>
+
+        </section>
 
         <div class="grid" id="community-grid"></div>
 
@@ -225,6 +233,9 @@
 
 </body>
 </html>
+
+
+
 
 
 
