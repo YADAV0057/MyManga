@@ -78,7 +78,7 @@ function getGrid() {
     return document.getElementById(GRID_ID);
 }
 
-function renderSkeletonLoaders(count = 12) {
+export function renderSkeletonLoaders(count = 12) {
     const grid = getGrid();
     if (!grid) return;
     let html = '';
