@@ -402,7 +402,15 @@ header{
     transition:var(--transition);
 }
 .qf-chip:hover{ border-color:rgba(139,124,246,.4); color:var(--text-title); }
-.qf-chip.qf-done{ color:var(--green); border-color:rgba(52,211,153,.3); background:rgba(52,211,153,.06); }
+
+/* BUGFIX: this used to be `.qf-chip.qf-done` — a class hardcoded onto the
+   "Completed" button in index.html, so it was permanently green no matter
+   what the user tapped, and the other two chips could never show any
+   selected state at all. Renamed to `.active` and toggled purely by JS
+   (js/main.js's setupQuickFilters()) on whichever chip was actually
+   clicked last, so the highlight now reflects real user interaction
+   instead of being baked into the markup for one specific chip. */
+.qf-chip.active{ color:var(--green); border-color:rgba(52,211,153,.3); background:rgba(52,211,153,.06); }
 
 /* ==========================
    SECTION EYEBROWS / HEADERS
