@@ -252,10 +252,30 @@ export async function triggerQuickFilter(type) {
     // rather than derived from any data. Worth revisiting once this is
     // live long enough to check whether it's returning enough results.
     const LONG_BINGE_MIN_CHAPTERS = 100;
+    // CORRECTED 2026-07-26: 'completed' (lowercase) doesn't match anything.
+    // AniList's adapter passes filters.status straight through as a raw
+    // MediaStatus GraphQL enum variable with zero normalization — checked
+    // directly against the live search/adapters/anilist.js. Every other
+    // status-filter call site in this codebase already uses the real
+    // enum casing (mixerPage.js, advancedFilter/formUI.js, landing/
+    // fetch.js's Most Awaited/New Releases rows all send 'FINISHED' /
+    // 'RELEASING' / 'NOT_YET_RELEASED') — this chip was the one place
+    // that didn't. Confirmed the actual live impact, not just theoretical:
+    // AniList's GraphQL query errors on the invalid enum value and
+    // returns [] for that source; the three fallback adapters key their
+    // own status maps by the SAME uppercase strings (STATUS_TO_JIKAN.
+    // FINISHED, STATUS_TO_KITSU.FINISHED, MD_STATUS_MAP.FINISHED — no
+    // 'completed' key in any of them), so their own
+    // `if (plan.filters?.statusFilter && MAP[...])` guards silently fail
+    // too and they ignore the filter entirely rather than erroring. Net
+    // effect: the chip was returning generic unfiltered results from
+    // whichever fallback source kicked in — not erroring visibly, just
+    // silently not doing what it says. 'FINISHED' is AniList's real value
+    // for a completed series.
     const filterMap = {
         'finish-tonight': { maxChapters: 20 },
         'long-binge': { minChapters: LONG_BINGE_MIN_CHAPTERS },
-        'completed': { status: 'completed' }
+        'completed': { status: 'FINISHED' }
     };
 
     const extraFilters = filterMap[type] || {};
