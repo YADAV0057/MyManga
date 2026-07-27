@@ -13,6 +13,20 @@
     width:100%;
 }
 
+/* Brief highlight when a quick-filter chip (search.js's triggerQuickFilter)
+   re-renders this grid in place. Chips sit well above the grid with no
+   other feedback that anything happened — this plus the accompanying
+   scrollIntoView() is the fix for that. Purely visual, no layout impact
+   (box-shadow doesn't reflow), removed via setTimeout shortly after class
+   add — see triggerQuickFilter() in js/search.js. */
+.qf-just-updated{
+    animation: qfHighlight .9s ease;
+}
+@keyframes qfHighlight{
+    0%{ box-shadow: 0 0 0 2px rgba(139,124,246,.55); border-radius: var(--radius); }
+    100%{ box-shadow: 0 0 0 2px rgba(139,124,246,0); border-radius: var(--radius); }
+}
+
 /* ==========================
    MANGA CARD  (horizontal list card)
 ========================== */
@@ -414,3 +428,6 @@
 @media (prefers-reduced-motion:reduce){
     *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
 }
+
+
+
