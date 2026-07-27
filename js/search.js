@@ -298,6 +298,3 @@ export async function triggerQuickFilter(type) {
 
     return triggerSearch('', 1, false, extraFilters);
 }
-
-
-
