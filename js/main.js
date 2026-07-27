@@ -284,6 +284,17 @@ function setupMyListButton() {
 // BUGFIX: these three chips had no click handler at all — tapping them did
 // nothing. Each now runs a real filtered browse via search.js's
 // triggerQuickFilter (chapter-count bounds or an AniList status filter).
+//
+// BUGFIX 2: index.html had "qf-done" hardcoded onto the Completed button's
+// class list, and css/style.css styled `.qf-chip.qf-done` green — a purely
+// static label with zero connection to clicking. Every chip looked
+// unclickable (no chip ever visually responded to a tap) except Completed,
+// which looked permanently "on" no matter what was actually selected.
+// Fixed properly here: single-select `.active` class toggled on whichever
+// chip was actually tapped (same rolling-selection idea as moods.js's mood
+// chips), removed from the others, so the highlight always reflects real
+// state — tapping a chip a second time clears it back to an unselected
+// browse. `.active`'s styling itself lives in css/style.css.
 function setupQuickFilters() {
     const chips = document.querySelectorAll('[data-quick-filter]');
     if (!chips.length) return;
@@ -291,6 +302,11 @@ function setupQuickFilters() {
     chips.forEach(chip => {
         chip.addEventListener('click', () => {
             const type = chip.dataset.quickFilter;
+            const wasActive = chip.classList.contains('active');
+
+            chips.forEach(c => c.classList.remove('active'));
+            if (!wasActive) chip.classList.add('active');
+
             if (window.triggerQuickFilter) window.triggerQuickFilter(type);
         });
     });
@@ -325,14 +341,3 @@ if (document.readyState === "loading") {
 } else {
     initializeApp();
 }
-
-
-
-
-
-
-
-
-
-
-
