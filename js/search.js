@@ -32,9 +32,13 @@
 //     file no longer estimates it locally.
 //   - `filters.status`/`maxChapters`/`excludedGenres` are confirmed
 //     supported request fields (read directly off buildBasicPlan() in the
-//     live domains.js). NOTE: `maxChapters` is accepted into the plan but
-//     not currently read/applied by any of the 4 adapters — it's a no-op
-//     server-side today, not a bug in this file.
+//     live domains.js). CORRECTED 2026-07-26: this used to say maxChapters
+//     was accepted into the plan but not applied by any adapter — that was
+//     stale. Checked directly against the live domains.js (v121):
+//     applyPostFetchFilters() applies both maxChapters AND minChapters as
+//     real post-fetch filters against each candidate's chapters field (see
+//     triggerQuickFilter()'s 'long-binge' entry below, and landing/
+//     fetch.js's Short Reads row, both of which now rely on this).
 //   - Per-result match score / reasoning trail — the engine still does not
 //     return either (response's `mood` is an AGGREGATE for the whole
 //     query, not per-title). Cards render without a matchScore
@@ -231,12 +235,49 @@ export async function triggerPresetSearch(genreQuery) {
  * @param {string} type
  */
 export async function triggerQuickFilter(type) {
+    // CORRECTED 2026-07-26: the TODO that used to live on 'long-binge'
+    // ("engine has no min-chapters filter today... not applied by any
+    // adapter yet") is stale — checked directly against the live deployed
+    // domains.js (v121): applyPostFetchFilters() DOES support minChapters
+    // as a real lower-bound filter, same mechanism as maxChapters, applied
+    // identically against each candidate's chapters field. It's not a
+    // hypothetical — landing/fetch.js's Short Reads row already sends both
+    // minChapters AND maxChapters today. 'long-binge' was sending
+    // `{ maxChapters: null }` (a no-op — an unfiltered browse dressed up as
+    // a filter) instead of the lower bound it actually needs.
+    // LONG_BINGE_MIN_CHAPTERS is a first guess, not tuned against real
+    // catalog depth — Short Reads' own maxChapters:40 is the only existing
+    // reference point in this codebase for what counts as "short" vs
+    // "long", so 100 is chosen as clearly on the other side of that line
+    // rather than derived from any data. Worth revisiting once this is
+    // live long enough to check whether it's returning enough results.
+    const LONG_BINGE_MIN_CHAPTERS = 100;
     const filterMap = {
         'finish-tonight': { maxChapters: 20 },
-        'long-binge': { maxChapters: null }, // TODO: old code used a min-chapters bound here; engine has no min-chapters filter today (confirmed — buildBasicPlan() only reads maxChapters as an upper bound, and it's not even applied by any adapter yet, see header note)
+        'long-binge': { minChapters: LONG_BINGE_MIN_CHAPTERS },
         'completed': { status: 'completed' }
     };
 
     const extraFilters = filterMap[type] || {};
+
+    // Scroll the results into view + briefly highlight the grid. Chips
+    // re-render #community-grid in place, further down the page than the
+    // chips themselves with no other visual cue — a working tap could
+    // easily look like nothing happened if the grid isn't already in view.
+    // Deliberately done here rather than inside triggerSearch(), since
+    // triggerSearch() is also called for typed searches/mood presets that
+    // already have their own scroll behavior (searchResultsPage.js opens
+    // its own overlay; moods.js already scrolls) — this is specific to the
+    // chips having no such handling of their own today.
+    const grid = getGrid();
+    if (grid) {
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        grid.classList.add('qf-just-updated');
+        setTimeout(() => grid.classList.remove('qf-just-updated'), 900);
+    }
+
     return triggerSearch('', 1, false, extraFilters);
 }
+
+
+
