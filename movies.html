@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies 🎬 - MangaMood Discovery Portal</title>
+
+    <!-- CSS: reuse the shared theme (style.css) for base vars/reset/layout
+         primitives, then layer movies.css on top for the distinct poster-
+         grid card layout, filter panel, and teal accent. Deliberately does
+         NOT load cards.css/detail.css/mixer.css/mylist.css/results.css/
+         menu.css/advancedFilter.css — none of manga's overlay pages exist
+         here, per the "own layout, own everything" architecture decision. -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/movies.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="movie-mode">
+
+<!-- =========================
+    TOP BAR
+========================= -->
+<nav class="topbar">
+    <span class="topbar-brand">🎬 Movies</span>
+
+    <div class="mode-toggle">
+        <a href="./index.html" class="mode-toggle-link">Manga</a>
+        <a href="./movies.html" class="mode-toggle-link active">Movies</a>
+    </div>
+</nav>
+
+<!-- =========================
+    HEADER SEARCH
+========================= -->
+<header>
+    <h2 class="tagline">What do you want to watch?</h2>
+    <p class="tagline-sub">Describe a mood, or filter by language, genre, and where you stream</p>
+
+    <div class="search-container">
+        <input
+            id="movie-search-input"
+            type="text"
+            placeholder="e.g. a mind-bending thriller, not too gory..."
+        >
+        <button id="movie-search-submit-btn" class="vibe-btn full-width">
+            Find a Movie
+        </button>
+    </div>
+</header>
+
+<!-- =========================
+    MAIN
+========================= -->
+<main class="container">
+
+    <section class="movie-filter-panel">
+        <div id="movie-filter-mount"></div>
+        <button id="movie-apply-filters-btn" class="movie-apply-filters-btn">Apply Filters</button>
+    </section>
+
+    <section id="movie-results-area">
+        <div class="movie-results-header">
+            <h2>Results</h2>
+            <p id="movie-results-status" class="movie-results-status"></p>
+        </div>
+
+        <div class="movie-grid" id="movie-results-grid"></div>
+
+        <div class="movie-pagination">
+            <button class="vibe-btn" id="movie-nextpage-btn" style="display:none;">Next Page</button>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>Movie data powered by TMDB · This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</footer>
+
+<script type="module" src="./js/movies/moviesMain.js"></script>
+
+</body>
+</html>
+
