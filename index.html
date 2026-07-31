@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="./css/results.css">
     <link rel="stylesheet" href="./css/results.css">
     <link rel="stylesheet" href="./css/menu.css"> <!-- ADD THIS LINE -->
-    <link rel="stylesheet" href="./css/movies.css"> <!-- only used here for the .mode-toggle styles -->
+    <link rel="stylesheet" href="./css/movies.css"> <!-- shared with movies.html: .mode-switcher* styles live here -->
     
 
     <!-- Fonts -->
@@ -35,10 +35,7 @@
 <nav class="topbar">
     <span class="topbar-brand">MangaMood</span>
 
-    <div class="mode-toggle">
-        <a href="./index.html" class="mode-toggle-link active">Manga</a>
-        <a href="./movies.html" class="mode-toggle-link">Movies</a>
-    </div>
+    <div id="mode-switcher-mount"></div>
 
     <div class="view-toggle">
         <button id="nav-favorites-btn" class="tab-btn" title="My List">♡</button>
@@ -237,7 +234,11 @@
 ========================= -->
 <script type="module" src="./js/main.js"></script>
 
+<!-- Mode switcher (Manga/Movies/TV Shows-soon/Books-soon dropdown) -->
+<script type="module">
+    import { initModeSwitcher } from './js/modeSwitcher.js';
+    initModeSwitcher(document.getElementById('mode-switcher-mount'), 'manga');
+</script>
+
 </body>
 </html>
-
-
