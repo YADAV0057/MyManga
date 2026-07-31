@@ -71,6 +71,26 @@
         </div>
     </section>
 
+<nav class="bottom-nav">
+    <button class="bn-item" onclick="window.location.href='./index.html'">
+        <span class="bn-icon">🏠</span>Home
+    </button>
+    <button class="bn-item" onclick="document.getElementById('movie-search-input')?.focus()">
+        <span class="bn-icon">🔍</span>Search
+    </button>
+    <button class="bn-item" onclick="window.openMyListPage && window.openMyListPage()">
+        <span class="bn-icon">♡</span>My List
+    </button>
+    <button class="bn-item" onclick="window.scrollTo({top:document.querySelector('.movie-filter-panel')?.offsetTop||0,behavior:'smooth'})">
+        <span class="bn-icon">🔎</span>Filter
+    </button>
+</nav>
+
+<script type="module">
+    import { initModeSwitcher } from './js/modeSwitcher.js';
+    initModeSwitcher(document.getElementById('mode-switcher-mount'), 'movies');
+</script>
+    
 </main>
 
 <footer>
