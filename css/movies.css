@@ -242,3 +242,253 @@ body.movie-mode .mode-toggle-link.active{
     margin-top:24px;
 }
 
+/* ==========================================
+   MOVIE DETAIL VIEW (js/movies/movieDetail.js)
+   Mirrors .detail-view's full-screen overlay pattern from detail.css,
+   scoped under its own class since movies.html deliberately doesn't
+   load detail.css (own layout, own everything).
+========================================== */
+.movie-detail-view{
+    position:fixed;
+    inset:0;
+    z-index:900;
+    background:#0c0a16;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(12px);
+    transition:opacity .25s ease, transform .25s ease;
+    overflow:hidden;
+}
+.movie-detail-view.open{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+}
+body.detail-open{ overflow:hidden; }
+
+.movie-detail-backdrop{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center top;
+    filter:blur(2px) brightness(.35);
+    z-index:0;
+}
+.movie-detail-scroll{
+    position:relative;
+    z-index:1;
+    height:100%;
+    overflow-y:auto;
+    padding-bottom:40px;
+}
+.movie-detail-back-btn{
+    position:sticky;
+    top:14px;
+    left:14px;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:rgba(12,10,22,.7);
+    backdrop-filter:blur(10px);
+    color:var(--text-bright);
+    font-size:1.4rem;
+    cursor:pointer;
+    margin:14px;
+    z-index:2;
+}
+.movie-detail-poster-wrap{
+    display:flex;
+    justify-content:center;
+    margin-top:-10px;
+}
+.movie-detail-poster{
+    width:150px;
+    aspect-ratio:2/3;
+    object-fit:cover;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    border:1px solid var(--border);
+}
+.movie-detail-body{
+    max-width:640px;
+    margin:18px auto 0;
+    padding:0 20px;
+    text-align:center;
+}
+.movie-detail-title{
+    font-size:1.4rem;
+    font-weight:700;
+    color:var(--text-bright);
+}
+.movie-detail-meta{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    color:var(--text-muted);
+    font-size:.85rem;
+    margin-top:4px;
+}
+.movie-detail-source-tag{
+    color:var(--movie-accent);
+}
+.movie-detail-genre-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    margin-top:10px;
+}
+.movie-detail-genre-chip{
+    padding:4px 12px;
+    border-radius:999px;
+    background:var(--movie-accent-soft);
+    color:var(--movie-accent);
+    font-size:.72rem;
+    font-weight:600;
+}
+.movie-detail-actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin:18px 0;
+}
+.movie-detail-save-btn, .movie-detail-share-btn{
+    padding:10px 20px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.05);
+    color:var(--text-main);
+    font-weight:600;
+    font-size:.82rem;
+    cursor:pointer;
+}
+.movie-detail-save-btn.active{
+    background:var(--movie-accent-soft);
+    color:var(--movie-accent);
+    border-color:var(--movie-accent);
+}
+.movie-detail-section-heading{
+    text-align:left;
+    margin-top:22px;
+    font-size:.95rem;
+    color:var(--text-bright);
+}
+.movie-detail-overview{
+    text-align:left;
+    color:var(--text-main);
+    font-size:.85rem;
+    line-height:1.5;
+    margin-top:6px;
+}
+.movie-detail-providers{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+    justify-content:flex-start;
+    flex-wrap:wrap;
+}
+.movie-detail-provider-logo{
+    width:36px;
+    height:36px;
+    border-radius:9px;
+    object-fit:cover;
+}
+.movie-detail-providers-none{
+    text-align:left;
+    color:var(--text-muted);
+    font-size:.8rem;
+    font-style:italic;
+    margin-top:6px;
+}
+.movie-detail-provider-link{
+    display:inline-block;
+    margin-top:8px;
+    color:var(--movie-accent);
+    font-size:.8rem;
+    text-decoration:none;
+}
+
+/* ==========================================
+   MODE SWITCHER (replaces the 2-way .mode-toggle)
+   Scales to N categories — Manga / Movies now, TV Shows / Books later —
+   without redesigning the header again. Dropdown pattern instead of a
+   pill toggle, same shared component on both pages via js/modeSwitcher.js.
+========================================== */
+.mode-switcher{
+    position:relative;
+}
+.mode-switcher-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.04);
+    color:var(--text-bright);
+    font-size:.85rem;
+    font-weight:600;
+    cursor:pointer;
+}
+.mode-switcher-btn:hover{ border-color:rgba(139,124,246,.4); }
+.mode-switcher-chevron{
+    font-size:.7rem;
+    color:var(--text-muted);
+    transition:transform .2s ease;
+}
+.mode-switcher.open .mode-switcher-chevron{ transform:rotate(180deg); }
+
+.mode-switcher-menu{
+    position:absolute;
+    top:calc(100% + 8px);
+    left:0;
+    min-width:180px;
+    background:rgba(18,15,28,.97);
+    backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:6px;
+    box-shadow:var(--shadow);
+    list-style:none;
+    margin:0;
+    z-index:600;
+    display:none;
+}
+.mode-switcher.open .mode-switcher-menu{ display:block; }
+
+.mode-switcher-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:9px 12px;
+    border-radius:10px;
+    font-size:.85rem;
+    font-weight:600;
+    color:var(--text-main);
+    text-decoration:none;
+    cursor:pointer;
+}
+.mode-switcher-item:hover:not(.disabled){
+    background:var(--purple-soft);
+    color:var(--text-bright);
+}
+.mode-switcher-item.active{
+    color:var(--purple-bright);
+}
+body.movie-mode .mode-switcher-item.active{
+    color:var(--movie-accent);
+}
+.mode-switcher-item.disabled{
+    color:var(--text-muted);
+    cursor:default;
+    opacity:.55;
+}
+.mode-switcher-item.disabled em{
+    font-style:normal;
+    font-size:.68rem;
+    background:rgba(255,255,255,.08);
+    padding:2px 7px;
+    border-radius:999px;
+}
