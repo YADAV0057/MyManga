@@ -26,8 +26,8 @@
 ========================= -->
 <nav class="topbar">
     <span class="topbar-brand">🎬 Movies</span>
-
-<div id="mode-switcher-mount"></div>
+    <div id="mode-switcher-mount"></div>
+</nav>
 
 <!-- =========================
     HEADER SEARCH
@@ -71,6 +71,11 @@
         </div>
     </section>
 
+</main>
+
+<!-- =========================
+    BOTTOM NAV (mobile-style)
+========================= -->
 <nav class="bottom-nav">
     <button class="bn-item" onclick="window.location.href='./index.html'">
         <span class="bn-icon">🏠</span>Home
@@ -86,19 +91,17 @@
     </button>
 </nav>
 
-<script type="module">
-    import { initModeSwitcher } from './js/modeSwitcher.js';
-    initModeSwitcher(document.getElementById('mode-switcher-mount'), 'movies');
-</script>
-    
-</main>
-
 <footer>
     <p>Movie data powered by TMDB · This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
 </footer>
 
 <script type="module" src="./js/movies/moviesMain.js"></script>
 
+<!-- Mode switcher (Manga/Movies/TV Shows-soon/Books-soon dropdown) -->
+<script type="module">
+    import { initModeSwitcher } from './js/modeSwitcher.js';
+    initModeSwitcher(document.getElementById('mode-switcher-mount'), 'movies');
+</script>
+
 </body>
 </html>
-
