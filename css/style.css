@@ -549,6 +549,29 @@ header,#results-area{ animation:fadeUp .5s ease; }
     .topbar{ width:100%; padding:14px 16px; }
 
     .topbar-brand{ font-size:1.15rem; }
+       /* Topbar got crowded once the mode switcher replaced the old 2-link
+       toggle — logo, brand text, switcher, heart, and hamburger all now
+       compete for the same row on narrow screens. Tighten everything down
+       a notch rather than wrapping to a second row. */
+    .topbar{ gap:8px; padding:10px 12px; }
+
+    .topbar-brand{ font-size:1rem; gap:6px; }
+    .topbar-brand::before{ width:22px; height:22px; }
+
+    .mode-switcher-btn{ padding:6px 10px; font-size:.78rem; gap:4px; }
+
+    .view-toggle{ gap:4px; }
+    .tab-btn{ width:36px; height:36px; font-size:.9rem; }
+
+    /* Below ~380px (small phones in portrait), let the brand name shrink
+       further and truncate rather than forcing the row to wrap — keeps
+       the switcher/heart/menu from getting squeezed off-screen. */
+    @media (max-width:380px){
+        .topbar{ padding:9px 10px; gap:6px; }
+        .topbar-brand{ font-size:.9rem; max-width:88px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .mode-switcher-btn{ padding:5px 8px; font-size:.72rem; }
+        .tab-btn{ width:32px; height:32px; font-size:.8rem; }
+    }
 
     header{ width:100%; margin:26px auto 6px; }
 
