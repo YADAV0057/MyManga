@@ -18,6 +18,8 @@ window.addEventListener('unhandledrejection', (e) => {
 
 import { triggerMovieSearch } from './movieSearch.js';
 import { initMovieFilters, getActiveMovieFilters } from './movieFilters.js';
+import { openMovieDetail, closeMovieDetail } from './movieDetail.js';
+import { toggleFavorite, getAllFavorites } from '../favorites.js';
 
 let currentQuery = '';
 let currentPage = 1;
@@ -102,6 +104,15 @@ function setupFilterApply() {
 }
 
 async function initializeMoviesPage() {
+    // Expose movie-detail + favorites so movieRenderer.js's inline
+    // onclick="window.openMovieDetail(...)" (and the Save button inside
+    // the detail view itself) can reach these without an import cycle —
+    // same pattern main.js uses for the manga side.
+    window.openMovieDetail = openMovieDetail;
+    window.closeMovieDetail = closeMovieDetail;
+    window.toggleFavorite = toggleFavorite;
+    window.getAllFavorites = getAllFavorites;
+
     try {
         initMovieFilters(document.getElementById('movie-filter-mount'));
         setupSearchBar();
@@ -123,4 +134,3 @@ if (document.readyState === 'loading') {
 } else {
     initializeMoviesPage();
 }
-
