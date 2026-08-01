@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Shows 📺 - MangaMood Discovery Portal</title>
+
+    <!-- CSS: reuses movies.css as-is — the TV grid/card/detail layout is
+         visually identical to Movies (same poster-grid cards, same teal
+         accent, same detail overlay), so this page reuses the .movie-*
+         class names directly rather than forking a tv.css that would just
+         be a byte-for-byte copy. If the TV visual design ever needs to
+         diverge from Movies, split a tv.css at that point — not before. -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/movies.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="movie-mode">
+
+<!-- =========================
+    TOP BAR
+========================= -->
+<nav class="topbar">
+    <span class="topbar-brand">📺 TV Shows</span>
+    <div id="mode-switcher-mount"></div>
+</nav>
+
+<!-- =========================
+    HEADER SEARCH
+========================= -->
+<header>
+    <h2 class="tagline">What do you want to watch?</h2>
+    <p class="tagline-sub">Describe a mood, or filter by language, genre, and where you stream</p>
+
+    <div class="search-container">
+        <input
+            id="tv-search-input"
+            type="text"
+            placeholder="e.g. a slow-burn crime series, not too dark..."
+        >
+        <button id="tv-search-submit-btn" class="vibe-btn full-width">
+            Find a Show
+        </button>
+    </div>
+</header>
+
+<!-- =========================
+    MAIN
+========================= -->
+<main class="container">
+
+    <section class="movie-filter-panel">
+        <div id="tv-filter-mount"></div>
+        <button id="tv-apply-filters-btn" class="movie-apply-filters-btn">Apply Filters</button>
+    </section>
+
+    <section id="tv-results-area">
+        <div class="movie-results-header">
+            <h2>Results</h2>
+            <p id="tv-results-status" class="movie-results-status"></p>
+        </div>
+
+        <div class="movie-grid" id="tv-results-grid"></div>
+
+        <div class="movie-pagination">
+            <button class="vibe-btn" id="tv-nextpage-btn" style="display:none;">Next Page</button>
+        </div>
+    </section>
+
+</main>
+
+<!-- =========================
+    BOTTOM NAV (mobile-style)
+========================= -->
+<nav class="bottom-nav">
+    <button class="bn-item" onclick="window.location.href='./index.html'">
+        <span class="bn-icon">🏠</span>Home
+    </button>
+    <button class="bn-item" onclick="document.getElementById('tv-search-input')?.focus()">
+        <span class="bn-icon">🔍</span>Search
+    </button>
+    <button class="bn-item" onclick="window.openMyListPage && window.openMyListPage()">
+        <span class="bn-icon">♡</span>My List
+    </button>
+    <button class="bn-item" onclick="window.scrollTo({top:document.querySelector('.movie-filter-panel')?.offsetTop||0,behavior:'smooth'})">
+        <span class="bn-icon">🔎</span>Filter
+    </button>
+</nav>
+
+<footer>
+    <p>TV data powered by TMDB · This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</footer>
+
+<script type="module" src="./js/tv/tvMain.js"></script>
+
+<!-- Mode switcher (Manga/Movies/TV Shows/Books-soon dropdown) -->
+<script type="module">
+    import { initModeSwitcher } from './js/modeSwitcher.js';
+    initModeSwitcher(document.getElementById('mode-switcher-mount'), 'tv');
+</script>
+
+</body>
+</html>
