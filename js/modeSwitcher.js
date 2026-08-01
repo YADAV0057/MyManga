@@ -14,7 +14,7 @@
 const MODES = [
     { key: 'manga',  label: 'Manga',  icon: '📖', href: './index.html',  available: true },
     { key: 'movies', label: 'Movies', icon: '🎬', href: './movies.html', available: true },
-    { key: 'tv',     label: 'TV Shows', icon: '📺', href: null, available: false },
+    { key: 'tv',     label: 'TV Shows', icon: '📺', href: './tv.html', available: true },
     { key: 'books',  label: 'Books', icon: '📚', href: null, available: false },
 ];
 
@@ -64,4 +64,6 @@ export function initModeSwitcher(container, activeKey) {
         }
     });
 }
+
+
 
