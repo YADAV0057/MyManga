@@ -168,4 +168,3 @@ export function closeTvDetail() {
     view.classList.remove('open');
     document.body.classList.remove('detail-open');
 }
-
