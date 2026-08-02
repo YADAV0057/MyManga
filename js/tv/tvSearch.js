@@ -144,7 +144,14 @@ export async function triggerTvSearch(query, page = 1, appendMode = false, extra
         if (wrapper.firstElementChild) grid.appendChild(wrapper.firstElementChild);
     });
 
-    const hasMore = meta.tier === 'tmdb' && results.length >= TMDB_PAGE_SIZE;
+    // Prefer the backend's explicit meta.hasMore (added 2026-08-02 alongside
+    // the anime filter) — it reflects whether TMDB's raw page was full,
+    // independent of how many results survived the excludeAnime filter.
+    // Falls back to the old length-based inference for safety if an older
+    // deployed version of movie-search doesn't send it yet.
+    const hasMore = typeof meta.hasMore === 'boolean'
+        ? meta.hasMore
+        : (meta.tier === 'tmdb' && results.length >= TMDB_PAGE_SIZE);
 
     return { appended: results.length, hasMore, meta };
 }
