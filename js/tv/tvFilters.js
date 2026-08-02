@@ -41,6 +41,9 @@ const PROVIDER_OPTIONS = [
 let selectedGenres = new Set();
 let selectedProviders = new Set();
 let selectedLanguage = '';
+// Server-side filter (movie-search/index.ts's isAnime()) — Animation genre +
+// Japanese original_language, since TMDB has no dedicated Anime genre.
+let excludeAnime = false;
 
 function buildMarkup() {
     const genreChips = GENRE_OPTIONS.map(g =>
@@ -68,6 +71,12 @@ function buildMarkup() {
             <span class="movie-filter-label">Genre</span>
             <div class="filter-chip-row" id="tv-genre-chips">${genreChips}</div>
         </div>
+        <div class="movie-filter-group">
+            <span class="movie-filter-label">Content</span>
+            <div class="filter-chip-row">
+                <button class="filter-chip" id="tv-exclude-anime-chip" type="button">Hide Anime</button>
+            </div>
+        </div>
     `;
 }
 
@@ -91,6 +100,11 @@ function wireEvents(root) {
         chip.classList.toggle('active');
         if (selectedProviders.has(id)) selectedProviders.delete(id); else selectedProviders.add(id);
     });
+
+    root.querySelector('#tv-exclude-anime-chip')?.addEventListener('click', (e) => {
+        excludeAnime = !excludeAnime;
+        e.target.classList.toggle('active', excludeAnime);
+    });
 }
 
 export function initTvFilters(mountEl) {
@@ -112,5 +126,6 @@ export function getActiveTvFilters() {
         filters.watchProviders = Array.from(selectedProviders).join(',');
         // watchRegion defaults server-side to "IN" when omitted, same as movies.
     }
+    if (excludeAnime) filters.excludeAnime = true;
     return filters;
 }
