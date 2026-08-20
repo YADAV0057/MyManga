@@ -131,3 +131,17 @@ body.menu-open {
     display: block;
     margin-bottom: 4px;
 }
+
+.menu-credit {
+    display: block;
+    margin-top: 14px;
+    font-size: .72rem;
+    color: var(--text-muted);
+    opacity: .5;
+    text-decoration: none;
+    transition: opacity .2s ease;
+}
+.menu-credit:hover {
+    opacity: 1;
+    color: var(--purple-bright);
+}
