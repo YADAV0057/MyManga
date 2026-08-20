@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akhalesh Kumar — Portfolio</title>
+<style>
+/* ===================================================
+   Akhalesh Kumar — Portfolio
+   Built on moodmanga.in's "Mood Orb" purple/violet theme
+=================================================== */
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+
+:root{
+    --bg-dark:#0c0a16;
+    --bg-dark-2:#12101f;
+    --card-bg:#17142a;
+
+    --purple:#8b7cf6;
+    --purple-bright:#a996ff;
+    --purple-soft:rgba(139,124,246,.16);
+    --pink:#f472b6;
+    --accent:#a996ff;
+    --accent-hover:#8b7cf6;
+
+    --gold:#f4c542;
+    --green:#34d399;
+
+    --text-title:#f5f3ff;
+    --text-main:#b6b0cf;
+    --text-muted:#786f95;
+    --text-bright:#ffffff;
+
+    --glass:rgba(23,20,42,.6);
+    --border:rgba(255,255,255,.08);
+    --shadow:0 14px 32px rgba(0,0,0,.4);
+    --radius:20px;
+    --transition:.3s ease;
+}
+
+body{
+    background:
+        radial-gradient(circle at 15% 0%, rgba(139,124,246,.16), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(244,114,182,.10), transparent 40%),
+        var(--bg-dark);
+    color:var(--text-main);
+    font-family:"Inter",system-ui,sans-serif;
+    min-height:100vh;
+    padding:18px;
+    padding-bottom:60px;
+    overflow-x:hidden;
+}
+
+::-webkit-scrollbar{ width:10px; }
+::-webkit-scrollbar-track{ background:#09070f; }
+::-webkit-scrollbar-thumb{ background:#332d54; border-radius:50px; }
+::-webkit-scrollbar-thumb:hover{ background:var(--accent); }
+
+a{ color:inherit; text-decoration:none; }
+
+/* ---------- topbar ---------- */
+.topbar{
+    width:min(1000px,95%);
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 20px;
+    background:var(--glass);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--border);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:12px;
+    z-index:50;
+}
+.topbar-brand{
+    display:flex; align-items:center; gap:10px;
+    font-size:1.15rem; font-weight:700; color:var(--text-title);
+    letter-spacing:-.3px;
+    font-family:Georgia,"Times New Roman",serif;
+}
+.topbar-brand::before{
+    content:"";
+    display:inline-block;
+    width:22px; height:22px;
+    border-radius:50%;
+    background:conic-gradient(from 200deg,var(--pink),var(--purple),#60a5fa,var(--pink));
+    box-shadow:0 0 14px rgba(139,124,246,.6);
+}
+.topbar nav{ display:flex; gap:18px; }
+.topbar nav a{
+    font-size:.85rem; color:var(--text-muted); font-weight:600;
+    transition:var(--transition);
+}
+.topbar nav a:hover{ color:var(--purple-bright); }
+
+/* ---------- hero ---------- */
+.hero{
+    width:min(1000px,95%);
+    margin:60px auto 40px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:18px;
+}
+.mood-status{
+    display:flex; align-items:center; gap:10px;
+    padding:7px 14px 7px 8px;
+    background:var(--purple-soft);
+    border:1px solid rgba(139,124,246,.35);
+    border-radius:999px;
+    font-size:.78rem; font-weight:600; color:var(--purple-bright);
+}
+.mood-orb{
+    width:14px; height:14px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--green), #0a3d2c 70%);
+    box-shadow:0 0 10px var(--green);
+    animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+    0%,100%{ box-shadow:0 0 6px var(--green); }
+    50%{ box-shadow:0 0 16px var(--green); }
+}
+.hero h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(2.2rem,6vw,3.4rem);
+    color:var(--text-title);
+    line-height:1.1;
+    letter-spacing:-.5px;
+}
+.hero h1 span{ color:var(--purple-bright); }
+.hero p.lede{
+    max-width:560px;
+    font-size:1.02rem;
+    line-height:1.65;
+    color:var(--text-main);
+}
+.hero-actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; }
+.btn{
+    padding:12px 22px;
+    border-radius:14px;
+    font-weight:700;
+    font-size:.88rem;
+    transition:var(--transition);
+    border:1px solid transparent;
+}
+.btn-primary{
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    color:#fff;
+    box-shadow:0 8px 22px rgba(139,124,246,.35);
+}
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 28px rgba(139,124,246,.45); }
+.btn-ghost{
+    background:var(--glass);
+    border:1px solid var(--border);
+    color:var(--text-main);
+}
+.btn-ghost:hover{ border-color:var(--purple); color:var(--text-title); }
+
+/* ---------- sections ---------- */
+section{ width:min(1000px,95%); margin:0 auto 54px; }
+.eyebrow{
+    font-size:.72rem; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--text-muted); margin-bottom:10px;
+}
+h2.section-title{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:1.6rem; color:var(--text-title); margin-bottom:22px;
+}
+
+/* about */
+.about-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    box-shadow:var(--shadow);
+    font-size:.98rem; line-height:1.7;
+}
+
+/* experience */
+.timeline{ display:flex; flex-direction:column; gap:14px; }
+.tl-item{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:18px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    box-shadow:var(--shadow);
+}
+.tl-period{ color:var(--purple-bright); font-weight:700; font-size:.82rem; }
+.tl-role{ color:var(--text-title); font-weight:700; font-size:1.02rem; margin-bottom:2px; }
+.tl-org{ color:var(--text-muted); font-size:.85rem; margin-bottom:10px; }
+.tl-item ul{ padding-left:18px; font-size:.92rem; line-height:1.6; color:var(--text-main); }
+
+/* project */
+.project-card{
+    background:linear-gradient(160deg,var(--card-bg),var(--bg-dark-2));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+.project-card::before{
+    content:"";
+    position:absolute; top:-40%; right:-20%;
+    width:280px; height:280px; border-radius:50%;
+    background:radial-gradient(circle,rgba(139,124,246,.25),transparent 70%);
+}
+.project-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.project-name{ font-family:Georgia,serif; font-size:1.3rem; color:var(--text-title); }
+.project-tag{
+    font-size:.68rem; font-weight:700; padding:3px 10px;
+    border-radius:999px; background:var(--purple-soft); color:var(--purple-bright);
+    text-transform:uppercase; letter-spacing:.06em;
+}
+.project-card p{ font-size:.95rem; line-height:1.65; max-width:600px; position:relative; z-index:1; }
+.project-links{ display:flex; gap:10px; margin-top:16px; position:relative; z-index:1; }
+
+/* skills */
+.skill-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+.skill-card{
+    background:var(--card-bg); border:1px solid var(--border);
+    border-radius:16px; padding:20px 22px; box-shadow:var(--shadow);
+}
+.skill-card h3{ font-size:.9rem; color:var(--text-title); margin-bottom:12px; }
+.chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip{
+    font-size:.78rem; padding:6px 12px; border-radius:999px;
+    background:var(--bg-dark-2); border:1px solid var(--border); color:var(--text-main);
+}
+
+/* education */
+.edu-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+.edu-card{
+    background:var(--card-bg); border:1px solid var(--border);
+    border-radius:16px; padding:20px 22px; box-shadow:var(--shadow);
+}
+.edu-degree{ color:var(--text-title); font-weight:700; font-size:.98rem; }
+.edu-meta{ color:var(--text-muted); font-size:.82rem; margin-top:4px; }
+
+/* contact */
+.contact-card{
+    background:var(--glass);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px;
+    text-align:center;
+    box-shadow:var(--shadow);
+}
+.contact-card h2{ font-family:Georgia,serif; color:var(--text-title); font-size:1.4rem; margin-bottom:8px; }
+.contact-card p{ font-size:.92rem; margin-bottom:18px; }
+.contact-links{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+
+footer{ text-align:center; color:var(--text-muted); font-size:.78rem; margin-top:40px; }
+
+@media (max-width:600px){
+    .tl-item{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-brand">Akhalesh Kumar</div>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#project">Project</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</div>
+
+<div class="hero">
+    <div class="mood-status"><span class="mood-orb"></span> Jaipur, Rajasthan</div>
+    <h1>Educator, and <span>builder</span> on the side.</h1>
+    <p class="lede">I've spent the last two years teaching English and IELTS — explaining things clearly and helping people work through their sticking points one at a time. Alongside that, I taught myself web development and built moodmanga.in, a mood-based entertainment recommender, from the ground up.</p>
+    <div class="hero-actions">
+        <a class="btn btn-primary" href="mailto:yadavakhil0057@gmail.com">Get in touch</a>
+        <a class="btn btn-ghost" href="https://moodmanga.in" target="_blank" rel="noopener">View moodmanga.in →</a>
+    </div>
+</div>
+
+<section id="about">
+    <div class="eyebrow">About</div>
+    <h2 class="section-title">A little about me</h2>
+    <div class="about-card">
+        I'm based in Jaipur, Rajasthan. My background is in English Literature, and over the past couple of years I've taught school students and IELTS candidates — work that's really about listening carefully, staying calm when someone's stuck, and finding a clear way to explain the next step. Alongside teaching, I taught myself web development and built moodmanga.in, a mood-based entertainment recommender, from the ground up. I like the mix of the two: working with people directly, and building things that work well for them at scale.
+    </div>
+</section>
+
+<section id="experience">
+    <div class="eyebrow">Experience</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="timeline">
+        <div class="tl-item">
+            <div>
+                <div class="tl-period">1 Year</div>
+            </div>
+            <div>
+                <div class="tl-role">IELTS Teacher</div>
+                <div class="tl-org">Mylingualines</div>
+                <ul>
+                    <li>Trained candidates across all four IELTS modules — Listening, Reading, Writing, and Speaking.</li>
+                    <li>Evaluated performance and gave targeted feedback to help students work through individual preparation hurdles.</li>
+                    <li>Coached communication strategies tailored to each candidate's weak points.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="tl-item">
+            <div>
+                <div class="tl-period">1 Year</div>
+            </div>
+            <div>
+                <div class="tl-role">English Teacher</div>
+                <div class="tl-org">Karma Vidhya Mandir Shikshan Sansthan School, Alwar</div>
+                <ul>
+                    <li>Delivered daily English lessons, improving student language proficiency and comprehension.</li>
+                    <li>Managed classroom interactions and resolved student queries in real time.</li>
+                    <li>Provided personalized feedback to students at different skill levels.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="project">
+    <div class="eyebrow">Featured Project</div>
+    <h2 class="section-title">Something I built</h2>
+    <div class="project-card">
+        <div class="project-head">
+            <div class="project-name">moodmanga.in</div>
+            <div class="project-tag">Web Project</div>
+        </div>
+        <p>An entertainment recommender that suggests manga and anime based on how you're feeling, rather than what you already know you want to search for. I built this independently, end to end — from the interface down to the recommendation logic — as a way to prove out my problem-solving and technical ability outside the classroom.</p>
+        <div class="project-links">
+            <a class="btn btn-primary" href="https://moodmanga.in" target="_blank" rel="noopener">Visit the site</a>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="eyebrow">Skills</div>
+    <h2 class="section-title">What I bring</h2>
+    <div class="skill-groups">
+        <div class="skill-card">
+            <h3>Customer Service & Communication</h3>
+            <div class="chip-row">
+                <span class="chip">Active listening</span>
+                <span class="chip">Clear verbal & written communication</span>
+                <span class="chip">Conflict resolution</span>
+                <span class="chip">Empathy</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <h3>Core Competencies</h3>
+            <div class="chip-row">
+                <span class="chip">Client handling</span>
+                <span class="chip">Mentoring</span>
+                <span class="chip">Multi-tasking</span>
+                <span class="chip">Time management</span>
+                <span class="chip">Problem-solving</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <h3>Technical</h3>
+            <div class="chip-row">
+                <span class="chip">HTML / CSS</span>
+                <span class="chip">Web building</span>
+                <span class="chip">Troubleshooting</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <h3>Languages</h3>
+            <div class="chip-row">
+                <span class="chip">English</span>
+                <span class="chip">Hindi</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="education">
+    <div class="eyebrow">Education</div>
+    <h2 class="section-title">Academic background</h2>
+    <div class="edu-grid">
+        <div class="edu-card">
+            <div class="edu-degree">Bachelor of Education (B.Ed)</div>
+            <div class="edu-meta">2024 – 2025</div>
+        </div>
+        <div class="edu-card">
+            <div class="edu-degree">Bachelor of Arts (B.A.)</div>
+            <div class="edu-meta">English Literature, Geography, Political Science · 2021 – 2023</div>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="contact-card">
+        <h2>Let's talk</h2>
+        <p>Feel free to reach out — happy to hear from you.</p>
+        <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:yadavakhil0057@gmail.com">yadavakhil0057@gmail.com</a>
+            <a class="btn btn-ghost" href="tel:7737030415">7737030415</a>
+        </div>
+    </div>
+</section>
+
+<footer>Jaipur, Rajasthan &middot; Built with moodmanga.in's Mood Orb design system</footer>
+
+</body>
+</html>
+
